@@ -3,16 +3,24 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+
+use App\Models\Developer;
+use App\Services\DeveloperService;
+use App\Http\Requests\StoreDeveloperRequest;
+use App\Http\Requests\UpdateDeveloperRequest;
 
 class DeveloperController extends Controller
 {
+    public function __construct(
+        protected DeveloperService $service
+    ) {}
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        //
+        return Developer::latest()->paginate(10);
     }
 
     /**
@@ -26,17 +34,19 @@ class DeveloperController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreDeveloperRequest $request)
     {
-        //
+        $developer = $this->service->store($request->validated());
+
+        return response()->json($developer, 201);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Developer $developer)
     {
-        //
+        return $developer;
     }
 
     /**
@@ -50,16 +60,22 @@ class DeveloperController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UpdateDeveloperRequest $request, Developer $developer)
     {
-        //
+        $developer = $this->service->update($developer, $request->validated());
+
+        return response()->json($developer);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Developer $developer)
     {
-        //
+        $this->service->delete($developer);
+
+        return response()->json([
+            'message' => 'Developer deleted successfully'
+        ]);
     }
 }

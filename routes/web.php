@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\PropertyAuctionController;
 use App\Http\Controllers\Admin\PropertyConsignmentController;
 use App\Http\Controllers\Admin\PropertyCrowdfundingController;
 use App\Http\Controllers\Admin\PropertyInvestmentController;
+use App\Http\Controllers\Admin\DeveloperController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -74,6 +75,8 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin'])->grou
     Route::post('auction-properties/store', [PropertyAuctionController::class, 'store'])->name('auction-properties.store');
     Route::post('auction-properties/update/{id}',[PropertyAuctionController::class,'update'])->name('auction-properties.update');
     Route::delete('auction-properties/destroy/{id}', [PropertyAuctionController::class, 'destroy'])->name('auction-properties.destroy');
+    //Developer Master
+    Route::get('developers', [DeveloperController::class, 'index'])->name('developers');
 });
 
 Route::middleware('auth')->group(function () {
