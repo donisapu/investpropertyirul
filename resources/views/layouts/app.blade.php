@@ -169,6 +169,12 @@
                             <div data-i18n="Analytics">Developer</div>
                         </a>
                     </li>
+                    <li class="menu-item {{ request()->routeIs('admin.campaigns') ? 'active' : '' }}">
+                        <a href="{{ route('admin.campaigns') }}" class="menu-link">
+                            <i class="menu-icon tf-icons bx bx-home-circle"></i>
+                            <div data-i18n="Analytics">Campaign</div>
+                        </a>
+                    </li>
                     <!-- Forms & Tables -->
 
                 </ul>

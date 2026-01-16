@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\PropertyConsignmentController;
 use App\Http\Controllers\Admin\PropertyCrowdfundingController;
 use App\Http\Controllers\Admin\PropertyInvestmentController;
 use App\Http\Controllers\Admin\DeveloperController;
+use App\Http\Controllers\Admin\CampaignController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -79,6 +80,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin'])->grou
     Route::post('auction-properties/store', [PropertyAuctionController::class, 'store'])->name('auction-properties.store');
     Route::post('auction-properties/update/{id}',[PropertyAuctionController::class,'update'])->name('auction-properties.update');
     Route::delete('auction-properties/destroy/{id}', [PropertyAuctionController::class, 'destroy'])->name('auction-properties.destroy');
+    
     //Developer Master
     Route::get('developers', [DeveloperController::class, 'index'])->name('developers');
     Route::get('developers/data', [DeveloperController::class, 'data'])->name('developers.data');
@@ -89,6 +91,20 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin'])->grou
     Route::post('developers/store', [DeveloperController::class, 'store'])->name('developers.store');
     Route::post('developers/update/{id}', [DeveloperController::class, 'update'])->name('developers.update');
     Route::delete('developers/destroy/{id}', [DeveloperController::class, 'destroy'])->name('developers.destroy');
+
+    //Campaign Master
+    Route::get('campaigns', [CampaignController::class, 'index'])->name('campaigns');
+    Route::get('campaigns/data', [CampaignController::class, 'data'])->name('campaigns.data');
+    Route::get('campaigns/edit/{id}', [CampaignController::class, 'edit'])->name('campaigns.edit');
+    Route::get('campaigns/create', [CampaignController::class, 'create'])->name('campaigns.create');
+    Route::get('campaigns/show/{id}', [CampaignController::class, 'show'])->name('campaigns.show');
+    Route::get('campaigns/search', [CampaignController::class, 'search'])->name('campaigns.search');
+    Route::post('campaigns/store', [CampaignController::class, 'store'])->name('campaigns.store');
+    Route::post('campaigns/update/{id}', [CampaignController::class, 'update'])->name('campaigns.update');
+    Route::delete('campaigns/destroy/{id}', [CampaignController::class, 'destroy'])->name('campaigns.destroy');
+    Route::put('{id}/publish', [CampaignController::class, 'publish'])->name('campaigns.publish');
+    Route::put('{id}/activate', [CampaignController::class, 'activate'])->name('campaigns.activate');
+    Route::put('{id}/deactivate', [CampaignController::class, 'deactivate'])->name('campaigns.deactivate');
 });
 
 Route::middleware('auth')->group(function () {
