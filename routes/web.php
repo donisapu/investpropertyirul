@@ -22,7 +22,11 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('Pages/Auth/admin');
+    if (Auth::check()) {
+        return redirect()->route('admin.dashboard');
+    }
+
+    return view('pages.auth.admin');
 });
 
 Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin'])->group(function () {
@@ -77,6 +81,14 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin'])->grou
     Route::delete('auction-properties/destroy/{id}', [PropertyAuctionController::class, 'destroy'])->name('auction-properties.destroy');
     //Developer Master
     Route::get('developers', [DeveloperController::class, 'index'])->name('developers');
+    Route::get('developers/data', [DeveloperController::class, 'data'])->name('developers.data');
+    Route::get('developers/edit/{id}', [DeveloperController::class, 'edit'])->name('developers.edit');
+    Route::get('developers/create', [DeveloperController::class, 'create'])->name('developers.create');
+    Route::get('developers/show/{id}', [DeveloperController::class, 'show'])->name('developers.show');
+    Route::get('developers/search', [DeveloperController::class, 'search'])->name('developers.search');
+    Route::post('developers/store', [DeveloperController::class, 'store'])->name('developers.store');
+    Route::post('developers/update/{id}', [DeveloperController::class, 'update'])->name('developers.update');
+    Route::delete('developers/destroy/{id}', [DeveloperController::class, 'destroy'])->name('developers.destroy');
 });
 
 Route::middleware('auth')->group(function () {

@@ -114,7 +114,7 @@
 
                 <ul class="menu-inner py-1">
                     <!-- Dashboard -->
-                    <li class="menu-item active">
+                    <li class="menu-item {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
                         <a href="{{ route('admin.dashboard') }}" class="menu-link">
                             <i class="menu-icon tf-icons bx bx-home-circle"></i>
                             <div data-i18n="Analytics">Dashboard</div>
@@ -124,31 +124,31 @@
                     <li class="menu-header small text-uppercase">
                         <span class="menu-header-text">Property</span>
                     </li>
-                    <li class="menu-item">
+                    <li class="menu-item {{ request()->routeIs('admin.properties') ? 'active' : '' }}">
                         <a href="{{ route('admin.properties') }}" class="menu-link">
                             <i class="menu-icon tf-icons bx bx-building-house"></i>
                             <div data-i18n="Analytics">Properties</div>
                         </a>
                     </li>
-                    <li class="menu-item">
+                    <li class="menu-item {{ request()->routeIs('admin.investment-properties') ? 'active' : '' }}">
                         <a href="{{ route('admin.investment-properties') }}" class="menu-link">
                             <i class="menu-icon tf-icons bx bx-chart-trend"></i>
                             <div data-i18n="Analytics">Investment</div>
                         </a>
                     </li>
-                    <li class="menu-item">
+                    <li class="menu-item {{ request()->routeIs('admin.consignment-properties') ? 'active' : '' }}">
                         <a href="{{ route('admin.consignment-properties') }}" class="menu-link">
                             <i class="menu-icon tf-icons bx bx-key"></i>
                             <div data-i18n="Analytics">Consignment</div>
                         </a>
                     </li>
-                    <li class="menu-item">
+                    <li class="menu-item {{ request()->routeIs('admin.crowdfunding-properties') ? 'active' : '' }}">
                         <a href="{{ route('admin.crowdfunding-properties') }}" class="menu-link">
                             <i class="menu-icon tf-icons bx bx-community"></i>
                             <div data-i18n="Analytics">Crowdfunding</div>
                         </a>
                     </li>
-                    <li class="menu-item">
+                    <li class="menu-item {{ request()->routeIs('admin.auction-properties') ? 'active' : '' }}">
                         <a href="{{ route('admin.auction-properties') }}" class="menu-link">
                             <i class="menu-icon tf-icons bx bx-gavel"></i>
                             <div data-i18n="Analytics">Auction</div>
@@ -157,14 +157,14 @@
                     <li class="menu-header small text-uppercase">
                         <span class="menu-header-text">Setting</span>
                     </li>
-                    <li class="menu-item">
-                        <a href="index.html" class="menu-link">
+                    <li class="menu-item {{ request()->routeIs('admin.website') ? 'active' : '' }}">
+                        <a href="{{ route('admin.developers') }}" class="menu-link">
                             <i class="menu-icon tf-icons bx bx-home-circle"></i>
                             <div data-i18n="Analytics">Website</div>
                         </a>
                     </li>
-                    <li class="menu-item">
-                        <a href="index.html" class="menu-link">
+                    <li class="menu-item {{ request()->routeIs('admin.developers') ? 'active' : '' }}">
+                        <a href="{{ route('admin.developers') }}" class="menu-link">
                             <i class="menu-icon tf-icons bx bx-home-circle"></i>
                             <div data-i18n="Analytics">Developer</div>
                         </a>

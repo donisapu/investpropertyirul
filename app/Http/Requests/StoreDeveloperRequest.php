@@ -25,12 +25,28 @@ class StoreDeveloperRequest extends FormRequest
             'name'            => 'required|string|max:255',
             'description'     => 'nullable|string',
             'image'           => 'nullable|image|mimes:jpg,jpeg,png|max:5120',
-            'phone'           => 'nullable|string|max:20',
+            'phone'           => 'required|regex:/^\+?[0-9]+$/|max:14',
             'youtube_url'     => 'nullable|url',
             'facebook_url'    => 'nullable|url',
             'instagram_url'   => 'nullable|url',
             'tiktok_url'      => 'nullable|url',
             'status'          => 'in:draft,published',
+        ];
+    }
+
+    public function messages(): array
+    {
+        return [
+            'name.required' => 'Developer name is required.',
+
+            'phone.required' => 'Phone number is required.',
+            'phone.regex' => 'Phone number may contain numbers and optional (+) only.',
+            'phone.max' => 'Phone number may not exceed 14 characters.',
+
+            'youtube_url.url' => 'YouTube link must be a valid URL.',
+            'facebook_url.url' => 'Facebook link must be a valid URL.',
+            'instagram_url.url' => 'Instagram link must be a valid URL.',
+            'tiktok_url.url' => 'TikTok link must be a valid URL.',
         ];
     }
 }
