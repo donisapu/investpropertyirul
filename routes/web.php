@@ -22,13 +22,8 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-
 Route::get('/', function () {
-    if (Auth::check()) {
-        return redirect()->route('admin.dashboard');
-    }
-
-    return view('pages.auth.admin');
+    return view('welcome');
 });
 
 Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin'])->group(function () {
