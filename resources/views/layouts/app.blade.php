@@ -157,8 +157,8 @@
                     <li class="menu-header small text-uppercase">
                         <span class="menu-header-text">Setting</span>
                     </li>
-                    <li class="menu-item {{ request()->routeIs('admin.website') ? 'active' : '' }}">
-                        <a href="{{ route('admin.developers') }}" class="menu-link">
+                    <li class="menu-item {{ request()->routeIs('admin.website-settings.edit') ? 'active' : '' }}">
+                        <a href="{{ route('admin.website-settings.edit') }}" class="menu-link">
                             <i class="menu-icon tf-icons bx bx-home-circle"></i>
                             <div data-i18n="Analytics">Website</div>
                         </a>

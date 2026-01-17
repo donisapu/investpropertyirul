@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\PropertyCrowdfundingController;
 use App\Http\Controllers\Admin\PropertyInvestmentController;
 use App\Http\Controllers\Admin\DeveloperController;
 use App\Http\Controllers\Admin\CampaignController;
+use App\Http\Controllers\Admin\WebsiteSettingController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -105,6 +106,10 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin'])->grou
     Route::put('{id}/publish', [CampaignController::class, 'publish'])->name('campaigns.publish');
     Route::put('{id}/activate', [CampaignController::class, 'activate'])->name('campaigns.activate');
     Route::put('{id}/deactivate', [CampaignController::class, 'deactivate'])->name('campaigns.deactivate');
+
+    // Website Settings
+    Route::get('/website-settings', [WebsiteSettingController::class, 'edit'])->name('website-settings.edit');
+    Route::put('/website-settings', [WebsiteSettingController::class, 'update'])->name('website-settings.update');
 });
 
 Route::middleware('auth')->group(function () {
