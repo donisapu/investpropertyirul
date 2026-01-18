@@ -3,10 +3,10 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Models\Properties;
-use Illuminate\Http\Request;
+use App\Models\PropertyDocument;
 use App\Models\PropertyImage;
 use App\Traits\AdminDataTable;
-use App\Models\PropertyDocument;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
@@ -16,18 +16,20 @@ class PropertiesController extends AdminController
      * Display a listing of the resource.
      */
     protected string $viewPath = 'property';
+
     use AdminDataTable;
 
     public function data()
     {
         $query = Properties::query()->select('id', 'property_name', 'property_location');
+
         return $this->dataTable($query, 'pages.property.action');
     }
 
     public function index()
     {
         return $this->view('index', [
-            'title' => 'Property'
+            'title' => 'Property',
         ]);
     }
 
@@ -39,7 +41,7 @@ class PropertiesController extends AdminController
         return $this->view('form', [
             'title' => 'Add Property',
             'action' => route('admin.properties.store'),
-            'btn' => 'add'
+            'btn' => 'add',
         ]);
     }
 
@@ -93,7 +95,7 @@ class PropertiesController extends AdminController
                     );
 
                     PropertyDocument::create([
-                        'property_id'   => $property->id,
+                        'property_id' => $property->id,
                         'document_name' => $request->document_names[$index] ?? 'Document',
                         'document_url' => $path,
                     ]);
@@ -104,7 +106,6 @@ class PropertiesController extends AdminController
         return redirect()->route('admin.properties');
     }
 
-
     /**
      * Display the specified resource.
      */
@@ -112,9 +113,9 @@ class PropertiesController extends AdminController
     {
         return $this->view('show', [
             'title' => 'Property Details',
-            'data'  => Properties::find($id),
+            'data' => Properties::find($id),
             'images' => PropertyImage::where('property_id', $id)->get(),
-            'docs'  => PropertyDocument::where('property_id', $id)->get()
+            'docs' => PropertyDocument::where('property_id', $id)->get(),
         ]);
     }
 
@@ -125,11 +126,11 @@ class PropertiesController extends AdminController
     {
         return $this->view('form', [
             'title' => 'Edit Property',
-            'data'  => Properties::find($id),
+            'data' => Properties::find($id),
             'images' => PropertyImage::where('property_id', $id)->get(),
-            'docs'  => PropertyDocument::where('property_id', $id)->get(),
+            'docs' => PropertyDocument::where('property_id', $id)->get(),
             'action' => route('admin.properties.update', $id),
-            'btn'   => 'edit'
+            'btn' => 'edit',
         ]);
     }
 
@@ -185,9 +186,9 @@ class PropertiesController extends AdminController
                     );
 
                     PropertyDocument::create([
-                        'property_id'   => $property->id,
+                        'property_id' => $property->id,
                         'document_name' => $request->document_names[$index] ?? 'Document',
-                        'document_url'  => $path,
+                        'document_url' => $path,
                     ]);
                 }
             }
@@ -195,7 +196,6 @@ class PropertiesController extends AdminController
 
         return redirect()->route('admin.properties');
     }
-
 
     /**
      * Remove the specified resource from storage.
@@ -247,9 +247,9 @@ class PropertiesController extends AdminController
             ->orWhere('property_location', 'ilike', "%{$q}%")
             ->limit(20)
             ->get()
-            ->map(fn($p) => [
+            ->map(fn ($p) => [
                 'id' => $p->id,
-                'text' => "{$p->property_name} - {$p->property_location}"
+                'text' => "{$p->property_name} - {$p->property_location}",
             ]);
     }
 }

@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class PropertyConsignment extends Model
 {
     use HasFactory;
+
     protected $fillable = [
         'property_id',
         'property_value',

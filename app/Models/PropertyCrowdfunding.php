@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class PropertyCrowdfunding extends Model
 {
     use HasFactory;
+
     protected $fillable = [
         'property_id',
         'funding_goal',

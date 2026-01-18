@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Properties;
 use App\Models\PropertyDocument;
 use App\Models\PropertyImage;
-use App\Models\Properties;
 
 class PublicPropertyController extends Controller
 {

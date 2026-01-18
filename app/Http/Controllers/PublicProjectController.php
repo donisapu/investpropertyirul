@@ -11,4 +11,3 @@ class PublicProjectController extends Controller
         ]);
     }
 }
-

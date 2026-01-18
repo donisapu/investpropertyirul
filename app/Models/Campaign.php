@@ -2,14 +2,14 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Builder;
-use App\Models\Properties;
 
 class Campaign extends Model
 {
     use HasFactory;
+
     protected $table = 'campaigns';
 
     protected $fillable = [
@@ -25,10 +25,10 @@ class Campaign extends Model
     ];
 
     protected $casts = [
-        'is_campaign'      => 'boolean',
+        'is_campaign' => 'boolean',
         'discount_percent' => 'decimal:2',
-        'start_date'       => 'date',
-        'end_date'         => 'date',
+        'start_date' => 'date',
+        'end_date' => 'date',
     ];
 
     /* ======================

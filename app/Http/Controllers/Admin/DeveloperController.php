@@ -50,7 +50,7 @@ class DeveloperController extends AdminController
     public function store(StoreDeveloperRequest $request)
     {
         $data = $request->validated();
-      
+
         DB::transaction(function () use ($request) {
             $data = $request->only([
                 'name',
@@ -89,7 +89,7 @@ class DeveloperController extends AdminController
     {
         return $this->view('show', [
             'title' => 'Developer Details',
-            'data'  => Developer::find($id)
+            'data' => Developer::find($id),
         ]);
     }
 
@@ -100,9 +100,9 @@ class DeveloperController extends AdminController
     {
         return $this->view('form', [
             'title' => 'Edit Developer',
-            'data'  => Developer::find($id),
+            'data' => Developer::find($id),
             'action' => route('admin.developers.update', $id),
-            'btn'   => 'edit'
+            'btn' => 'edit',
         ]);
     }
 

@@ -7,10 +7,9 @@ use App\Http\Requests\UpdateCampaignRequest;
 use App\Models\Campaign;
 use App\Models\Properties;
 use App\Traits\AdminDataTable;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
-use Carbon\Carbon;
-use Illuminate\Http\Request;
 
 class CampaignController extends AdminController
 {
@@ -64,9 +63,9 @@ class CampaignController extends AdminController
                 'discount_percent',
                 'start_date',
                 'end_date',
-                'status'
+                'status',
             ]);
-    
+
             // Resolve final status
             if ($request['action'] === 'draft') {
                 $data['status'] = 'draft';
@@ -100,26 +99,26 @@ class CampaignController extends AdminController
     public function show($id)
     {
         $result = Campaign::with('property')->findOrFail($id);
-        
+
         $response = [
-            'id'               => $result->id,
-            'title'            => $result->title,
-            'description'      => $result->description,
-            'banner_path'      => $result->banner_path,
-            'property_name'    => $result->property?->property_name,
-            'discount_percent' => rtrim(rtrim($result->discount_percent, '0'), '.') . '%',
-            'start_date'       => $result->start_date
+            'id' => $result->id,
+            'title' => $result->title,
+            'description' => $result->description,
+            'banner_path' => $result->banner_path,
+            'property_name' => $result->property?->property_name,
+            'discount_percent' => rtrim(rtrim($result->discount_percent, '0'), '.').'%',
+            'start_date' => $result->start_date
                 ? Carbon::parse($result->start_date)->format('d F Y')
                 : null,
-            'end_date'         => $result->end_date
+            'end_date' => $result->end_date
                 ? Carbon::parse($result->end_date)->format('d F Y')
                 : null,
-            'status'           => $result->status,
+            'status' => $result->status,
         ];
-        
+
         return $this->view('show', [
             'title' => 'Campaign Details',
-            'data'  => $response
+            'data' => $response,
         ], compact('result'));
     }
 
@@ -133,9 +132,9 @@ class CampaignController extends AdminController
         return $this->view('form', [
             'title' => 'Edit Campaign',
             'properties' => $properties->get(),
-            'data'  => Campaign::find($id),
+            'data' => Campaign::find($id),
             'action' => route('admin.campaigns.update', $id),
-            'btn'   => 'edit'
+            'btn' => 'edit',
         ]);
     }
 
@@ -155,7 +154,7 @@ class CampaignController extends AdminController
                 'discount_percent',
                 'start_date',
                 'end_date',
-                'status'
+                'status',
             ]));
 
             // Resolve final status
@@ -215,18 +214,21 @@ class CampaignController extends AdminController
     public function publish($id)
     {
         Campaign::where('id', $id)->update(['status' => 'active']);
+
         return back()->with('success', 'Campaign published successfully.');
     }
 
     public function activate($id)
     {
         Campaign::where('id', $id)->update(['status' => 'active']);
+
         return back()->with('success', 'Campaign activated.');
     }
 
     public function deactivate($id)
     {
         Campaign::where('id', $id)->update(['status' => 'inactive']);
+
         return back()->with('success', 'Campaign deactivated.');
     }
 }

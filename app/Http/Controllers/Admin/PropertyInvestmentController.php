@@ -2,17 +2,17 @@
 
 namespace App\Http\Controllers\Admin;
 
-use Illuminate\Http\Request;
-use App\Traits\AdminDataTable;
-use App\Models\PropertyInvestment;
-use Illuminate\Support\Facades\DB;
-use App\Http\Controllers\Controller;
 use App\Models\PropertyDocument;
 use App\Models\PropertyImage;
+use App\Models\PropertyInvestment;
+use App\Traits\AdminDataTable;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class PropertyInvestmentController extends AdminController
 {
     protected string $viewPath = 'property_investment';
+
     use AdminDataTable;
 
     public function data()
@@ -28,7 +28,7 @@ class PropertyInvestmentController extends AdminController
     public function index()
     {
         return $this->view('index', [
-            'title' => 'Investment Property'
+            'title' => 'Investment Property',
         ]);
     }
 
@@ -40,7 +40,7 @@ class PropertyInvestmentController extends AdminController
         return $this->view('form', [
             'title' => 'Add Investment Property',
             'action' => route('admin.investment-properties.store'),
-            'btn'   => 'add'
+            'btn' => 'add',
         ]);
     }
 
@@ -62,6 +62,7 @@ class PropertyInvestmentController extends AdminController
                 'status',
             ]));
         });
+
         return redirect()->route('admin.investment-properties');
     }
 
@@ -71,11 +72,12 @@ class PropertyInvestmentController extends AdminController
     public function show($id)
     {
         $data = PropertyInvestment::with('property')->where('id', $id)->first();
+
         return $this->view('show', [
             'title' => 'Investment Property',
-            'data'  => $data,
-            'img'   => PropertyImage::where('property_id', $data->property_id)->get(),
-            'doc'   => PropertyDocument::where('property_id', $data->property_id)->get()
+            'data' => $data,
+            'img' => PropertyImage::where('property_id', $data->property_id)->get(),
+            'doc' => PropertyDocument::where('property_id', $data->property_id)->get(),
         ]);
     }
 
@@ -86,9 +88,9 @@ class PropertyInvestmentController extends AdminController
     {
         return $this->view('form', [
             'title' => 'Edit Investment Property',
-            'data'  => PropertyInvestment::with('property')->find($id),
+            'data' => PropertyInvestment::with('property')->find($id),
             'action' => route('admin.investment-properties.update', $id),
-            'btn'   => 'edit'
+            'btn' => 'edit',
         ]);
     }
 
@@ -112,6 +114,7 @@ class PropertyInvestmentController extends AdminController
                 'status',
             ]));
         });
+
         return redirect()->route('admin.investment-properties');
     }
 

@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class PropertyDocument extends Model
 {
     use HasFactory;
+
     protected $fillable = [
         'document_name',
         'document_url',

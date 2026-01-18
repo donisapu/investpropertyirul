@@ -2,16 +2,17 @@
 
 namespace App\Http\Controllers\Admin;
 
-use Illuminate\Http\Request;
+use App\Models\PropertyConsignment;
+use App\Models\PropertyDocument;
 use App\Models\PropertyImage;
 use App\Traits\AdminDataTable;
-use App\Models\PropertyDocument;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use App\Models\PropertyConsignment;
 
 class PropertyConsignmentController extends AdminController
 {
     protected string $viewPath = 'property_consignment';
+
     use AdminDataTable;
 
     public function data()
@@ -27,7 +28,7 @@ class PropertyConsignmentController extends AdminController
     public function index()
     {
         return $this->view('index', [
-            'title' => 'Consignment Property'
+            'title' => 'Consignment Property',
         ]);
     }
 
@@ -39,7 +40,7 @@ class PropertyConsignmentController extends AdminController
         return $this->view('form', [
             'title' => 'Add Consignment Property',
             'action' => route('admin.consignment-properties.store'),
-            'btn'   => 'add'
+            'btn' => 'add',
         ]);
     }
 
@@ -58,6 +59,7 @@ class PropertyConsignmentController extends AdminController
                 'status',
             ]));
         });
+
         return redirect()->route('admin.consignment-properties');
     }
 
@@ -67,11 +69,12 @@ class PropertyConsignmentController extends AdminController
     public function show($id)
     {
         $data = PropertyConsignment::with('property')->where('id', $id)->first();
+
         return $this->view('show', [
             'title' => 'consignment Property',
-            'data'  => $data,
-            'img'   => PropertyImage::where('property_id', $data->property_id)->get(),
-            'doc'   => PropertyDocument::where('property_id', $data->property_id)->get()
+            'data' => $data,
+            'img' => PropertyImage::where('property_id', $data->property_id)->get(),
+            'doc' => PropertyDocument::where('property_id', $data->property_id)->get(),
         ]);
     }
 
@@ -82,9 +85,9 @@ class PropertyConsignmentController extends AdminController
     {
         return $this->view('form', [
             'title' => 'Edit consignment Property',
-            'data'  => PropertyConsignment::with('property')->find($id),
+            'data' => PropertyConsignment::with('property')->find($id),
             'action' => route('admin.consignment-properties.update', $id),
-            'btn'   => 'edit'
+            'btn' => 'edit',
         ]);
     }
 
@@ -105,6 +108,7 @@ class PropertyConsignmentController extends AdminController
                 'status',
             ]));
         });
+
         return redirect()->route('admin.consignment-properties');
     }
 

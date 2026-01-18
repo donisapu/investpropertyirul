@@ -177,7 +177,7 @@
                         <label class="form-label fw-medium">YouTube Channel</label>
                         <input
                             type="url"
-                            name="id"
+                            id="youtube_url"
                             name="youtube_url"
                             class="form-control"
                             value="{{ old('youtube_url', $setting->youtube_url) }}"
@@ -280,6 +280,10 @@
         return match ? match[1] : null;
     }
 
+    function isValidYoutube(url) {
+        return !!extractYoutubeId(url);
+    }
+
     function updateYoutubePreview() {
         const videoId = extractYoutubeId(ytInput.value);
 
@@ -307,7 +311,6 @@
         e.preventDefault();
 
         let isValid = true;
-        clearErrors();
 
         // Website name
         const siteName = document.getElementById('site_name').value.trim();
@@ -326,7 +329,7 @@
         // YouTube
         const yt = document.getElementById('youtubeInput')?.value.trim();
         if (yt && !isValidYoutube(yt)) {
-            showError('video_url', 'Invalid YouTube URL.');
+            showError('youtube_url', 'Invalid YouTube URL.');
             isValid = false;
         }
 

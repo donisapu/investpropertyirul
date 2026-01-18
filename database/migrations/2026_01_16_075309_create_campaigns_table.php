@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
             // Relation
             $table->foreignId('property_id')
-                  ->constrained()
-                  ->cascadeOnDelete();
+                ->constrained()
+                ->cascadeOnDelete();
 
             // Campaign info
             $table->string('title');
@@ -34,8 +34,8 @@ return new class extends Migration
 
             // Status
             $table->enum('status', ['draft', 'active', 'inactive'])
-                  ->default('draft');
-                  
+                ->default('draft');
+
             $table->timestamps();
             // Indexes
             $table->index(['property_id', 'status']);

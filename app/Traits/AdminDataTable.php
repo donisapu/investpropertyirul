@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Traits;
+
 use Yajra\DataTables\Facades\DataTables;
 
 trait AdminDataTable
@@ -9,19 +10,19 @@ trait AdminDataTable
     {
         return DataTables::eloquent($query)
             ->addIndexColumn()
-            
+
             ->editColumn('discount_percent', function ($row) {
-                if (!isset($row->discount_percent)) {
+                if (! isset($row->discount_percent)) {
                     return '-';
                 }
 
                 return $row->discount_percent
-                    ? rtrim(rtrim($row->discount_percent, '0'), '.') . '%'
+                    ? rtrim(rtrim($row->discount_percent, '0'), '.').'%'
                     : '-';
             })
 
             ->editColumn('start_date', function ($row) {
-                if (!isset($row->start_date)) {
+                if (! isset($row->start_date)) {
                     return '-';
                 }
 
@@ -31,7 +32,7 @@ trait AdminDataTable
             })
 
             ->editColumn('end_date', function ($row) {
-                if (!isset($row->end_date)) {
+                if (! isset($row->end_date)) {
                     return '-';
                 }
 
@@ -40,8 +41,7 @@ trait AdminDataTable
                     : '-';
             })
 
-            ->addColumn('action', fn ($row) =>
-                view($actionView, compact('row'))
+            ->addColumn('action', fn ($row) => view($actionView, compact('row'))
             )
             ->rawColumns(['action'])
             ->make(true);

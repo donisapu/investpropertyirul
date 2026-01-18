@@ -2,8 +2,6 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Foundation\Http\FormRequest;
-
 class UpdateCampaignRequest extends StoreCampaignRequest
 {
     /**
@@ -22,20 +20,20 @@ class UpdateCampaignRequest extends StoreCampaignRequest
     public function rules(): array
     {
         return [
-            'property_id'       => 'required|exists:properties,id',
-            'is_campaign'       => 'boolean',
+            'property_id' => 'required|exists:properties,id',
+            'is_campaign' => 'boolean',
 
-            'title'             => 'required|string|max:255',
-            'description'       => 'nullable|string',
+            'title' => 'required|string|max:255',
+            'description' => 'nullable|string',
 
-            'banner'            => 'nullable|image|mimes:jpg,jpeg,png|max:5120',
+            'banner' => 'nullable|image|mimes:jpg,jpeg,png|max:5120',
 
-            'discount_percent'  => 'required|numeric|min:0|max:100',
+            'discount_percent' => 'required|numeric|min:0|max:100',
 
-            'start_date'        => 'required|date',
-            'end_date'          => 'required|date|after_or_equal:start_date',
+            'start_date' => 'required|date',
+            'end_date' => 'required|date|after_or_equal:start_date',
 
-            'status'            => 'required|in:draft,active,inactive',
+            'status' => 'required|in:draft,active,inactive',
         ];
     }
 }

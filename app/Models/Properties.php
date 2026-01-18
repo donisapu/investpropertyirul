@@ -8,7 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class Properties extends Model
 {
     use HasFactory;
+
     protected $table = 'properties';
+
     protected $fillable = [
         'property_name',
         'property_location',

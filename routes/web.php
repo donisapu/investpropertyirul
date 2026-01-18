@@ -1,18 +1,18 @@
 <?php
 
+use App\Http\Controllers\Admin\CampaignController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\DeveloperController;
 use App\Http\Controllers\Admin\PropertiesController;
 use App\Http\Controllers\Admin\PropertyAuctionController;
 use App\Http\Controllers\Admin\PropertyConsignmentController;
 use App\Http\Controllers\Admin\PropertyCrowdfundingController;
 use App\Http\Controllers\Admin\PropertyInvestmentController;
-use App\Http\Controllers\Admin\DeveloperController;
-use App\Http\Controllers\Admin\CampaignController;
-use App\Http\Controllers\Admin\WebsiteSettingController;
 use App\Http\Controllers\Admin\VillaController;
-use App\Http\Controllers\PublicPropertyController;
-use App\Http\Controllers\PublicProjectController;
+use App\Http\Controllers\Admin\WebsiteSettingController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\PublicProjectController;
+use App\Http\Controllers\PublicPropertyController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -53,40 +53,40 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin'])->grou
     Route::get('investment-properties', [PropertyInvestmentController::class, 'index'])->name('investment-properties');
     Route::get('investment-properties/data', [PropertyInvestmentController::class, 'data'])->name('investment-properties.data');
     Route::get('investment-properties/create', [PropertyInvestmentController::class, 'create'])->name('investment-properties.create');
-    Route::get('investment-properties/show/{id}',[PropertyInvestmentController::class,'show'])->name('investment-properties.show');
-    Route::get('investment-properties/edit/{id}',[PropertyInvestmentController::class,'edit'])->name('investment-properties.edit');
+    Route::get('investment-properties/show/{id}', [PropertyInvestmentController::class, 'show'])->name('investment-properties.show');
+    Route::get('investment-properties/edit/{id}', [PropertyInvestmentController::class, 'edit'])->name('investment-properties.edit');
     Route::post('investment-properties/store', [PropertyInvestmentController::class, 'store'])->name('investment-properties.store');
-    Route::post('investment-properties/update/{id}',[PropertyInvestmentController::class,'update'])->name('investment-properties.update');
+    Route::post('investment-properties/update/{id}', [PropertyInvestmentController::class, 'update'])->name('investment-properties.update');
     Route::delete('investment-properties/destroy/{id}', [PropertyInvestmentController::class, 'destroy'])->name('investment-properties.destroy');
     // Consigntment
     Route::get('consignment-properties', [PropertyConsignmentController::class, 'index'])->name('consignment-properties');
     Route::get('consignment-properties/data', [PropertyConsignmentController::class, 'data'])->name('consignment-properties.data');
     Route::get('consignment-properties/create', [PropertyConsignmentController::class, 'create'])->name('consignment-properties.create');
-    Route::get('consignment-properties/show/{id}',[PropertyConsignmentController::class,'show'])->name('consignment-properties.show');
-    Route::get('consignment-properties/edit/{id}',[PropertyConsignmentController::class,'edit'])->name('consignment-properties.edit');
+    Route::get('consignment-properties/show/{id}', [PropertyConsignmentController::class, 'show'])->name('consignment-properties.show');
+    Route::get('consignment-properties/edit/{id}', [PropertyConsignmentController::class, 'edit'])->name('consignment-properties.edit');
     Route::post('consignment-properties/store', [PropertyConsignmentController::class, 'store'])->name('consignment-properties.store');
-    Route::post('consignment-properties/update/{id}',[PropertyConsignmentController::class,'update'])->name('consignment-properties.update');
+    Route::post('consignment-properties/update/{id}', [PropertyConsignmentController::class, 'update'])->name('consignment-properties.update');
     Route::delete('consignment-properties/destroy/{id}', [PropertyConsignmentController::class, 'destroy'])->name('consignment-properties.destroy');
     // Crowdfunding
     Route::get('crowdfunding-properties', [PropertyCrowdfundingController::class, 'index'])->name('crowdfunding-properties');
     Route::get('crowdfunding-properties/data', [PropertyCrowdfundingController::class, 'data'])->name('crowdfunding-properties.data');
     Route::get('crowdfunding-properties/create', [PropertyCrowdfundingController::class, 'create'])->name('crowdfunding-properties.create');
-    Route::get('crowdfunding-properties/show/{id}',[PropertyCrowdfundingController::class,'show'])->name('crowdfunding-properties.show');
-    Route::get('crowdfunding-properties/edit/{id}',[PropertyCrowdfundingController::class,'edit'])->name('crowdfunding-properties.edit');
+    Route::get('crowdfunding-properties/show/{id}', [PropertyCrowdfundingController::class, 'show'])->name('crowdfunding-properties.show');
+    Route::get('crowdfunding-properties/edit/{id}', [PropertyCrowdfundingController::class, 'edit'])->name('crowdfunding-properties.edit');
     Route::post('crowdfunding-properties/store', [PropertyCrowdfundingController::class, 'store'])->name('crowdfunding-properties.store');
-    Route::post('crowdfunding-properties/update/{id}',[PropertyCrowdfundingController::class,'update'])->name('crowdfunding-properties.update');
+    Route::post('crowdfunding-properties/update/{id}', [PropertyCrowdfundingController::class, 'update'])->name('crowdfunding-properties.update');
     Route::delete('crowdfunding-properties/destroy/{id}', [PropertyCrowdfundingController::class, 'destroy'])->name('crowdfunding-properties.destroy');
     // Auction
     Route::get('auction-properties', [PropertyAuctionController::class, 'index'])->name('auction-properties');
     Route::get('auction-properties/data', [PropertyAuctionController::class, 'data'])->name('auction-properties.data');
     Route::get('auction-properties/create', [PropertyAuctionController::class, 'create'])->name('auction-properties.create');
-    Route::get('auction-properties/show/{id}',[PropertyAuctionController::class,'show'])->name('auction-properties.show');
-    Route::get('auction-properties/edit/{id}',[PropertyAuctionController::class,'edit'])->name('auction-properties.edit');
+    Route::get('auction-properties/show/{id}', [PropertyAuctionController::class, 'show'])->name('auction-properties.show');
+    Route::get('auction-properties/edit/{id}', [PropertyAuctionController::class, 'edit'])->name('auction-properties.edit');
     Route::post('auction-properties/store', [PropertyAuctionController::class, 'store'])->name('auction-properties.store');
-    Route::post('auction-properties/update/{id}',[PropertyAuctionController::class,'update'])->name('auction-properties.update');
+    Route::post('auction-properties/update/{id}', [PropertyAuctionController::class, 'update'])->name('auction-properties.update');
     Route::delete('auction-properties/destroy/{id}', [PropertyAuctionController::class, 'destroy'])->name('auction-properties.destroy');
-    
-    //Developer Master
+
+    // Developer Master
     Route::get('developers', [DeveloperController::class, 'index'])->name('developers');
     Route::get('developers/data', [DeveloperController::class, 'data'])->name('developers.data');
     Route::get('developers/edit/{id}', [DeveloperController::class, 'edit'])->name('developers.edit');
@@ -97,7 +97,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin'])->grou
     Route::post('developers/update/{id}', [DeveloperController::class, 'update'])->name('developers.update');
     Route::delete('developers/destroy/{id}', [DeveloperController::class, 'destroy'])->name('developers.destroy');
 
-    //Campaign Master
+    // Campaign Master
     Route::get('campaigns', [CampaignController::class, 'index'])->name('campaigns');
     Route::get('campaigns/data', [CampaignController::class, 'data'])->name('campaigns.data');
     Route::get('campaigns/edit/{id}', [CampaignController::class, 'edit'])->name('campaigns.edit');
@@ -122,4 +122,4 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-require __DIR__ . '/auth.php';
+require __DIR__.'/auth.php';

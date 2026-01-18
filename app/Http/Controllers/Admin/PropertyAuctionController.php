@@ -2,17 +2,17 @@
 
 namespace App\Http\Controllers\Admin;
 
-use Illuminate\Http\Request;
-use App\Models\PropertyImage;
-use App\Traits\AdminDataTable;
 use App\Models\PropertyAuction;
 use App\Models\PropertyDocument;
+use App\Models\PropertyImage;
+use App\Traits\AdminDataTable;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use App\Http\Controllers\Controller;
 
-class PropertyAuctionController extends  AdminController
+class PropertyAuctionController extends AdminController
 {
     protected string $viewPath = 'property_auction';
+
     use AdminDataTable;
 
     public function data()
@@ -28,7 +28,7 @@ class PropertyAuctionController extends  AdminController
     public function index()
     {
         return $this->view('index', [
-            'title' => 'Auction Property'
+            'title' => 'Auction Property',
         ]);
     }
 
@@ -40,7 +40,7 @@ class PropertyAuctionController extends  AdminController
         return $this->view('form', [
             'title' => 'Add Auction Property',
             'action' => route('admin.auction-properties.store'),
-            'btn'   => 'add'
+            'btn' => 'add',
         ]);
     }
 
@@ -59,6 +59,7 @@ class PropertyAuctionController extends  AdminController
                 'status',
             ]));
         });
+
         return redirect()->route('admin.auction-properties');
     }
 
@@ -68,11 +69,12 @@ class PropertyAuctionController extends  AdminController
     public function show($id)
     {
         $data = PropertyAuction::with('property')->where('id', $id)->first();
+
         return $this->view('show', [
             'title' => 'Auction Property',
-            'data'  => $data,
-            'img'   => PropertyImage::where('property_id', $data->property_id)->get(),
-            'doc'   => PropertyDocument::where('property_id', $data->property_id)->get()
+            'data' => $data,
+            'img' => PropertyImage::where('property_id', $data->property_id)->get(),
+            'doc' => PropertyDocument::where('property_id', $data->property_id)->get(),
         ]);
     }
 
@@ -83,9 +85,9 @@ class PropertyAuctionController extends  AdminController
     {
         return $this->view('form', [
             'title' => 'Edit Auction Property',
-            'data'  => PropertyAuction::with('property')->find($id),
+            'data' => PropertyAuction::with('property')->find($id),
             'action' => route('admin.auction-properties.update', $id),
-            'btn'   => 'edit'
+            'btn' => 'edit',
         ]);
     }
 
@@ -106,6 +108,7 @@ class PropertyAuctionController extends  AdminController
                 'status',
             ]));
         });
+
         return redirect()->route('admin.auction-properties');
     }
 

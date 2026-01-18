@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class PropertyAuction extends Model
 {
     use HasFactory;
+
     protected $fillable = [
         'property_id',
         'open_bid',

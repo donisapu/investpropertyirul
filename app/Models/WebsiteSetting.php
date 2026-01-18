@@ -4,12 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Storage;
 
 class WebsiteSetting extends Model
 {
     use HasFactory;
+
     protected $table = 'website_settings';
 
     protected $fillable = [
@@ -44,7 +45,7 @@ class WebsiteSetting extends Model
     public function getWhatsappLinkAttribute()
     {
         return $this->whatsapp
-            ? 'https://wa.me/' . preg_replace('/\D/', '', $this->whatsapp)
+            ? 'https://wa.me/'.preg_replace('/\D/', '', $this->whatsapp)
             : null;
     }
 

@@ -2,17 +2,17 @@
 
 namespace App\Http\Controllers\Admin;
 
-use Illuminate\Http\Request;
+use App\Models\PropertyCrowdfunding;
+use App\Models\PropertyDocument;
 use App\Models\PropertyImage;
 use App\Traits\AdminDataTable;
-use App\Models\PropertyDocument;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use App\Http\Controllers\Controller;
-use App\Models\PropertyCrowdfunding;
 
 class PropertyCrowdfundingController extends AdminController
 {
     protected string $viewPath = 'property_crowdfunding';
+
     use AdminDataTable;
 
     public function data()
@@ -28,7 +28,7 @@ class PropertyCrowdfundingController extends AdminController
     public function index()
     {
         return $this->view('index', [
-            'title' => 'Crowdfunding Property'
+            'title' => 'Crowdfunding Property',
         ]);
     }
 
@@ -40,7 +40,7 @@ class PropertyCrowdfundingController extends AdminController
         return $this->view('form', [
             'title' => 'Add Crowdfunding Property',
             'action' => route('admin.crowdfunding-properties.store'),
-            'btn'   => 'add'
+            'btn' => 'add',
         ]);
     }
 
@@ -59,6 +59,7 @@ class PropertyCrowdfundingController extends AdminController
                 'status',
             ]));
         });
+
         return redirect()->route('admin.crowdfunding-properties');
     }
 
@@ -68,11 +69,12 @@ class PropertyCrowdfundingController extends AdminController
     public function show($id)
     {
         $data = PropertyCrowdfunding::with('property')->where('id', $id)->first();
+
         return $this->view('show', [
             'title' => 'crowdfunding Property',
-            'data'  => $data,
-            'img'   => PropertyImage::where('property_id', $data->property_id)->get(),
-            'doc'   => PropertyDocument::where('property_id', $data->property_id)->get()
+            'data' => $data,
+            'img' => PropertyImage::where('property_id', $data->property_id)->get(),
+            'doc' => PropertyDocument::where('property_id', $data->property_id)->get(),
         ]);
     }
 
@@ -83,9 +85,9 @@ class PropertyCrowdfundingController extends AdminController
     {
         return $this->view('form', [
             'title' => 'Edit crowdfunding Property',
-            'data'  => PropertyCrowdfunding::with('property')->find($id),
+            'data' => PropertyCrowdfunding::with('property')->find($id),
             'action' => route('admin.crowdfunding-properties.update', $id),
-            'btn'   => 'edit'
+            'btn' => 'edit',
         ]);
     }
 
@@ -106,6 +108,7 @@ class PropertyCrowdfundingController extends AdminController
                 'status',
             ]));
         });
+
         return redirect()->route('admin.crowdfunding-properties');
     }
 

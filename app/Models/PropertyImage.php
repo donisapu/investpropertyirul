@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class PropertyImage extends Model
 {
     use HasFactory;
+
     protected $fillable = [
         'image_url',
         'property_id',

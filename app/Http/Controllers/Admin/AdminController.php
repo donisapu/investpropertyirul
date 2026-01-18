@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 
 class AdminController extends Controller
 {
@@ -11,6 +10,8 @@ class AdminController extends Controller
 
     protected function view(string $view, array $data = [])
     {
-        return view("pages.{$this->viewPath}.{$view}", $data);
+        // Build the view path only if $this->viewPath is not empty
+        $path = $this->viewPath ? "pages.{$this->viewPath}.{$view}" : "pages.{$view}";
+        return view($path, $data);
     }
 }

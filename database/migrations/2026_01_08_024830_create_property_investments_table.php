@@ -14,14 +14,14 @@ return new class extends Migration
         Schema::create('property_investments', function (Blueprint $table) {
             $table->id();
             $table->integer('property_id');
-            $table->decimal('property_value',16,2);
-            $table->decimal('price_perlot',16,2);
+            $table->decimal('property_value', 16, 2);
+            $table->decimal('price_perlot', 16, 2);
             $table->integer('total_lot');
             $table->integer('min_lot_size');
             $table->integer('max_lot_size');
-            $table->decimal('estimated_roi',16,2);
+            $table->decimal('estimated_roi', 16, 2);
             $table->integer('roi_period');
-            $table->enum('status',['Draft','Open','Closed','Running','Finished']);
+            $table->enum('status', ['Draft', 'Open', 'Closed', 'Running', 'Finished']);
             $table->timestamps();
         });
     }

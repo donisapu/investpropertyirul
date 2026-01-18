@@ -22,15 +22,15 @@ class StoreDeveloperRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name'            => 'required|string|max:255',
-            'description'     => 'nullable|string',
-            'image'           => 'nullable|image|mimes:jpg,jpeg,png|max:5120',
-            'phone'           => 'required|regex:/^\+?[0-9]+$/|max:14',
-            'youtube_url'     => 'nullable|url',
-            'facebook_url'    => 'nullable|url',
-            'instagram_url'   => 'nullable|url',
-            'tiktok_url'      => 'nullable|url',
-            'status'          => 'in:draft,published',
+            'name' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'image' => 'nullable|image|mimes:jpg,jpeg,png|max:5120',
+            'phone' => 'required|regex:/^\+?[0-9]+$/|max:14',
+            'youtube_url' => 'nullable|url',
+            'facebook_url' => 'nullable|url',
+            'instagram_url' => 'nullable|url',
+            'tiktok_url' => 'nullable|url',
+            'status' => 'in:draft,published',
         ];
     }
 
