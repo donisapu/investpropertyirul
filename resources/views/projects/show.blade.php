@@ -53,12 +53,12 @@
                 <div id="details" class="mt-10">
                     <div class="grid gap-8 md:grid-cols-2 items-start">
                         <div class="rounded-2xl overflow-hidden bg-black/5">
-                            @php $yt = \App\Models\WebsiteSetting::getSettings()?->youtube_video_url; @endphp
-                            <div class="aspect-[16/9]">
+                            <div class="aspect-[16/9]" id="youtubePreviewWrapper">
                                 <iframe
+                                    id="youtubePreview"
                                     class="w-full h-full"
-                                    src="{{ $yt ?: 'https://www.youtube.com/embed/ysz5S6PUM-U' }}"
-                                    title="Project Video"
+                                    src=""
+                                    title="Ocean Breeze"
                                     frameborder="0"
                                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                                     allowfullscreen
@@ -147,3 +147,29 @@
 </body>
 </html>
 
+<script>
+    // const urlFromDb = @json(\App\Models\WebsiteSetting::getSettings()?->youtube_video_url);
+    const ytUrl = 'https://www.youtube.com/watch?v=S8hp_1DP0C0';
+    const ytPreview = document.getElementById('youtubePreview');
+    const ytWrapper = document.getElementById('youtubePreviewWrapper');
+
+    function extractYoutubeId(url) {
+        if (!url) return null;
+        const regExp = /(?:youtube\.com\/.*[?&]v=|youtu\.be\/)([A-Za-z0-9_-]{11})/;
+        const match = url.match(regExp);
+        return match ? match[1] : null;
+    }
+
+    function updateYoutubePreview() {
+        const videoId = extractYoutubeId(ytUrl);
+        if (videoId) {
+            ytPreview.src = `https://www.youtube.com/embed/${videoId}?rel=0`;
+            ytWrapper.classList.remove('hidden');
+        } else {
+            ytPreview.src = '';
+            ytWrapper.classList.add('hidden');
+        }
+    }
+
+    updateYoutubePreview();
+</script>
