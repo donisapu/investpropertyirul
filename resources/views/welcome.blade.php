@@ -17,7 +17,6 @@
 
         <main class="flex-1 text-slate-50">
             @include('welcome.hero')
-            @include('welcome.features')
             @include('welcome.our-villa')
             @include('welcome.developer-projects')
             @include('welcome.our-location')
