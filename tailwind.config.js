@@ -11,6 +11,9 @@ export default {
 
     theme: {
         extend: {
+            screens: {
+                'md900': '900px',
+            },
             fontFamily: {
                 sans: ['Figtree', ...defaultTheme.fontFamily.sans],
             },

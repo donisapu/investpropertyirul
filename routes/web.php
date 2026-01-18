@@ -9,6 +9,9 @@ use App\Http\Controllers\Admin\PropertyInvestmentController;
 use App\Http\Controllers\Admin\DeveloperController;
 use App\Http\Controllers\Admin\CampaignController;
 use App\Http\Controllers\Admin\WebsiteSettingController;
+use App\Http\Controllers\Admin\VillaController;
+use App\Http\Controllers\PublicPropertyController;
+use App\Http\Controllers\PublicProjectController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -25,6 +28,12 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+// Public villa detail (example)
+Route::get('/villa/{slug}', [VillaController::class, 'show'])->name('villa.show');
+
+Route::get('/properties/{property}', [PublicPropertyController::class, 'show'])->name('property.show');
+Route::get('/projects/{slug}', [PublicProjectController::class, 'show'])->name('project.show');
 
 Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin'])->group(function () {
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
