@@ -27,8 +27,13 @@ class DeveloperController extends AdminController
 
     public function index()
     {
-        return $this->view('index', [
-            'title' => 'Developers',
+        $setting = Developer::getSettings();
+
+        return $this->view('form', [
+            'title' => 'Edit Developer',
+            'data' => $setting,
+            'action' => route('admin.developers.update', $setting->id),
+            'btn' => 'edit',
         ]);
     }
 
