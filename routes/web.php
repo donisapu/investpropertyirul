@@ -11,6 +11,7 @@ use App\Http\Controllers\Admin\PropertyInvestmentController;
 use App\Http\Controllers\Admin\VillaController;
 use App\Http\Controllers\Admin\WebsiteSettingController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\PublicInvestmentController;
 use App\Http\Controllers\PublicProjectController;
 use App\Http\Controllers\PublicPropertyController;
 use Illuminate\Support\Facades\Route;
@@ -34,6 +35,8 @@ Route::get('/villa/{slug}', [VillaController::class, 'show'])->name('villa.show'
 
 Route::get('/properties/{property}', [PublicPropertyController::class, 'show'])->name('property.show');
 Route::get('/projects/{slug}', [PublicProjectController::class, 'show'])->name('project.show');
+Route::get('/investments', [PublicInvestmentController::class, 'index'])->name('investments.index');
+Route::get('/investments/{id}', [PublicInvestmentController::class, 'show'])->name('investments.show');
 
 Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin'])->group(function () {
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');

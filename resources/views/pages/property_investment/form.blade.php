@@ -27,18 +27,23 @@
                 </div>
                 <div class="mb-3">
                     <div class="row">
-                        <div class="col-4">
+                        <div class="col-3">
                             <label for="" class="form-label">Total Lot</label>
                             <input type="number" class="form-control" name="total_lot" placeholder="Total Lot"
                                 id="" @if ($btn == 'edit') value="{{ $data->total_lot }}" @endif>
                         </div>
-                        <div class="col-4">
+                        <div class="col-3">
+                            <label for="" class="form-label">Sold Lot</label>
+                            <input type="number" class="form-control" name="sold_lot" placeholder="Sold Lot"
+                                id="" value="{{ $btn == 'edit' ? $data->sold_lot : 0 }}">
+                        </div>
+                        <div class="col-3">
                             <label for="" class="form-label">Min Lot Size</label>
                             <input type="number" name="min_lot_size" class="form-control" id=""
                                 placeholder="Mininum Buying"
                                 @if ($btn == 'edit') value="{{ $data->min_lot_size }}" @endif>
                         </div>
-                        <div class="col-4">
+                        <div class="col-3">
                             <label for="" class="form-label">Max Lot Size</label>
                             <input type="number" class="form-control" name="max_lot_size" placeholder="Maximum Buying"
                                 id="" @if ($btn == 'edit') value="{{ $data->max_lot_size }}" @endif>

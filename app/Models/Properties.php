@@ -26,4 +26,14 @@ class Properties extends Model
         'timeline',
         'map_url',
     ];
+
+    public function images()
+    {
+        return $this->hasMany(PropertyImage::class, 'property_id');
+    }
+
+    public function investment()
+    {
+        return $this->hasOne(PropertyInvestment::class, 'property_id');
+    }
 }

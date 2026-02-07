@@ -14,6 +14,7 @@ class PropertyInvestment extends Model
         'property_value',
         'price_perlot',
         'total_lot',
+        'sold_lot',
         'min_lot_size',
         'max_lot_size',
         'estimated_roi',
