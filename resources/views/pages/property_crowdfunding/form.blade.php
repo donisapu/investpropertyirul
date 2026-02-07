@@ -39,7 +39,7 @@
                     <label for="" class="form-label">Status</label>
                     <select name="status" class="form-control" id="">
                         <option value="draft" @if ($btn == 'edit' && $data->status == 'draft') selected @endif>Draft</option>
-                        <option value="Open" @if ($btn == 'edit' && $data->status == 'Open') selected @endif>Open</option>
+                        <option value="open" @if ($btn == 'edit' && $data->status == 'open') selected @endif>Open</option>
                         <option value="success" @if ($btn == 'edit' && $data->status == 'success') selected @endif>Success</option>
                         <option value="inactive" @if ($btn == 'edit' && $data->status == 'inactive') selected @endif>Invactive</option>
                     </select>
@@ -56,7 +56,7 @@
         $(document).ready(function() {
             $('#property_id').select2({
                 placeholder: 'Search property...',
-                minimumInputLength: 2,
+                minimumInputLength: 0,
                 ajax: {
                     url: '{{ route('admin.properties.search') }}',
                     dataType: 'json',

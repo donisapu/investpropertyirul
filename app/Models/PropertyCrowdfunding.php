@@ -12,6 +12,7 @@ class PropertyCrowdfunding extends Model
     protected $fillable = [
         'property_id',
         'funding_goal',
+        'collected_amount',
         'min_contribution',
         'estimated_roi',
         'tenor',

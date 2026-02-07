@@ -18,6 +18,7 @@ class DatabaseSeeder extends Seeder
             UserRoleSeeder::class,
             WebsiteSettingsSeeder::class,
             PropertySeeder::class,
+            PropertyCrowdfundingSeeder::class,
         ]);
     }
 }

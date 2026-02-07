@@ -54,7 +54,7 @@ export default function PublicLayout({ children }) {
                             <span className="text-slate-300">|</span>
                             <Link href="/investments" className="hover:text-emerald-600 transition-colors">INVESTMENT</Link>
                             <span className="text-slate-300">|</span>
-                            <a href="#properti" className="hover:text-emerald-600 transition-colors">CROWDFUNDING</a>
+                            <Link href="/crowdfunding" className="hover:text-emerald-600 transition-colors">CROWDFUNDING</Link>
                             <span className="text-slate-300">|</span>
                             <a href="#properti" className="hover:text-emerald-600 transition-colors">PROPERTY FOR SALE</a>
                             <span className="text-slate-300">|</span>

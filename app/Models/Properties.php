@@ -32,6 +32,11 @@ class Properties extends Model
         return $this->hasMany(PropertyImage::class, 'property_id');
     }
 
+    public function documents()
+    {
+        return $this->hasMany(PropertyDocument::class, 'property_id');
+    }
+
     public function investment()
     {
         return $this->hasOne(PropertyInvestment::class, 'property_id');

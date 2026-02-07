@@ -1,35 +1,26 @@
 import React from 'react';
 import { Head, Link } from '@inertiajs/react';
-import { Bed, Bath, Maximize, Building2 } from 'lucide-react';
+import { Bed, Bath, Maximize, Building2, Calendar, Banknote } from 'lucide-react';
 import PublicLayout from '@/Layouts/PublicLayout';
 
-export default function Investments({ properties, settings }) {
-    console.log(properties);
+export default function Crowdfunding({ properties, settings }) {
     return (
         <PublicLayout>
-            <Head title="Investments" />
+            <Head title="Crowdfunding" />
 
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
                 {/* Banner */}
-                <div className="mb-10 rounded-2xl overflow-hidden shadow-sm bg-emerald-50 border border-emerald-100 p-8 flex items-center justify-between">
+                <div className="mb-10 rounded-2xl overflow-hidden shadow-sm bg-blue-50 border border-blue-100 p-8 flex items-center justify-between">
                     <div className="max-w-xl">
-                        <h2 className="text-3xl font-bold text-slate-900 mb-4">Start Investing with {settings?.site_name || 'Goro'}</h2>
+                        <h2 className="text-3xl font-bold text-slate-900 mb-4">Crowdfunding with {settings?.site_name || 'Goro'}</h2>
                         <p className="text-slate-600 mb-6">
-                            Discover premium property investment opportunities with high returns. 
+                            Join others in funding high-potential property projects. Small entry ticket, great returns.
                             {settings?.description && <span className="block mt-2 text-sm">{settings.description}</span>}
                         </p>
-                        {/* <div className="flex gap-4">
-                            <a href="#properties" className="bg-emerald-800 text-white px-6 py-3 rounded-lg font-bold hover:bg-emerald-600 shadow-lg transition-colors shadow-emerald-200">
-                                View Properties
-                            </a>
-                            <a href="#fitur" className="bg-white text-emerald-700 border border-emerald-200 px-6 py-3 rounded-lg font-bold hover:bg-emerald-600 hover:text-white transition-colors">
-                                How it Works
-                            </a>
-                        </div> */}
                     </div>
                     <div className="hidden md:block">
-                        <div className="w-64 h-48 bg-emerald-100/50 rounded-xl flex items-center justify-center">
-                            <Building2 className="w-24 h-24 text-emerald-300" />
+                        <div className="w-64 h-48 bg-blue-100/50 rounded-xl flex items-center justify-center">
+                            <Building2 className="w-24 h-24 text-blue-300" />
                         </div>
                     </div>
                 </div>
@@ -47,61 +38,73 @@ export default function Investments({ properties, settings }) {
                                         {prop.loc}
                                     </div>
 
-                                    {prop.sold && (
-                                        <div className="absolute top-3 left-3 bg-slate-800/80 backdrop-blur-sm px-2 py-1 rounded text-xs font-semibold text-white">
-                                            Sold Out
-                                        </div>
-                                    )}
+                                    <div className="absolute top-3 left-3 bg-blue-800/80 backdrop-blur-sm px-2 py-1 rounded text-xs font-semibold text-white">
+                                        {prop.status}
+                                    </div>
                                 </div>
 
                                 {/* Content */}
                                 <div className="p-4 flex-1 flex flex-col">
-                                    <h3 className="text-lg font-bold text-emerald-900 mb-2">{prop.name}</h3>
+                                    <h3 className="text-lg font-bold text-slate-900 mb-2">{prop.name}</h3>
                                     
                                     {/* Specs */}
                                     <div className="flex items-center gap-4 text-xs font-medium text-slate-500 mb-4">
                                         <div className="flex items-center gap-1">
-                                            <Bed className="w-4 h-4 text-emerald-600" />
+                                            <Bed className="w-4 h-4 text-blue-600" />
                                             <span>{prop.specs.bedroom}</span>
                                         </div>
                                         <div className="flex items-center gap-1">
-                                            <Bath className="w-4 h-4 text-emerald-600" />
+                                            <Bath className="w-4 h-4 text-blue-600" />
                                             <span>{prop.specs.bathroom}</span>
                                         </div>
                                         <div className="flex items-center gap-1">
-                                            <Maximize className="w-4 h-4 text-emerald-600" />
+                                            <Maximize className="w-4 h-4 text-blue-600" />
                                             <span>{prop.specs.area}</span>
                                         </div>
                                     </div>
 
                                     {/* Returns */}
-                                    <div className="flex items-center gap-8 mb-4 border-t border-slate-100 pt-3">
-                                        <div>
-                                            <div className="text-lg font-bold text-emerald-600">{prop.roi}</div>
-                                            <div className="text-[0.65rem] text-slate-400 font-bold uppercase tracking-wider">ROI</div>
+                                    <div className="flex items-center gap-4 mb-4 border-t border-slate-100 pt-3">
+                                        <div className="flex-1">
+                                            <div className="text-lg font-bold text-blue-600">{prop.roi}</div>
+                                            <div className="text-[0.65rem] text-slate-400 font-bold uppercase tracking-wider">Est. ROI</div>
                                         </div>
-                                        <div>
-                                            <div className="text-lg font-bold text-emerald-600">{prop.roi_period}</div>
-                                            <div className="text-[0.65rem] text-slate-400 font-bold uppercase tracking-wider">ROI Period (Month)</div>
+                                        <div className="flex-1">
+                                            <div className="text-lg font-bold text-blue-600">{prop.tenor}</div>
+                                            <div className="text-[0.65rem] text-slate-400 font-bold uppercase tracking-wider">Tenor</div>
+                                        </div>
+                                    </div>
+
+                                    {/* Funding Info */}
+                                    <div className="mb-4">
+                                        <div className="flex justify-between items-end mb-1">
+                                            <span className="text-sm font-semibold text-slate-700">Goal</span>
+                                            <span className="text-lg font-bold text-slate-900">
+                                                {new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(prop.goal)}
+                                            </span>
+                                        </div>
+                                        <div className="flex justify-between items-center text-xs text-slate-500">
+                                            <span>Min. Contribution</span>
+                                            <span className="font-semibold text-slate-700">
+                                                {new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(prop.min_contribution)}
+                                            </span>
                                         </div>
                                     </div>
 
                                     {/* Progress */}
                                     <div className="mb-5 mt-auto">
                                         <div className="flex justify-between text-xs font-semibold text-slate-600 mb-1.5">
-                                            <span className={prop.progress > 0 ? 'text-emerald-700' : 'text-slate-400'}>{prop.progress}%</span>
-                                            <span className="text-slate-400">{prop.tokens} tokens left</span>
+                                            <span className={prop.progress > 0 ? 'text-blue-700' : 'text-slate-400'}>{prop.progress}% Funded</span>
+                                            <span className="text-slate-500">
+                                                {new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(prop.collected)} collected
+                                            </span>
                                         </div>
                                         <div className="w-full bg-slate-100 rounded-full h-1.5">
-                                            <div className="bg-emerald-500 h-1.5 rounded-full" style={{ width: `${Math.max(prop.progress, 5)}%` }}></div>
+                                            <div className="bg-blue-500 h-1.5 rounded-full" style={{ width: `${Math.max(prop.progress, 0)}%` }}></div>
                                         </div>
                                     </div>
 
-                                    {/* Button */}
-                                    <Link 
-                                        href={route('investments.show', prop.id)}
-                                        className={`w-full block text-center ${prop.sold ? 'bg-slate-300 text-slate-500' : 'bg-emerald-800 hover:bg-emerald-900 text-white shadow-emerald-900/20 shadow-lg'} font-bold text-sm py-3 rounded-lg transition-all`}
-                                    >
+                                    <Link href={route('crowdfunding.show', prop.crowdfunding_id)} className="w-full bg-slate-900 hover:bg-slate-800 text-white font-semibold py-2.5 rounded-lg transition-colors flex items-center justify-center gap-2 text-sm">
                                         View Details
                                     </Link>
                                 </div>
@@ -112,13 +115,11 @@ export default function Investments({ properties, settings }) {
                     <div className="text-center py-16 px-4">
                         <div className="bg-slate-50 rounded-2xl p-8 max-w-lg mx-auto border border-slate-100">
                             <div className="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                                <svg className="w-8 h-8 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
-                                </svg>
+                                <Building2 className="w-8 h-8 text-slate-400" />
                             </div>
-                            <h3 className="text-lg font-bold text-slate-900 mb-2">No Investment Properties Found</h3>
-                            <p className="text-slate-600 mb-6">We currently don't have any investment properties available. Please check back later for new opportunities.</p>
-                            <a href="/" className="inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-emerald-600 hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500">
+                            <h3 className="text-lg font-bold text-slate-900 mb-2">No Crowdfunding Projects Found</h3>
+                            <p className="text-slate-600 mb-6">We currently don't have any crowdfunding projects available. Please check back later.</p>
+                            <a href="/" className="inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
                                 Return Home
                             </a>
                         </div>
@@ -134,7 +135,7 @@ export default function Investments({ properties, settings }) {
                                 href={link.url}
                                 className={`min-w-[2.25rem] h-9 px-3 flex items-center justify-center rounded text-sm transition-colors ${
                                     link.active
-                                        ? 'bg-emerald-800 text-white font-medium shadow-md shadow-emerald-900/20'
+                                        ? 'bg-blue-800 text-white font-medium shadow-md shadow-blue-900/20'
                                         : 'border border-slate-200 text-slate-600 hover:bg-slate-50 font-medium'
                                 }`}
                                 dangerouslySetInnerHTML={{ __html: link.label }}

@@ -22,7 +22,7 @@
                 <span class="text-slate-300">|</span>
                 <a href="{{ route('investments.index') }}" class="hover:text-emerald-600 transition-colors">INVESTMENT</a>
                 <span class="text-slate-300">|</span>
-                <a href="#properti" class="hover:text-emerald-600 transition-colors">CROWDFUNDING</a>
+                <a href="{{ route('crowdfunding.index') }}" class="hover:text-emerald-600 transition-colors">CROWDFUNDING</a>
                 <span class="text-slate-300">|</span>
                 <a href="#properti" class="hover:text-emerald-600 transition-colors">PROPERTY FOR SALE</a>
                 <span class="text-slate-300">|</span>
@@ -66,7 +66,7 @@
         <div class="space-y-1 px-4 py-6">
             <a href="{{ url('/') }}" class="block rounded-md py-2 px-3 text-base font-medium text-slate-900 hover:bg-slate-50 hover:text-emerald-600">HOME</a>
             <a href="{{ route('investments.index') }}" class="block rounded-md py-2 px-3 text-base font-medium text-slate-900 hover:bg-slate-50 hover:text-emerald-600">INVESTMENT</a>
-            <a href="#properti" class="block rounded-md py-2 px-3 text-base font-medium text-slate-900 hover:bg-slate-50 hover:text-emerald-600">CROWDFUNDING</a>
+            <a href="{{ route('crowdfunding.index') }}" class="block rounded-md py-2 px-3 text-base font-medium text-slate-900 hover:bg-slate-50 hover:text-emerald-600">CROWDFUNDING</a>
             <a href="#properti" class="block rounded-md py-2 px-3 text-base font-medium text-slate-900 hover:bg-slate-50 hover:text-emerald-600">PROPERTY FOR SALE</a>
             <a href="#properti" class="block rounded-md py-2 px-3 text-base font-medium text-slate-900 hover:bg-slate-50 hover:text-emerald-600">LELANG/CESSIE</a>
             <a href="#fitur" class="block rounded-md py-2 px-3 text-base font-medium text-slate-900 hover:bg-slate-50 hover:text-emerald-600">HOW TO INVEST</a>
