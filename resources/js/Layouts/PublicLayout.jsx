@@ -1,15 +1,16 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link, usePage } from '@inertiajs/react';
+import { FacebookIcon, Instagram, Youtube } from 'lucide-react';
 
 export default function PublicLayout({ children }) {
-    const { auth } = usePage().props;
+    const { auth, settings } = usePage().props;
     const { url } = usePage();
     const [isScrolled, setIsScrolled] = useState(false);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-    
+    console.log(settings);
     // Helper to check active route
     const isActive = (path) => url === path || (path !== '/' && url.startsWith(path));
-    
+
     // Determine if we are on the home page
     const isHome = window.location.pathname === '/';
 
@@ -33,26 +34,28 @@ export default function PublicLayout({ children }) {
         <div className="min-h-screen flex flex-col font-sans text-slate-900 bg-slate-50">
             {/* Header */}
             <header
-                className={`sticky top-0 z-50 transition-colors duration-300 ${
-                    (isScrolled || isMobileMenuOpen)
+                className={`sticky top-0 z-50 transition-colors duration-300 ${(isScrolled || isMobileMenuOpen)
                         ? 'bg-white border-b border-slate-200 shadow-sm'
                         : 'bg-slate-700/15 border-b border-transparent'
-                }`}
+                    }`}
             >
                 <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                     <div className="flex h-20 items-center justify-between">
                         {/* Logo */}
                         <div className="flex-shrink-0 flex items-center">
                             <a href="/">
-                                <img src="/assets/img/logo.png" alt="logo" className="h-10 w-auto sm:h-12 lg:h-14 object-contain max-w-[150px] sm:max-w-[200px]" />
+                                <img
+                                    src={settings?.logo ? (settings.logo.startsWith('http') || settings.logo.startsWith('/') ? settings.logo : `/storage/${settings.logo}`) : "/assets/img/logo.png"}
+                                    alt="logo"
+                                    className="h-10 w-auto sm:h-12 lg:h-14 object-contain max-w-[150px] sm:max-w-[200px]"
+                                />
                             </a>
                         </div>
 
                         {/* Desktop Menu */}
                         <nav
-                            className={`hidden min-[900px]:flex items-center gap-2 xl:gap-3 text-[0.7rem] xl:text-sm font-medium uppercase tracking-wide ${
-                                (isScrolled || isMobileMenuOpen) ? 'text-slate-900' : 'text-white'
-                            }`}
+                            className={`hidden min-[900px]:flex items-center gap-2 xl:gap-3 text-[0.7rem] xl:text-sm font-medium uppercase tracking-wide ${(isScrolled || isMobileMenuOpen) ? 'text-slate-900' : 'text-white'
+                                }`}
                         >
                             <a href="/" className={`${isActive('/') ? 'text-emerald-700 font-bold' : 'hover:text-emerald-600'} transition-colors`}>HOME</a>
                             <span className="text-slate-300">|</span>
@@ -66,7 +69,7 @@ export default function PublicLayout({ children }) {
                             <span className="text-slate-300">|</span>
                             <Link href="/how-to-invest" className={`${isActive('/how-to-invest') ? 'text-emerald-700 font-bold' : 'hover:text-emerald-600'} transition-colors`}>HOW TO INVEST</Link>
                             <span className="text-slate-300">|</span>
-                            
+
                             {auth.user ? (
                                 <a href="/dashboard" className="hover:text-emerald-600 transition-colors font-bold text-emerald-700">MY ACCOUNT</a>
                             ) : (
@@ -107,7 +110,7 @@ export default function PublicLayout({ children }) {
                             <Link href="/auctions" className={`block rounded-md py-2 px-3 text-base font-medium ${isActive('/auctions') ? 'text-emerald-700 bg-emerald-50' : 'text-slate-900 hover:bg-slate-50 hover:text-emerald-600'}`}>LELANG/CESSIE</Link>
                             <Link href="/how-to-invest" className={`block rounded-md py-2 px-3 text-base font-medium ${isActive('/how-to-invest') ? 'text-emerald-700 bg-emerald-50' : 'text-slate-900 hover:bg-slate-50 hover:text-emerald-600'}`}>HOW TO INVEST</Link>
                             <a href="#properti" className="block rounded-md py-2 px-3 text-base font-medium text-slate-900 hover:bg-slate-50 hover:text-emerald-600">DEVELOPER</a>
-                            
+
                             <div className="mt-4 border-t border-slate-100 pt-4">
                                 {auth.user ? (
                                     <a href="/dashboard" className="block rounded-md py-2 px-3 text-base font-bold text-emerald-700 hover:bg-emerald-50">MY ACCOUNT</a>
@@ -132,6 +135,7 @@ export default function PublicLayout({ children }) {
 }
 
 function Footer() {
+    const { settings } = usePage().props;
     const scrollRef = useRef(null);
     const [canScrollLeft, setCanScrollLeft] = useState(false);
     const [canScrollRight, setCanScrollRight] = useState(false);
@@ -149,7 +153,7 @@ function Footer() {
         window.addEventListener('resize', checkScroll);
         const el = scrollRef.current;
         if (el) el.addEventListener('scroll', checkScroll);
-        
+
         return () => {
             window.removeEventListener('resize', checkScroll);
             if (el) el.removeEventListener('scroll', checkScroll);
@@ -184,7 +188,7 @@ function Footer() {
                             ‹
                         </button>
                     )}
-                    
+
                     <div
                         ref={scrollRef}
                         className="overflow-x-auto flex items-center justify-center whitespace-nowrap scrollbar-hide px-10 no-scrollbar"
@@ -223,30 +227,28 @@ function Footer() {
                     <div>
                         <h3 className="text-base font-semibold">Beranda</h3>
                         <ul className="mt-2 space-y-1 text-sm">
-                            <li><a href="#properti" className="hover:text-emerald-600">Investment</a></li>
-                            <li><a href="#properti" className="hover:text-emerald-600">Crowdfunding</a></li>
-                            <li><a href="#properti" className="hover:text-emerald-600">Lelang/Cessie</a></li>
-                            <li><a href="#properti" className="hover:text-emerald-600">Property for Sale</a></li>
-                            <li><a href="#fitur" className="hover:text-emerald-600">How to Invest</a></li>
-                            <li><a href="#properti" className="hover:text-emerald-600">Development</a></li>
-                            <li><a href="#properti" className="hover:text-emerald-600">ROI Simulator</a></li>
+                            <li><a href="/investments" className="hover:text-emerald-600">Investment</a></li>
+                            <li><a href="/crowdfunding" className="hover:text-emerald-600">Crowdfunding</a></li>
+                            <li><a href="/auctions" className="hover:text-emerald-600">Lelang/Cessie</a></li>
+                            <li><a href="/property-for-sale" className="hover:text-emerald-600">Property for Sale</a></li>
+                            <li><a href="/how-to-invest" className="hover:text-emerald-600">How to Invest</a></li>
                         </ul>
                     </div>
                     <div>
                         <h3 className="text-base font-semibold">Hubungi Kami</h3>
                         <ul className="mt-2 space-y-1 text-sm">
-                            <li className="flex items-center gap-2"><span className="text-slate-500">📞</span><a href="tel:+62818580891" className="hover:text-emerald-600">+62818580891</a></li>
+                            <li className="flex items-center gap-2"><span className="text-slate-500">📞</span><a href={`tel:+${settings?.whatsapp}`} className="hover:text-emerald-600">+{settings?.whatsapp}</a></li>
                             <li className="flex items-center gap-2"><span className="text-slate-500">✉️</span><a href="mailto:umahbalimesari@gmail.com" className="hover:text-emerald-600">umahbalimesari@gmail.com</a></li>
                         </ul>
                         <div className="mt-4 flex items-center gap-3">
-                            <a href="#" className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-slate-900 text-white hover:bg-emerald-600" aria-label="Facebook">
-                                <svg className="h-4 w-4" viewBox="0 0 24 24" fill="currentColor"><path d="M22 12a10 10 0 10-11.5 9.9v-7h-2v-3h2v-2.3c0-2 1.2-3.1 3-3.1.9 0 1.8.2 1.8.2v2h-1c-1 0-1.3.6-1.3 1.2V12h2.2l-.3 3h-1.9v7A10 10 0 0022 12z"/></svg>
+                            <a href={settings?.facebook_url || '#'} className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-slate-900 text-white hover:bg-emerald-600 transition-colors" aria-label="Facebook">
+                                <FacebookIcon className="h-4 w-4" />
                             </a>
-                            <a href="#" className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-slate-900 text-white hover:bg-emerald-600" aria-label="Instagram">
-                                <svg className="h-4 w-4" viewBox="0 0 24 24" fill="currentColor"><path d="M7 2C4.24 2 2 4.24 2 7v10c0 2.76 2.24 5 5 5h10c2.76 0 5-2.24 5-5V7c0-2.76-2.24-5-5-5H7zm10 2c1.66 0 3 1.34 3 3v10c0 1.66-1.34 3-3 3H7c-1.66 0-3-1.34-3-3V7c0-1.66 1.34-3 3-3h10zm-5 3a5 5 0 100 10 5 5 0 000-10zm6-1a1 1 0 100 2 1 1 0 000-2z"/></svg>
+                            <a href={settings?.instagram_url || '#'} className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-slate-900 text-white hover:bg-emerald-600 transition-colors" aria-label="Instagram">
+                                <Instagram className="h-4 w-4" />
                             </a>
-                            <a href="#" className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-slate-900 text-white hover:bg-emerald-600" aria-label="YouTube">
-                                <svg className="h-4 w-4" viewBox="0 0 24 24" fill="currentColor"><path d="M23.5 6.2a3 3 0 00-2.1-2.1C19.8 3.6 12 3.6 12 3.6s-7.8 0-9.4.5A3 3 0 00.6 6.2 31.6 31.6 0 000 12a31.6 31.6 0 00.6 5.8 3 3 0 002.1 2.1c1.6.5 9.4.5 9.4.5s7.8 0 9.4-.5a3 3 0 002.1-2.1c.4-1.9.6-3.8.6-5.8s-.2-3.9-.6-5.8zM9.7 15.5V8.5l6.2 3.5-6.2 3.5z"/></svg>
+                            <a href={settings?.youtube_url || '#'} className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-slate-900 text-white hover:bg-emerald-600 transition-colors" aria-label="YouTube">
+                                <Youtube className="h-4 w-4" />
                             </a>
                         </div>
                     </div>
@@ -255,10 +257,7 @@ function Footer() {
             <div className="border-t border-slate-200 bg-slate-50">
                 <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-4 flex flex-col sm:flex-row items-center justify-between gap-2 text-slate-600">
                     <p className="text-[0.8rem]">
-                        © {new Date().getFullYear()} InvestProperti
-                    </p>
-                    <p className="text-[0.8rem]">
-                        Laravel v10 · PHP v8
+                        © {new Date().getFullYear()} {settings?.site_name || 'Umah Bali Mesari'}. All rights reserved.
                     </p>
                 </div>
             </div>

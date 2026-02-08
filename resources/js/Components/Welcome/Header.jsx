@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import { route } from 'ziggy-js';
 
 export default function Header() {
-    const { auth } = usePage().props;
+    const { auth, settings } = usePage().props;
     const [open, setOpen] = useState(false);
     const [scrolled, setScrolled] = useState(false);
 
@@ -30,7 +30,11 @@ export default function Header() {
                     {/* Logo */}
                     <div className="flex-shrink-0 flex items-center">
                         <Link href="/">
-                            <img src="/assets/img/logo.png" alt="logo" className="h-10 w-auto sm:h-12 lg:h-14 object-contain max-w-[150px] sm:max-w-[200px]" />
+                            <img 
+                                src={settings?.logo ? (settings.logo.startsWith('http') || settings.logo.startsWith('/') ? settings.logo : `/storage/${settings.logo}`) : "/assets/img/logo.png"} 
+                                alt="logo" 
+                                className="h-10 w-auto sm:h-12 lg:h-14 object-contain max-w-[150px] sm:max-w-[200px]" 
+                            />
                         </Link>
                     </div>
 
@@ -38,15 +42,15 @@ export default function Header() {
                     <nav className={`hidden min-[900px]:flex items-center gap-2 xl:gap-3 text-[0.7rem] xl:text-sm font-medium uppercase tracking-wide ${navClass}`}>
                         <Link href="/" className="hover:text-emerald-600 transition-colors">HOME</Link>
                         <span className="text-slate-300">|</span>
-                        <Link href={route('investments.index')} className="hover:text-emerald-600 transition-colors">INVESTMENT</Link>
+                        <Link href="/investments" className="hover:text-emerald-600 transition-colors">INVESTMENT</Link>
                         <span className="text-slate-300">|</span>
-                        <Link href={route('crowdfunding.index')} className="hover:text-emerald-600 transition-colors">CROWDFUNDING</Link>
+                        <Link href="/crowdfunding" className="hover:text-emerald-600 transition-colors">CROWDFUNDING</Link>
                         <span className="text-slate-300">|</span>
-                        <a href="#properti" className="hover:text-emerald-600 transition-colors">PROPERTY FOR SALE</a>
+                        <Link href="#property" className="hover:text-emerald-600 transition-colors">PROPERTY FOR SALE</Link>
                         <span className="text-slate-300">|</span>
-                        <a href="#properti" className="hover:text-emerald-600 transition-colors">LELANG/CESSIE</a>
+                        <Link href={route('auctions.index')} className="hover:text-emerald-600 transition-colors">LELANG/CESSIE</Link>
                         <span className="text-slate-300">|</span>
-                        <a href="#fitur" className="hover:text-emerald-600 transition-colors">HOW TO INVEST</a>
+                        <Link href="/how-to-invest" className="hover:text-emerald-600 transition-colors">HOW TO INVEST</Link>
                         <span className="text-slate-300">|</span>
 
                         <a href={route(auth.user ? 'admin.dashboard' : 'login')} className="hover:text-emerald-600 transition-colors font-bold text-emerald-400">MY ACCOUNT</a>
@@ -85,9 +89,9 @@ export default function Header() {
                         <Link href="/" className="block rounded-md py-2 px-3 text-base font-medium text-slate-900 hover:bg-slate-50 hover:text-emerald-600">HOME</Link>
                         <Link href={route('investments.index')} className="block rounded-md py-2 px-3 text-base font-medium text-slate-900 hover:bg-slate-50 hover:text-emerald-600">INVESTMENT</Link>
                         <Link href={route('crowdfunding.index')} className="block rounded-md py-2 px-3 text-base font-medium text-slate-900 hover:bg-slate-50 hover:text-emerald-600">CROWDFUNDING</Link>
-                        <a href="#properti" className="block rounded-md py-2 px-3 text-base font-medium text-slate-900 hover:bg-slate-50 hover:text-emerald-600">PROPERTY FOR SALE</a>
-                        <a href="#properti" className="block rounded-md py-2 px-3 text-base font-medium text-slate-900 hover:bg-slate-50 hover:text-emerald-600">LELANG/CESSIE</a>
-                        <a href="#fitur" className="block rounded-md py-2 px-3 text-base font-medium text-slate-900 hover:bg-slate-50 hover:text-emerald-600">HOW TO INVEST</a>
+                        <a href="#property" className="block rounded-md py-2 px-3 text-base font-medium text-slate-900 hover:bg-slate-50 hover:text-emerald-600">PROPERTY FOR SALE</a>
+                        <a href={route('auctions.index')} className="block rounded-md py-2 px-3 text-base font-medium text-slate-900 hover:bg-slate-50 hover:text-emerald-600">LELANG/CESSIE</a>
+                        <a href="/how-to-invest" className="block rounded-md py-2 px-3 text-base font-medium text-slate-900 hover:bg-slate-50 hover:text-emerald-600">HOW TO INVEST</a>
 
                         <div className="mt-4 border-t border-slate-100 pt-4">
                             <a href={route(auth.user ? 'admin.dashboard' : 'login')} className="block rounded-md py-2 px-3 text-base font-bold text-emerald-400 hover:bg-emerald-50">MY ACCOUNT</a>

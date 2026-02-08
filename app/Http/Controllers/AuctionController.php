@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\PropertyAuction;
+use App\Models\WebsiteSetting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
@@ -25,8 +26,11 @@ class AuctionController extends Controller
             return $auction;
         });
 
+        $settings = WebsiteSetting::getSettings();
+
         return Inertia::render('Auctions/Index', [
-            'auctions' => $auctions
+            'auctions' => $auctions,
+            'settings' => $settings
         ]);
     }
 
@@ -48,8 +52,11 @@ class AuctionController extends Controller
             }
         }
 
+        $settings = WebsiteSetting::getSettings();
+
         return Inertia::render('Auctions/Show', [
-            'auction' => $auction
+            'auction' => $auction,
+            'settings' => $settings
         ]);
     }
 }

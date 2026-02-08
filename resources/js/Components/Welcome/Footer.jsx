@@ -1,11 +1,11 @@
 import { useState, useRef, useEffect } from 'react';
 
-export default function Footer({ laravelVersion, phpVersion }) {
+export default function Footer({ settings, laravelVersion, phpVersion }) {
     const rowRef = useRef(null);
     const [canScroll, setCanScroll] = useState(false);
     const [atStart, setAtStart] = useState(true);
     const [atEnd, setAtEnd] = useState(false);
-
+    console.log(settings);
     const checkScroll = () => {
         if (rowRef.current) {
             const el = rowRef.current;
@@ -73,28 +73,26 @@ export default function Footer({ laravelVersion, phpVersion }) {
                     <div>
                         <h3 className="text-base font-semibold">Tentang Kami</h3>
                         <p className="mt-2 text-sm text-slate-700">
-                            PT. Umah Bali Mesari adalah perusahaan yang bergerak di bidang Developer dan Kontraktor yang berbasis di Bali dengan visi dan misi serta jangkauan layanan yang menyeluruh yang dipersembahkan untuk kepuasan konsumen.
+                            {settings?.description}
                         </p>
                         <div className="mt-2 text-sm text-slate-700">
-                            <span className="mr-2">📍</span> Jalan Raya Singaraja – Seririt, Desa Penarom, Buleleng, Bali
+                            <span className="mr-2">📍</span> {settings?.address}
                         </div>
                     </div>
                     <div>
                         <h3 className="text-base font-semibold">Beranda</h3>
                         <ul className="mt-2 space-y-1 text-sm">
-                            <li><a href="#properti" className="hover:text-emerald-600">Investment</a></li>
-                            <li><a href="#properti" className="hover:text-emerald-600">Crowdfunding</a></li>
-                            <li><a href="#properti" className="hover:text-emerald-600">Lelang/Cessie</a></li>
-                            <li><a href="#properti" className="hover:text-emerald-600">Property for Sale</a></li>
-                            <li><a href="#fitur" className="hover:text-emerald-600">How to Invest</a></li>
-                            <li><a href="#properti" className="hover:text-emerald-600">Development</a></li>
-                            <li><a href="#properti" className="hover:text-emerald-600">ROI Simulator</a></li>
+                            <li><a href="/investments" className="hover:text-emerald-600">Investment</a></li>
+                            <li><a href="/crowdfunding" className="hover:text-emerald-600">Crowdfunding</a></li>
+                            <li><a href="/auctions" className="hover:text-emerald-600">Lelang/Cessie</a></li>
+                            <li><a href="#property" className="hover:text-emerald-600">Property for Sale</a></li>
+                            <li><a href="/how-to-invest" className="hover:text-emerald-600">How to Invest</a></li>
                         </ul>
                     </div>
                     <div>
                         <h3 className="text-base font-semibold">Hubungi Kami</h3>
                         <ul className="mt-2 space-y-1 text-sm">
-                            <li className="flex items-center gap-2"><span className="text-slate-500">📞</span><a href="tel:+62818580891" className="hover:text-emerald-600">+62818580891</a></li>
+                            <li className="flex items-center gap-2"><span className="text-slate-500">📞</span><a href={`tel:+${settings?.whatsapp}`} className="hover:text-emerald-600">+{settings?.whatsapp}</a></li>
                             <li className="flex items-center gap-2"><span className="text-slate-500">✉️</span><a href="mailto:umahbalimesari@gmail.com" className="hover:text-emerald-600">umahbalimesari@gmail.com</a></li>
                         </ul>
                         <div className="mt-4 flex items-center gap-3">
@@ -114,10 +112,7 @@ export default function Footer({ laravelVersion, phpVersion }) {
             <div className="border-t border-slate-200 bg-slate-50">
                 <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-4 flex flex-col sm:flex-row items-center justify-between gap-2 text-slate-600">
                     <p className="text-[0.8rem]">
-                        © {new Date().getFullYear()} InvestProperti
-                    </p>
-                    <p className="text-[0.8rem]">
-                        Laravel v{laravelVersion} · PHP v{phpVersion}
+                        © {new Date().getFullYear()} {settings?.site_name || 'Umah Bali Mesari'}. All rights reserved.
                     </p>
                 </div>
             </div>

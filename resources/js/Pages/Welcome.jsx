@@ -6,7 +6,7 @@ import DeveloperProjects from '@/Components/Welcome/DeveloperProjects';
 import OurLocation from '@/Components/Welcome/OurLocation';
 import Footer from '@/Components/Welcome/Footer';
 
-export default function Welcome({ auth, villa, laravelVersion, phpVersion }) {
+export default function Welcome({ villa, laravelVersion, phpVersion, settings }) {
     return (
         <>
             <Head title="InvestProperti">
@@ -25,7 +25,7 @@ export default function Welcome({ auth, villa, laravelVersion, phpVersion }) {
                         <OurLocation />
                     </main>
 
-                    <Footer laravelVersion={laravelVersion} phpVersion={phpVersion} />
+                    <Footer settings={settings} laravelVersion={laravelVersion} phpVersion={phpVersion} />
                 </div>
             </div>
         </>

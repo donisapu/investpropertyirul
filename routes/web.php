@@ -16,6 +16,7 @@ use App\Http\Controllers\PublicCrowdfundingController;
 use App\Http\Controllers\AuctionController;
 use App\Http\Controllers\PublicProjectController;
 use App\Http\Controllers\PublicPropertyController;
+use App\Models\WebsiteSetting;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -30,7 +31,9 @@ use Inertia\Inertia;
 |
 */
 Route::get('/', function () {
+    $settings = WebsiteSetting::getSettings();
     return Inertia::render('Welcome', [
+        'settings' => $settings,
         'villa' => \App\Models\Properties::where('property_name', 'Nusa Dua Ocean Breeze')->first(),
         'laravelVersion' => Illuminate\Foundation\Application::VERSION,
         'phpVersion' => PHP_VERSION,
@@ -52,7 +55,8 @@ Route::get('/auctions', [AuctionController::class, 'index'])->name('auctions.ind
 Route::get('/auctions/{id}', [AuctionController::class, 'show'])->name('auctions.show');
 
 Route::get('/how-to-invest', function () {
-    return Inertia::render('HowToInvest');
+    $settings = WebsiteSetting::getSettings();
+    return Inertia::render('HowToInvest', ['settings' => $settings]);
 })->name('how-to-invest');
 
 Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin'])->group(function () {
