@@ -51,6 +51,10 @@ Route::get('/crowdfunding/{id}', [PublicCrowdfundingController::class, 'show'])-
 Route::get('/auctions', [AuctionController::class, 'index'])->name('auctions.index');
 Route::get('/auctions/{id}', [AuctionController::class, 'show'])->name('auctions.show');
 
+Route::get('/how-to-invest', function () {
+    return Inertia::render('HowToInvest');
+})->name('how-to-invest');
+
 Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin'])->group(function () {
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
     // Properties Master
