@@ -12,6 +12,7 @@ use App\Http\Controllers\Admin\VillaController;
 use App\Http\Controllers\Admin\WebsiteSettingController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PublicInvestmentController;
+use App\Http\Controllers\PublicPropertyConsignmentController;
 use App\Http\Controllers\PublicCrowdfundingController;
 use App\Http\Controllers\AuctionController;
 use App\Http\Controllers\PublicProjectController;
@@ -43,10 +44,13 @@ Route::get('/', function () {
 // Public villa detail (example)
 Route::get('/villa/{slug}', [VillaController::class, 'show'])->name('villa.show');
 
-Route::get('/properties/{property}', [PublicPropertyController::class, 'show'])->name('property.show');
+Route::get('/properties/{property}', [PublicPropertyController::class, 'show'])->name('property.show')->where('property', '[0-9]+');
 Route::get('/projects/{slug}', [PublicProjectController::class, 'show'])->name('project.show');
 Route::get('/investments', [PublicInvestmentController::class, 'index'])->name('investments.index');
-Route::get('/investments/{id}', [PublicInvestmentController::class, 'show'])->name('investments.show');
+Route::get('/investments/{id}', [PublicInvestmentController::class, 'show'])->name('investments.show')->where('id', '[0-9]+');
+
+Route::get('/property-for-sale', [PublicPropertyConsignmentController::class, 'index'])->name('property-for-sale.index');
+Route::get('/property-for-sale/{id}', [PublicPropertyConsignmentController::class, 'show'])->name('property-for-sale.show')->where('id', '[0-9]+');
 
 Route::get('/crowdfunding', [PublicCrowdfundingController::class, 'index'])->name('crowdfunding.index');
 Route::get('/crowdfunding/{id}', [PublicCrowdfundingController::class, 'show'])->name('crowdfunding.show');

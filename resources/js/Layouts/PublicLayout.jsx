@@ -63,7 +63,7 @@ export default function PublicLayout({ children }) {
                             <span className="text-slate-300">|</span>
                             <Link href="/crowdfunding" className={`${isActive('/crowdfunding') ? 'text-emerald-700 font-bold' : 'hover:text-emerald-600'} transition-colors`}>CROWDFUNDING</Link>
                             <span className="text-slate-300">|</span>
-                            <a href="#properti" className="hover:text-emerald-600 transition-colors">PROPERTY FOR SALE</a>
+                            <Link href="/property-for-sale" className={`${isActive('/property-for-sale') ? 'text-emerald-700 font-bold' : 'hover:text-emerald-600'} transition-colors`}>PROPERTY FOR SALE</Link>
                             <span className="text-slate-300">|</span>
                             <Link href="/auctions" className={`${isActive('/auctions') ? 'text-emerald-700 font-bold' : 'hover:text-emerald-600'} transition-colors`}>LELANG/CESSIE</Link>
                             <span className="text-slate-300">|</span>
@@ -106,7 +106,7 @@ export default function PublicLayout({ children }) {
                             <a href="/" className={`block rounded-md py-2 px-3 text-base font-medium ${isActive('/') ? 'text-emerald-700 bg-emerald-50' : 'text-slate-900 hover:bg-slate-50 hover:text-emerald-600'}`}>HOME</a>
                             <Link href="/investments" className={`block rounded-md py-2 px-3 text-base font-medium ${isActive('/investments') ? 'text-emerald-700 bg-emerald-50' : 'text-slate-900 hover:bg-slate-50 hover:text-emerald-600'}`}>INVESTMENT</Link>
                             <Link href="/crowdfunding" className={`block rounded-md py-2 px-3 text-base font-medium ${isActive('/crowdfunding') ? 'text-emerald-700 bg-emerald-50' : 'text-slate-900 hover:bg-slate-50 hover:text-emerald-600'}`}>CROWDFUNDING</Link>
-                            <a href="#properti" className="block rounded-md py-2 px-3 text-base font-medium text-slate-900 hover:bg-slate-50 hover:text-emerald-600">PROPERTY FOR SALE</a>
+                            <Link href="/property-for-sale" className={`block rounded-md py-2 px-3 text-base font-medium ${isActive('/property-for-sale') ? 'text-emerald-700 bg-emerald-50' : 'text-slate-900 hover:bg-slate-50 hover:text-emerald-600'}`}>PROPERTY FOR SALE</Link>
                             <Link href="/auctions" className={`block rounded-md py-2 px-3 text-base font-medium ${isActive('/auctions') ? 'text-emerald-700 bg-emerald-50' : 'text-slate-900 hover:bg-slate-50 hover:text-emerald-600'}`}>LELANG/CESSIE</Link>
                             <Link href="/how-to-invest" className={`block rounded-md py-2 px-3 text-base font-medium ${isActive('/how-to-invest') ? 'text-emerald-700 bg-emerald-50' : 'text-slate-900 hover:bg-slate-50 hover:text-emerald-600'}`}>HOW TO INVEST</Link>
                             <a href="#properti" className="block rounded-md py-2 px-3 text-base font-medium text-slate-900 hover:bg-slate-50 hover:text-emerald-600">DEVELOPER</a>

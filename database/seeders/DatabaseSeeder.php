@@ -19,6 +19,7 @@ class DatabaseSeeder extends Seeder
             WebsiteSettingsSeeder::class,
             PropertySeeder::class,
             PropertyCrowdfundingSeeder::class,
+            PropertyConsignmentSeeder::class,
             PropertyAuctionSeeder::class,
             DeveloperSeeder::class,
         ]);
