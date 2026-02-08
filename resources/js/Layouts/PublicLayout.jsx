@@ -3,8 +3,12 @@ import { Link, usePage } from '@inertiajs/react';
 
 export default function PublicLayout({ children }) {
     const { auth } = usePage().props;
+    const { url } = usePage();
     const [isScrolled, setIsScrolled] = useState(false);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+    
+    // Helper to check active route
+    const isActive = (path) => url === path || (path !== '/' && url.startsWith(path));
     
     // Determine if we are on the home page
     const isHome = window.location.pathname === '/';
@@ -50,19 +54,17 @@ export default function PublicLayout({ children }) {
                                 (isScrolled || isMobileMenuOpen) ? 'text-slate-900' : 'text-white'
                             }`}
                         >
-                            <a href="/" className="hover:text-emerald-600 transition-colors">HOME</a>
+                            <a href="/" className={`${isActive('/') ? 'text-emerald-700 font-bold' : 'hover:text-emerald-600'} transition-colors`}>HOME</a>
                             <span className="text-slate-300">|</span>
-                            <Link href="/investments" className="hover:text-emerald-600 transition-colors">INVESTMENT</Link>
+                            <Link href="/investments" className={`${isActive('/investments') ? 'text-emerald-700 font-bold' : 'hover:text-emerald-600'} transition-colors`}>INVESTMENT</Link>
                             <span className="text-slate-300">|</span>
-                            <Link href="/crowdfunding" className="hover:text-emerald-600 transition-colors">CROWDFUNDING</Link>
+                            <Link href="/crowdfunding" className={`${isActive('/crowdfunding') ? 'text-emerald-700 font-bold' : 'hover:text-emerald-600'} transition-colors`}>CROWDFUNDING</Link>
                             <span className="text-slate-300">|</span>
                             <a href="#properti" className="hover:text-emerald-600 transition-colors">PROPERTY FOR SALE</a>
                             <span className="text-slate-300">|</span>
-                            <a href="#properti" className="hover:text-emerald-600 transition-colors">LELANG/CESSIE</a>
+                            <Link href="/auctions" className={`${isActive('/auctions') ? 'text-emerald-700 font-bold' : 'hover:text-emerald-600'} transition-colors`}>LELANG/CESSIE</Link>
                             <span className="text-slate-300">|</span>
                             <a href="#fitur" className="hover:text-emerald-600 transition-colors">HOW TO INVEST</a>
-                            <span className="text-slate-300">|</span>
-                            <a href="#properti" className="hover:text-emerald-600 transition-colors">DEVELOPER</a>
                             <span className="text-slate-300">|</span>
                             
                             {auth.user ? (
@@ -98,11 +100,11 @@ export default function PublicLayout({ children }) {
                 {isMobileMenuOpen && (
                     <div className="min-[900px]:hidden bg-white border-t border-slate-200">
                         <div className="space-y-1 px-4 py-6">
-                            <a href="/" className="block rounded-md py-2 px-3 text-base font-medium text-slate-900 hover:bg-slate-50 hover:text-emerald-600">HOME</a>
-                            <Link href="/investments" className="block rounded-md py-2 px-3 text-base font-medium text-slate-900 hover:bg-slate-50 hover:text-emerald-600">INVESTMENT</Link>
-                            <a href="#properti" className="block rounded-md py-2 px-3 text-base font-medium text-slate-900 hover:bg-slate-50 hover:text-emerald-600">CROWDFUNDING</a>
+                            <a href="/" className={`block rounded-md py-2 px-3 text-base font-medium ${isActive('/') ? 'text-emerald-700 bg-emerald-50' : 'text-slate-900 hover:bg-slate-50 hover:text-emerald-600'}`}>HOME</a>
+                            <Link href="/investments" className={`block rounded-md py-2 px-3 text-base font-medium ${isActive('/investments') ? 'text-emerald-700 bg-emerald-50' : 'text-slate-900 hover:bg-slate-50 hover:text-emerald-600'}`}>INVESTMENT</Link>
+                            <Link href="/crowdfunding" className={`block rounded-md py-2 px-3 text-base font-medium ${isActive('/crowdfunding') ? 'text-emerald-700 bg-emerald-50' : 'text-slate-900 hover:bg-slate-50 hover:text-emerald-600'}`}>CROWDFUNDING</Link>
                             <a href="#properti" className="block rounded-md py-2 px-3 text-base font-medium text-slate-900 hover:bg-slate-50 hover:text-emerald-600">PROPERTY FOR SALE</a>
-                            <a href="#properti" className="block rounded-md py-2 px-3 text-base font-medium text-slate-900 hover:bg-slate-50 hover:text-emerald-600">LELANG/CESSIE</a>
+                            <Link href="/auctions" className={`block rounded-md py-2 px-3 text-base font-medium ${isActive('/auctions') ? 'text-emerald-700 bg-emerald-50' : 'text-slate-900 hover:bg-slate-50 hover:text-emerald-600'}`}>LELANG/CESSIE</Link>
                             <a href="#fitur" className="block rounded-md py-2 px-3 text-base font-medium text-slate-900 hover:bg-slate-50 hover:text-emerald-600">HOW TO INVEST</a>
                             <a href="#properti" className="block rounded-md py-2 px-3 text-base font-medium text-slate-900 hover:bg-slate-50 hover:text-emerald-600">DEVELOPER</a>
                             

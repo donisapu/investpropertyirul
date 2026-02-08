@@ -13,9 +13,11 @@ use App\Http\Controllers\Admin\WebsiteSettingController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PublicInvestmentController;
 use App\Http\Controllers\PublicCrowdfundingController;
+use App\Http\Controllers\AuctionController;
 use App\Http\Controllers\PublicProjectController;
 use App\Http\Controllers\PublicPropertyController;
 use Illuminate\Support\Facades\Route;
+use Inertia\Inertia;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,7 +30,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 Route::get('/', function () {
-    return view('welcome');
+    return Inertia::render('Welcome', [
+        'villa' => \App\Models\Properties::where('property_name', 'Nusa Dua Ocean Breeze')->first(),
+        'laravelVersion' => Illuminate\Foundation\Application::VERSION,
+        'phpVersion' => PHP_VERSION,
+    ]);
 });
 
 // Public villa detail (example)
@@ -41,6 +47,9 @@ Route::get('/investments/{id}', [PublicInvestmentController::class, 'show'])->na
 
 Route::get('/crowdfunding', [PublicCrowdfundingController::class, 'index'])->name('crowdfunding.index');
 Route::get('/crowdfunding/{id}', [PublicCrowdfundingController::class, 'show'])->name('crowdfunding.show');
+
+Route::get('/auctions', [AuctionController::class, 'index'])->name('auctions.index');
+Route::get('/auctions/{id}', [AuctionController::class, 'show'])->name('auctions.show');
 
 Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin'])->group(function () {
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
