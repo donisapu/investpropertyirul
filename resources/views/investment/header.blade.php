@@ -1,5 +1,5 @@
-<header x-data="{ open: false, scrolled: {{ request()->is('/') ? 'false' : 'true' }} }" x-init="window.addEventListener('scroll', () => { scrolled = {{ request()->is('/') ? 'window.scrollY > 40' : 'true' }} })" class="sticky top-0 z-50 transition-colors duration-300"
-    :class="(scrolled || open) ? 'bg-white border-b border-slate-200 shadow-sm' : 'bg-slate-700/20 border-b border-transparent'">
+<header x-data="{ open: false, scrolled: false }" x-init="window.addEventListener('scroll', () => { scrolled = window.scrollY > 40 })" class="sticky top-0 z-50 transition-colors duration-300"
+    :class="(scrolled || open) ? 'bg-white border-b border-slate-200 shadow-sm' : 'bg-slate-700/15 border-b border-transparent'">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div class="flex h-20 items-center justify-between">
             <!-- Logo -->
@@ -13,13 +13,11 @@
             <!-- Desktop Menu -->
             <nav class="hidden min-[900px]:flex items-center gap-2 xl:gap-3 text-[0.7rem] xl:text-sm font-medium uppercase tracking-wide"
                 :class="(scrolled || open) ? 'text-slate-900' : 'text-white'">
-                <a href="{{ url('/') }}" class="hover:text-emerald-600 transition-colors">HOME</a>
+                <a href="#top" class="hover:text-emerald-600 transition-colors">HOME</a>
                 <span class="text-slate-300">|</span>
-                <a href="{{ route('investments.index') }}"
-                    class="hover:text-emerald-600 transition-colors">INVESTMENT</a>
+                <a href="#properti" class="hover:text-emerald-600 transition-colors">INVESTMENT</a>
                 <span class="text-slate-300">|</span>
-                <a href="{{ route('crowdfunding.index') }}"
-                    class="hover:text-emerald-600 transition-colors">CROWDFUNDING</a>
+                <a href="#properti" class="hover:text-emerald-600 transition-colors">CROWDFUNDING</a>
                 <span class="text-slate-300">|</span>
                 <a href="#properti" class="hover:text-emerald-600 transition-colors">PROPERTY FOR SALE</a>
                 <span class="text-slate-300">|</span>
@@ -42,26 +40,14 @@
 
                         <div x-show="accountOpen" x-transition style="display: none;"
                             class="absolute right-0 mt-3 w-48 bg-white rounded-lg shadow-lg border border-slate-200 py-2 z-50">
-                            <a href="{{ route('user.dashboard') }}"
+                            <a href="{{ route('user.profile') }}"
                                 class="block px-4 py-2 text-sm text-slate-700 hover:bg-emerald-50 hover:text-emerald-600">
-                                Dashboard
+                                My Profile
                             </a>
 
                             <a href="{{ route('user.portfolio') }}"
                                 class="block px-4 py-2 text-sm text-slate-700 hover:bg-emerald-50 hover:text-emerald-600">
                                 My Portfolio
-                            </a>
-                            <a href="{{ route('user.bid') }}"
-                                class="block px-4 py-2 text-sm text-slate-700 hover:bg-emerald-50 hover:text-emerald-600">
-                                My Bids
-                            </a>
-                            <a href="{{ route('user.transaction') }}"
-                                class="block px-4 py-2 text-sm text-slate-700 hover:bg-emerald-50 hover:text-emerald-600">
-                                Transactions
-                            </a>
-                            <a href="{{ route('user.portfolio') }}"
-                                class="block px-4 py-2 text-sm text-slate-700 hover:bg-emerald-50 hover:text-emerald-600">
-                                Account Setting
                             </a>
 
                             <form method="POST" action="{{ route('logout') }}">
@@ -74,7 +60,6 @@
                         </div>
                     </div>
                 @endauth
-
             </nav>
 
             <!-- Mobile Menu Button -->
@@ -103,11 +88,11 @@
     <div x-show="open" style="display: none;" class="min-[900px]:hidden bg-white border-t border-slate-200"
         id="mobile-menu">
         <div class="space-y-1 px-4 py-6">
-            <a href="{{ url('/') }}"
+            <a href="#top"
                 class="block rounded-md py-2 px-3 text-base font-medium text-slate-900 hover:bg-slate-50 hover:text-emerald-600">HOME</a>
-            <a href="{{ route('investments.index') }}"
+            <a href="{{ route('investment') }}"
                 class="block rounded-md py-2 px-3 text-base font-medium text-slate-900 hover:bg-slate-50 hover:text-emerald-600">INVESTMENT</a>
-            <a href="{{ route('crowdfunding.index') }}"
+            <a href="#properti"
                 class="block rounded-md py-2 px-3 text-base font-medium text-slate-900 hover:bg-slate-50 hover:text-emerald-600">CROWDFUNDING</a>
             <a href="#properti"
                 class="block rounded-md py-2 px-3 text-base font-medium text-slate-900 hover:bg-slate-50 hover:text-emerald-600">PROPERTY
@@ -122,30 +107,19 @@
 
             <div class="mt-4 border-t border-slate-100 pt-4">
                 @auth
-                    <div x-data="{ mobileAccount: false }">
-                        <button @click="mobileAccount = !mobileAccount"
-                            class="w-full text-left rounded-md py-2 px-3 text-base font-bold text-emerald-700 hover:bg-emerald-50">
-                            MY ACCOUNT
-                        </button>
-
-                        <div x-show="mobileAccount" class="ml-4 mt-2 space-y-1">
-                            <a href="{{ route('user.profile') }}"
-                                class="block py-1 text-sm text-slate-700 hover:text-emerald-600">
-                                My Profile
-                            </a>
-                            <a href="{{ route('user.portfolio') }}"
-                                class="block py-1 text-sm text-slate-700 hover:text-emerald-600">
-                                My Portfolio
-                            </a>
-
-                            <form method="POST" action="{{ route('logout') }}">
-                                @csrf
-                                <button type="submit" class="block py-1 text-sm text-red-600">
-                                    Logout
-                                </button>
-                            </form>
-                        </div>
-                    </div>
+                    <a href="{{ url('/dashboard') }}"
+                        class="block rounded-md py-2 px-3 text-base font-bold text-emerald-700 hover:bg-emerald-50">MY
+                        ACCOUNT</a>
+                @else
+                    @if (Route::has('login'))
+                        <a href="{{ route('login') }}"
+                            class="block rounded-md py-2 px-3 text-base font-bold text-slate-900 hover:bg-slate-50 hover:text-emerald-600">MY
+                            ACCOUNT</a>
+                    @else
+                        <a href="#account"
+                            class="block rounded-md py-2 px-3 text-base font-bold text-slate-900 hover:bg-slate-50 hover:text-emerald-600">MY
+                            ACCOUNT</a>
+                    @endif
                 @endauth
             </div>
         </div>

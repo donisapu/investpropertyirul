@@ -2,13 +2,14 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Models\Role;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
-class User extends Authenticatable
+class User extends Authenticatable implements MustVerifyEmail
 {
     use HasApiTokens, HasFactory, Notifiable;
 
@@ -51,8 +52,26 @@ class User extends Authenticatable
         return $this->belongsToMany(Role::class, 'user_roles');
     }
 
+    public function isProfileComplete(): bool
+    {
+        return !empty($this->name) && !empty($this->phone);
+    }
+
     public function hasRole(string $role): bool
     {
         return $this->roles()->whereRaw('LOWER(name) = ?', [strtolower($role)])->exists();
+    }
+
+    public function redirectTo()
+    {
+        if (!$this->isProfileComplete()) {
+            return route('user.complete.profile');
+        }
+
+        if ($this->hasRole('admin')) {
+            return route('admin.dashboard');
+        }
+
+        return route('user.dashboard');
     }
 }

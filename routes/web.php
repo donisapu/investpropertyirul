@@ -10,16 +10,23 @@ use App\Http\Controllers\Admin\PropertyCrowdfundingController;
 use App\Http\Controllers\Admin\PropertyInvestmentController;
 use App\Http\Controllers\Admin\VillaController;
 use App\Http\Controllers\Admin\WebsiteSettingController;
-use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PublicInvestmentController;
 use App\Http\Controllers\PublicPropertyConsignmentController;
 use App\Http\Controllers\PublicCrowdfundingController;
 use App\Http\Controllers\AuctionController;
+use App\Http\Controllers\Auth\RegisteredUserController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PublicProjectController;
 use App\Http\Controllers\PublicPropertyController;
+use App\Http\Controllers\User\BidController;
+use App\Http\Controllers\User\DashboardController as UserDashboardController;
+use App\Http\Controllers\User\PortfolioController;
+use App\Http\Controllers\User\TransactionController;
 use App\Models\WebsiteSetting;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
+use App\Models\User;
 
 /*
 |--------------------------------------------------------------------------
@@ -31,6 +38,14 @@ use Inertia\Inertia;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+
+Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
+    $request->fulfill();
+
+    $user = $request->user();
+
+    return redirect($user->redirectTo());
+})->middleware(['auth', 'signed'])->name('verification.verify');
 Route::get('/', function () {
     $settings = WebsiteSetting::getSettings();
     return Inertia::render('Welcome', [
@@ -65,7 +80,7 @@ Route::get('/how-to-invest', function () {
 
 Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin'])->group(function () {
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
-    // Properties Master
+    // Property
     Route::get('properties', [PropertiesController::class, 'index'])->name('properties');
     Route::get('properties/data', [PropertiesController::class, 'data'])->name('properties.data');
     Route::get('properties/edit/{id}', [PropertiesController::class, 'edit'])->name('properties.edit');
@@ -144,10 +159,17 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin'])->grou
     Route::put('/website-settings', [WebsiteSettingController::class, 'update'])->name('website-settings.update');
 });
 
-Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+Route::prefix('user')->name('user.')->middleware(['auth', 'role:user', 'verified'])->group(function () {
+    Route::get('/email-verification', [RegisteredUserController::class, 'email'])->name('email.verification');
+    Route::get('/email-verify', [RegisteredUserController::class, 'email_verify'])->name('email.verify');
+    Route::get('/complete-profile', [RegisteredUserController::class, 'profile'])->name('complete.profile');
+    Route::post('/update-profile',[RegisteredUserController::class,'profile_update'])->name('update.profile');
+    Route::get('/user-profile',[ProfileController::class,'index'])->name('profile');
+    // Dashboard
+    Route::get('/dashboard', [UserDashboardController::class, 'index'])->name('dashboard');
+    Route::get('/portfolio', [PortfolioController::class, 'index'])->name('portfolio');
+    Route::get('/bid',[BidController::class,'index'])->name('bid');
+    Route::get('/transaction',[TransactionController::class,'index'])->name('transaction');
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

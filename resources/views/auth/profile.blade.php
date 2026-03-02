@@ -61,46 +61,48 @@
                         </div>
                         <!-- /Logo -->
                         <h4 class="mb-2">Welcome</h4>
-                        <p class="mb-4">Login to your Account</p>
+                        <p class="mb-4">Register new account</p>
 
-                        <form id="formAuthentication" class="mb-3" action="{{ route('login') }}" method="POST">
+                        <form id="formAuthentication" class="mb-3" action="{{ route('user.update.profile') }}"
+                            method="POST">
                             @csrf
                             <div class="mb-3">
-                                <label for="email" class="form-label">Email</label>
-                                <input type="text" class="form-control" id="email" name="email"
-                                    placeholder="Enter your email" autofocus />
-                            </div>
-                            <div class="mb-3 form-password-toggle">
-                                <div class="d-flex justify-content-between">
-                                    <label class="form-label" for="password">Password</label>
-                                    <a href="auth-forgot-password-basic.html">
-                                        <small>Forgot Password?</small>
-                                    </a>
-                                </div>
-                                <div class="input-group input-group-merge">
-                                    <input type="password" id="password" class="form-control" name="password"
-                                        placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
-                                        aria-describedby="password" />
-                                    <span class="input-group-text cursor-pointer"><i class="bx bx-hide"></i></span>
-                                </div>
+                                <label for="name" class="form-label">Full Name</label>
+                                <input type="text" class="form-control" id="name" name="name"
+                                    placeholder="Enter your full name" autofocus />
                             </div>
                             <div class="mb-3">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" id="remember-me" />
-                                    <label class="form-check-label" for="remember-me"> Remember Me </label>
-                                </div>
+                                <label for="phone" class="form-label">Phone Number</label>
+                                <input type="text" class="form-control" name="phone" id="phone"
+                                    placeholder="Enter your phone number">
                             </div>
                             <div class="mb-3">
-                                <button class="btn btn-primary d-grid w-100" type="submit">Login</button>
+                                <label for="mother_name" class="form-label">Mother Name</label>
+                                <input type="text" class="form-control" name="mother_name" id="mother_name"
+                                    placeholder="Enter your mother name">
+                            </div>
+                            <div class="mb-3">
+                                <label for="birth_date" class="form-label">Birth Date</label>
+                                <input type="date" class="form-control" name="birth_date" id="birth_date">
+                            </div>
+                            <div class="mb-3">
+                                <label for="gender" class="form-label">Gender</label>
+                                <select name="gender" class="form-control" id="gender">
+                                    <option value="male">Male</option>
+                                    <option value="female">Female</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="marital_status" class="form-label">Marital Status</label>
+                                <select name="marital_status" class="form-control" id="marital_status">
+                                    <option value="unmarried">Unmarried</option>
+                                    <option value="married">Married</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <button class="btn btn-primary d-grid w-100" type="submit">Save</button>
                             </div>
                         </form>
-
-                        <p class="text-center">
-                            <span>New on our platform?</span>
-                            <a href="{{ route('register') }}">
-                                <span>Create an account</span>
-                            </a>
-                        </p>
                     </div>
                 </div>
                 <!-- /Register -->

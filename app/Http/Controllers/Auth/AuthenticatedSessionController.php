@@ -17,7 +17,7 @@ class AuthenticatedSessionController extends Controller
      */
     public function create(): View
     {
-        return view('pages.auth.admin');
+        return view('pages.auth.admin', ['title' => 'Login']);
     }
 
     /**
@@ -31,11 +31,8 @@ class AuthenticatedSessionController extends Controller
         /** @var User $user */
         $user = auth()->user();
 
-        if ($user->hasRole('admin')) {
-            return redirect()->intended(route('admin.dashboard'));
-        }
+        return redirect($user->redirectTo());
 
-        return redirect()->intended('/dashboard');
     }
 
     /**

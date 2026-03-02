@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Models\UserRole;
+use App\Notifications\SendVerificationNotification;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
@@ -20,7 +22,7 @@ class RegisteredUserController extends Controller
      */
     public function create(): View
     {
-        return view('auth.register');
+        return view('auth.register', ['title' => 'Register']);
     }
 
     /**
@@ -31,21 +33,46 @@ class RegisteredUserController extends Controller
     public function store(Request $request): RedirectResponse
     {
         $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:' . User::class],
+            'password' => ['required', 'confirmed', 'min:8'],
         ]);
 
         $user = User::create([
-            'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);
 
-        event(new Registered($user));
+        UserRole::create([
+            'user_id' => $user->id,
+            'role_id' => 2,
+        ]);
 
+        event(new Registered($user));
         Auth::login($user);
 
-        return redirect(RouteServiceProvider::HOME);
+        return redirect()->route('verification.notice');
+    }
+
+    public function email()
+    {
+        return view('auth.verify-email');
+    }
+
+    public function profile()
+    {
+        return view('auth.profile',['title'=> 'Profile Completion']);
+    }
+
+    public function profile_update(Request $request)
+    {
+        $user = User::findOrFail(Auth::user()->id);
+        $user->name = $request->name;
+        $user->phone = $request->phone;
+        $user->mother_name = $request->mother_name;
+        $user->gender = $request->gender;
+        $user->marital_status = $request->marital_status;
+        $user->birth_date = $request->birth_date;
+        $user->save();
+        return redirect()->route('user.dashboard');
     }
 }
