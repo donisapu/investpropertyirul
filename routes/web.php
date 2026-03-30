@@ -20,6 +20,7 @@ use App\Http\Controllers\PublicProjectController;
 use App\Http\Controllers\PublicPropertyController;
 use App\Http\Controllers\User\BidController;
 use App\Http\Controllers\User\DashboardController as UserDashboardController;
+use App\Http\Controllers\user\PaymentController;
 use App\Http\Controllers\User\PortfolioController;
 use App\Http\Controllers\User\TransactionController;
 use App\Models\WebsiteSetting;
@@ -63,12 +64,14 @@ Route::get('/properties/{property}', [PublicPropertyController::class, 'show'])-
 Route::get('/projects/{slug}', [PublicProjectController::class, 'show'])->name('project.show');
 Route::get('/investments', [PublicInvestmentController::class, 'index'])->name('investments.index');
 Route::get('/investments/{id}', [PublicInvestmentController::class, 'show'])->name('investments.show')->where('id', '[0-9]+');
+Route::get('/investments/purchase/{id}', [PublicInvestmentController::class, 'purchase'])->name('investments.purchase')->where('id', '[0-9]+');
 
 Route::get('/property-for-sale', [PublicPropertyConsignmentController::class, 'index'])->name('property-for-sale.index');
 Route::get('/property-for-sale/{id}', [PublicPropertyConsignmentController::class, 'show'])->name('property-for-sale.show')->where('id', '[0-9]+');
 
 Route::get('/crowdfunding', [PublicCrowdfundingController::class, 'index'])->name('crowdfunding.index');
 Route::get('/crowdfunding/{id}', [PublicCrowdfundingController::class, 'show'])->name('crowdfunding.show');
+Route::get('/crowdfunding/purchase/{id}', [PublicCrowdfundingController::class, 'purchase'])->name('crowdfunding.purchase');
 
 Route::get('/auctions', [AuctionController::class, 'index'])->name('auctions.index');
 Route::get('/auctions/{id}', [AuctionController::class, 'show'])->name('auctions.show');
@@ -78,8 +81,12 @@ Route::get('/how-to-invest', function () {
     return Inertia::render('HowToInvest', ['settings' => $settings]);
 })->name('how-to-invest');
 
+Route::post('/xendit/webhook', [PaymentController::class, 'callback']);
+
 Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin'])->group(function () {
+    // Dashboard
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
     // Property
     Route::get('properties', [PropertiesController::class, 'index'])->name('properties');
     Route::get('properties/data', [PropertiesController::class, 'data'])->name('properties.data');
@@ -92,6 +99,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin'])->grou
     Route::delete('properties/destroy/{id}', [PropertiesController::class, 'destroy'])->name('properties.destroy');
     Route::delete('properties-image/{id}', [PropertiesController::class, 'deleteImage']);
     Route::delete('properties-document/{id}', [PropertiesController::class, 'deleteDocument']);
+
     // Investment
     Route::get('investment-properties', [PropertyInvestmentController::class, 'index'])->name('investment-properties');
     Route::get('investment-properties/data', [PropertyInvestmentController::class, 'data'])->name('investment-properties.data');
@@ -101,6 +109,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin'])->grou
     Route::post('investment-properties/store', [PropertyInvestmentController::class, 'store'])->name('investment-properties.store');
     Route::post('investment-properties/update/{id}', [PropertyInvestmentController::class, 'update'])->name('investment-properties.update');
     Route::delete('investment-properties/destroy/{id}', [PropertyInvestmentController::class, 'destroy'])->name('investment-properties.destroy');
+
     // Consigntment
     Route::get('consignment-properties', [PropertyConsignmentController::class, 'index'])->name('consignment-properties');
     Route::get('consignment-properties/data', [PropertyConsignmentController::class, 'data'])->name('consignment-properties.data');
@@ -110,6 +119,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin'])->grou
     Route::post('consignment-properties/store', [PropertyConsignmentController::class, 'store'])->name('consignment-properties.store');
     Route::post('consignment-properties/update/{id}', [PropertyConsignmentController::class, 'update'])->name('consignment-properties.update');
     Route::delete('consignment-properties/destroy/{id}', [PropertyConsignmentController::class, 'destroy'])->name('consignment-properties.destroy');
+
     // Crowdfunding
     Route::get('crowdfunding-properties', [PropertyCrowdfundingController::class, 'index'])->name('crowdfunding-properties');
     Route::get('crowdfunding-properties/data', [PropertyCrowdfundingController::class, 'data'])->name('crowdfunding-properties.data');
@@ -119,6 +129,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin'])->grou
     Route::post('crowdfunding-properties/store', [PropertyCrowdfundingController::class, 'store'])->name('crowdfunding-properties.store');
     Route::post('crowdfunding-properties/update/{id}', [PropertyCrowdfundingController::class, 'update'])->name('crowdfunding-properties.update');
     Route::delete('crowdfunding-properties/destroy/{id}', [PropertyCrowdfundingController::class, 'destroy'])->name('crowdfunding-properties.destroy');
+
     // Auction
     Route::get('auction-properties', [PropertyAuctionController::class, 'index'])->name('auction-properties');
     Route::get('auction-properties/data', [PropertyAuctionController::class, 'data'])->name('auction-properties.data');
@@ -160,16 +171,22 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin'])->grou
 });
 
 Route::prefix('user')->name('user.')->middleware(['auth', 'role:user', 'verified'])->group(function () {
+    // Completion
     Route::get('/email-verification', [RegisteredUserController::class, 'email'])->name('email.verification');
     Route::get('/email-verify', [RegisteredUserController::class, 'email_verify'])->name('email.verify');
     Route::get('/complete-profile', [RegisteredUserController::class, 'profile'])->name('complete.profile');
-    Route::post('/update-profile',[RegisteredUserController::class,'profile_update'])->name('update.profile');
-    Route::get('/user-profile',[ProfileController::class,'index'])->name('profile');
+    Route::post('/update-profile', [RegisteredUserController::class, 'profile_update'])->name('update.profile');
+    Route::get('/user-profile', [ProfileController::class, 'index'])->name('profile');
+
     // Dashboard
     Route::get('/dashboard', [UserDashboardController::class, 'index'])->name('dashboard');
     Route::get('/portfolio', [PortfolioController::class, 'index'])->name('portfolio');
-    Route::get('/bid',[BidController::class,'index'])->name('bid');
-    Route::get('/transaction',[TransactionController::class,'index'])->name('transaction');
+    Route::get('/bid', [BidController::class, 'index'])->name('bid');
+    Route::get('/transaction', [TransactionController::class, 'index'])->name('transaction');
+
+    // Payment
+    Route::post('payment/investment/{id}', [PaymentController::class, 'payInvestment'])->name('payment.investment');
 });
+
 
 require __DIR__ . '/auth.php';

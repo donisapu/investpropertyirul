@@ -17,8 +17,11 @@ return new class extends Migration
             $table->decimal('funding_goal', 16, 2);
             $table->decimal('min_contribution', 16, 2);
             $table->decimal('estimated_roi', 16, 2);
+            $table->decimal('collected_amount', 16, 2);
             $table->integer('tenor');
-            $table->enum('status', ['draft', 'open', 'success', 'inactive']);
+            $table->enum('status', ['Draft', 'Open', 'Funded', 'Failed', 'Cancelled']);
+            $table->date('start_date')->nullable();
+            $table->date('end_date')->nullable();
             $table->timestamps();
         });
     }

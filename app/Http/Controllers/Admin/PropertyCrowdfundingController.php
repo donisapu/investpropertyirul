@@ -57,6 +57,9 @@ class PropertyCrowdfundingController extends AdminController
                 'estimated_roi',
                 'tenor',
                 'status',
+                'start_date',
+                'end_date',
+                'collected_amount'
             ]));
         });
 

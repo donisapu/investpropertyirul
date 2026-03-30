@@ -17,6 +17,8 @@ class PropertyCrowdfunding extends Model
         'estimated_roi',
         'tenor',
         'status',
+        'start_date',
+        'end_date'
     ];
 
     public function property()

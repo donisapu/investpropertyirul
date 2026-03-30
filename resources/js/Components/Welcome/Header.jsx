@@ -173,7 +173,7 @@ export default function Header() {
                                                 as="button"
                                                 className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50"
                                             >
-                                                Logout
+                                                Logouts
                                             </a>
                                         </div>
                                     </div>
@@ -321,14 +321,17 @@ export default function Header() {
                                                 My Portfolio
                                             </a>
                                             <div className="border-t border-slate-100 mt-1">
-                                                <a
-                                                    href={route("logout")}
-                                                    method="post"
-                                                    as="button"
-                                                    className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50"
+                                                <form
+                                                    method="POST"
+                                                    action={route("logout")}
                                                 >
-                                                    Logout
-                                                </a>
+                                                    <button
+                                                        type="submit"
+                                                        className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50"
+                                                    >
+                                                        Logout
+                                                    </button>
+                                                </form>
                                             </div>
                                         </div>
                                     )}

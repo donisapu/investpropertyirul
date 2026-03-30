@@ -22,8 +22,8 @@
                 </div>
                 <div class="mb-3">
                     <label for="" class="form-label">Price Per Lot</label>
-                    <input type="number" class="form-control" name="price_perlot" placeholder="Price Per Lot"
-                        id="" @if ($btn == 'edit') value="{{ $data->price_perlot }}" @endif>
+                    <input type="number" class="form-control" name="price_per_lot" placeholder="Price Per Lot"
+                        id="" @if ($btn == 'edit') value="{{ $data->price_per_lot }}" @endif>
                 </div>
                 <div class="mb-3">
                     <div class="row">
@@ -70,7 +70,7 @@
                     <select name="status" class="form-control" id="">
                         <option value="Draft" @if ($btn == 'edit' && $data->status == 'Draft') selected @endif>Draft</option>
                         <option value="Open" @if ($btn == 'edit' && $data->status == 'Open') selected @endif>Open</option>
-                        <option value="Closed" @if ($btn == 'edit' && $data->status == 'Closed') selected @endif>Closed</option>
+                        <option value="FullyFunded" @if ($btn == 'edit' && $data->status == 'FullyFunded') selected @endif>FullyFunded</option>
                         <option value="Running" @if ($btn == 'edit' && $data->status == 'Running') selected @endif>Running</option>
                         <option value="Finished" @if ($btn == 'edit' && $data->status == 'Finished') selected @endif>Finished</option>
                     </select>

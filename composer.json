@@ -12,6 +12,7 @@
         "laravel/sanctum": "^3.3",
         "laravel/tinker": "^2.8",
         "tightenco/ziggy": "^2.6",
+        "xendit/xendit-php": "^7.0",
         "yajra/laravel-datatables-oracle": "^10.11"
     },
     "require-dev": {

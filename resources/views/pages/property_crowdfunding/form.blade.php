@@ -34,14 +34,26 @@
                     <label for="">Tenor</label>
                     <input type="text" class="form-control" name="tenor" placeholder="Tenor" id=""
                         @if ($btn == 'edit') value="{{ $data->tenor }}" @endif>
+                    <input type="hidden" name="collected_amount" value="0" id="">
+                </div>
+                <div class="mb-3">
+                    <label for="">Start Date</label>
+                    <input type="date" class="form-control" name="start_date" placeholder="Estimated ROI"
+                        id="" @if ($btn == 'edit') value="{{ $data->start_date }}" @endif>
+                </div>
+                <div class="mb-3">
+                    <label for="">End Date</label>
+                    <input type="date" class="form-control" name="end_date" placeholder="Estimated ROI"
+                        id="" @if ($btn == 'edit') value="{{ $data->end_date }}" @endif>
                 </div>
                 <div class="mb-3">
                     <label for="" class="form-label">Status</label>
                     <select name="status" class="form-control" id="">
-                        <option value="draft" @if ($btn == 'edit' && $data->status == 'draft') selected @endif>Draft</option>
-                        <option value="open" @if ($btn == 'edit' && $data->status == 'open') selected @endif>Open</option>
-                        <option value="success" @if ($btn == 'edit' && $data->status == 'success') selected @endif>Success</option>
-                        <option value="inactive" @if ($btn == 'edit' && $data->status == 'inactive') selected @endif>Invactive</option>
+                        <option value="Draft" @if ($btn == 'edit' && $data->status == 'Draft') selected @endif>Draft</option>
+                        <option value="Open" @if ($btn == 'edit' && $data->status == 'open') selected @endif>Open</option>
+                        <option value="Funded" @if ($btn == 'edit' && $data->status == 'Funded') selected @endif>Funded</option>
+                        <option value="Failed" @if ($btn == 'edit' && $data->status == 'Failed') selected @endif>Failed</option>
+                        <option value="Cancelled" @if ($btn == 'edit' && $data->status == 'Cancelled') selected @endif>Cancelled</option>
                     </select>
                 </div>
             </div>

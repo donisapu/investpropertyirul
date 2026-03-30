@@ -53,7 +53,7 @@ class PropertyInvestmentController extends AdminController
             $investment = PropertyInvestment::create($request->only([
                 'property_id',
                 'property_value',
-                'price_perlot',
+                'price_per_lot',
                 'total_lot',
                 'sold_lot',
                 'min_lot_size',
