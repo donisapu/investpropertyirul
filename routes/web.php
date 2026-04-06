@@ -186,6 +186,7 @@ Route::prefix('user')->name('user.')->middleware(['auth', 'role:user', 'verified
 
     // Payment
     Route::post('payment/investment/{id}', [PaymentController::class, 'payInvestment'])->name('payment.investment');
+    Route::post('payment/crowdfunding/{id}', [PaymentController::class, 'payCrowdfunding'])->name('payment.crowdfunding');
 });
 
 

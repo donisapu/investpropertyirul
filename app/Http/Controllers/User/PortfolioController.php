@@ -3,29 +3,21 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
+use App\Models\CrowdfundingPortfolio;
+use App\Models\InvestmentPortfolio;
 use App\Models\WebsiteSetting;
 
 class PortfolioController extends Controller
 {
     public function index()
     {
-        $properties = [
-            (object)[
-                'id' => 1,
-                'name' => 'Nusa Dua Deluxe',
-                'loc' => 'Badung, Bali',
-                'image' => 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=400',
-                'sold' => false
-            ],
-            (object)[
-                'id' => 2,
-                'name' => 'Uluwatu Cliff View',
-                'loc' => 'Pecatu, Bali',
-                'image' => null,
-                'sold' => true
-            ],
-        ];
-        $crowdfundings = [
+        $investments = InvestmentPortfolio::with('ip.property.images')
+            ->where('user_id', auth()->id())
+            ->get();
+        $crowdfundings = CrowdfundingPortfolio::with('cp.property.images')
+            ->where('user_id', auth()->id())
+            ->get();
+        $crowdfundingss = [
             (object)[
                 'id' => 1,
                 'name' => 'Villa Ubud Creative Hub',
@@ -48,6 +40,6 @@ class PortfolioController extends Controller
             ],
         ];
         $settings = WebsiteSetting::getSettings();
-        return view('user.portfolio', ['title' => 'My Portfolio'], compact('settings', 'properties','crowdfundings'));
+        return view('user.portfolio', ['title' => 'My Portfolio'], compact('settings', 'crowdfundings', 'investments'));
     }
 }

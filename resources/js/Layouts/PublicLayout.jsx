@@ -157,7 +157,7 @@ export default function PublicLayout({ children }) {
                                                 Dashboard
                                             </a>
                                             <a
-                                                href={route("user.profile")}
+                                                href={route("user.portfolio")}
                                                 className="block px-4 py-2 text-sm text-slate-700 hover:bg-emerald-50 hover:text-emerald-600"
                                             >
                                                 My Portfolio

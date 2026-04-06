@@ -27,16 +27,24 @@ import {
 import PublicLayout from "@/Layouts/PublicLayout";
 
 export default function Show({ property }) {
-    const [quantity, setQuantity] = useState(10);
-    const tokenPrice = 10000;
+    const minLot = parseInt(property.financials?.min_lot || 1);
+    const [quantity, setQuantity] = useState(minLot);
+    const tokenPrice = parseFloat(property.financials.price_per_lot);
 
     const handleIncrement = () => setQuantity((prev) => prev + 1);
     const handleDecrement = () =>
-        setQuantity((prev) => (prev > 1 ? prev - 1 : 1));
+        setQuantity((prev) => (prev > minLot ? prev - 1 : minLot));
 
     const handleInputChange = (e) => {
-        const value = e.target.value.replace(/\D/g, ""); // Hanya angka
-        setQuantity(value === "" ? 0 : parseInt(value));
+        let value = e.target.value.replace(/\D/g, "");
+        let numValue = value === "" ? 0 : parseInt(value);
+        setQuantity(numValue);
+    };
+
+    const handleBlur = () => {
+        if (quantity < minLot) {
+            setQuantity(minLot);
+        }
     };
 
     const totalPayment = quantity * tokenPrice;
@@ -134,7 +142,7 @@ export default function Show({ property }) {
                 {/* Header Section */}
                 <div className="flex items-center text-sm text-slate-500 mb-6">
                     <h1 className="text-3xl font-bold text-slate-900">
-                        Token Purchase
+                        Lot Purchase
                     </h1>
                 </div>
 
@@ -162,7 +170,7 @@ export default function Show({ property }) {
                                     </h2>
                                     <p className="text-emerald-400 text-sm font-medium">
                                         {property.financials.tokens_left.toLocaleString()}{" "}
-                                        tokens available
+                                        lots available
                                     </p>
                                 </div>
                             </div>
@@ -172,11 +180,11 @@ export default function Show({ property }) {
                                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                                     <div>
                                         <h3 className="font-bold text-slate-900">
-                                            Token Quantity
+                                            Lot Quantity
                                         </h3>
                                         <p className="text-sm text-slate-500">
                                             IDR {tokenPrice.toLocaleString()}
-                                            /token
+                                            /lot
                                         </p>
                                     </div>
 
@@ -190,10 +198,12 @@ export default function Show({ property }) {
                                                 -
                                             </button>
                                             <input
-                                                type="text"
+                                                type="number"
+                                                min={minLot}
                                                 className="w-20 text-center font-bold text-slate-900 focus:outline-none"
                                                 value={quantity}
                                                 onChange={handleInputChange}
+                                                onBlur={handleBlur}
                                             />
                                             <button
                                                 onClick={handleIncrement}
@@ -235,7 +245,7 @@ export default function Show({ property }) {
 
                             <div className="space-y-4 text-sm font-medium">
                                 <div className="flex justify-between text-slate-500">
-                                    <span>Order Total ({quantity} Tokens)</span>
+                                    <span>Order Total ({quantity} Lots)</span>
                                     <span className="text-slate-900">
                                         IDR {totalPayment.toLocaleString()}
                                     </span>

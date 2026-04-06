@@ -16,7 +16,8 @@ class Payment extends Model
         'external_id',
         'invoice_url',
         'status',
-        'paid_at'
+        'paid_at',
+        'lot'
     ];
 
     public function payable()

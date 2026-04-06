@@ -26,7 +26,7 @@ class PublicInvestmentController extends Controller
                 'loc' => $investment->property->property_location,
                 'roi' => $investment->estimated_roi . '%',
                 'roi_period' => $investment->roi_period, // Placeholder
-                'progress' => $investment->total_lot > 0 ? round(($investment->sold_lot / $investment->total_lot) * 100) : 0,
+                'progress' => $investment->total_lot > 0 ? ($investment->sold_lot / $investment->total_lot) * 100 : 0,
                 'tokens' => number_format($investment->total_lot - $investment->sold_lot),
                 'sold' => $investment->status === 'sold' || ($investment->total_lot - $investment->sold_lot) <= 0,
                 'specs' => [
@@ -69,7 +69,7 @@ class PublicInvestmentController extends Controller
                 'price_per_token' => $investment->price_perlot,
                 'total_tokens' => $investment->total_lot,
                 'tokens_left' => $investment->total_lot - $investment->sold_lot,
-                'progress' => $investment->total_lot > 0 ? round(($investment->sold_lot / $investment->total_lot) * 100) : 0,
+                'progress' => $investment->total_lot > 0 ? ($investment->sold_lot / $investment->total_lot) * 100 : 0,
                 'irr' => $investment->estimated_roi . '%',
                 'ery' => $investment->estimated_roi . '%',
                 'roi_period' => $investment->roi_period,
@@ -106,7 +106,8 @@ class PublicInvestmentController extends Controller
             ],
             'financials' => [
                 'price' => $investment->property_value,
-                'price_per_token' => $investment->price_perlot,
+                'price_per_lot' => $investment->price_per_lot,
+                'min_lot' => $investment->min_lot_size,
                 'total_tokens' => $investment->total_lot,
                 'tokens_left' => $investment->total_lot - $investment->sold_lot,
                 'progress' => $investment->total_lot > 0 ? round(($investment->sold_lot / $investment->total_lot) * 100) : 0,

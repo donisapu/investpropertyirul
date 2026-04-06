@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('external_id')->unique();
             $table->string('invoice_url')->nullable();
             $table->enum('status', ['PENDING', 'PAID', 'FAILED', 'EXPIRED'])->default('PENDING');
+            $table->integer('lot')->nullable();
             $table->timestamp('paid_at')->nullable();
             $table->timestamps();
         });

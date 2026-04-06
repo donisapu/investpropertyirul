@@ -24,7 +24,7 @@ class PublicCrowdfundingController extends Controller
             // Calculate progress based on collected amount vs funding goal
             $progress = 0;
             if ($crowdfunding->funding_goal > 0) {
-                $progress = round(($crowdfunding->collected_amount / $crowdfunding->funding_goal) * 100);
+                $progress = ($crowdfunding->collected_amount / $crowdfunding->funding_goal) * 100;
             }
 
             return [
@@ -66,11 +66,11 @@ class PublicCrowdfundingController extends Controller
         // Calculate progress based on collected amount vs funding goal
         $progress = 0;
         if ($crowdfunding->funding_goal > 0) {
-            $progress = round(($crowdfunding->collected_amount / $crowdfunding->funding_goal) * 100);
+            $progress = ($crowdfunding->collected_amount / $crowdfunding->funding_goal) * 100;
         }
 
         $property = [
-            'id' => $crowdfunding->property_id,
+            'id' => $crowdfunding->id,
             'crowdfunding_id' => $crowdfunding->id,
             'name' => $crowdfunding->property->property_name,
             'description' => $crowdfunding->property->property_description,

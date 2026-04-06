@@ -24,8 +24,20 @@ import {
     ResponsiveContainer,
 } from "recharts";
 import PublicLayout from "@/Layouts/PublicLayout";
+import { router } from "@inertiajs/react";
 
 export default function Show({ property }) {
+    const [investAmount, setInvestAmount] = useState(100000);
+    const minAmount = 100000;
+
+    const formatRupiah = (number) => {
+        return new Intl.NumberFormat("id-ID", {
+            style: "currency",
+            currency: "IDR",
+            minimumFractionDigits: 0,
+        }).format(number);
+    };
+
     const [activeTab, setActiveTab] = useState("details");
     const [lightboxOpen, setLightboxOpen] = useState(false);
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -164,8 +176,15 @@ export default function Show({ property }) {
                                         <div>
                                             <input
                                                 type="number"
+                                                name="total_amount"
                                                 className="w-50 px-3 py-2 border border-slate-300 rounded-lg text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                                defaultValue="100000"
+                                                value={investAmount}
+                                                min={minAmount}
+                                                onChange={(e) =>
+                                                    setInvestAmount(
+                                                        Number(e.target.value),
+                                                    )
+                                                }
                                             />
                                         </div>
                                     </div>
@@ -207,7 +226,7 @@ export default function Show({ property }) {
                                 <div className="flex justify-between text-slate-500">
                                     <span>Total Amount</span>
                                     <span className="text-slate-900">
-                                        IDR 100,000
+                                        {formatRupiah(investAmount)}
                                     </span>
                                 </div>
                                 <div className="flex justify-between text-slate-500">
@@ -237,7 +256,7 @@ export default function Show({ property }) {
                                     Total Payment
                                 </span>
                                 <span className="text-2xl font-black text-slate-900">
-                                    IDR 100,000
+                                    {formatRupiah(investAmount)}
                                 </span>
                             </div>
 
@@ -268,7 +287,18 @@ export default function Show({ property }) {
                                 21, 2026
                             </div>
 
-                            <button className="w-full py-4 rounded-lg font-bold text-white bg-blue-600 hover:bg-blue-500 shadow-lg  transition-all">
+                            <button
+                                onClick={() =>
+                                    router.post(
+                                        route(
+                                            "user.payment.crowdfunding",
+                                            property.id,
+                                        ),
+                                        { total_amount: investAmount },
+                                    )
+                                }
+                                className="w-full py-4 rounded-lg font-bold text-white bg-blue-600 hover:bg-blue-500 shadow-lg transition-all"
+                            >
                                 Continue to Payment
                             </button>
                         </div>
