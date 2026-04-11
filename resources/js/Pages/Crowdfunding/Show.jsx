@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Head, Link } from "@inertiajs/react";
+import { Head, Link, usePage } from "@inertiajs/react";
 import {
     Bed,
     Bath,
@@ -70,6 +70,16 @@ export default function Show({ property }) {
             currency: "IDR",
             minimumFractionDigits: 0,
         }).format(value);
+    };
+
+    const { auth } = usePage().props;
+
+    const handleInvestClick = (e) => {
+        if (!auth.user) {
+            e.preventDefault();
+            alert("Waduh, login dulu yuk bos biar bisa invest!");
+            window.location.href = route("login");
+        }
     };
 
     // Use property images or fallback if empty
@@ -484,15 +494,24 @@ export default function Show({ property }) {
                                 </div>
                             </div>
 
-                            <Link
-                                href={route(
-                                    "crowdfunding.purchase",
-                                    property.id,
-                                )}
-                                className="block text-center w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 rounded-xl shadow-lg shadow-blue-200 transition-all transform hover:-translate-y-1 active:translate-y-0"
-                            >
-                                Invest Now
-                            </Link>
+                            {auth.user ? (
+                                <Link
+                                    href={route(
+                                        "crowdfunding.purchase",
+                                        property.id,
+                                    )}
+                                    className="block text-center w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 rounded-xl shadow-lg shadow-blue-200 transition-all transform hover:-translate-y-1 active:translate-y-0"
+                                >
+                                    Invest Now
+                                </Link>
+                            ) : (
+                                <a
+                                    href={route("login")}
+                                    className="block text-center w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 rounded-xl shadow-lg shadow-blue-200 transition-all transform hover:-translate-y-1 active:translate-y-0"
+                                >
+                                    Login to Invest
+                                </a>
+                            )}
 
                             <p className="text-xs text-slate-400 text-center mt-4">
                                 By clicking "Invest Now", you agree to our Terms

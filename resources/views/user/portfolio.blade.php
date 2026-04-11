@@ -198,11 +198,15 @@
 
                         {{-- Info kiri --}}
                         <div class="flex items-center gap-6 min-w-[300px] w-full lg:w-1/3">
-                            <div
-                                class="relative h-24 w-32 flex-shrink-0 overflow-hidden rounded-xl bg-slate-200 shadow-inner">
-                                <img src="https://placehold.co/600x400?text={{ urlencode($cf->name) }}"
-                                    alt="{{ $cf->name }}" class="w-full h-full object-cover">
-                            </div>
+                           <div
+                                    class="relative h-24 w-32 flex-shrink-0 overflow-hidden rounded-xl bg-slate-200 shadow-inner">
+                                    @foreach ($cf->cp->property->images as $img)
+                                        {{-- Asumsi di tabel property_images ada kolom 'file_path' atau 'url' --}}
+                                        <img src="{{ asset('storage/' . $img->image_url) ?? 'https://placehold.co/600x400?text=' . urlencode($prop->ip->property->property_name) }}"
+                                            alt="{{ $cf->cp->property->property_name }}"
+                                            class="w-full h-full object-cover">
+                                    @endforeach
+                                </div>
 
                             <div>
                                 <div class="flex items-center gap-1 text-xs font-semibold text-indigo-600 mb-1">
@@ -275,14 +279,14 @@
 
                         {{-- Actions --}}
                         <div class="flex flex-col gap-2 w-full lg:w-auto min-w-[140px]">
-                            <a href="#"
+                            <a href="{{ route('crowdfunding.show',$cf->id) }}"
                                 class="bg-indigo-700 text-white px-4 py-2.5 rounded-xl font-bold text-xs hover:bg-indigo-600 transition-all text-center shadow-sm shadow-indigo-200">
                                 View Project
                             </a>
-                            <button
+                            <a href="{{ route('crowdfunding.purchase',$cf->id) }}"
                                 class="bg-white text-indigo-700 border border-indigo-200 px-4 py-2.5 rounded-xl font-bold text-xs hover:bg-indigo-50 transition-all text-center">
                                 Add More Fund
-                            </button>
+                        </a>
                         </div>
                     </div>
                 @endforeach

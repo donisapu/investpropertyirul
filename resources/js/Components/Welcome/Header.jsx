@@ -167,14 +167,15 @@ export default function Header() {
                                             Account Setting
                                         </a>
                                         <div className="border-t border-slate-100 mt-1">
-                                            <a
+                                            <Link
                                                 href={route("logout")}
                                                 method="post"
                                                 as="button"
+                                                type="button" // Biar aman secara aksesibilitas
                                                 className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50"
                                             >
-                                                Logouts
-                                            </a>
+                                                Logout
+                                            </Link>
                                         </div>
                                     </div>
                                 )}

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Head, Link } from "@inertiajs/react";
+import { Head, Link, usePage } from "@inertiajs/react";
 import {
     Bed,
     Bath,
@@ -109,6 +109,15 @@ export default function Show({ property }) {
         { id: 5, name: "GORO2130274444", tokens: 35 },
         { id: 6, name: "GORO4726486714", tokens: 30 },
     ];
+    const { auth } = usePage().props;
+
+    const handleInvestClick = (e) => {
+        if (!auth.user) {
+            e.preventDefault();
+            alert("Waduh, login dulu yuk bos biar bisa invest!");
+            window.location.href = route("login");
+        }
+    };
 
     return (
         <PublicLayout>
@@ -517,24 +526,44 @@ export default function Show({ property }) {
                                 </div>
                             </div>
 
-                            <div className="grid grid-cols-2 gap-3 mb-6">
-                                <Link
-                                    href={route(
-                                        "investments.purchase",
-                                        property.id,
-                                    )}
-                                    className={`w-full py-3 rounded-lg font-bold text-white mb-3 shadow-lg flex items-center justify-center ${
-                                        property.sold
-                                            ? "bg-slate-400 cursor-not-allowed"
-                                            : "bg-emerald-800 hover:bg-emerald-700 shadow-emerald-900/20"
-                                    }`}
-                                >
-                                    {property.sold ? "Sold Out" : "Invest"}
-                                </Link>
+                            <div className="{grid gap-3 mb-6 ${auth.user ? 'grid-cols-2' : 'grid-cols-1'}}">
+                                {auth.user ? (
+                                    <Link
+                                        href={
+                                            auth.user
+                                                ? route(
+                                                      "investments.purchase",
+                                                      property.id,
+                                                  )
+                                                : "#"
+                                        }
+                                        onClick={handleInvestClick}
+                                        className={`w-full py-3 rounded-lg font-bold text-white mb-3 shadow-lg flex items-center justify-center ${
+                                            property.sold
+                                                ? "bg-slate-400 cursor-not-allowed"
+                                                : "bg-emerald-800 hover:bg-emerald-700 shadow-emerald-900/20"
+                                        }`}
+                                    >
+                                        {property.sold ? "Sold Out" : "Invest"}
+                                    </Link>
+                                ) : (
+                                    <a
+                                        href={route("login")}
+                                        className={`w-full py-3 rounded-lg font-bold text-white mb-3 shadow-lg flex items-center justify-center ${
+                                            property.sold
+                                                ? "bg-slate-400 cursor-not-allowed"
+                                                : "bg-emerald-800 hover:bg-emerald-700 shadow-emerald-900/20"
+                                        }`}
+                                    >
+                                        Login to Invest
+                                    </a>
+                                )}
 
-                                <button className="w-full py-3 rounded-lg font-bold text-white mb-3 shadow-lg bg-rose-600 hover:bg-rose-700 shadow-rose-900/20">
-                                    Sell
-                                </button>
+                                {auth.user && (
+                                    <button className="w-full py-3 rounded-lg font-bold text-white mb-3 shadow-lg bg-rose-600 hover:bg-rose-700 shadow-rose-900/20">
+                                        Sell
+                                    </button>
+                                )}
                             </div>
 
                             <div className="text-center text-xs text-slate-500">
