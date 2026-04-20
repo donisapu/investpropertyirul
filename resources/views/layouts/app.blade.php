@@ -101,7 +101,7 @@
                                 </g>
                             </svg>
                         </span>
-                        <span class="app-brand-text demo menu-text fw-bolder ms-2">Sneat</span>
+                        <span class="app-brand-text demo menu-text fw-bolder ms-2"></span>
                     </a>
 
                     <a href="javascript:void(0);"
@@ -152,6 +152,15 @@
                         <a href="{{ route('admin.auction-properties') }}" class="menu-link">
                             <i class="menu-icon tf-icons bx bx-gavel"></i>
                             <div data-i18n="Analytics">Auction</div>
+                        </a>
+                    </li>
+                    <li class="menu-header small text-uppercase">
+                        <span class="menu-header-text">Financials</span>
+                    </li>
+                    <li class="menu-item {{ request()->routeIs('admin.financials') ? 'active' : '' }}">
+                        <a href="{{ route('admin.financials') }}" class="menu-link">
+                            <i class="menu-icon tf-icons bx bx-home-circle"></i>
+                            <div data-i18n="Analytics">Investment</div>
                         </a>
                     </li>
                     <li class="menu-header small text-uppercase">

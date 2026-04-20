@@ -17,7 +17,14 @@ class PropertyInvestmentController extends AdminController
 
     public function data()
     {
-        $query = PropertyInvestment::with('property')->select('id', 'property_id', 'total_lot', 'status');
+        $query = PropertyInvestment::with('property')
+            ->select([
+                'id',
+                'property_id',
+                'total_lot',
+                'sold_lot',
+                'status',
+            ]);
 
         return $this->dataTable($query, 'pages.property_investment.action');
     }

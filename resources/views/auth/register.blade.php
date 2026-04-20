@@ -56,7 +56,7 @@
                                         </g>
                                     </svg>
                                 </span>
-                                <span class="app-brand-text demo text-body fw-bolder">Sneat</span>
+
                             </a>
                         </div>
                         <!-- /Logo -->

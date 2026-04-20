@@ -40,8 +40,8 @@
                         name: 'property.property_location'
                     },
                     {
-                        data: 'total_lot',
-                        name: 'total_lot'
+                        data: 'remaining_lot',
+                        name: 'remaining_lot'
                     },
                     {
                         data: 'status',

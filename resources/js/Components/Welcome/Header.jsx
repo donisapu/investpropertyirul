@@ -235,10 +235,11 @@ export default function Header() {
             {/* Mobile Menu Content */}
             {open && (
                 <div
-                    className="min-[900px]:hidden bg-white border-t border-slate-200"
+                    className="min-[900px]:hidden bg-white border-t border-slate-200 relative z-50"
                     id="mobile-menu"
                 >
                     <div className="space-y-1 px-4 py-6">
+                        {/* Navigasi Utama */}
                         <Link
                             href="/"
                             className="block rounded-md py-2 px-3 text-base font-medium text-slate-900 hover:bg-slate-50 hover:text-emerald-600"
@@ -269,6 +270,7 @@ export default function Header() {
                         >
                             LELANG/CESSIE
                         </Link>
+
                         <Link
                             href="/how-to-invest"
                             className="block rounded-md py-2 px-3 text-base font-medium text-slate-900 hover:bg-slate-50 hover:text-emerald-600"
@@ -276,59 +278,68 @@ export default function Header() {
                             HOW TO INVEST
                         </Link>
 
-                        <div className="mt-4 border-t border-slate-100 pt-4">
+                        {/* Account */}
+                        <div
+                            className="mt-4 border-t border-slate-100 pt-4"
+                            ref={dropdownRef}
+                        >
                             {auth.user ? (
-                                <div className="relative" ref={dropdownRef}>
+                                <div className="flex flex-col">
+                                    {/* Trigger */}
                                     <button
-                                        onClick={() =>
-                                            setAccountOpen(!accountOpen)
-                                        }
-                                        className="flex items-center gap-1 font-bold text-emerald-400 hover:text-emerald-600 transition-colors focus:outline-none uppercase"
+                                        type="button"
+                                        onClick={(e) => {
+                                            e.preventDefault();
+                                            e.stopPropagation();
+                                            setAccountOpen(!accountOpen);
+                                        }}
+                                        className="flex items-center justify-between w-full rounded-md py-2 px-3 text-base font-bold text-emerald-700 hover:bg-emerald-50 uppercase"
                                     >
-                                        MY ACCOUNT
-                                        <svg
-                                            className={`w-4 h-4 transition-transform duration-200 ${accountOpen ? "rotate-180" : ""}`}
-                                            fill="none"
-                                            stroke="currentColor"
-                                            strokeWidth="2"
-                                            viewBox="0 0 24 24"
-                                        >
-                                            <path
-                                                strokeLinecap="round"
-                                                strokeLinejoin="round"
-                                                d="M19 9l-7 7-7-7"
-                                            />
-                                        </svg>
+                                        <span>MY ACCOUNT</span>
                                     </button>
 
+                                    {/* Dropdown */}
                                     {accountOpen && (
-                                        <div className="absolute right-0 mt-3 w-48 bg-white rounded-lg shadow-lg border border-slate-200 py-2 z-50 normal-case">
+                                        <div className="ml-4 mt-1 space-y-1 normal-case relative z-[999]">
                                             <a
                                                 href={route("user.dashboard")}
-                                                className="block px-4 py-2 text-sm text-slate-700 hover:bg-emerald-50 hover:text-emerald-600"
+                                                className="block px-3 py-2 text-sm text-slate-700 hover:bg-emerald-50 hover:text-emerald-600"
                                             >
                                                 Dashboard
                                             </a>
                                             <a
-                                                href={route("user.profile")}
-                                                className="block px-4 py-2 text-sm text-slate-700 hover:bg-emerald-50 hover:text-emerald-600"
-                                            >
-                                                My Profile
-                                            </a>
-                                            <a
                                                 href={route("user.portfolio")}
-                                                className="block px-4 py-2 text-sm text-slate-700 hover:bg-emerald-50 hover:text-emerald-600"
+                                                className="block px-3 py-2 text-sm text-slate-700 hover:bg-emerald-50 hover:text-emerald-600"
                                             >
                                                 My Portfolio
                                             </a>
-                                            <div className="border-t border-slate-100 mt-1">
+                                            <a
+                                                href={route("user.portfolio")}
+                                                className="block px-3 py-2 text-sm text-slate-700 hover:bg-emerald-50 hover:text-emerald-600"
+                                            >
+                                                My Bids
+                                            </a>
+                                            <a
+                                                href={route("user.portfolio")}
+                                                className="block px-3 py-2 text-sm text-slate-700 hover:bg-emerald-50 hover:text-emerald-600"
+                                            >
+                                                Transactions
+                                            </a>
+                                            <a
+                                                href={route("user.portfolio")}
+                                                className="block px-3 py-2 text-sm text-slate-700 hover:bg-emerald-50 hover:text-emerald-600"
+                                            >
+                                                Account Setting
+                                            </a>
+
+                                            <div className="border-t border-slate-100 mt-2 pt-1">
                                                 <form
                                                     method="POST"
                                                     action={route("logout")}
                                                 >
                                                     <button
                                                         type="submit"
-                                                        className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50"
+                                                        className="w-full text-left py-2 px-3 text-sm text-red-600 hover:bg-red-50 rounded-md"
                                                     >
                                                         Logout
                                                     </button>
@@ -338,12 +349,12 @@ export default function Header() {
                                     )}
                                 </div>
                             ) : (
-                                <a
+                                <Link
                                     href={route("login")}
-                                    className="hover:text-emerald-600 transition-colors font-bold text-emerald-400"
+                                    className="block rounded-md py-2 px-3 text-base font-bold text-emerald-400 hover:text-emerald-600"
                                 >
                                     MY ACCOUNT
-                                </a>
+                                </Link>
                             )}
                         </div>
                     </div>

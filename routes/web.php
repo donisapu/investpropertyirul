@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\PropertiesController;
 use App\Http\Controllers\Admin\PropertyAuctionController;
 use App\Http\Controllers\Admin\PropertyConsignmentController;
 use App\Http\Controllers\Admin\PropertyCrowdfundingController;
+use App\Http\Controllers\Admin\PropertyFinancialsController;
 use App\Http\Controllers\Admin\PropertyInvestmentController;
 use App\Http\Controllers\Admin\VillaController;
 use App\Http\Controllers\Admin\WebsiteSettingController;
@@ -164,6 +165,14 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin'])->grou
     Route::put('{id}/publish', [CampaignController::class, 'publish'])->name('campaigns.publish');
     Route::put('{id}/activate', [CampaignController::class, 'activate'])->name('campaigns.activate');
     Route::put('{id}/deactivate', [CampaignController::class, 'deactivate'])->name('campaigns.deactivate');
+
+    // Financials
+    Route::get('financials',[PropertyFinancialsController::class,'index'])->name('financials');
+    Route::get('financials/data',[PropertyFinancialsController::class,'data'])->name('financials.data');
+    Route::get('financials/show/{id}',[PropertyFinancialsController::class,'show'])->name('financials.show');
+    Route::post('financials/store/{id}',[PropertyFinancialsController::class,'store'])->name('financials.store');
+    Route::post('financials/update/{id}/{back}',[PropertyFinancialsController::class,'update'])->name('financials.update');
+    Route::get('financials/delete/{id}/{back}',[PropertyFinancialsController::class,'destroy'])->name('financials.destroy');
 
     // Website Settings
     Route::get('/website-settings', [WebsiteSettingController::class, 'edit'])->name('website-settings.edit');

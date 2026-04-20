@@ -64,7 +64,7 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function redirectTo()
     {
-        if (!$this->isProfileComplete()) {
+        if (!$this->isProfileComplete() && $this->hasRole('user')) {
             return route('user.complete.profile');
         }
 
@@ -73,5 +73,20 @@ class User extends Authenticatable implements MustVerifyEmail
         }
 
         return route('user.dashboard');
+    }
+
+    protected static function booted()
+    {
+        static::created(function ($user) {
+            $user->wallet()->create([
+                'balance' => 0,
+                'status' => 'ACTIVE'
+            ]);
+        });
+    }
+
+    public function wallet()
+    {
+        return $this->hasOne(Wallet::class);
     }
 }

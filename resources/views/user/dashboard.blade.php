@@ -12,36 +12,28 @@
                     <h5 class="text-[10px] text-slate-400 uppercase font-bold tracking-wider mb-1">
                         Total Asset Value
                     </h5>
-                    <h2 class="text-xl font-extrabold text-slate-900">
-                        IDR 130,000
-                    </h2>
+                    <h2 class="text-xl font-extrabold text-slate-900">IDR {{ number_format($totalAssetValue) }}</h2>
                 </div>
 
                 <div class="rounded-2xl bg-white border border-slate-100 p-6 shadow-sm">
                     <h5 class="text-[10px] text-slate-400 uppercase font-bold tracking-wider mb-1">
                         Total Invested
                     </h5>
-                    <h2 class="text-xl font-extrabold text-slate-900">
-                        IDR 100,000
-                    </h2>
+                    <h2 class="text-xl font-extrabold text-slate-900">IDR {{ number_format($totalInvested) }}</h2>
                 </div>
 
                 <div class="rounded-2xl bg-white border border-slate-100 p-6 shadow-sm">
                     <h5 class="text-[10px] text-slate-400 uppercase font-bold tracking-wider mb-1">
                         Total Return
                     </h5>
-                    <h2 class="text-xl font-extrabold text-emerald-600">
-                        IDR 30,000
-                    </h2>
+                    <h2 class="text-xl font-extrabold text-emerald-600">IDR {{ number_format($totalReturn) }}</h2>
                 </div>
 
                 <div class="rounded-2xl bg-white border border-slate-100 p-6 shadow-sm">
                     <h5 class="text-[10px] text-slate-400 uppercase font-bold tracking-wider mb-1">
                         Available Balance
                     </h5>
-                    <h2 class="text-xl font-extrabold text-slate-900">
-                        IDR 30,000
-                    </h2>
+                    <h2 class="text-xl font-extrabold text-slate-900">IDR {{ number_format($availableBalance) }}</h2>
                 </div>
             </div>
 
@@ -60,23 +52,30 @@
             <div class="mt-12">
                 <div class="flex items-center justify-between mb-4">
                     <h3 class="text-xl font-bold">Active Investments</h3>
-                    <a href="/my-portfolio" class="text-sm font-semibold text-emerald-600 hover:underline">
+                    <a href="{{ route('user.portfolio') }}" class="text-sm font-semibold text-emerald-600 hover:underline">
                         View All
                     </a>
                 </div>
 
                 <div class="grid gap-6 md:grid-cols-2">
-                    @for ($i = 0; $i < 2; $i++)
+                    @forelse ($activeInvestments as $inv)
                         <div class="rounded-2xl bg-emerald-50 border border-emerald-100 p-6 shadow-sm">
-                            <h4 class="font-bold text-slate-900">Villa Canggu Riverside</h4>
-                            <p class="text-xs text-slate-500 mt-1">Ownership: 10 Lots • 0.00162%</p>
+                            <h4 class="font-bold text-slate-900">{{ $inv->property_name }}</h4>
+                            <p class="text-xs text-slate-500 mt-1">
+                                Ownership: {{ $inv->total_lot }} Lots
+                                • {{ number_format(($inv->total_lot / $inv->grand_total_lot) * 100, 4) }}%
+                            </p>
 
                             <div class="mt-4 flex justify-between text-sm">
-                                <span class="text-slate-500">Current Value</span>
-                                <span class="font-bold text-emerald-700">IDR 100,000</span>
+                                <span class="text-slate-500">Total Invested</span>
+                                <span class="font-bold text-emerald-700">IDR {{ number_format($inv->amount) }}</span>
                             </div>
                         </div>
-                    @endfor
+                    @empty
+                        <div class="col-span-2 text-center py-6 bg-slate-50 rounded-xl border border-dashed">
+                            <p class="text-slate-500 text-sm">Belum ada aset di portfolio lu, bre.</p>
+                        </div>
+                    @endforelse
                 </div>
             </div>
 
@@ -84,7 +83,7 @@
             <div class="mt-12">
                 <div class="flex items-center justify-between mb-4">
                     <h3 class="text-xl font-bold">My Active Bids</h3>
-                    <a href="/my-bids" class="text-sm font-semibold text-emerald-600 hover:underline">
+                    <a href="{{ route('user.bid') }}" class="text-sm font-semibold text-emerald-600 hover:underline">
                         View All
                     </a>
                 </div>
@@ -108,25 +107,21 @@
             <div class="mt-12">
                 <div class="flex items-center justify-between mb-4">
                     <h3 class="text-xl font-bold">Recent Transactions</h3>
-                    <a href="/transactions" class="text-sm font-semibold text-emerald-600 hover:underline">
+                    <a href="{{ route('user.transaction') }}" class="text-sm font-semibold text-emerald-600 hover:underline">
                         View All
                     </a>
                 </div>
 
                 <div class="rounded-2xl border border-slate-100 bg-white shadow-sm overflow-hidden">
                     <div class="divide-y">
-                        <div class="p-4 flex justify-between text-sm">
-                            <span>Invested in Villa Canggu</span>
-                            <span class="font-bold text-slate-900">- IDR 50,000</span>
-                        </div>
-                        <div class="p-4 flex justify-between text-sm">
-                            <span>Rent Income</span>
-                            <span class="font-bold text-emerald-600">+ IDR 2,415</span>
-                        </div>
-                        <div class="p-4 flex justify-between text-sm">
-                            <span>Crowdfunding Project Funding</span>
-                            <span class="font-bold text-slate-900">- IDR 25,000</span>
-                        </div>
+                        @foreach ($recentTransactions as $trx)
+                            <div class="p-4 flex justify-between text-sm">
+                                <span>{{ $trx->label }} ({{ $trx->type }})</span>
+                                <span class="font-bold {{ $trx->type == 'SELL' ? 'text-emerald-600' : 'text-slate-900' }}">
+                                    {{ $trx->type == 'SELL' ? '+' : '-' }} IDR {{ number_format($trx->amount) }}
+                                </span>
+                            </div>
+                        @endforeach
                     </div>
                 </div>
             </div>

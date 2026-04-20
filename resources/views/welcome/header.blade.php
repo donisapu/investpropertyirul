@@ -129,18 +129,31 @@
                         </button>
 
                         <div x-show="mobileAccount" class="ml-4 mt-2 space-y-1">
-                            <a href="{{ route('user.profile') }}"
-                                class="block py-1 text-sm text-slate-700 hover:text-emerald-600">
-                                My Profile
+                            <a href="{{ route('user.dashboard') }}"
+                                class="block py-2 px-3 text-sm text-slate-700 hover:bg-emerald-50 hover:text-emerald-600">
+                                Dashboard
+                            </a>
+
+                            <a href="{{ route('user.portfolio') }}"
+                                class="block py-2 px-3 text-sm text-slate-700 hover:bg-emerald-50 hover:text-emerald-600">
+                                My Portfolio
+                            </a>
+                            <a href="{{ route('user.bid') }}"
+                                class="block py-2 px-3 text-sm text-slate-700 hover:bg-emerald-50 hover:text-emerald-600">
+                                My Bids
+                            </a>
+                            <a href="{{ route('user.transaction') }}"
+                                class="block py-2 px-3 text-sm text-slate-700 hover:bg-emerald-50 hover:text-emerald-600">
+                                Transactions
                             </a>
                             <a href="{{ route('user.portfolio') }}"
-                                class="block py-1 text-sm text-slate-700 hover:text-emerald-600">
-                                My Portfolio
+                                class="block py-2 px-3 text-sm text-slate-700 hover:bg-emerald-50 hover:text-emerald-600">
+                                Account Setting
                             </a>
 
                             <form method="POST" action="{{ route('logout') }}">
                                 @csrf
-                                <button type="submit" class="block py-1 text-sm text-red-600">
+                                <button type="submit" class="block py-2 px-3 text-sm text-red-600">
                                     Logout
                                 </button>
                             </form>
