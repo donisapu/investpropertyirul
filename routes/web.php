@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\CampaignController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\DeveloperController;
+use App\Http\Controllers\Admin\ProfileController as AdminProfileController;
 use App\Http\Controllers\Admin\PropertiesController;
 use App\Http\Controllers\Admin\PropertyAuctionController;
 use App\Http\Controllers\Admin\PropertyConsignmentController;
@@ -177,6 +178,10 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin'])->grou
     // Website Settings
     Route::get('/website-settings', [WebsiteSettingController::class, 'edit'])->name('website-settings.edit');
     Route::put('/website-settings', [WebsiteSettingController::class, 'update'])->name('website-settings.update');
+
+    // Profile
+    Route::get('profile',[AdminProfileController::class,'index'])->name('profile');
+    Route::post('profile.update/{id}',[AdminProfileController::class,'update'])->name('profile.update');
 });
 
 Route::prefix('user')->name('user.')->middleware(['auth', 'role:user', 'verified'])->group(function () {

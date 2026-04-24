@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\PropertyInvestment;
 use App\Models\WebsiteSetting;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
+// use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 
 class PublicInvestmentController extends Controller
@@ -19,6 +19,7 @@ class PublicInvestmentController extends Controller
 
         /** @var \Illuminate\Pagination\LengthAwarePaginator $properties */
         $properties->through(function ($investment) {
+            $image = $investment->property->images->first();
             return [
                 'id' => $investment->property_id,
                 'investment_id' => $investment->id,
@@ -34,7 +35,9 @@ class PublicInvestmentController extends Controller
                     'bathroom' => $investment->property->bathroom,
                     'area' => $investment->property->building_area . 'sqm',
                 ],
-                'image' => $investment->property->images->first() ? Storage::url($investment->property->images->first()->image_url) : null,
+
+                // 'image' => $investment->property->images->first() ? Storage::url($investment->property->images->first()->image_url) : null,
+                'image' => $image ? asset($image->image_url) : null,
             ];
         });
 
@@ -75,10 +78,16 @@ class PublicInvestmentController extends Controller
                 'roi_period' => $investment->roi_period,
                 'min_investment' => $investment->price_perlot,
             ],
+            // 'images' => $investment->property->images->map(function ($img) {
+            //     return Storage::url($img->image_url);
+            // }),
             'images' => $investment->property->images->map(function ($img) {
-                return Storage::url($img->image_url);
+                return asset($img->image_url);
             }),
-            'main_image' => $investment->property->images->first() ? Storage::url($investment->property->images->first()->image_url) : null,
+            // 'main_image' => $investment->property->images->first() ? Storage::url($investment->property->images->first()->image_url) : null,
+            'main_image' => $investment->property->images->first()
+                ? asset($investment->property->images->first()->image_url)
+                : null,
             'sold' => $investment->status === 'sold' || ($investment->total_lot - $investment->sold_lot) <= 0,
             'map_url' => $investment->property->map_url,
         ];
@@ -116,10 +125,16 @@ class PublicInvestmentController extends Controller
                 'roi_period' => $investment->roi_period,
                 'min_investment' => $investment->price_perlot,
             ],
+            // 'images' => $investment->property->images->map(function ($img) {
+            //     return Storage::url($img->image_url);
+            // }),
             'images' => $investment->property->images->map(function ($img) {
-                return Storage::url($img->image_url);
+                return asset($img->image_url);
             }),
-            'main_image' => $investment->property->images->first() ? Storage::url($investment->property->images->first()->image_url) : null,
+            // 'main_image' => $investment->property->images->first() ? Storage::url($investment->property->images->first()->image_url) : null,
+            'main_image' => $investment->property->images->first()
+                ? asset($investment->property->images->first()->image_url)
+                : null,
             'sold' => $investment->status === 'sold' || ($investment->total_lot - $investment->sold_lot) <= 0,
             'map_url' => $investment->property->map_url,
         ];

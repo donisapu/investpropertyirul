@@ -181,14 +181,14 @@ export default function PublicLayout({ children }) {
                                                 Account Setting
                                             </a>
                                             <div className="border-t border-slate-100 mt-1">
-                                                <a
+                                                <Link
                                                     href={route("logout")}
                                                     method="post"
                                                     as="button"
                                                     className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50"
                                                 >
-                                                    Logout
-                                                </a>
+                                                    LOGOUT
+                                                </Link>
                                             </div>
                                         </div>
                                     )}
@@ -249,89 +249,86 @@ export default function PublicLayout({ children }) {
 
                 {/* Mobile Menu */}
                 {isMobileMenuOpen && (
-                    <div className="min-[900px]:hidden bg-white border-t border-slate-200">
+                    <div
+                        className="min-[900px]:hidden bg-white border-t border-slate-200 relative z-50"
+                        id="mobile-menu"
+                    >
                         <div className="space-y-1 px-4 py-6">
-                            <a
+                            {/* Navigasi Utama */}
+                            <Link
                                 href="/"
-                                className={`block rounded-md py-2 px-3 text-base font-medium ${isActive("/") ? "text-emerald-700 bg-emerald-50" : "text-slate-900 hover:bg-slate-50 hover:text-emerald-600"}`}
+                                className="block rounded-md py-2 px-3 text-base font-medium text-slate-900 hover:bg-slate-50 hover:text-emerald-600"
                             >
                                 HOME
-                            </a>
+                            </Link>
                             <Link
-                                href="/investments"
-                                className={`block rounded-md py-2 px-3 text-base font-medium ${isActive("/investments") ? "text-emerald-700 bg-emerald-50" : "text-slate-900 hover:bg-slate-50 hover:text-emerald-600"}`}
+                                href={route("investments.index")}
+                                className="block rounded-md py-2 px-3 text-base font-medium text-slate-900 hover:bg-slate-50 hover:text-emerald-600"
                             >
                                 INVESTMENT
                             </Link>
                             <Link
-                                href="/crowdfunding"
-                                className={`block rounded-md py-2 px-3 text-base font-medium ${isActive("/crowdfunding") ? "text-emerald-700 bg-emerald-50" : "text-slate-900 hover:bg-slate-50 hover:text-emerald-600"}`}
+                                href={route("crowdfunding.index")}
+                                className="block rounded-md py-2 px-3 text-base font-medium text-slate-900 hover:bg-slate-50 hover:text-emerald-600"
                             >
                                 CROWDFUNDING
                             </Link>
                             <Link
-                                href="/property-for-sale"
-                                className={`block rounded-md py-2 px-3 text-base font-medium ${isActive("/property-for-sale") ? "text-emerald-700 bg-emerald-50" : "text-slate-900 hover:bg-slate-50 hover:text-emerald-600"}`}
+                                href="#property"
+                                className="block rounded-md py-2 px-3 text-base font-medium text-slate-900 hover:bg-slate-50 hover:text-emerald-600"
                             >
                                 PROPERTY FOR SALE
                             </Link>
                             <Link
-                                href="/auctions"
-                                className={`block rounded-md py-2 px-3 text-base font-medium ${isActive("/auctions") ? "text-emerald-700 bg-emerald-50" : "text-slate-900 hover:bg-slate-50 hover:text-emerald-600"}`}
+                                href={route("auctions.index")}
+                                className="block rounded-md py-2 px-3 text-base font-medium text-slate-900 hover:bg-slate-50 hover:text-emerald-600"
                             >
                                 LELANG/CESSIE
                             </Link>
+
                             <Link
                                 href="/how-to-invest"
-                                className={`block rounded-md py-2 px-3 text-base font-medium ${isActive("/how-to-invest") ? "text-emerald-700 bg-emerald-50" : "text-slate-900 hover:bg-slate-50 hover:text-emerald-600"}`}
+                                className="block rounded-md py-2 px-3 text-base font-medium text-slate-900 hover:bg-slate-50 hover:text-emerald-600"
                             >
                                 HOW TO INVEST
                             </Link>
-                            <a
-                                href="#properti"
-                                className="block rounded-md py-2 px-3 text-base font-medium text-slate-900 hover:bg-slate-50 hover:text-emerald-600"
-                            >
-                                DEVELOPER
-                            </a>
 
-                            <div className="mt-4 border-t border-slate-100 pt-4">
+                            {/* Account */}
+                            <div
+                                className="mt-4 border-t border-slate-100 pt-4"
+                                ref={dropdownRef}
+                            >
                                 {auth.user ? (
-                                    <div className="relative" ref={dropdownRef}>
+                                    <div className="flex flex-col">
+                                        {/* Trigger */}
                                         <button
-                                            onClick={() =>
-                                                setAccountOpen(!accountOpen)
-                                            }
-                                            className="flex gap-1 rounded-md py-2 px-3 text-base font-bold text-emerald-700 hover:bg-emerald-50"
+                                            type="button"
+                                            onClick={(e) => {
+                                                e.preventDefault();
+                                                e.stopPropagation();
+                                                setAccountOpen(!accountOpen);
+                                            }}
+                                            className="flex items-center justify-between w-full rounded-md py-2 px-3 text-base font-bold text-emerald-700 hover:bg-emerald-50 uppercase"
                                         >
-                                            MY ACCOUNT
-                                            <svg
-                                                className={`w-4 h-4 transition-transform duration-200 ${accountOpen ? "rotate-180" : ""}`}
-                                                fill="none"
-                                                stroke="currentColor"
-                                                strokeWidth="2"
-                                                viewBox="0 0 24 24"
-                                            >
-                                                <path
-                                                    strokeLinecap="round"
-                                                    strokeLinejoin="round"
-                                                    d="M19 9l-7 7-7-7"
-                                                />
-                                            </svg>
+                                            <span>MY ACCOUNT</span>
                                         </button>
 
+                                        {/* Dropdown */}
                                         {accountOpen && (
-                                            <div className="absolute right-0 mt-3 w-48 bg-white rounded-lg shadow-lg border border-slate-200 py-2 z-50 normal-case">
+                                            <div className="ml-4 mt-1 space-y-1 normal-case relative z-[999]">
                                                 <a
                                                     href={route(
                                                         "user.dashboard",
                                                     )}
-                                                    className="block px-4 py-2 text-sm text-slate-700 hover:bg-emerald-50 hover:text-emerald-600"
+                                                    className="block px-3 py-2 text-sm text-slate-700 hover:bg-emerald-50 hover:text-emerald-600"
                                                 >
                                                     Dashboard
                                                 </a>
                                                 <a
-                                                    href={route("user.profile")}
-                                                    className="block px-4 py-2 text-sm text-slate-700 hover:bg-emerald-50 hover:text-emerald-600"
+                                                    href={route(
+                                                        "user.portfolio",
+                                                    )}
+                                                    className="block px-3 py-2 text-sm text-slate-700 hover:bg-emerald-50 hover:text-emerald-600"
                                                 >
                                                     My Portfolio
                                                 </a>
@@ -339,7 +336,7 @@ export default function PublicLayout({ children }) {
                                                     href={route(
                                                         "user.portfolio",
                                                     )}
-                                                    className="block px-4 py-2 text-sm text-slate-700 hover:bg-emerald-50 hover:text-emerald-600"
+                                                    className="block px-3 py-2 text-sm text-slate-700 hover:bg-emerald-50 hover:text-emerald-600"
                                                 >
                                                     My Bids
                                                 </a>
@@ -347,7 +344,7 @@ export default function PublicLayout({ children }) {
                                                     href={route(
                                                         "user.portfolio",
                                                     )}
-                                                    className="block px-4 py-2 text-sm text-slate-700 hover:bg-emerald-50 hover:text-emerald-600"
+                                                    className="block px-3 py-2 text-sm text-slate-700 hover:bg-emerald-50 hover:text-emerald-600"
                                                 >
                                                     Transactions
                                                 </a>
@@ -355,19 +352,20 @@ export default function PublicLayout({ children }) {
                                                     href={route(
                                                         "user.portfolio",
                                                     )}
-                                                    className="block px-4 py-2 text-sm text-slate-700 hover:bg-emerald-50 hover:text-emerald-600"
+                                                    className="block px-3 py-2 text-sm text-slate-700 hover:bg-emerald-50 hover:text-emerald-600"
                                                 >
                                                     Account Setting
                                                 </a>
-                                                <div className="border-t border-slate-100 mt-1">
-                                                    <a
+
+                                                <div className="border-t border-slate-100 mt-2 pt-1">
+                                                    <Link
                                                         href={route("logout")}
                                                         method="post"
                                                         as="button"
-                                                        className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50"
+                                                        className="w-full text-left px-3 py-2 text-sm text-red-600 hover:bg-red-50"
                                                     >
                                                         Logout
-                                                    </a>
+                                                    </Link>
                                                 </div>
                                             </div>
                                         )}
@@ -375,7 +373,7 @@ export default function PublicLayout({ children }) {
                                 ) : (
                                     <a
                                         href={route("login")}
-                                        className="hover:text-emerald-600 transition-colors font-bold text-emerald-400"
+                                        className="hover:text-emerald-600 px-3 py-2 transition-colors font-bold text-emerald-400"
                                     >
                                         MY ACCOUNT
                                     </a>

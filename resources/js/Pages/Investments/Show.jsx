@@ -486,7 +486,7 @@ export default function Show({ property }) {
                     {/* Right Column */}
                     <div className="lg:col-span-1 space-y-6">
                         {/* Financial Card */}
-                        <div className="bg-white z-50 rounded-2xl p-6 shadow-sm border border-slate-200 sticky top-24">
+                        <div className="bg-white z-50 rounded-2xl p-6 shadow-sm border border-slate-200">
                             <div className="flex justify-between items-center mb-2">
                                 <span className="text-emerald-700 font-bold bg-emerald-50 px-3 py-1 rounded-full text-xs">
                                     {property.financials.progress}% Funded

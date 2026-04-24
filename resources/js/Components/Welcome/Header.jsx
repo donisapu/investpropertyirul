@@ -171,8 +171,7 @@ export default function Header() {
                                                 href={route("logout")}
                                                 method="post"
                                                 as="button"
-                                                type="button" // Biar aman secara aksesibilitas
-                                                className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50"
+                                                className="w-full text-left px-3 py-2 text-sm text-red-600 hover:bg-red-50"
                                             >
                                                 Logout
                                             </Link>
@@ -333,28 +332,25 @@ export default function Header() {
                                             </a>
 
                                             <div className="border-t border-slate-100 mt-2 pt-1">
-                                                <form
-                                                    method="POST"
-                                                    action={route("logout")}
+                                                <Link
+                                                    href={route("logout")}
+                                                    method="post"
+                                                    as="button"
+                                                    className="w-full text-left px-3 py-2 text-sm text-red-600 hover:bg-red-50"
                                                 >
-                                                    <button
-                                                        type="submit"
-                                                        className="w-full text-left py-2 px-3 text-sm text-red-600 hover:bg-red-50 rounded-md"
-                                                    >
-                                                        Logout
-                                                    </button>
-                                                </form>
+                                                    Logout
+                                                </Link>
                                             </div>
                                         </div>
                                     )}
                                 </div>
                             ) : (
-                                <Link
+                                <a
                                     href={route("login")}
-                                    className="block rounded-md py-2 px-3 text-base font-bold text-emerald-400 hover:text-emerald-600"
+                                    className="hover:text-emerald-600 px-3 py-2 transition-colors font-bold text-emerald-400"
                                 >
                                     MY ACCOUNT
-                                </Link>
+                                </a>
                             )}
                         </div>
                     </div>

@@ -128,7 +128,7 @@
 
             {{-- Quick Actions --}}
             <div class="mt-12 grid gap-4 sm:grid-cols-2 md:grid-cols-4">
-                <a href="/properties"
+                <a href="{{ route('investments.index') }}"
                     class="text-center bg-emerald-800 text-white py-3 rounded-xl font-bold text-sm hover:bg-emerald-700 transition">
                     Explore Properties
                 </a>
