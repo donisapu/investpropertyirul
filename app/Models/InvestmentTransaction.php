@@ -12,9 +12,21 @@ class InvestmentTransaction extends Model
         'user_id',
         'investment_id',
         'payment_id',
+        'price_per_lot',
         'lot',
         'amount',
         'transacted_at',
-        'type'
+        'type',
+        'status'
     ];
+
+    public function ip()
+    {
+        return $this->belongsTo(PropertyInvestment::class, 'investment_id');
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class,'user_id');
+    }
 }

@@ -22,6 +22,7 @@ class TransactionController extends Controller
             )
             ->join('property_investments as pi', 'it.investment_id', '=', 'pi.id')
             ->join('properties as p', 'pi.property_id', '=', 'p.id')
+            ->where('it.status','APPROVED')
             ->where('it.user_id', $userId);
         $crowdfundings = DB::table('crowdfunding_transactions as ct')
             ->select(
@@ -38,7 +39,7 @@ class TransactionController extends Controller
         $transactions = $crowdfundings->union($investments)
             ->orderBy('date', 'desc')
             ->get();
-        $totalIn = $transactions->where('trans_type', 'SELL')->sum('amount');
+        $totalIn = $transactions->where('trans_type', 'SELL')->where('status','APPROVED')->sum('amount');
         $totalOut = $transactions->where('trans_type', 'BUY')->sum('amount')
             + $transactions->where('category', 'Crowdfunding')->sum('amount');
 

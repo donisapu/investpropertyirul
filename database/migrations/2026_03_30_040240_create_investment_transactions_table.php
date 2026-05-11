@@ -17,7 +17,9 @@ return new class extends Migration
             $table->foreignId('investment_id')->constrained('property_investments')->cascadeOnDelete();
             $table->foreignId('payment_id')->nullable();
             $table->enum('type', ['BUY', 'SELL']);
+            $table->enum('status', ['PENDING', 'APPROVED', 'REJECTED'])->default('PENDING');
             $table->integer('lot');
+            $table->decimal('price_per_lot', 18, 2);
             $table->decimal('amount', 18, 2);
             $table->timestamp('transacted_at')->nullable();
             $table->timestamps();

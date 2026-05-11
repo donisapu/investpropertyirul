@@ -57,46 +57,37 @@
                     <label for="" class="form-label">Listing Url</label>
                     <textarea name="listing_url" class="form-control" placeholder="Lising Url on Airbnb etc (optional)" id=""
                         cols="30" rows="2">
-@if ($btn == 'edit')
-{{ $data->listing_url }}
-@endif
-</textarea>
+                    @if ($btn == 'edit')
+                        {{ $data->listing_url }}
+                    @endif
+                    </textarea>
                 </div>
                 <div class="mb-3">
                     <label for="" class="form-label">Detail</label>
                     <textarea name="detail" class="form-control" placeholder="Property Detail" id="" cols="30"
                         rows="10">
-@if ($btn == 'edit')
-{{ $data->detail }}
-@endif
-</textarea>
-                </div>
-                <div class="mb-3">
-                    <label for="" class="form-label">Financial</label>
-                    <textarea name="financial" class="form-control" placeholder="Property Financial" id="" cols="30"
-                        rows="10">
-@if ($btn == 'edit')
-{{ $data->financial }}
-@endif
-</textarea>
+                    @if ($btn == 'edit')
+                        {{ $data->detail }}
+                    @endif
+                    </textarea>
                 </div>
                 <div class="mb-3">
                     <label for="" class="form-label">Market</label>
                     <textarea name="market" class="form-control" placeholder="Property Market" id="" cols="30"
                         rows="10">
-@if ($btn == 'edit')
-{{ $data->market }}
-@endif
-</textarea>
+                    @if ($btn == 'edit')
+                        {{ $data->market }}
+                    @endif
+                    </textarea>
                 </div>
                 <div class="mb-3">
                     <label for="" class="form-label">Timeline</label>
                     <textarea name="timeline" class="form-control" placeholder="Property Timeline" id="" cols="30"
                         rows="10">
-@if ($btn == 'edit')
-{{ $data->timeline }}
-@endif
-</textarea>
+                    @if ($btn == 'edit')
+                        {{ $data->timeline }}
+                    @endif
+                </textarea>
                 </div>
                 <div class="mb-3">
                     <label for="" class="form-label">Url Map</label>
@@ -138,8 +129,6 @@
                 </div>
             </div>
         </div>
-
-
         <div class="card mt-3">
             <div class="card-header h5">Property Documents</div>
             <div class="card-body">

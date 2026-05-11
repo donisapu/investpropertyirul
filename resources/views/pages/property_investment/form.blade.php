@@ -1,5 +1,14 @@
 @extends('layouts.app')
 @section('content')
+    {{-- @if ($errors->any())
+        <div style="color: red; margin-bottom: 20px;">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif --}}
     <form action="{{ $action }}" method="POST" enctype="multipart/form-data">
         @csrf
         <div class="card">
@@ -16,9 +25,44 @@
                     </select>
                 </div>
                 <div class="mb-3">
-                    <label for="" class="form-label">Property Value</label>
-                    <input type="number" class="form-control" name="property_value" placeholder="Property Value"
-                        id="" @if ($btn == 'edit') value="{{ $data->property_value }}" @endif>
+                    <label for="" class="form-label">Asset Price</label>
+                    <input type="number" class="form-control" name="asset_price" placeholder="Asset Price" id=""
+                        @if ($btn == 'edit') value="{{ $data->asset_price }}" @endif>
+                </div>
+                <div class="mb-3">
+                    <div class="row">
+                        <div class="col-4">
+                            <label for="" class="form-label">Property Upgrades</label>
+                            <input type="number" class="form-control" name="property_upgrades"
+                                placeholder="Property Upgrades" id="" value="0"
+                                @if ($btn == 'edit') value="{{ $data->property_upgrades }}" @endif>
+                        </div>
+                        <div class="col-4">
+                            <label for="" class="form-label">Notary Fee</label>
+                            <input type="number" class="form-control" value="0" name="notary_fee" placeholder="Notary Fee"
+                                id="" @if ($btn == 'edit') value="{{ $data->notary_fee }}" @endif>
+                        </div>
+                        <div class="col-4">
+                            <label for="" class="form-label">Platform Fee</label>
+                            <input type="number" class="form-control" value="0" name="platform_fee" placeholder="Platform Fee"
+                                id="" @if ($btn == 'edit') value="{{ $data->platform_fee }}" @endif>
+                        </div>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <div class="row">
+                        <div class="col-6">
+                            <label for="" class="form-label">Rental Yield (%)</label>
+                            <input type="number" class="form-control" name="rental_yield" placeholder="Rental Yield"
+                                id="" @if ($btn == 'edit') value="{{ $data->rental_yield }}" @endif>
+                        </div>
+                        <div class="col-6">
+                            <label for="" class="form-label">Appreciation Rate (%)</label>
+                            <input type="number" class="form-control" name="appreciation_rate"
+                                placeholder="Appreciation Rate" id=""
+                                @if ($btn == 'edit') value="{{ $data->appreciation_rate }}" @endif>
+                        </div>
+                    </div>
                 </div>
                 <div class="mb-3">
                     <label for="" class="form-label">Price Per Lot</label>
@@ -34,8 +78,8 @@
                         </div>
                         <div class="col-3">
                             <label for="" class="form-label">Sold Lot</label>
-                            <input type="number" class="form-control" name="sold_lot" placeholder="Sold Lot"
-                                id="" value="{{ $btn == 'edit' ? $data->sold_lot : 0 }}">
+                            <input type="number" class="form-control" name="sold_lot" placeholder="Sold Lot" id=""
+                                value="{{ $btn == 'edit' ? $data->sold_lot : 0 }}">
                         </div>
                         <div class="col-3">
                             <label for="" class="form-label">Min Lot Size</label>
@@ -46,31 +90,24 @@
                         <div class="col-3">
                             <label for="" class="form-label">Max Lot Size</label>
                             <input type="number" class="form-control" name="max_lot_size" placeholder="Maximum Buying"
-                                id="" @if ($btn == 'edit') value="{{ $data->max_lot_size }}" @endif>
+                                id=""
+                                @if ($btn == 'edit') value="{{ $data->max_lot_size }}" @endif>
                         </div>
                     </div>
 
                 </div>
                 <div class="mb-3">
-                    <div class="row">
-                        <div class="col-6">
-                            <label for="" class="form-label">Estimated ROI (%)</label>
-                            <input type="text" name="estimated_roi" class="form-control" placeholder="Estimated ROI"
-                                id="" @if ($btn == 'edit') value="{{ $data->estimated_roi }}" @endif>
-                        </div>
-                        <div class="col-6">
-                            <label for="" class="form-label">ROI Period (Month)</label>
-                            <input type="text" class="form-control" name="roi_period" placeholder="ROI Period"
-                                id="" @if ($btn == 'edit') value="{{ $data->roi_period }}" @endif>
-                        </div>
-                    </div>
+                    <label for="" class="form-label">ROI Period (Month)</label>
+                    <input type="text" class="form-control" name="roi_period_months" placeholder="ROI Period Month"
+                        id="" @if ($btn == 'edit') value="{{ $data->roi_period_months }}" @endif>
                 </div>
                 <div class="mb-3">
                     <label for="" class="form-label">Status</label>
                     <select name="status" class="form-control" id="">
                         <option value="Draft" @if ($btn == 'edit' && $data->status == 'Draft') selected @endif>Draft</option>
                         <option value="Open" @if ($btn == 'edit' && $data->status == 'Open') selected @endif>Open</option>
-                        <option value="FullyFunded" @if ($btn == 'edit' && $data->status == 'FullyFunded') selected @endif>FullyFunded</option>
+                        <option value="FullyFunded" @if ($btn == 'edit' && $data->status == 'FullyFunded') selected @endif>FullyFunded
+                        </option>
                         <option value="Running" @if ($btn == 'edit' && $data->status == 'Running') selected @endif>Running</option>
                         <option value="Finished" @if ($btn == 'edit' && $data->status == 'Finished') selected @endif>Finished</option>
                     </select>

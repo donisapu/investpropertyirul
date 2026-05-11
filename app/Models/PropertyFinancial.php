@@ -15,6 +15,12 @@ class PropertyFinancial extends Model
         'income',
         'expense',
         'net_profit',
-        'status'
+        'status',
+        'is_distributed'
     ];
+
+    public function investment()
+    {
+        return $this->belongsTo(PropertyInvestment::class, 'property_investment_id');
+    }
 }

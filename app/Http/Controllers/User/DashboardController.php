@@ -19,6 +19,7 @@ class DashboardController extends Controller
             DB::table('investment_transactions')
             ->where('user_id', $userId)
             ->where('type', 'SELL')
+            ->where('status','APPROVED')
             ->sum('amount');
 
         $totalInvestedCrowdfund = DB::table('crowdfunding_transactions')

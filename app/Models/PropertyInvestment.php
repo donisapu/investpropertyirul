@@ -11,14 +11,20 @@ class PropertyInvestment extends Model
 
     protected $fillable = [
         'property_id',
-        'property_value',
+        'asset_price',
+        'property_upgrades',
+        'notary_fee',
+        'platform_fee',
+        'total_investment_value',
+        'rental_yield',
+        'appreciation_rate',
+        'projected_roi',
         'price_per_lot',
         'total_lot',
         'sold_lot',
         'min_lot_size',
         'max_lot_size',
-        'estimated_roi',
-        'roi_period',
+        'roi_period_months',
         'status',
     ];
 

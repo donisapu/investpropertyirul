@@ -56,22 +56,35 @@ class PropertyInvestmentController extends AdminController
      */
     public function store(Request $request)
     {
-        DB::transaction(function () use ($request) {
-            $investment = PropertyInvestment::create($request->only([
-                'property_id',
-                'property_value',
-                'price_per_lot',
-                'total_lot',
-                'sold_lot',
-                'min_lot_size',
-                'max_lot_size',
-                'estimated_roi',
-                'roi_period',
-                'status',
+        $validated = $request->validate([
+            'property_id'       => 'required|exists:properties,id',
+            'asset_price'       => 'required|numeric',
+            'property_upgrades' => 'required|numeric',
+            'notary_fee'        => 'required|numeric',
+            'platform_fee'      => 'required|numeric',
+            'rental_yield'      => 'required|numeric',
+            'appreciation_rate' => 'required|numeric',
+            'price_per_lot'     => 'required|numeric',
+            'total_lot'         => 'required|integer',
+            'min_lot_size'      => 'required|integer',
+            'max_lot_size'      => 'required|integer',
+            'roi_period_months'  => 'required|integer',
+            'status'            => 'required|string',
+        ]);
+
+        $total_investment = $request->asset_price + $request->property_upgrades + $request->notary_fee + $request->platform_fee;
+        $projected_roi    = $request->rental_yield + $request->appreciation_rate;
+
+        DB::transaction(function () use ($validated, $total_investment, $projected_roi) {
+            PropertyInvestment::create(array_merge($validated, [
+                'total_investment_value' => $total_investment,
+                'projected_roi'          => $projected_roi,
+                'sold_lot'               => 0,
             ]));
         });
 
-        return redirect()->route('admin.investment-properties');
+        return redirect()->route('admin.investment-properties')
+            ->with('success', 'Data investasi berhasil disimpan!');
     }
 
     /**
@@ -105,26 +118,37 @@ class PropertyInvestmentController extends AdminController
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, PropertyInvestment $investment)
     {
-        DB::transaction(function () use ($request, $id) {
-            $property = PropertyInvestment::findOrFail($id);
+        $validated = $request->validate([
+            'property_id'       => 'required|exists:properties,id',
+            'asset_price'       => 'required|numeric',
+            'property_upgrades' => 'required|numeric',
+            'notary_fee'        => 'required|numeric',
+            'platform_fee'      => 'required|numeric',
+            'rental_yield'      => 'required|numeric',
+            'appreciation_rate' => 'required|numeric',
+            'price_per_lot'     => 'required|numeric',
+            'total_lot'         => 'required|integer',
+            'sold_lot'          => 'required|integer|lte:total_lot',
+            'min_lot_size'      => 'required|integer',
+            'max_lot_size'      => 'required|integer',
+            'roi_period_months'  => 'required|integer',
+            'status'            => 'required|string',
+        ]);
 
-            $property->update($request->only([
-                'property_id',
-                'property_value',
-                'price_perlot',
-                'total_lot',
-                'sold_lot',
-                'min_lot_size',
-                'max_lot_size',
-                'estimated_roi',
-                'roi_period',
-                'status',
+        $total_investment = $request->asset_price + $request->property_upgrades + $request->notary_fee + $request->platform_fee;
+        $projected_roi    = $request->rental_yield + $request->appreciation_rate;
+
+        DB::transaction(function () use ($investment, $validated, $total_investment, $projected_roi) {
+            $investment->update(array_merge($validated, [
+                'total_investment_value' => $total_investment,
+                'projected_roi'          => $projected_roi,
             ]));
         });
 
-        return redirect()->route('admin.investment-properties');
+        return redirect()->route('admin.investment-properties')
+            ->with('success', 'Data investasi berhasil diperbarui!');
     }
 
     /**
@@ -136,5 +160,12 @@ class PropertyInvestmentController extends AdminController
         $property->delete();
 
         return redirect()->route('admin.investment-properties');
+    }
+
+    public function transaction()
+    {
+        return $this->view('transaction', [
+            'title' => 'Investment Property',
+        ]);
     }
 }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\User;
 use App\Http\Controllers\Controller;
 use App\Models\CrowdfundingPortfolio;
 use App\Models\InvestmentPortfolio;
+use App\Models\Wallet;
 use App\Models\WebsiteSetting;
 
 class PortfolioController extends Controller
@@ -17,6 +18,7 @@ class PortfolioController extends Controller
         $crowdfundings = CrowdfundingPortfolio::with('cp.property.images')
             ->where('user_id', auth()->id())
             ->get();
+        $wallet = Wallet::where('user_id', auth()->id())->first();
         $crowdfundingss = [
             (object)[
                 'id' => 1,
@@ -40,6 +42,6 @@ class PortfolioController extends Controller
             ],
         ];
         $settings = WebsiteSetting::getSettings();
-        return view('user.portfolio', ['title' => 'My Portfolio'], compact('settings', 'crowdfundings', 'investments'));
+        return view('user.portfolio', ['title' => 'My Portfolio'], compact('settings', 'crowdfundings', 'investments','wallet'));
     }
 }

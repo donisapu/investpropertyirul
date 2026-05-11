@@ -21,7 +21,6 @@ class Properties extends Model
         'building_area',
         'listing_url',
         'detail',
-        'financial',
         'market',
         'timeline',
         'map_url',

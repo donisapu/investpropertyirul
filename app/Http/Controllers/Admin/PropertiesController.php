@@ -67,7 +67,6 @@ class PropertiesController extends AdminController
                 'building_area',
                 'listing_url',
                 'detail',
-                'financial',
                 'market',
                 'timeline',
                 'map_url',
@@ -140,7 +139,7 @@ class PropertiesController extends AdminController
     public function update(Request $request, $id)
     {
         $request->validate([
-            'images.*' => 'image|max:2048',
+            'images.*' => 'image|max:10240',
             'documents.*' => 'file|max:5120',
             'document_names.*' => 'nullable|string|max:255',
         ]);
@@ -158,7 +157,6 @@ class PropertiesController extends AdminController
                 'building_area',
                 'listing_url',
                 'detail',
-                'financial',
                 'market',
                 'timeline',
                 'map_url',

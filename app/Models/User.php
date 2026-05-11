@@ -85,6 +85,26 @@ class User extends Authenticatable implements MustVerifyEmail
         });
     }
 
+    public function getRoiByInvestment($investmentId)
+    {
+        $totalInvested = $this->investmentTransactions()
+            ->where('investment_id', $investmentId)
+            ->where('status', 'APPROVED')
+            ->sum('amount');
+
+        $totalProfit = WalletTransaction::where('user_id', $this->id)
+            ->where('type', 'PROFIT')
+            ->where('reference_type', 'property_financial')
+            ->whereHas('propertyFinancial.investment', function ($q) use ($investmentId) {
+                $q->where('id', $investmentId);
+            })
+            ->sum('amount');
+
+        if ($totalInvested == 0) return 0;
+
+        return ($totalProfit / $totalInvested) * 100;
+    }
+
     public function wallet()
     {
         return $this->hasOne(Wallet::class);

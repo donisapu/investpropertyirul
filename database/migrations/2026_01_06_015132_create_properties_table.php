@@ -22,7 +22,6 @@ return new class extends Migration
             $table->integer('building_area');
             $table->text('listing_url');
             $table->text('detail')->nullable();
-            $table->text('financial')->nullable();
             $table->text('market')->nullable();
             $table->text('timeline')->nullable();
             $table->text('map_url');

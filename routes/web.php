@@ -10,6 +10,7 @@ use App\Http\Controllers\Admin\PropertyConsignmentController;
 use App\Http\Controllers\Admin\PropertyCrowdfundingController;
 use App\Http\Controllers\Admin\PropertyFinancialsController;
 use App\Http\Controllers\Admin\PropertyInvestmentController;
+use App\Http\Controllers\Admin\SellRequestController;
 use App\Http\Controllers\Admin\VillaController;
 use App\Http\Controllers\Admin\WebsiteSettingController;
 use App\Http\Controllers\PublicInvestmentController;
@@ -67,6 +68,7 @@ Route::get('/projects/{slug}', [PublicProjectController::class, 'show'])->name('
 Route::get('/investments', [PublicInvestmentController::class, 'index'])->name('investments.index');
 Route::get('/investments/{id}', [PublicInvestmentController::class, 'show'])->name('investments.show')->where('id', '[0-9]+');
 Route::get('/investments/purchase/{id}', [PublicInvestmentController::class, 'purchase'])->name('investments.purchase')->where('id', '[0-9]+');
+Route::get('/investments/sell/{id}', [PublicInvestmentController::class, 'sell'])->name('investments.sell')->where('id', '[0-9]+');
 
 Route::get('/property-for-sale', [PublicPropertyConsignmentController::class, 'index'])->name('property-for-sale.index');
 Route::get('/property-for-sale/{id}', [PublicPropertyConsignmentController::class, 'show'])->name('property-for-sale.show')->where('id', '[0-9]+');
@@ -168,20 +170,26 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin'])->grou
     Route::put('{id}/deactivate', [CampaignController::class, 'deactivate'])->name('campaigns.deactivate');
 
     // Financials
-    Route::get('financials',[PropertyFinancialsController::class,'index'])->name('financials');
-    Route::get('financials/data',[PropertyFinancialsController::class,'data'])->name('financials.data');
-    Route::get('financials/show/{id}',[PropertyFinancialsController::class,'show'])->name('financials.show');
-    Route::post('financials/store/{id}',[PropertyFinancialsController::class,'store'])->name('financials.store');
-    Route::post('financials/update/{id}/{back}',[PropertyFinancialsController::class,'update'])->name('financials.update');
-    Route::get('financials/delete/{id}/{back}',[PropertyFinancialsController::class,'destroy'])->name('financials.destroy');
+    Route::get('financials', [PropertyFinancialsController::class, 'index'])->name('financials');
+    Route::get('financials/data', [PropertyFinancialsController::class, 'data'])->name('financials.data');
+    Route::get('financials/show/{id}', [PropertyFinancialsController::class, 'show'])->name('financials.show');
+    Route::post('financials/store/{id}', [PropertyFinancialsController::class, 'store'])->name('financials.store');
+    Route::post('financials/update/{id}/{back}', [PropertyFinancialsController::class, 'update'])->name('financials.update');
+    Route::get('financials/delete/{id}/{back}', [PropertyFinancialsController::class, 'destroy'])->name('financials.destroy');
+
+    // Lot Sell Management
+    Route::get('sell-request',[SellRequestController::class,'index'])->name('sell-request');
+    Route::get('sell-request/data',[SellRequestController::class,'data'])->name('sell-request.data');
+    Route::get('sell-request/accept/{id}',[SellRequestController::class,'accept'])->name('sell-request.accept');
+    Route::get('sell-request/decline/{id}',[SellRequestController::class,'decline'])->name('sell-request.decline');
 
     // Website Settings
     Route::get('/website-settings', [WebsiteSettingController::class, 'edit'])->name('website-settings.edit');
     Route::put('/website-settings', [WebsiteSettingController::class, 'update'])->name('website-settings.update');
 
     // Profile
-    Route::get('profile',[AdminProfileController::class,'index'])->name('profile');
-    Route::post('profile.update/{id}',[AdminProfileController::class,'update'])->name('profile.update');
+    Route::get('profile', [AdminProfileController::class, 'index'])->name('profile');
+    Route::post('profile.update/{id}', [AdminProfileController::class, 'update'])->name('profile.update');
 });
 
 Route::prefix('user')->name('user.')->middleware(['auth', 'role:user', 'verified'])->group(function () {
@@ -201,6 +209,9 @@ Route::prefix('user')->name('user.')->middleware(['auth', 'role:user', 'verified
     // Payment
     Route::post('payment/investment/{id}', [PaymentController::class, 'payInvestment'])->name('payment.investment');
     Route::post('payment/crowdfunding/{id}', [PaymentController::class, 'payCrowdfunding'])->name('payment.crowdfunding');
+
+    // Sell
+    Route::post('sell/investment/id/{id}',[PaymentController::class,'sellInvestment'])->name('sell.investment');
 });
 
 

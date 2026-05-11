@@ -130,12 +130,37 @@
                             <div data-i18n="Analytics">Properties</div>
                         </a>
                     </li>
-                    <li class="menu-item {{ request()->routeIs('admin.investment-properties') ? 'active' : '' }}">
-                        <a href="{{ route('admin.investment-properties') }}" class="menu-link">
-                            <i class="menu-icon tf-icons bx bx-chart-trend"></i>
-                            <div data-i18n="Analytics">Investment</div>
-                        </a>
+
+                    <li class="menu-header small text-uppercase">
+                        <span class="menu-header-text">Products</span>
                     </li>
+
+                    <li class="menu-item">
+                        <a href="javascript:void(0);" class="menu-link menu-toggle">
+                            <i class="menu-icon tf-icons bx bx-chart-trend"></i>
+                            <div data-i18n="Layouts">Investment</div>
+                        </a>
+
+                        <ul class="menu-sub">
+                            <li
+                                class="menu-item {{ request()->routeIs('admin.investment-properties') ? 'active' : '' }}">
+                                <a href="{{ route('admin.investment-properties') }}" class="menu-link">
+                                    <div data-i18n="Without menu">Property Investment</div>
+                                </a>
+                            </li>
+                            <li class="menu-item {{ request()->routeIs('admin.financials') ? 'active' : '' }}">
+                                <a href="{{ route('admin.financials') }}" class="menu-link">
+                                    <div data-i18n="Without menu">Financials</div>
+                                </a>
+                            </li>
+                            <li class="menu-item {{ request()->routeIs('admin.sell-request') ? 'active' : '' }}">
+                                <a href="{{ route('admin.sell-request') }}" class="menu-link">
+                                    <div data-i18n="Without navbar">Sell Requests</div>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+
                     <li class="menu-item {{ request()->routeIs('admin.consignment-properties') ? 'active' : '' }}">
                         <a href="{{ route('admin.consignment-properties') }}" class="menu-link">
                             <i class="menu-icon tf-icons bx bx-key"></i>
@@ -155,16 +180,7 @@
                         </a>
                     </li>
                     <li class="menu-header small text-uppercase">
-                        <span class="menu-header-text">Financials</span>
-                    </li>
-                    <li class="menu-item {{ request()->routeIs('admin.financials') ? 'active' : '' }}">
-                        <a href="{{ route('admin.financials') }}" class="menu-link">
-                            <i class="menu-icon tf-icons bx bx-home-circle"></i>
-                            <div data-i18n="Analytics">Investment</div>
-                        </a>
-                    </li>
-                    <li class="menu-header small text-uppercase">
-                        <span class="menu-header-text">Setting</span>
+                        <span class="menu-header-text">Settings</span>
                     </li>
                     <li class="menu-item {{ request()->routeIs('admin.website-settings.edit') ? 'active' : '' }}">
                         <a href="{{ route('admin.website-settings.edit') }}" class="menu-link">

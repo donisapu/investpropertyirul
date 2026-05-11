@@ -13,7 +13,7 @@
                             My Balance
                         </h5>
                         <h2 class="text-4xl font-extrabold text-slate-900 leading-none">
-                            <span class="text-lg font-bold text-emerald-600">IDR</span> 30,000
+                            <span class="text-lg font-bold text-emerald-600">IDR</span> {{ number_format($wallet->balance) }}
                         </h2>
                     </div>
 
@@ -167,10 +167,7 @@
                                     class="bg-emerald-800 text-white px-4 py-2.5 rounded-xl font-bold text-xs hover:bg-emerald-700 transition-all text-center shadow-sm shadow-emerald-200">
                                     Swap Lots
                                 </a>
-                                <button
-                                    class="bg-white text-emerald-800 border border-emerald-200 px-4 py-2.5 rounded-xl font-bold text-xs hover:bg-emerald-50 transition-all text-center">
-                                    Sell Asset
-                                </button>
+                                <a href="{{ route('investments.sell',$prop->ip->property_id) }}" class="bg-white text-emerald-800 border border-emerald-200 px-4 py-2.5 rounded-xl font-bold text-xs hover:bg-emerald-50 transition-all text-center">Sell Asset</a>
                             </div>
                         </div>
                     </div>
@@ -180,7 +177,7 @@
                 @if (count($investments) == 0 || count($crowdfundings) == 0)
                     <div class="text-center py-20 bg-slate-50 rounded-2xl border-2 border-dashed border-slate-200">
                         <p class="text-slate-500">No properties found in your portfolio.</p>
-                        <a href="/properties" class="text-emerald-600 font-bold mt-2 inline-block">Start Investing →</a>
+                        <a href="{{ route('investments.index') }}" class="text-emerald-600 font-bold mt-2 inline-block">Start Investing →</a>
                     </div>
                 @endif
             </div>

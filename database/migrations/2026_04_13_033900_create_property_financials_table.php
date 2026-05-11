@@ -21,6 +21,8 @@ return new class extends Migration
             $table->decimal('net_profit', 14, 2)->default(0);
             $table->enum('status', ['DRAFT', 'FINAL'])->default('FINAL');
             $table->unique(['property_investment_id', 'year', 'month']);
+            $table->decimal('occupancy_rate', 5, 2)->nullable();
+            $table->boolean('is_distributed')->default(false);
             $table->timestamps();
         });
     }

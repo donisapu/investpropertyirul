@@ -98,7 +98,7 @@ class PaymentController extends Controller
         } catch (\Exception $e) {
             $payment->delete();
 
-            Log::error('Xendit Error: ' . $e->getMessage());
+            // Log::error('Xendit Error: ' . $e->getMessage());
             return back()->withErrors(['error' => 'Gagal membuat invoice: ' . $e->getMessage()]);
         }
     }
@@ -139,18 +139,20 @@ class PaymentController extends Controller
                     return;
                 }
 
-                // 🟢 INVESTMENT
+                // INVESTMENT
                 if ($payment->payable_type === \App\Models\PropertyInvestment::class) {
 
                     $payable->increment('sold_lot', $payment->lot);
-
+                    $price_per_lot = $payment->amount / $payment->lot;
                     InvestmentTransaction::create([
                         'user_id' => $payment->user_id,
                         'investment_id' => $payable->id,
                         'payment_id' => $payment->id,
                         'type' => 'BUY',
+                        'status' => 'APPROVED',
                         'lot' => $payment->lot,
                         'amount' => $payment->amount,
+                        'price_per_lot' => $price_per_lot,
                         'transacted_at' => $payment->paid_at,
                     ]);
 
@@ -191,43 +193,43 @@ class PaymentController extends Controller
 
     public function sellInvestment(Request $request, $id)
     {
+        $request->validate([
+            'lot' => 'required|integer|min:1'
+        ]);
 
-        $investment = PropertyInvestment::findOrFail($id);
+        return DB::transaction(function () use ($request, $id) {
+            $investment = PropertyInvestment::where('property_id', $id)->first();
+            $portfolio = InvestmentPortfolio::where([
+                'user_id' => Auth::id(),
+                'investment_id' => $investment->id
+            ])->lockForUpdate()->firstOrFail();
 
-        $portfolio = InvestmentPortfolio::where([
-            'user_id' => Auth::id(),
-            'investment_id' => $investment->id
-        ])->firstOrFail();
+            $lot = $request->lot;
 
-        $lot = $request->lot;
+            $pendingSellLot = InvestmentTransaction::where([
+                'user_id' => Auth::id(),
+                'investment_id' => $investment->id,
+                'type' => 'SELL',
+                'status' => 'PENDING'
+            ])->sum('lot');
 
-        // validasi
-        if ($portfolio->total_lot < $lot) {
-            throw new \Exception('Lot tidak cukup');
-        }
+            if (($portfolio->total_lot - $pendingSellLot) < $lot) {
+                throw new \Exception('Lot tidak cukup atau sedang dalam proses penjualan');
+            }
 
-        // misal harga jual = price_per_lot (sementara)
-        $amount = $lot * $investment->price_per_lot;
+            $amount = $lot * $investment->price_per_lot;
 
-        DB::transaction(function () use ($portfolio, $investment, $lot, $amount) {
-
-            // 1. kurangi portfolio
-            $portfolio->decrement('total_lot', $lot);
-            $portfolio->decrement('total_invested', $amount);
-
-            // 2. kurangi dari property
-            $investment->decrement('sold_lot', $lot);
-
-            // 3. simpan transaksi
             InvestmentTransaction::create([
                 'user_id' => Auth::id(),
                 'investment_id' => $investment->id,
-                'payment_id' => null,
                 'type' => 'SELL',
+                'status' => 'PENDING',
                 'lot' => $lot,
+                'price_per_lot' => $investment->price_per_lot,
                 'amount' => $amount,
                 'transacted_at' => now(),
             ]);
+
         });
     }
 }
