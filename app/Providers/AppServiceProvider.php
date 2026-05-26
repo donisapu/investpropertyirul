@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Models\CrowdfundingFinancial;
+use App\Observers\CrowdfundingFinancialObserver;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -19,6 +21,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        // Daftarkan Observer di sini bre
+        CrowdfundingFinancial::observe(CrowdfundingFinancialObserver::class);
     }
 }

@@ -17,7 +17,7 @@ class PropertyCrowdfundingController extends AdminController
 
     public function data()
     {
-        $query = PropertyCrowdfunding::with('property')->select('id', 'property_id', 'funding_goal', 'status');
+        $query = PropertyCrowdfunding::with('property')->select('id', 'property_id', 'funding_goal', 'status', 'collected_amount');
 
         return $this->dataTable($query, 'pages.property_crowdfunding.action');
     }

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\CampaignController;
+use App\Http\Controllers\Admin\CrowdfundingFinancialsController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\DeveloperController;
 use App\Http\Controllers\Admin\ProfileController as AdminProfileController;
@@ -74,6 +75,7 @@ Route::get('/property-for-sale', [PublicPropertyConsignmentController::class, 'i
 Route::get('/property-for-sale/{id}', [PublicPropertyConsignmentController::class, 'show'])->name('property-for-sale.show')->where('id', '[0-9]+');
 
 Route::get('/crowdfunding', [PublicCrowdfundingController::class, 'index'])->name('crowdfunding.index');
+Route::get('/crowdfunding/project',[PublicCrowdfundingController::class,'project'])->name('crowdfunding.project');
 Route::get('/crowdfunding/{id}', [PublicCrowdfundingController::class, 'show'])->name('crowdfunding.show');
 Route::get('/crowdfunding/purchase/{id}', [PublicCrowdfundingController::class, 'purchase'])->name('crowdfunding.purchase');
 
@@ -169,13 +171,21 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin'])->grou
     Route::put('{id}/activate', [CampaignController::class, 'activate'])->name('campaigns.activate');
     Route::put('{id}/deactivate', [CampaignController::class, 'deactivate'])->name('campaigns.deactivate');
 
-    // Financials
+    //Investment Financials
     Route::get('financials', [PropertyFinancialsController::class, 'index'])->name('financials');
     Route::get('financials/data', [PropertyFinancialsController::class, 'data'])->name('financials.data');
     Route::get('financials/show/{id}', [PropertyFinancialsController::class, 'show'])->name('financials.show');
     Route::post('financials/store/{id}', [PropertyFinancialsController::class, 'store'])->name('financials.store');
     Route::post('financials/update/{id}/{back}', [PropertyFinancialsController::class, 'update'])->name('financials.update');
     Route::get('financials/delete/{id}/{back}', [PropertyFinancialsController::class, 'destroy'])->name('financials.destroy');
+
+    // Crowdfunding Financials
+    Route::get('cw-financials', [CrowdfundingFinancialsController::class, 'index'])->name('cw_financials');
+    Route::get('cw-financials/data', [CrowdfundingFinancialsController::class, 'data'])->name('cw_financials.data');
+    Route::get('cw-financials/show/{id}', [CrowdfundingFinancialsController::class, 'show'])->name('cw_financials.show');
+    Route::post('cw-financials/store/{id}', [CrowdfundingFinancialsController::class, 'store'])->name('cw_financials.store');
+    Route::post('cw-financials/update/{id}/{back}', [CrowdfundingFinancialsController::class, 'update'])->name('cw_financials.update');
+    Route::get('cw-financials/delete/{id}/{back}', [CrowdfundingFinancialsController::class, 'destroy'])->name('cw_financials.destroy');
 
     // Lot Sell Management
     Route::get('sell-request',[SellRequestController::class,'index'])->name('sell-request');

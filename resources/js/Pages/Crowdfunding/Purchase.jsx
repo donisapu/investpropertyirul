@@ -27,8 +27,13 @@ import PublicLayout from "@/Layouts/PublicLayout";
 import { router } from "@inertiajs/react";
 
 export default function Show({ property }) {
-    const [investAmount, setInvestAmount] = useState(100000);
-    const minAmount = 100000;
+    const [investAmount, setInvestAmount] = useState(0);
+
+    const minAmount = Number(property?.min_contribution) || 0;
+
+    useEffect(() => {
+        setInvestAmount(minAmount);
+    }, [minAmount]);
 
     const formatRupiah = (number) => {
         return new Intl.NumberFormat("id-ID", {
@@ -190,10 +195,10 @@ export default function Show({ property }) {
                                     </div>
                                 </div>
 
-                                <hr className="my-6 border-slate-100" />
+                                {/* <hr className="my-6 border-slate-100" /> */}
 
                                 {/* Use Balance Toggle */}
-                                <div className="flex items-center justify-between">
+                                {/* <div className="flex items-center justify-between">
                                     <div className="flex items-center gap-3">
                                         <div className="p-2 bg-emerald-50 rounded-lg text-emerald-600">
                                             <Wallet className="w-5 h-5" />
@@ -210,7 +215,7 @@ export default function Show({ property }) {
                                     <div className="w-12 h-6 bg-slate-200 rounded-full relative cursor-pointer">
                                         <div className="absolute left-1 top-1 bg-white w-4 h-4 rounded-full shadow-sm"></div>
                                     </div>
-                                </div>
+                                </div> */}
                             </div>
                         </div>
                     </div>
@@ -281,11 +286,7 @@ export default function Show({ property }) {
                                 </label>
                             </div>
 
-                            {/* Info Banner */}
-                            <div className="bg-orange-500 text-white text-[11px] font-bold py-2 px-4 rounded-lg text-center mb-4">
-                                The next rent distribution is no later than Apr
-                                21, 2026
-                            </div>
+
 
                             <button
                                 onClick={() =>

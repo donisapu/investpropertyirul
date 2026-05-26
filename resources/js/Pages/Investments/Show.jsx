@@ -12,6 +12,8 @@ import {
     CheckCircle,
     ExternalLink,
     X,
+    FileText,
+    Download,
 } from "lucide-react";
 import {
     AreaChart,
@@ -76,7 +78,7 @@ export default function Show({ property }) {
         { name: "Apr 2025", returns: 9.0, avg: 10 },
         { name: "May 2025", returns: 9.5, avg: 10 },
         { name: "Jun 2025", returns: 9.8, avg: 10 },
-        { name: "Jul 2025", returns: 10.0, avg: 10 },
+        { name: "Jul 2025", text: 10.0, avg: 10 },
         { name: "Aug 2025", returns: 10.2, avg: 10 },
         { name: "Sep 2025", returns: 10.1, avg: 10 },
         { name: "Oct 2025", returns: 9.5, avg: 10 },
@@ -119,6 +121,21 @@ export default function Show({ property }) {
         }
     };
 
+    const formatCurrency = (value) => {
+        return new Intl.NumberFormat("id-ID", {
+            style: "currency",
+            currency: "IDR",
+            minimumFractionDigits: 0,
+        }).format(value);
+    };
+
+    const displayImages =
+        property.images && property.images.length > 0
+            ? property.images
+            : [
+                  `https://placehold.co/800x600?text=${encodeURIComponent(property.name)}`,
+              ];
+
     return (
         <PublicLayout>
             <Head title={property.name} />
@@ -143,94 +160,145 @@ export default function Show({ property }) {
                     <div className="lg:col-span-2 space-y-8">
                         {/* Gallery Section */}
                         <div className="bg-white rounded-2xl p-4 shadow-sm border border-slate-200">
-                            <div className="grid grid-cols-4 gap-4">
+                            {displayImages.length === 1 && (
                                 <div
-                                    className="col-span-3 h-full relative group cursor-pointer"
+                                    className="w-full h-[400px] relative group cursor-pointer overflow-hidden rounded-xl"
                                     onClick={() => openLightbox(0)}
                                 >
                                     <img
-                                        src={
-                                            property.main_image ||
-                                            `https://placehold.co/800x600?text=${encodeURIComponent(property.name)}`
-                                        }
+                                        src={displayImages[0]}
                                         alt={property.name}
-                                        className="w-full h-full object-cover rounded-xl transition-opacity hover:opacity-95"
+                                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                                     />
-                                    <div className="absolute top-4 left-4">
-                                        <span
-                                            className={`px-3 py-1 rounded-lg text-sm font-bold shadow-sm ${property.sold ? "bg-slate-800 text-white" : "bg-lime-400 text-slate-900"}`}
-                                        >
-                                            {property.sold
-                                                ? "Sold Out"
-                                                : "Available"}
-                                        </span>
-                                    </div>
-                                    <a
-                                        href={property.listing_url || "#"}
-                                        target="_blank"
-                                        onClick={(e) => e.stopPropagation()}
-                                        className="absolute bottom-4 right-4 bg-white/90 hover:bg-white text-slate-900 px-4 py-2 rounded-lg text-sm font-bold flex items-center gap-2 shadow-lg transition-colors"
-                                    >
-                                        <ExternalLink className="w-4 h-4" />
-                                        Airbnb Listing
-                                    </a>
                                 </div>
-                                <div className="col-span-1 flex flex-col gap-4 h-full">
-                                    {property.images &&
-                                        property.images
+                            )}
+
+                            {displayImages.length === 2 && (
+                                <div className="grid grid-cols-2 gap-4 h-[400px]">
+                                    {displayImages.map((img, idx) => (
+                                        <div
+                                            key={idx}
+                                            className="h-full relative group cursor-pointer overflow-hidden rounded-xl"
+                                            onClick={() => openLightbox(idx)}
+                                        >
+                                            <img
+                                                src={img}
+                                                alt={`${property.name} ${idx + 1}`}
+                                                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                                            />
+                                        </div>
+                                    ))}
+                                </div>
+                            )}
+
+                            {displayImages.length === 3 && (
+                                <div className="grid grid-cols-3 gap-4 h-[400px]">
+                                    <div
+                                        className="col-span-2 h-full relative group cursor-pointer overflow-hidden rounded-xl"
+                                        onClick={() => openLightbox(0)}
+                                    >
+                                        <img
+                                            src={displayImages[0]}
+                                            alt={property.name}
+                                            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                                        />
+                                    </div>
+                                    <div className="col-span-1 grid grid-rows-2 gap-4 h-full">
+                                        {displayImages
                                             .slice(1, 3)
                                             .map((img, idx) => (
                                                 <div
                                                     key={idx}
-                                                    className="h-1/2 relative cursor-pointer"
+                                                    className="h-full relative group cursor-pointer overflow-hidden rounded-xl"
                                                     onClick={() =>
                                                         openLightbox(idx + 1)
                                                     }
                                                 >
                                                     <img
                                                         src={img}
-                                                        className="w-full h-full object-cover rounded-xl transition-opacity hover:opacity-95"
-                                                        alt=""
+                                                        alt={`${property.name} ${idx + 2}`}
+                                                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                                                     />
                                                 </div>
                                             ))}
-                                    {(!property.images ||
-                                        property.images.length < 2) && (
-                                        <>
-                                            <div className="h-1/2 bg-slate-100 rounded-xl"></div>
-                                            <div className="h-1/2 bg-slate-100 rounded-xl relative flex items-center justify-center text-slate-400 font-bold">
-                                                +2
-                                            </div>
-                                        </>
-                                    )}
-                                    {property.images &&
-                                        property.images.length > 3 && (
-                                            <div
-                                                className="h-1/2 bg-slate-100 rounded-xl relative overflow-hidden cursor-pointer group"
-                                                onClick={() => openLightbox(3)}
-                                            >
-                                                <img
-                                                    src={property.images[3]}
-                                                    className="w-full h-full object-cover opacity-50 transition-opacity group-hover:opacity-40"
-                                                    alt=""
-                                                />
-                                                <div className="absolute inset-0 flex items-center justify-center font-bold text-slate-700 text-xl">
-                                                    +
-                                                    {property.images.length - 3}
-                                                </div>
-                                            </div>
-                                        )}
+                                    </div>
                                 </div>
-                            </div>
+                            )}
 
-                            <div className="mt-6">
-                                <h1 className="text-3xl font-bold text-slate-900 mb-2">
-                                    {property.name}
-                                </h1>
-                                <div className="flex items-center text-slate-500 font-medium">
-                                    <MapPin className="w-5 h-5 mr-1 text-emerald-600" />
-                                    {property.loc}
+                            {displayImages.length >= 4 && (
+                                <div className="grid grid-cols-4 gap-4 h-[400px]">
+                                    <div
+                                        className="col-span-3 h-full relative group cursor-pointer overflow-hidden rounded-xl"
+                                        onClick={() => openLightbox(0)}
+                                    >
+                                        <img
+                                            src={displayImages[0]}
+                                            alt={property.name}
+                                            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                                        />
+                                    </div>
+                                    <div className="col-span-1 grid grid-rows-3 gap-4 h-full">
+                                        {displayImages
+                                            .slice(1, 4)
+                                            .map((img, idx) => (
+                                                <div
+                                                    key={idx}
+                                                    className="h-full relative group cursor-pointer overflow-hidden rounded-xl"
+                                                    onClick={() =>
+                                                        openLightbox(idx + 1)
+                                                    }
+                                                >
+                                                    <img
+                                                        src={img}
+                                                        alt={`${property.name} ${idx + 2}`}
+                                                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                                                    />
+                                                    {idx === 2 &&
+                                                        displayImages.length >
+                                                            4 && (
+                                                            <div className="absolute inset-0 bg-black/50 flex items-center justify-center text-white font-bold text-lg">
+                                                                +
+                                                                {displayImages.length -
+                                                                    4}
+                                                            </div>
+                                                        )}
+                                                </div>
+                                            ))}
+                                    </div>
                                 </div>
+                            )}
+                        </div>
+
+                        {/* Property Title & Status Section - BARU DISINI MANTAP */}
+                        <div className="bg-white rounded-2xl p-6 shadow-sm border border-slate-200">
+                            <div className="flex justify-between items-start gap-4">
+                                <div>
+                                    <span
+                                        className={`inline-block px-2.5 py-1 rounded-md text-xs font-bold text-white uppercase tracking-wide ${property.sold ? "bg-slate-400" : "bg-[#9fdb44]"}`}
+                                    >
+                                        {property.sold
+                                            ? "Sold Out"
+                                            : "Available"}
+                                    </span>
+                                    <h1 className="text-2xl md:text-3xl font-bold text-slate-900 mt-2 tracking-tight">
+                                        {property.name}
+                                    </h1>
+                                    <p className="text-emerald-700 font-semibold text-sm md:text-base mt-1">
+                                        {property.location || property.loc}
+                                    </p>
+                                </div>
+
+                                {property.listing_url && (
+                                    <a
+                                        href={property.listing_url}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="flex items-center gap-2 border border-emerald-800 text-emerald-800 hover:bg-emerald-50 font-bold px-4 py-2 rounded-lg text-sm transition-colors whitespace-nowrap"
+                                    >
+                                        <ExternalLink className="w-4 h-4" />
+                                        Airbnb Listing
+                                    </a>
+                                )}
                             </div>
                         </div>
 
@@ -408,31 +476,167 @@ export default function Show({ property }) {
                                     </div>
                                 )}
                                 {activeTab === "financials" && (
-                                    <div className="space-y-6">
+                                    <div className="space-y-8 animate-fade-in">
                                         <div>
-                                            <h3 className="text-lg font-bold text-emerald-800 mb-3">
-                                                Financial Overview
+                                            <h3 className="text-base font-bold text-slate-900 mb-4 flex items-center gap-2">
+                                                <span className="w-1.5 h-5 bg-emerald-500 rounded-full"></span>
+                                                Asset Value Breakdown
                                             </h3>
-                                            <div className="prose prose-slate max-w-none text-slate-600">
-                                                {property.financial ? (
-                                                    <p className="whitespace-pre-line">
-                                                        {property.financial}
-                                                    </p>
-                                                ) : (
-                                                    <p className="text-slate-400 italic">
-                                                        No financial details
-                                                        available.
-                                                    </p>
-                                                )}
+
+                                            <div className="bg-slate-50 rounded-2xl border border-slate-200 overflow-hidden divide-y divide-slate-200">
+                                                <div className="flex justify-between items-center p-4 bg-emerald-50/60">
+                                                    <span className="font-semibold text-slate-700 text-sm md:text-base">
+                                                        Total Investment Value
+                                                    </span>
+                                                    <span className="text-lg font-bold text-emerald-700">
+                                                        {formatCurrency(
+                                                            property.financials
+                                                                .investment_value,
+                                                        )}
+                                                    </span>
+                                                </div>
+
+                                                <div className="flex justify-between items-center p-4 bg-white hover:bg-slate-50/50 transition-colors">
+                                                    <span className="text-slate-600 text-sm">
+                                                        Underlying Asset Price
+                                                    </span>
+                                                    <span className="font-semibold text-slate-900 text-sm">
+                                                        {formatCurrency(
+                                                            property.financials
+                                                                .asset_price,
+                                                        )}
+                                                    </span>
+                                                </div>
+
+                                                <div className="flex justify-between items-center p-4 bg-white hover:bg-slate-50/50 transition-colors">
+                                                    <span className="text-slate-600 text-sm">
+                                                        Property Upgrades
+                                                    </span>
+                                                    <span className="font-semibold text-slate-900 text-sm">
+                                                        {formatCurrency(
+                                                            property.financials
+                                                                .property_upgrades,
+                                                        )}
+                                                    </span>
+                                                </div>
+
+                                                <div className="flex justify-between items-center p-4 bg-white hover:bg-slate-50/50 transition-colors">
+                                                    <span className="text-slate-600 text-sm">
+                                                        Notary Fee
+                                                    </span>
+                                                    <span className="font-semibold text-slate-900 text-sm">
+                                                        {formatCurrency(
+                                                            property.financials
+                                                                .notary_fee,
+                                                        )}
+                                                    </span>
+                                                </div>
+
+                                                <div className="flex justify-between items-center p-4 bg-white hover:bg-slate-50/50 transition-colors">
+                                                    <span className="text-slate-600 text-sm">
+                                                        Platform Fee
+                                                    </span>
+                                                    <span className="font-semibold text-slate-900 text-sm">
+                                                        {formatCurrency(
+                                                            property.financials
+                                                                .platform_fee,
+                                                        )}
+                                                    </span>
+                                                </div>
                                             </div>
                                         </div>
+
+                                        <div>
+                                            <h3 className="text-base font-bold text-slate-900 mb-4 flex items-center gap-2">
+                                                <span className="w-1.5 h-5 bg-blue-500 rounded-full"></span>
+                                                Projected Annual Returns
+                                            </h3>
+
+                                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                                <div className="p-5 border border-slate-200 bg-white rounded-2xl shadow-sm hover:border-blue-300 hover:shadow-md transition-all group">
+                                                    <div className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1 group-hover:text-blue-600 transition-colors">
+                                                        Annual Rental Yield
+                                                    </div>
+                                                    <div className="text-3xl font-extrabold text-slate-950 tracking-tight">
+                                                        {
+                                                            property.financials
+                                                                .rental_yield
+                                                        }
+                                                    </div>
+                                                    <p className="text-xs text-slate-500 mt-2 leading-relaxed">
+                                                        Projected passive income
+                                                        generated from property
+                                                        rental dividends.
+                                                    </p>
+                                                </div>
+
+                                                <div className="p-5 border border-slate-200 bg-white rounded-2xl shadow-sm hover:border-emerald-300 hover:shadow-md transition-all group">
+                                                    <div className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1 group-hover:text-emerald-600 transition-colors">
+                                                        Capital Appreciation
+                                                    </div>
+                                                    <div className="text-3xl font-extrabold text-slate-950 tracking-tight">
+                                                        {
+                                                            property.financials
+                                                                .appreciation_rate
+                                                        }
+                                                    </div>
+                                                    <p className="text-xs text-slate-500 mt-2 leading-relaxed">
+                                                        Estimated annual growth
+                                                        in the underlying
+                                                        property market value.
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                )}
+                                {activeTab === "documents" && (
+                                    <div className="space-y-4">
+                                        {property.documents &&
+                                        property.documents.length > 0 ? (
+                                            property.documents.map(
+                                                (doc, idx) => (
+                                                    <a
+                                                        key={idx}
+                                                        href={doc.url}
+                                                        target="_blank"
+                                                        rel="noopener noreferrer"
+                                                        className="flex items-center justify-between p-4 border border-slate-200 rounded-xl hover:border-blue-300 hover:bg-blue-50 transition-colors group"
+                                                    >
+                                                        <div className="flex items-center gap-3">
+                                                            <div className="w-10 h-10 bg-slate-100 rounded-lg flex items-center justify-center text-slate-500 group-hover:bg-blue-200 group-hover:text-blue-700 transition-colors">
+                                                                <FileText className="w-5 h-5" />
+                                                            </div>
+                                                            <div>
+                                                                <div className="font-medium text-slate-900 group-hover:text-blue-800">
+                                                                    {doc.name ||
+                                                                        `Document ${idx + 1}`}
+                                                                </div>
+                                                                <div className="text-xs text-slate-500">
+                                                                    PDF Document
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <Download className="w-5 h-5 text-slate-400 group-hover:text-blue-600" />
+                                                    </a>
+                                                ),
+                                            )
+                                        ) : (
+                                            <div className="text-center py-12 text-slate-500">
+                                                <FileText className="w-12 h-12 mx-auto mb-3 text-slate-300" />
+                                                <p>
+                                                    No documents available for
+                                                    this project yet.
+                                                </p>
+                                            </div>
+                                        )}
                                     </div>
                                 )}
                                 {activeTab === "market" && (
                                     <div className="space-y-6">
                                         <div>
                                             <h3 className="text-lg font-bold text-emerald-800 mb-3">
-                                                Market Analysis
+                                                Overview
                                             </h3>
                                             <div className="prose prose-slate max-w-none text-slate-600">
                                                 {property.market ? (
@@ -474,6 +678,7 @@ export default function Show({ property }) {
                                     "financials",
                                     "market",
                                     "timeline",
+                                    "documents",
                                 ].includes(activeTab) && (
                                     <div className="text-center py-12 text-slate-500">
                                         Content for {activeTab} coming soon...
@@ -506,14 +711,14 @@ export default function Show({ property }) {
                                     }}
                                 ></div>
                             </div>
-
                             <div className="grid grid-cols-2 gap-2 mb-6 text-center">
                                 <div className="p-2 rounded-lg bg-slate-50">
                                     <div className="text-emerald-600 font-bold text-lg">
                                         {property.financials.irr}
                                     </div>
                                     <div className="text-[0.6rem] text-slate-500 font-bold uppercase flex items-center justify-center gap-1">
-                                        ROI <Info className="w-3 h-3" />
+                                        Estimated ROI{" "}
+                                        <Info className="w-3 h-3" />
                                     </div>
                                 </div>
                                 <div className="p-2 rounded-lg bg-slate-50">
@@ -526,7 +731,10 @@ export default function Show({ property }) {
                                 </div>
                             </div>
 
-                            <div className="{grid gap-3 mb-6 ${auth.user ? 'grid-cols-2' : 'grid-cols-1'}}">
+                            {/* TYPO FIX DISINI BRE */}
+                            <div
+                                className={`grid gap-3 mb-6 ${auth.user ? "grid-cols-2" : "grid-cols-1"}`}
+                            >
                                 {auth.user ? (
                                     <Link
                                         href={
@@ -566,17 +774,10 @@ export default function Show({ property }) {
                                 )}
                             </div>
 
-                            <div className="text-center text-xs text-slate-500">
-                                If you invest 1,000 tokens, you could earn an
-                                estimated annual return of:
-                                <div className="text-slate-900 font-bold text-lg mt-1">
-                                    IDR 958,000
-                                </div>
-                            </div>
                         </div>
 
                         {/* Leaderboard Card */}
-                        <div className="bg-white rounded-2xl p-6 shadow-sm border border-slate-200">
+                        {/* <div className="bg-white rounded-2xl p-6 shadow-sm border border-slate-200">
                             <div className="text-center mb-6">
                                 <h3 className="text-sm font-bold text-slate-500 uppercase tracking-wider mb-4 flex items-center justify-center gap-2">
                                     <span className="text-amber-400">👑</span>{" "}
@@ -587,9 +788,9 @@ export default function Show({ property }) {
                                 </div>
                             </div>
 
-                            {/* Top 3 Podium */}
+
                             <div className="flex items-end justify-center gap-4 mb-8 h-32">
-                                {/* 2nd Place */}
+
                                 <div className="flex flex-col items-center">
                                     <div className="w-10 h-10 rounded-full border-2 border-slate-200 overflow-hidden mb-1">
                                         <img
@@ -605,7 +806,6 @@ export default function Show({ property }) {
                                         2
                                     </div>
                                 </div>
-                                {/* 1st Place */}
                                 <div className="flex flex-col items-center z-10">
                                     <div className="relative">
                                         <div className="w-14 h-14 rounded-full border-4 border-amber-100 overflow-hidden mb-1">
@@ -629,7 +829,6 @@ export default function Show({ property }) {
                                         1
                                     </div>
                                 </div>
-                                {/* 3rd Place */}
                                 <div className="flex flex-col items-center">
                                     <div className="w-10 h-10 rounded-full border-2 border-slate-200 overflow-hidden mb-1">
                                         <img
@@ -647,7 +846,7 @@ export default function Show({ property }) {
                                 </div>
                             </div>
 
-                            {/* List */}
+
                             <div className="space-y-3">
                                 {leaderboard.slice(3).map((user, idx) => (
                                     <div
@@ -672,7 +871,7 @@ export default function Show({ property }) {
                                     </div>
                                 ))}
                             </div>
-                        </div>
+                        </div> */}
                     </div>
                 </div>
             </div>

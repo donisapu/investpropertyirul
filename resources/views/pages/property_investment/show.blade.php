@@ -46,7 +46,7 @@
                         <tr>
                             <th>Property Value</th>
                             <th>:</th>
-                            <th>{{ number_format($data->property_value) }}</th>
+                            <th>{{ number_format($data->asset_price) }}</th>
                         </tr>
                         <tr>
                             <th>Total Lot</th>
@@ -56,7 +56,7 @@
                         <tr>
                             <th>Price Per Lot</th>
                             <th>:</th>
-                            <th>{{ number_format($data->price_perlot) }}</th>
+                            <th>{{ number_format($data->price_per_lot) }}</th>
                         </tr>
                         <tr>
                             <th>Minimum Lot Size</th>
@@ -71,12 +71,12 @@
                         <tr>
                             <th>Estimated ROI</th>
                             <th>:</th>
-                            <th>{{ $data->estimated_roi }}%</th>
+                            <th>{{ $data->rental_yield+$data->appreciation_rate }}%</th>
                         </tr>
                         <tr>
                             <th>ROI Period</th>
                             <th>:</th>
-                            <th>{{ $data->roi_period }}</th>
+                            <th>{{ $data->roi_period_months }}</th>
                         </tr>
                         <tr>
                             <th>Status</th>

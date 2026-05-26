@@ -40,4 +40,9 @@ class Properties extends Model
     {
         return $this->hasOne(PropertyInvestment::class, 'property_id');
     }
+
+    public function crowdfunding()
+    {
+        return $this->hasOne(PropertyCrowdfunding::class, 'property_id');
+    }
 }

@@ -60,9 +60,9 @@ class PublicInvestmentController extends Controller
             'name' => $investment->property->property_name,
             'loc' => $investment->property->property_location,
             'detail' => $investment->property->detail,
-            'financial' => $investment->property->financial,
             'market' => $investment->property->market,
             'timeline' => $investment->property->timeline,
+            'listing_url' => $investment->property->listing_url,
             'specs' => [
                 'bedroom' => $investment->property->bedroom,
                 'bathroom' => $investment->property->bathroom,
@@ -75,10 +75,17 @@ class PublicInvestmentController extends Controller
                 'total_tokens' => $investment->total_lot,
                 'tokens_left' => $investment->total_lot - $investment->sold_lot,
                 'progress' => $investment->total_lot > 0 ? ($investment->sold_lot / $investment->total_lot) * 100 : 0,
-                'irr' => $investment->estimated_roi . '%',
+                'irr' => $investment->rental_yield + $investment->appreciation_rate . '%',
                 'ery' => $investment->estimated_roi . '%',
-                'roi_period' => $investment->roi_period,
+                'roi_period' => $investment->roi_period_months,
                 'min_investment' => $investment->price_perlot,
+                'asset_price' => $investment->asset_price,
+                'investment_value' => $investment->total_investment_value,
+                'property_upgrades' => $investment->property_upgrades,
+                'notary_fee' => $investment->notary_fee,
+                'platform_fee' => $investment->platform_fee,
+                'rental_yield' => $investment->rental_yield . '%',
+                'appreciation_rate' => $investment->appreciation_rate . '%'
             ],
             'images' => $investment->property->images->map(function ($img) {
                 return Storage::url($img->image_url);
@@ -92,6 +99,12 @@ class PublicInvestmentController extends Controller
             //     : null,
             'sold' => $investment->status === 'sold' || ($investment->total_lot - $investment->sold_lot) <= 0,
             'map_url' => $investment->property->map_url,
+            'documents' => $investment->property->documents->map(function ($doc) {
+                return [
+                    'name' => $doc->document_name,
+                    'url' => Storage::url($doc->document_url),
+                ];
+            }),
         ];
 
         return Inertia::render('Investments/Show', compact('property'));

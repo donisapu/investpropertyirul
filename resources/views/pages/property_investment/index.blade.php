@@ -10,6 +10,7 @@
                         <th>Property Name</th>
                         <th>Property Location</th>
                         <th>Lot Available</th>
+                        <th>Sold Lot</th>
                         <th>Status</th>
                         <th>Action</th>
                     </tr>
@@ -42,6 +43,10 @@
                     {
                         data: 'remaining_lot',
                         name: 'remaining_lot'
+                    },
+                    {
+                        data: 'sold_lot',
+                        name: 'sold_lot'
                     },
                     {
                         data: 'status',

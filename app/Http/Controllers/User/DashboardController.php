@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
+use App\Models\Wallet;
 use App\Models\WebsiteSetting;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -19,15 +20,16 @@ class DashboardController extends Controller
             DB::table('investment_transactions')
             ->where('user_id', $userId)
             ->where('type', 'SELL')
-            ->where('status','APPROVED')
+            ->where('status', 'APPROVED')
             ->sum('amount');
 
         $totalInvestedCrowdfund = DB::table('crowdfunding_transactions')
             ->where('user_id', $userId)
             ->sum('amount');
 
-        $totalInvested = $totalInvestedProperti + $totalInvestedCrowdfund;
-        $availableBalance = Auth::user()->balance ?? 0;
+        $totalInvested = $totalInvestedProperti;
+        $wallet = Wallet::where('user_id', Auth::user()->id)->first();
+        $availableBalance = $wallet->balance;
         $totalReturn = 30000;
         $totalAssetValue = $totalInvested + $availableBalance;
         $activeInvestments = DB::table('investment_portfolios as ip')

@@ -111,9 +111,10 @@ export default function Show({ property }) {
                     <div className="lg:col-span-2 space-y-8">
                         {/* Gallery Section */}
                         <div className="bg-white rounded-2xl p-4 shadow-sm border border-slate-200">
-                            <div className="grid grid-cols-4 gap-4 h-[400px]">
+                            {/* Jika cuma ada 1 gambar */}
+                            {displayImages.length === 1 && (
                                 <div
-                                    className="col-span-3 h-full relative group cursor-pointer overflow-hidden rounded-xl"
+                                    className="w-full h-[400px] relative group cursor-pointer overflow-hidden rounded-xl"
                                     onClick={() => openLightbox(0)}
                                 >
                                     <img
@@ -121,49 +122,106 @@ export default function Show({ property }) {
                                         alt={property.name}
                                         className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                                     />
-                                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors" />
                                 </div>
-                                <div className="col-span-1 grid grid-rows-3 gap-4 h-full">
-                                    {displayImages
-                                        .slice(1, 4)
-                                        .map((img, idx) => (
-                                            <div
-                                                key={idx}
-                                                className="h-full relative group cursor-pointer overflow-hidden rounded-xl"
-                                                onClick={() =>
-                                                    openLightbox(idx + 1)
-                                                }
-                                            >
-                                                <img
-                                                    src={img}
-                                                    alt={`${property.name} ${idx + 2}`}
-                                                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                                                />
-                                                {idx === 2 &&
-                                                    displayImages.length >
-                                                        4 && (
-                                                        <div className="absolute inset-0 bg-black/50 flex items-center justify-center text-white font-bold text-lg">
-                                                            +
-                                                            {displayImages.length -
-                                                                4}
-                                                        </div>
-                                                    )}
-                                            </div>
-                                        ))}
-                                    {/* Fill empty slots if less than 4 images */}
-                                    {displayImages.length < 4 &&
-                                        Array(4 - displayImages.length)
-                                            .fill(0)
-                                            .map((_, idx) => (
+                            )}
+
+                            {/* Jika ada 2 gambar */}
+                            {displayImages.length === 2 && (
+                                <div className="grid grid-cols-2 gap-4 h-[400px]">
+                                    {displayImages.map((img, idx) => (
+                                        <div
+                                            key={idx}
+                                            className="h-full relative group cursor-pointer overflow-hidden rounded-xl"
+                                            onClick={() => openLightbox(idx)}
+                                        >
+                                            <img
+                                                src={img}
+                                                alt={`${property.name} ${idx + 1}`}
+                                                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                                            />
+                                        </div>
+                                    ))}
+                                </div>
+                            )}
+
+                            {/* Jika ada 3 gambar */}
+                            {displayImages.length === 3 && (
+                                <div className="grid grid-cols-3 gap-4 h-[400px]">
+                                    <div
+                                        className="col-span-2 h-full relative group cursor-pointer overflow-hidden rounded-xl"
+                                        onClick={() => openLightbox(0)}
+                                    >
+                                        <img
+                                            src={displayImages[0]}
+                                            alt={property.name}
+                                            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                                        />
+                                    </div>
+                                    <div className="col-span-1 grid grid-rows-2 gap-4 h-full">
+                                        {displayImages
+                                            .slice(1, 3)
+                                            .map((img, idx) => (
                                                 <div
-                                                    key={`empty-${idx}`}
-                                                    className="bg-slate-100 rounded-xl flex items-center justify-center text-slate-300"
+                                                    key={idx}
+                                                    className="h-full relative group cursor-pointer overflow-hidden rounded-xl"
+                                                    onClick={() =>
+                                                        openLightbox(idx + 1)
+                                                    }
                                                 >
-                                                    <Home className="w-6 h-6" />
+                                                    <img
+                                                        src={img}
+                                                        alt={`${property.name} ${idx + 2}`}
+                                                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                                                    />
                                                 </div>
                                             ))}
+                                    </div>
                                 </div>
-                            </div>
+                            )}
+
+                            {/* Jika gambar 4 atau lebih */}
+                            {displayImages.length >= 4 && (
+                                <div className="grid grid-cols-4 gap-4 h-[400px]">
+                                    <div
+                                        className="col-span-3 h-full relative group cursor-pointer overflow-hidden rounded-xl"
+                                        onClick={() => openLightbox(0)}
+                                    >
+                                        <img
+                                            src={displayImages[0]}
+                                            alt={property.name}
+                                            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                                        />
+                                    </div>
+                                    <div className="col-span-1 grid grid-rows-3 gap-4 h-full">
+                                        {displayImages
+                                            .slice(1, 4)
+                                            .map((img, idx) => (
+                                                <div
+                                                    key={idx}
+                                                    className="h-full relative group cursor-pointer overflow-hidden rounded-xl"
+                                                    onClick={() =>
+                                                        openLightbox(idx + 1)
+                                                    }
+                                                >
+                                                    <img
+                                                        src={img}
+                                                        alt={`${property.name} ${idx + 2}`}
+                                                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                                                    />
+                                                    {idx === 2 &&
+                                                        displayImages.length >
+                                                            4 && (
+                                                            <div className="absolute inset-0 bg-black/50 flex items-center justify-center text-white font-bold text-lg">
+                                                                +
+                                                                {displayImages.length -
+                                                                    4}
+                                                            </div>
+                                                        )}
+                                                </div>
+                                            ))}
+                                    </div>
+                                </div>
+                            )}
                         </div>
 
                         {/* Property Details */}
@@ -217,7 +275,7 @@ export default function Show({ property }) {
                                     <div className="space-y-6">
                                         <div>
                                             <h3 className="text-lg font-bold text-slate-900 mb-4">
-                                                About this Project
+                                                About the Project
                                             </h3>
                                             <div
                                                 className="prose prose-slate max-w-none text-slate-600"
@@ -289,7 +347,7 @@ export default function Show({ property }) {
                                                 <div className="flex items-center gap-2 mb-2">
                                                     <Clock className="w-5 h-5 text-blue-500" />
                                                     <span className="font-semibold text-slate-700">
-                                                        Tenor
+                                                        Project Durations
                                                     </span>
                                                 </div>
                                                 <div className="text-2xl font-bold text-slate-900">
@@ -312,7 +370,7 @@ export default function Show({ property }) {
                                                     )}
                                                 </div>
                                                 <div className="text-xs text-slate-500 mt-1">
-                                                    Minimum entry ticket
+                                                    Minimum contribution
                                                 </div>
                                             </div>
                                         </div>
@@ -391,23 +449,20 @@ export default function Show({ property }) {
                                         <div className="flex items-center gap-2 mb-4 text-slate-700">
                                             <MapPin className="w-5 h-5 text-blue-500" />
                                             <span className="font-medium">
-                                                {property.address},{" "}
                                                 {property.loc}
                                             </span>
                                         </div>
                                         <div className="bg-slate-100 rounded-xl h-[400px] flex items-center justify-center text-slate-500">
-                                            {property.map_location ? (
+                                            {property.map_url ? (
                                                 <iframe
-                                                    src={`https://maps.google.com/maps?q=${encodeURIComponent(property.map_location)}&t=&z=13&ie=UTF8&iwloc=&output=embed`}
-                                                    width="100%"
-                                                    height="100%"
-                                                    style={{
-                                                        border: 0,
-                                                        borderRadius: "0.75rem",
-                                                    }}
-                                                    allowFullScreen=""
-                                                    loading="lazy"
-                                                ></iframe>
+                                                        src={property.map_url}
+                                                        width="100%"
+                                                        height="100%"
+                                                        style={{ border: 0 }}
+                                                        allowFullScreen=""
+                                                        loading="lazy"
+                                                        referrerPolicy="no-referrer-when-downgrade"
+                                                    ></iframe>
                                             ) : (
                                                 <div className="text-center">
                                                     <MapPin className="w-12 h-12 mx-auto mb-3 text-slate-300" />

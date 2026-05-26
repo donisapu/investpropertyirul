@@ -9,6 +9,7 @@
                         <th>#</th>
                         <th>Property Name</th>
                         <th>Property Location</th>
+                        <th>Collected Amount</th>
                         <th>Funding Goal</th>
                         <th>Status</th>
                         <th>Action</th>
@@ -38,6 +39,10 @@
                     {
                         data: 'property.property_location',
                         name: 'property.property_location'
+                    },
+                    {
+                        data: 'collected_amount',
+                        name: 'collected_amount'
                     },
                     {
                         data: 'funding_goal',

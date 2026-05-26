@@ -31,8 +31,8 @@
                         id="" @if ($btn == 'edit') value="{{ $data->estimated_roi }}" @endif>
                 </div>
                 <div class="mb-3">
-                    <label for="">Tenor</label>
-                    <input type="text" class="form-control" name="tenor" placeholder="Tenor" id=""
+                    <label for="">Project Duration</label>
+                    <input type="text" class="form-control" name="tenor" placeholder="Project Duration" id=""
                         @if ($btn == 'edit') value="{{ $data->tenor }}" @endif>
                     <input type="hidden" name="collected_amount" value="0" id="">
                 </div>

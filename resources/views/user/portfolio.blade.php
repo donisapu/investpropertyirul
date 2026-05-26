@@ -269,18 +269,18 @@
                                     Exit Strategy
                                 </h5>
                                 <h2 class="text-sm font-bold text-slate-900">
-                                    Revenue Share
+                                    Flipping
                                 </h2>
                             </div>
                         </div>
 
                         {{-- Actions --}}
                         <div class="flex flex-col gap-2 w-full lg:w-auto min-w-[140px]">
-                            <a href="{{ route('crowdfunding.show',$cf->id) }}"
+                            <a href="{{ route('crowdfunding.show',$cf->cp->id) }}"
                                 class="bg-indigo-700 text-white px-4 py-2.5 rounded-xl font-bold text-xs hover:bg-indigo-600 transition-all text-center shadow-sm shadow-indigo-200">
                                 View Project
                             </a>
-                            <a href="{{ route('crowdfunding.purchase',$cf->id) }}"
+                            <a href="{{ route('crowdfunding.purchase',$cf->cp->id) }}"
                                 class="bg-white text-indigo-700 border border-indigo-200 px-4 py-2.5 rounded-xl font-bold text-xs hover:bg-indigo-50 transition-all text-center">
                                 Add More Fund
                         </a>

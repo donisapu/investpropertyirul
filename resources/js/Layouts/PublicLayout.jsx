@@ -110,13 +110,6 @@ export default function PublicLayout({ children }) {
                             </Link>
                             <span className="text-slate-300">|</span>
                             <Link
-                                href="/auctions"
-                                className={`${isActive("/auctions") ? "text-emerald-700 font-bold" : "hover:text-emerald-600"} transition-colors`}
-                            >
-                                LELANG/CESSIE
-                            </Link>
-                            <span className="text-slate-300">|</span>
-                            <Link
                                 href="/how-to-invest"
                                 className={`${isActive("/how-to-invest") ? "text-emerald-700 font-bold" : "hover:text-emerald-600"} transition-colors`}
                             >
@@ -279,13 +272,6 @@ export default function PublicLayout({ children }) {
                             >
                                 PROPERTY FOR SALE
                             </Link>
-                            <Link
-                                href={route("auctions.index")}
-                                className="block rounded-md py-2 px-3 text-base font-medium text-slate-900 hover:bg-slate-50 hover:text-emerald-600"
-                            >
-                                LELANG/CESSIE
-                            </Link>
-
                             <Link
                                 href="/how-to-invest"
                                 className="block rounded-md py-2 px-3 text-base font-medium text-slate-900 hover:bg-slate-50 hover:text-emerald-600"
@@ -541,14 +527,6 @@ function Footer() {
                                     className="hover:text-emerald-600"
                                 >
                                     Crowdfunding
-                                </a>
-                            </li>
-                            <li>
-                                <a
-                                    href="/auctions"
-                                    className="hover:text-emerald-600"
-                                >
-                                    Lelang/Cessie
                                 </a>
                             </li>
                             <li>

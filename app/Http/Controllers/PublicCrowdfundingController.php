@@ -53,6 +53,45 @@ class PublicCrowdfundingController extends Controller
         return Inertia::render('Crowdfunding/Index', compact('properties', 'settings'));
     }
 
+    public function project()
+    {
+        $properties = PropertyCrowdfunding::with(['property.images'])
+            ->where('status', '!=', 'draft')
+            ->paginate(9);
+
+        /** @var \Illuminate\Pagination\LengthAwarePaginator $properties */
+        $properties->through(function ($crowdfunding) {
+            $progress = 0;
+            if ($crowdfunding->funding_goal > 0) {
+                $progress = ($crowdfunding->collected_amount / $crowdfunding->funding_goal) * 100;
+            }
+
+            return [
+                'id' => $crowdfunding->property_id,
+                'crowdfunding_id' => $crowdfunding->id,
+                'name' => $crowdfunding->property->property_name,
+                'loc' => $crowdfunding->property->property_location,
+                'roi' => $crowdfunding->estimated_roi . '%',
+                'tenor' => $crowdfunding->tenor . ' Months',
+                'goal' => $crowdfunding->funding_goal,
+                'collected' => $crowdfunding->collected_amount,
+                'min_contribution' => $crowdfunding->min_contribution,
+                'progress' => $progress,
+                'status' => ucfirst($crowdfunding->status),
+                'specs' => [
+                    'bedroom' => $crowdfunding->property->bedroom,
+                    'bathroom' => $crowdfunding->property->bathroom,
+                    'area' => $crowdfunding->property->building_area . 'sqm',
+                ],
+                'image' => $crowdfunding->property->images->first() ? Storage::url($crowdfunding->property->images->first()->image_url) : null,
+            ];
+        });
+
+        $settings = WebsiteSetting::getSettings();
+
+        return Inertia::render('Crowdfunding/Project', compact('properties', 'settings'));
+    }
+
     /**
      * Show the crowdfunding property detail page.
      */
@@ -73,7 +112,7 @@ class PublicCrowdfundingController extends Controller
             'id' => $crowdfunding->id,
             'crowdfunding_id' => $crowdfunding->id,
             'name' => $crowdfunding->property->property_name,
-            'description' => $crowdfunding->property->property_description,
+            'description' => $crowdfunding->property->detail,
             'loc' => $crowdfunding->property->property_location,
             'address' => $crowdfunding->property->property_address,
             'roi' => $crowdfunding->estimated_roi . '%',
@@ -98,7 +137,7 @@ class PublicCrowdfundingController extends Controller
                     'url' => Storage::url($doc->document_url),
                 ];
             }),
-            'map_location' => $crowdfunding->property->map_location,
+            'map_url' => $crowdfunding->property->map_url,
         ];
 
         $settings = WebsiteSetting::getSettings();
@@ -142,7 +181,7 @@ class PublicCrowdfundingController extends Controller
             'images' => $crowdfunding->property->images->map(function ($image) {
                 return Storage::url($image->image_url);
             }),
-             'main_image' => $crowdfunding->property->images->first() ? Storage::url($crowdfunding->property->images->first()->image_url) : null,
+            'main_image' => $crowdfunding->property->images->first() ? Storage::url($crowdfunding->property->images->first()->image_url) : null,
             'documents' => $crowdfunding->property->documents->map(function ($doc) {
                 return [
                     'name' => $doc->document_name,

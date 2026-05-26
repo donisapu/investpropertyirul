@@ -97,13 +97,6 @@ export default function Header() {
                         </Link>
                         <span className="text-slate-300">|</span>
                         <Link
-                            href={route("auctions.index")}
-                            className="hover:text-emerald-600 transition-colors"
-                        >
-                            LELANG/CESSIE
-                        </Link>
-                        <span className="text-slate-300">|</span>
-                        <Link
                             href="/how-to-invest"
                             className="hover:text-emerald-600 transition-colors"
                         >
@@ -262,12 +255,6 @@ export default function Header() {
                             className="block rounded-md py-2 px-3 text-base font-medium text-slate-900 hover:bg-slate-50 hover:text-emerald-600"
                         >
                             PROPERTY FOR SALE
-                        </Link>
-                        <Link
-                            href={route("auctions.index")}
-                            className="block rounded-md py-2 px-3 text-base font-medium text-slate-900 hover:bg-slate-50 hover:text-emerald-600"
-                        >
-                            LELANG/CESSIE
                         </Link>
 
                         <Link

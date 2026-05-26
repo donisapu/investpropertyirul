@@ -18,9 +18,7 @@
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-        href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap"
-        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet" />
 
     <!-- Icons. Uncomment required icon fonts -->
     <link rel="stylesheet" href="{{ asset('assets/vendor/fonts/boxicons.css') }}" />
@@ -161,18 +159,34 @@
                         </ul>
                     </li>
 
+                    <li class="menu-item">
+                        <a href="javascript:void(0);" class="menu-link menu-toggle">
+                            <i class="menu-icon tf-icons bx bx-community"></i>
+                            <div data-i18n="Layouts">Crowdfunding</div>
+                        </a>
+
+                        <ul class="menu-sub">
+                            <li
+                                class="menu-item {{ request()->routeIs('admin.crowdfunding-properties') ? 'active' : '' }}">
+                                <a href="{{ route('admin.crowdfunding-properties') }}" class="menu-link">
+                                    <div data-i18n="Analytics">Property Crowdfunding</div>
+                                </a>
+                            </li>
+                            <li class="menu-item {{ request()->routeIs('admin.cw_financials') ? 'active' : '' }}">
+                                <a href="{{ route('admin.cw_financials') }}" class="menu-link">
+                                    <div data-i18n="Without menu">Financials</div>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+
                     <li class="menu-item {{ request()->routeIs('admin.consignment-properties') ? 'active' : '' }}">
                         <a href="{{ route('admin.consignment-properties') }}" class="menu-link">
                             <i class="menu-icon tf-icons bx bx-key"></i>
                             <div data-i18n="Analytics">Consignment</div>
                         </a>
                     </li>
-                    <li class="menu-item {{ request()->routeIs('admin.crowdfunding-properties') ? 'active' : '' }}">
-                        <a href="{{ route('admin.crowdfunding-properties') }}" class="menu-link">
-                            <i class="menu-icon tf-icons bx bx-community"></i>
-                            <div data-i18n="Analytics">Crowdfunding</div>
-                        </a>
-                    </li>
+
                     <li class="menu-item {{ request()->routeIs('admin.auction-properties') ? 'active' : '' }}">
                         <a href="{{ route('admin.auction-properties') }}" class="menu-link">
                             <i class="menu-icon tf-icons bx bx-gavel"></i>

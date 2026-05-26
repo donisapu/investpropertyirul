@@ -23,8 +23,6 @@
                 <span class="text-slate-300">|</span>
                 <a href="#properti" class="hover:text-emerald-600 transition-colors">PROPERTY FOR SALE</a>
                 <span class="text-slate-300">|</span>
-                <a href="#properti" class="hover:text-emerald-600 transition-colors">LELANG/CESSIE</a>
-                <span class="text-slate-300">|</span>
                 <a href="#fitur" class="hover:text-emerald-600 transition-colors">HOW TO INVEST</a>
                 <span class="text-slate-300">|</span>
                 <a href="#properti" class="hover:text-emerald-600 transition-colors">DEVELOPER</a>
@@ -112,8 +110,6 @@
             <a href="#properti"
                 class="block rounded-md py-2 px-3 text-base font-medium text-slate-900 hover:bg-slate-50 hover:text-emerald-600">PROPERTY
                 FOR SALE</a>
-            <a href="#properti"
-                class="block rounded-md py-2 px-3 text-base font-medium text-slate-900 hover:bg-slate-50 hover:text-emerald-600">LELANG/CESSIE</a>
             <a href="#fitur"
                 class="block rounded-md py-2 px-3 text-base font-medium text-slate-900 hover:bg-slate-50 hover:text-emerald-600">HOW
                 TO INVEST</a>
