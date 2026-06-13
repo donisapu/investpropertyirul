@@ -6,6 +6,7 @@ use App\Models\PropertyConsignment;
 use App\Models\WebsiteSetting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use App\Models\PropertyAuction;
 use Inertia\Inertia;
 
 class PublicPropertyConsignmentController extends Controller
@@ -15,72 +16,109 @@ class PublicPropertyConsignmentController extends Controller
      */
     public function index(Request $request)
     {
-        $query = PropertyConsignment::with(['property.images']);
+        $search = $request->input('search');
+        $location = $request->input('location');
+        $type = $request->input('type');
+        $minPrice = $request->input('min_price');
+        $maxPrice = $request->input('max_price');
+        $category = $request->input('listing_category');
 
-        // Search by name or location
-        if ($request->filled('search')) {
-            $search = $request->search;
-            $query->whereHas('property', function ($q) use ($search) {
-                $q->where('property_name', 'like', "%{$search}%")
-                  ->orWhere('property_location', 'like', "%{$search}%");
+        $propertyFilter = function ($q) use ($search, $location, $type) {
+            if ($search) {
+                $q->where(function ($sub) use ($search) {
+                    $sub->where('property_name', 'like', "%{$search}%")
+                        ->orWhere('property_location', 'like', "%{$search}%");
+                });
+            }
+            if ($location) {
+                $q->where('property_location', 'like', "%{$location}%");
+            }
+            if ($type) {
+                $q->where('property_type', $type);
+            }
+        };
+
+        $consignments = collect();
+        $auctions = collect();
+
+        if (empty($category) || $category === 'sale') {
+            $consignmentQuery = PropertyConsignment::with(['property.images'])->where('status', 'active');
+            $consignmentQuery->whereHas('property', $propertyFilter);
+
+            if ($minPrice) $consignmentQuery->where('property_value', '>=', $minPrice);
+            if ($maxPrice) $consignmentQuery->where('property_value', '<=', $maxPrice);
+
+            $consignments = $consignmentQuery->get()->map(function ($item) {
+                return [
+                    'id' => $item->property_id,
+                    'listing_id' => $item->id,
+                    'listing_category' => 'sale',
+                    'name' => $item->property->property_name,
+                    'loc' => $item->property->property_location,
+                    'price' => $item->property_value,
+                    'ownership' => $item->ownership,
+                    'type' => $item->property->property_type,
+                    'status' => $item->status,
+                    'specs' => [
+                        'bedroom' => $item->property->bedroom,
+                        'bathroom' => $item->property->bathroom,
+                        'area' => $item->property->building_area . 'sqm',
+                    ],
+                    'image' => $item->property->images->first() ? Storage::url($item->property->images->first()->image_url) : null,
+                ];
             });
         }
 
-        // Filter by location
-        if ($request->filled('location')) {
-            $query->whereHas('property', function ($q) use ($request) {
-                $q->where('property_location', 'like', "%{$request->location}%");
+        if (empty($category) || $category === 'auction') {
+            $auctionQuery = PropertyAuction::with(['property.images'])->whereIn('status', ['upcoming', 'active']);
+            $auctionQuery->whereHas('property', $propertyFilter);
+
+            if ($minPrice) $auctionQuery->where('open_bid', '>=', $minPrice);
+            if ($maxPrice) $auctionQuery->where('open_bid', '<=', $maxPrice);
+
+            $auctions = $auctionQuery->get()->map(function ($item) {
+                return [
+                    'id' => $item->property_id,
+                    'listing_id' => $item->id,
+                    'listing_category' => 'auction',
+                    'name' => $item->property->property_name,
+                    'loc' => $item->property->property_location,
+                    'price' => $item->open_bid,
+                    'ownership' => 'Auction / Lelang',
+                    'type' => $item->property->property_type,
+                    'status' => $item->status,
+                    'specs' => [
+                        'bedroom' => $item->property->bedroom,
+                        'bathroom' => $item->property->bathroom,
+                        'area' => $item->property->building_area . 'sqm',
+                    ],
+                    'image' => $item->property->images->first() ? Storage::url($item->property->images->first()->image_url) : null,
+                ];
             });
         }
 
-        // Filter by property type
-        if ($request->filled('type')) {
-            $query->whereHas('property', function ($q) use ($request) {
-                $q->where('property_type', $request->type);
-            });
+        $mergedProperties = $consignments->merge($auctions);
+
+        if (!$search && !$location && !$type && !$minPrice && !$maxPrice && !$category) {
+            $mergedProperties = $mergedProperties->shuffle();
         }
 
-        // Filter by bedroom
-        if ($request->filled('bedroom')) {
-            $query->whereHas('property', function ($q) use ($request) {
-                $q->where('bedroom', '>=', $request->bedroom);
-            });
-        }
-
-        // Filter by price range
-        if ($request->filled('min_price')) {
-            $query->where('property_value', '>=', $request->min_price);
-        }
-        if ($request->filled('max_price')) {
-            $query->where('property_value', '<=', $request->max_price);
-        }
-
-        $properties = $query->paginate(9);
-
-        /** @var \Illuminate\Pagination\LengthAwarePaginator $properties */
-        $properties->through(function ($consignment) {
-            return [
-                'id' => $consignment->property_id,
-                'consignment_id' => $consignment->id,
-                'name' => $consignment->property->property_name,
-                'loc' => $consignment->property->property_location,
-                'price' => $consignment->property_value,
-                'ownership' => $consignment->ownership,
-                'type' => $consignment->property->property_type,
-                'status' => $consignment->status,
-                'specs' => [
-                    'bedroom' => $consignment->property->bedroom,
-                    'bathroom' => $consignment->property->bathroom,
-                    'area' => $consignment->property->building_area . 'sqm',
-                    'land_area' => $consignment->property->land_area . 'sqm',
-                ],
-                'image' => $consignment->property->images->first() ? Storage::url($consignment->property->images->first()->image_url) : null,
-            ];
-        });
+        $page = $request->input('page', 1);
+        $perPage = 9;
+        $paginatedData = new \Illuminate\Pagination\LengthAwarePaginator(
+            $mergedProperties->forPage($page, $perPage),
+            $mergedProperties->count(),
+            $perPage,
+            $page,
+            ['path' => url()->current(), 'query' => $request->query()]
+        );
 
         $settings = WebsiteSetting::getSettings();
 
-        return Inertia::render('PropertyForSale/Index', compact('properties', 'settings'));
+        return Inertia::render('PropertyForSale/Index', [
+            'properties' => $paginatedData,
+            'settings' => $settings
+        ]);
     }
 
     /**

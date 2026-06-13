@@ -37,6 +37,31 @@ export default function Show({ property }) {
         document.body.style.overflow = "hidden";
     };
 
+    const extractMapUrl = (htmlString) => {
+        if (!htmlString) return null;
+
+        let url = htmlString.trim();
+
+        if (url.includes("<iframe")) {
+            const match = url.match(/src=["'](.*?)["']/);
+            url = match ? match[1] : null;
+        }
+
+        if (!url) return null;
+
+        if (url.startsWith("embed?pb=")) {
+            return `https://www.google.com/maps/${url}`;
+        }
+
+        if (url.startsWith("www.")) {
+            return `https://${url}`;
+        }
+
+        return url;
+    };
+
+    const finalMapUrl = extractMapUrl(property.map_url);
+
     const closeLightbox = () => {
         setLightboxOpen(false);
         document.body.style.overflow = "unset";
@@ -461,15 +486,23 @@ export default function Show({ property }) {
                                                     Location
                                                 </h3>
                                                 <div className="aspect-video w-full rounded-xl overflow-hidden bg-slate-100">
-                                                    <iframe
-                                                        src={property.map_url}
-                                                        width="100%"
-                                                        height="100%"
-                                                        style={{ border: 0 }}
-                                                        allowFullScreen=""
-                                                        loading="lazy"
-                                                        referrerPolicy="no-referrer-when-downgrade"
-                                                    ></iframe>
+                                                    {finalMapUrl ? (
+                                                        <iframe
+                                                            src={finalMapUrl}
+                                                            width="100%"
+                                                            height="100%"
+                                                            style={{
+                                                                border: 0,
+                                                            }}
+                                                            allowFullScreen=""
+                                                            loading="lazy"
+                                                            referrerPolicy="no-referrer-when-downgrade"
+                                                        ></iframe>
+                                                    ) : (
+                                                        <div className="w-full h-full flex items-center justify-center text-slate-400">
+                                                            Peta tidak tersedia
+                                                        </div>
+                                                    )}
                                                 </div>
                                             </div>
                                         )}
@@ -768,12 +801,17 @@ export default function Show({ property }) {
                                 )}
 
                                 {auth.user && (
-                                    <button className="w-full py-3 rounded-lg font-bold text-white mb-3 shadow-lg bg-rose-600 hover:bg-rose-700 shadow-rose-900/20">
+                                    <Link
+                                        href={route(
+                                            "investments.sell",
+                                            property.id,
+                                        )}
+                                        className="w-full py-3 rounded-lg font-bold text-white mb-3 shadow-lg bg-rose-600 hover:bg-rose-700 shadow-rose-900/20 text-center block"
+                                    >
                                         Sell
-                                    </button>
+                                    </Link>
                                 )}
                             </div>
-
                         </div>
 
                         {/* Leaderboard Card */}

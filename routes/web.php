@@ -75,12 +75,13 @@ Route::get('/property-for-sale', [PublicPropertyConsignmentController::class, 'i
 Route::get('/property-for-sale/{id}', [PublicPropertyConsignmentController::class, 'show'])->name('property-for-sale.show')->where('id', '[0-9]+');
 
 Route::get('/crowdfunding', [PublicCrowdfundingController::class, 'index'])->name('crowdfunding.index');
-Route::get('/crowdfunding/project',[PublicCrowdfundingController::class,'project'])->name('crowdfunding.project');
+Route::get('/crowdfunding/project', [PublicCrowdfundingController::class, 'project'])->name('crowdfunding.project');
 Route::get('/crowdfunding/{id}', [PublicCrowdfundingController::class, 'show'])->name('crowdfunding.show');
 Route::get('/crowdfunding/purchase/{id}', [PublicCrowdfundingController::class, 'purchase'])->name('crowdfunding.purchase');
 
 Route::get('/auctions', [AuctionController::class, 'index'])->name('auctions.index');
 Route::get('/auctions/{id}', [AuctionController::class, 'show'])->name('auctions.show');
+Route::post('/auctions/{id}/bid', [AuctionController::class, 'placeBid'])->name('auctions.bid')->middleware('auth');
 
 Route::get('/how-to-invest', function () {
     $settings = WebsiteSetting::getSettings();
@@ -145,6 +146,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin'])->grou
     Route::post('auction-properties/store', [PropertyAuctionController::class, 'store'])->name('auction-properties.store');
     Route::post('auction-properties/update/{id}', [PropertyAuctionController::class, 'update'])->name('auction-properties.update');
     Route::delete('auction-properties/destroy/{id}', [PropertyAuctionController::class, 'destroy'])->name('auction-properties.destroy');
+    Route::get('auction-properties/{id}/bids', [PropertyAuctionController::class, 'getBids'])->name('admin.auction-properties.bids');
 
     // Developer Master
     Route::get('developers', [DeveloperController::class, 'index'])->name('developers');
@@ -188,10 +190,10 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin'])->grou
     Route::get('cw-financials/delete/{id}/{back}', [CrowdfundingFinancialsController::class, 'destroy'])->name('cw_financials.destroy');
 
     // Lot Sell Management
-    Route::get('sell-request',[SellRequestController::class,'index'])->name('sell-request');
-    Route::get('sell-request/data',[SellRequestController::class,'data'])->name('sell-request.data');
-    Route::get('sell-request/accept/{id}',[SellRequestController::class,'accept'])->name('sell-request.accept');
-    Route::get('sell-request/decline/{id}',[SellRequestController::class,'decline'])->name('sell-request.decline');
+    Route::get('sell-request', [SellRequestController::class, 'index'])->name('sell-request');
+    Route::get('sell-request/data', [SellRequestController::class, 'data'])->name('sell-request.data');
+    Route::get('sell-request/accept/{id}', [SellRequestController::class, 'accept'])->name('sell-request.accept');
+    Route::get('sell-request/decline/{id}', [SellRequestController::class, 'decline'])->name('sell-request.decline');
 
     // Website Settings
     Route::get('/website-settings', [WebsiteSettingController::class, 'edit'])->name('website-settings.edit');
@@ -221,7 +223,7 @@ Route::prefix('user')->name('user.')->middleware(['auth', 'role:user', 'verified
     Route::post('payment/crowdfunding/{id}', [PaymentController::class, 'payCrowdfunding'])->name('payment.crowdfunding');
 
     // Sell
-    Route::post('sell/investment/id/{id}',[PaymentController::class,'sellInvestment'])->name('sell.investment');
+    Route::post('sell/investment/id/{id}', [PaymentController::class, 'sellInvestment'])->name('sell.investment');
 });
 
 

@@ -90,7 +90,7 @@ export default function Header() {
                         </Link>
                         <span className="text-slate-300">|</span>
                         <Link
-                            href="#property"
+                            href="/property-for-sale"
                             className="hover:text-emerald-600 transition-colors"
                         >
                             PROPERTY FOR SALE
@@ -251,7 +251,7 @@ export default function Header() {
                             CROWDFUNDING
                         </Link>
                         <Link
-                            href="#property"
+                            href={route("property-for-sale")}
                             className="block rounded-md py-2 px-3 text-base font-medium text-slate-900 hover:bg-slate-50 hover:text-emerald-600"
                         >
                             PROPERTY FOR SALE

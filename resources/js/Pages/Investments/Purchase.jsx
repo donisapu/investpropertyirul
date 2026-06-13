@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Head, Link } from "@inertiajs/react";
-import { router } from "@inertiajs/react";
+import { Head, Link, router, useForm } from "@inertiajs/react";
 import {
     Bed,
     Bath,
@@ -45,6 +44,20 @@ export default function Show({ property }) {
         if (quantity < minLot) {
             setQuantity(minLot);
         }
+    };
+
+    const { data, setData, post, processing } = useForm({
+        lot: quantity,
+    });
+
+    useEffect(() => {
+        setData("lot", quantity);
+    }, [quantity]);
+
+    const handlePaymentSubmit = (e) => {
+        e.preventDefault();
+        // Tembak ke route payment lu
+        post(route("user.payment.investment", property.id));
     };
 
     const totalPayment = quantity * tokenPrice;
@@ -309,20 +322,41 @@ export default function Show({ property }) {
                             </div>
 
                             <button
-                                onClick={() =>
-                                    router.post(
-                                        route(
-                                            "user.payment.investment",
-                                            property.id,
-                                        ),
-                                        {
-                                            lot: quantity,
-                                        },
-                                    )
-                                }
-                                className="w-full py-4 rounded-lg font-bold text-white bg-emerald-900 hover:bg-emerald-800"
+                                onClick={handlePaymentSubmit}
+                                disabled={processing}
+                                className={`w-full py-4 rounded-lg font-bold text-white transition-all ${
+                                    processing
+                                        ? "bg-slate-400 cursor-not-allowed opacity-70"
+                                        : "bg-emerald-900 hover:bg-emerald-800"
+                                }`}
                             >
-                                Continue to Payment
+                                {processing ? (
+                                    <span className="flex items-center justify-center gap-2">
+                                        <svg
+                                            className="animate-spin h-5 w-5 text-white"
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            fill="none"
+                                            viewBox="0 0 24 24"
+                                        >
+                                            <circle
+                                                className="opacity-25"
+                                                cx="12"
+                                                cy="12"
+                                                r="10"
+                                                stroke="currentColor"
+                                                strokeWidth="4"
+                                            ></circle>
+                                            <path
+                                                className="opacity-75"
+                                                fill="currentColor"
+                                                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                                            ></path>
+                                        </svg>
+                                        Processing
+                                    </span>
+                                ) : (
+                                    "Continue to Payment"
+                                )}
                             </button>
                         </div>
                     </div>

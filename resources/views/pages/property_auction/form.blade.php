@@ -42,9 +42,11 @@
                 <div class="mb-3">
                     <label for="" class="form-label">Status</label>
                     <select name="status" class="form-control" id="">
-                        <option value="scheduled" @if ($btn == 'edit' && $data->status == 'scheduled') selected @endif>Scheduled</option>
-                        <option value="running" @if ($btn == 'edit' && $data->status == 'running') selected @endif>Running</option>
-                        <option value="finished" @if ($btn == 'edit' && $data->status == 'finished') selected @endif>Finished</option>
+                        <option value="draft" @if ($btn == 'edit' && $data->status == 'draft') selected @endif>Draft</option>
+                        <option value="upcoming" @if ($btn == 'edit' && $data->status == 'upcoming') selected @endif>Upcoming</option>
+                        <option value="active" @if ($btn == 'edit' && $data->status == 'active') selected @endif>Active</option>
+                        <option value="closed" @if ($btn == 'edit' && $data->status == 'closed') selected @endif>Closed</option>
+                        <option value="suspended" @if ($btn == 'edit' && $data->status == 'suspended') selected @endif>Suspended</option>
                     </select>
                 </div>
             </div>

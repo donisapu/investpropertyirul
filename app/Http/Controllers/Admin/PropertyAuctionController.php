@@ -68,13 +68,19 @@ class PropertyAuctionController extends AdminController
      */
     public function show($id)
     {
-        $data = PropertyAuction::with('property')->where('id', $id)->first();
+        $data = PropertyAuction::with('property')->findOrFail($id);
+
+        $bids = \App\Models\AuctionBid::with('user')
+            ->where('property_auction_id', $id)
+            ->orderBy('bid_amount', 'desc')
+            ->get();
 
         return $this->view('show', [
-            'title' => 'Auction Property',
+            'title' => 'Auction Property Detail',
             'data' => $data,
             'img' => PropertyImage::where('property_id', $data->property_id)->get(),
             'doc' => PropertyDocument::where('property_id', $data->property_id)->get(),
+            'bids' => $bids
         ]);
     }
 
@@ -121,5 +127,18 @@ class PropertyAuctionController extends AdminController
         $property->delete();
 
         return redirect()->route('admin.auction-properties');
+    }
+
+    public function getBids($id)
+    {
+        $bids = \App\Models\AuctionBid::with('user')
+            ->where('property_auction_id', $id)
+            ->orderBy('bid_amount', 'desc')
+            ->get();
+
+        return response()->json([
+            'status' => 'success',
+            'data' => $bids
+        ]);
     }
 }

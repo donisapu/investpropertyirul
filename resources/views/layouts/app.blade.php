@@ -18,7 +18,9 @@
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap"
+        rel="stylesheet" />
 
     <!-- Icons. Uncomment required icon fonts -->
     <link rel="stylesheet" href="{{ asset('assets/vendor/fonts/boxicons.css') }}" />
@@ -187,11 +189,25 @@
                         </a>
                     </li>
 
-                    <li class="menu-item {{ request()->routeIs('admin.auction-properties') ? 'active' : '' }}">
-                        <a href="{{ route('admin.auction-properties') }}" class="menu-link">
+                    <li class="menu-item">
+                        <a href="javascript:void(0);" class="menu-link menu-toggle">
                             <i class="menu-icon tf-icons bx bx-gavel"></i>
-                            <div data-i18n="Analytics">Auction</div>
+                            <div data-i18n="Layouts">Auctions</div>
                         </a>
+
+                        <ul class="menu-sub">
+                            <li
+                                class="menu-item {{ request()->routeIs('admin.auction-properties') ? 'active' : '' }}">
+                                <a href="{{ route('admin.auction-properties') }}" class="menu-link">
+                                    <div data-i18n="Analytics">Auction</div>
+                                </a>
+                            </li>
+                            <li class="menu-item {{ request()->routeIs('admin.financials') ? 'active' : '' }}">
+                                <a href="{{ route('admin.financials') }}" class="menu-link">
+                                    <div data-i18n="Without menu">Bidding</div>
+                                </a>
+                            </li>
+                        </ul>
                     </li>
                     <li class="menu-header small text-uppercase">
                         <span class="menu-header-text">Settings</span>

@@ -18,7 +18,7 @@ return new class extends Migration
             $table->decimal('bid_increment', 16, 2);
             $table->date('date_start');
             $table->date('date_finish');
-            $table->enum('status', ['scheduled', 'running', 'finished']);
+            $table->enum('status', ['draft', 'upcoming', 'active', 'closed', 'suspended'])->default('draft');
             $table->timestamps();
         });
     }

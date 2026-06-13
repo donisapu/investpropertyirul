@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\AuctionBid;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -22,5 +23,10 @@ class PropertyAuction extends Model
     public function property()
     {
         return $this->belongsTo(Properties::class, 'property_id');
+    }
+
+    public function bids()
+    {
+        return $this->hasMany(AuctionBid::class, 'property_auction_id');
     }
 }

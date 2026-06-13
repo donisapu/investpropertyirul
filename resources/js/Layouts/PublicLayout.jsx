@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Link, usePage } from "@inertiajs/react";
 import { FacebookIcon, Instagram, Youtube } from "lucide-react";
+import { Toaster } from "react-hot-toast";
 
 export default function PublicLayout({ children }) {
     const { auth, settings } = usePage().props;
@@ -45,6 +46,23 @@ export default function PublicLayout({ children }) {
     return (
         <div className="min-h-screen flex flex-col font-sans text-slate-900 bg-slate-50">
             {/* Header */}
+            <Toaster
+                position="top-center"
+                toastOptions={{
+                    duration: 3000,
+                    style: {
+                        background: "#334155",
+                        color: "#fff",
+                        borderRadius: "0.5rem",
+                    },
+                    success: {
+                        style: { background: "#059669", color: "white" },
+                    },
+                    error: {
+                        style: { background: "#e11d48", color: "white" },
+                    },
+                }}
+            />
             <header
                 className={`sticky top-0 z-50 transition-colors duration-300 ${
                     isScrolled || isMobileMenuOpen
