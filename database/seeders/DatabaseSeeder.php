@@ -16,7 +16,7 @@ class DatabaseSeeder extends Seeder
             RoleSeeder::class,
             UserSeeder::class,
             UserRoleSeeder::class,
-            // WebsiteSettingsSeeder::class,
+            WebsiteSettingsSeeder::class,
             // PropertySeeder::class,
             // PropertyCrowdfundingSeeder::class,
             // PropertyConsignmentSeeder::class,

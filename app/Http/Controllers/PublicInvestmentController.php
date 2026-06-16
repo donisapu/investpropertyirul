@@ -27,8 +27,8 @@ class PublicInvestmentController extends Controller
                 'investment_id' => $investment->id,
                 'name' => $investment->property->property_name,
                 'loc' => $investment->property->property_location,
-                'roi' => $investment->estimated_roi . '%',
-                'roi_period' => $investment->roi_period, // Placeholder
+                'roi' => $investment->rental_yield + $investment->appreciation_rate . '%',
+                'roi_period' => $investment->roi_period_months, // Placeholder
                 'progress' => $investment->total_lot > 0 ? ($investment->sold_lot / $investment->total_lot) * 100 : 0,
                 'tokens' => number_format($investment->total_lot - $investment->sold_lot),
                 'sold' => $investment->status === 'sold' || ($investment->total_lot - $investment->sold_lot) <= 0,
