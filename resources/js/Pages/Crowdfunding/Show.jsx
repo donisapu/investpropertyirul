@@ -17,6 +17,13 @@ import {
     Banknote,
     Clock,
     TrendingUp,
+    Image as ImageIcon,
+    Building2,
+    Zap,
+    ShieldCheck,
+    CheckCircle2,
+    ArrowRight,
+    Lock
 } from "lucide-react";
 import PublicLayout from "@/Layouts/PublicLayout";
 
@@ -90,6 +97,13 @@ export default function Show({ property }) {
                   `https://placehold.co/800x600?text=${encodeURIComponent(property.name)}`,
               ];
 
+    const tabMenus = [
+        { id: "details", label: "Detail Proyek", icon: Info },
+        { id: "financials", label: "Finansial", icon: TrendingUp },
+        { id: "documents", label: "Dokumen", icon: FileText },
+        { id: "location", label: "Lokasi", icon: MapPin },
+    ];
+
     return (
         <PublicLayout>
             <Head title={property.name} />
@@ -110,35 +124,38 @@ export default function Show({ property }) {
                     {/* Left Column */}
                     <div className="lg:col-span-2 space-y-8">
                         {/* Gallery Section */}
-                        <div className="bg-white rounded-2xl p-4 shadow-sm border border-slate-200">
+                        <div className="w-full relative rounded-[2rem] overflow-hidden bg-slate-100/50">
                             {/* Jika cuma ada 1 gambar */}
                             {displayImages.length === 1 && (
                                 <div
-                                    className="w-full h-[400px] relative group cursor-pointer overflow-hidden rounded-xl"
+                                    className="w-full h-[300px] md:h-[400px] lg:h-[480px] relative group cursor-pointer overflow-hidden"
                                     onClick={() => openLightbox(0)}
                                 >
                                     <img
                                         src={displayImages[0]}
                                         alt={property.name}
-                                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                                     />
+                                    {/* Soft overlay on hover */}
+                                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300"></div>
                                 </div>
                             )}
 
                             {/* Jika ada 2 gambar */}
                             {displayImages.length === 2 && (
-                                <div className="grid grid-cols-2 gap-4 h-[400px]">
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-2 h-[400px] lg:h-[480px]">
                                     {displayImages.map((img, idx) => (
                                         <div
                                             key={idx}
-                                            className="h-full relative group cursor-pointer overflow-hidden rounded-xl"
+                                            className="h-full relative group cursor-pointer overflow-hidden"
                                             onClick={() => openLightbox(idx)}
                                         >
                                             <img
                                                 src={img}
                                                 alt={`${property.name} ${idx + 1}`}
-                                                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                                                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                                             />
+                                            <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300"></div>
                                         </div>
                                     ))}
                                 </div>
@@ -146,24 +163,25 @@ export default function Show({ property }) {
 
                             {/* Jika ada 3 gambar */}
                             {displayImages.length === 3 && (
-                                <div className="grid grid-cols-3 gap-4 h-[400px]">
+                                <div className="grid grid-cols-1 md:grid-cols-3 gap-2 h-[400px] lg:h-[480px]">
                                     <div
-                                        className="col-span-2 h-full relative group cursor-pointer overflow-hidden rounded-xl"
+                                        className="md:col-span-2 h-full relative group cursor-pointer overflow-hidden"
                                         onClick={() => openLightbox(0)}
                                     >
                                         <img
                                             src={displayImages[0]}
                                             alt={property.name}
-                                            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                                            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                                         />
+                                        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300"></div>
                                     </div>
-                                    <div className="col-span-1 grid grid-rows-2 gap-4 h-full">
+                                    <div className="hidden md:grid grid-rows-2 gap-2 h-full">
                                         {displayImages
                                             .slice(1, 3)
                                             .map((img, idx) => (
                                                 <div
                                                     key={idx}
-                                                    className="h-full relative group cursor-pointer overflow-hidden rounded-xl"
+                                                    className="h-full relative group cursor-pointer overflow-hidden"
                                                     onClick={() =>
                                                         openLightbox(idx + 1)
                                                     }
@@ -171,8 +189,9 @@ export default function Show({ property }) {
                                                     <img
                                                         src={img}
                                                         alt={`${property.name} ${idx + 2}`}
-                                                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                                                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                                                     />
+                                                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300"></div>
                                                 </div>
                                             ))}
                                     </div>
@@ -181,24 +200,25 @@ export default function Show({ property }) {
 
                             {/* Jika gambar 4 atau lebih */}
                             {displayImages.length >= 4 && (
-                                <div className="grid grid-cols-4 gap-4 h-[400px]">
+                                <div className="grid grid-cols-1 md:grid-cols-4 gap-2 h-[400px] lg:h-[480px] relative">
                                     <div
-                                        className="col-span-3 h-full relative group cursor-pointer overflow-hidden rounded-xl"
+                                        className="md:col-span-3 h-full relative group cursor-pointer overflow-hidden"
                                         onClick={() => openLightbox(0)}
                                     >
                                         <img
                                             src={displayImages[0]}
                                             alt={property.name}
-                                            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                                            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                                         />
+                                        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300"></div>
                                     </div>
-                                    <div className="col-span-1 grid grid-rows-3 gap-4 h-full">
+                                    <div className="hidden md:grid grid-rows-3 gap-2 h-full">
                                         {displayImages
                                             .slice(1, 4)
                                             .map((img, idx) => (
                                                 <div
                                                     key={idx}
-                                                    className="h-full relative group cursor-pointer overflow-hidden rounded-xl"
+                                                    className="h-full relative group cursor-pointer overflow-hidden"
                                                     onClick={() =>
                                                         openLightbox(idx + 1)
                                                     }
@@ -206,255 +226,299 @@ export default function Show({ property }) {
                                                     <img
                                                         src={img}
                                                         alt={`${property.name} ${idx + 2}`}
-                                                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                                                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                                                     />
+
+                                                    {/* Overlay "Lihat Foto Lainnya" Keren untuk foto terakhir */}
                                                     {idx === 2 &&
-                                                        displayImages.length >
-                                                            4 && (
-                                                            <div className="absolute inset-0 bg-black/50 flex items-center justify-center text-white font-bold text-lg">
+                                                    displayImages.length > 4 ? (
+                                                        <div className="absolute inset-0 bg-slate-900/40 backdrop-blur-sm flex flex-col items-center justify-center text-white transition-colors group-hover:bg-slate-900/50">
+                                                            <span className="text-2xl font-black mb-1">
                                                                 +
                                                                 {displayImages.length -
                                                                     4}
-                                                            </div>
-                                                        )}
+                                                            </span>
+                                                            <span className="text-[10px] font-bold uppercase tracking-wider">
+                                                                Foto Lainnya
+                                                            </span>
+                                                        </div>
+                                                    ) : (
+                                                        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300"></div>
+                                                    )}
                                                 </div>
                                             ))}
                                     </div>
+
+                                    {/* Tombol Floating Floating Khusus (Pilihan Opsional, Tapi Bikin Mevvah) */}
+                                    <button
+                                        onClick={() => openLightbox(0)}
+                                        className="absolute bottom-4 right-4 z-10 bg-white/90 backdrop-blur-md hover:bg-white text-slate-800 border border-slate-200/50 px-4 py-2.5 rounded-xl font-bold text-xs flex items-center gap-2 shadow-lg transition-all hover:scale-105 hover:-translate-y-0.5 active:scale-95 hidden sm:flex"
+                                    >
+                                        <ImageIcon
+                                            size={16}
+                                            className="text-[#24608B]"
+                                        />
+                                        Lihat Semua Foto
+                                    </button>
                                 </div>
                             )}
                         </div>
 
                         {/* Property Details */}
-                        <div className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
-                            {/* Tabs */}
-                            <div className="flex border-b border-slate-200">
-                                <button
-                                    onClick={() => setActiveTab("details")}
-                                    className={`px-6 py-4 text-sm font-medium transition-colors ${
-                                        activeTab === "details"
-                                            ? "text-blue-600 border-b-2 border-blue-600"
-                                            : "text-slate-500 hover:text-slate-700"
-                                    }`}
-                                >
-                                    Project Details
-                                </button>
-                                <button
-                                    onClick={() => setActiveTab("financials")}
-                                    className={`px-6 py-4 text-sm font-medium transition-colors ${
-                                        activeTab === "financials"
-                                            ? "text-blue-600 border-b-2 border-blue-600"
-                                            : "text-slate-500 hover:text-slate-700"
-                                    }`}
-                                >
-                                    Financials
-                                </button>
-                                <button
-                                    onClick={() => setActiveTab("documents")}
-                                    className={`px-6 py-4 text-sm font-medium transition-colors ${
-                                        activeTab === "documents"
-                                            ? "text-blue-600 border-b-2 border-blue-600"
-                                            : "text-slate-500 hover:text-slate-700"
-                                    }`}
-                                >
-                                    Documents
-                                </button>
-                                <button
-                                    onClick={() => setActiveTab("location")}
-                                    className={`px-6 py-4 text-sm font-medium transition-colors ${
-                                        activeTab === "location"
-                                            ? "text-blue-600 border-b-2 border-blue-600"
-                                            : "text-slate-500 hover:text-slate-700"
-                                    }`}
-                                >
-                                    Location
-                                </button>
+                        <div className="bg-white rounded-[2rem] shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-100 overflow-hidden">
+                            {/* ================= HEADER TABS (Model Segmented Control) ================= */}
+                            <div className="p-2 border-b border-slate-100 bg-slate-50/50 overflow-x-auto no-scrollbar">
+                                <div className="flex gap-2 min-w-max">
+                                    {tabMenus.map((tab) => {
+                                        const Icon = tab.icon;
+                                        const isActive = activeTab === tab.id;
+
+                                        return (
+                                            <button
+                                                key={tab.id}
+                                                onClick={() =>
+                                                    setActiveTab(tab.id)
+                                                }
+                                                className={`flex items-center gap-2 px-5 py-3 rounded-xl text-sm font-bold transition-all duration-300 ${
+                                                    isActive
+                                                        ? "bg-white text-[#24608B] shadow-sm ring-1 ring-slate-200/50"
+                                                        : "text-slate-500 hover:text-slate-800 hover:bg-slate-100/80"
+                                                }`}
+                                            >
+                                                <Icon
+                                                    size={16}
+                                                    className={
+                                                        isActive
+                                                            ? "text-[#24608B]"
+                                                            : "text-slate-400"
+                                                    }
+                                                />
+                                                {tab.label}
+                                            </button>
+                                        );
+                                    })}
+                                </div>
                             </div>
 
-                            <div className="p-6">
+                            {/* ================= ISI KONTEN TABS ================= */}
+                            <div className="p-6 md:p-8">
+                                {/* TAB 1: DETAILS */}
                                 {activeTab === "details" && (
-                                    <div className="space-y-6">
+                                    <div className="space-y-8 animate-in fade-in slide-in-from-bottom-2 duration-500">
+                                        {/* Spesifikasi Grid */}
+                                        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 bg-slate-50 border border-slate-100 p-5 rounded-2xl">
+                                            <div className="flex flex-col gap-1">
+                                                <span className="text-[10px] uppercase tracking-widest font-bold text-slate-400">
+                                                    Kamar Tidur
+                                                </span>
+                                                <div className="font-black text-slate-800 text-lg flex items-center gap-2">
+                                                    <Bed className="w-5 h-5 text-blue-500" />{" "}
+                                                    {property.specs.bedroom}
+                                                </div>
+                                            </div>
+                                            <div className="flex flex-col gap-1">
+                                                <span className="text-[10px] uppercase tracking-widest font-bold text-slate-400">
+                                                    Kamar Mandi
+                                                </span>
+                                                <div className="font-black text-slate-800 text-lg flex items-center gap-2">
+                                                    <Bath className="w-5 h-5 text-blue-500" />{" "}
+                                                    {property.specs.bathroom}
+                                                </div>
+                                            </div>
+                                            <div className="flex flex-col gap-1">
+                                                <span className="text-[10px] uppercase tracking-widest font-bold text-slate-400">
+                                                    Luas Bangunan
+                                                </span>
+                                                <div className="font-black text-slate-800 text-lg flex items-center gap-2">
+                                                    <Maximize className="w-5 h-5 text-blue-500" />{" "}
+                                                    {property.specs.area}
+                                                </div>
+                                            </div>
+                                            <div className="flex flex-col gap-1">
+                                                <span className="text-[10px] uppercase tracking-widest font-bold text-slate-400">
+                                                    Lantai
+                                                </span>
+                                                <div className="font-black text-slate-800 text-lg flex items-center gap-2">
+                                                    <Building2 className="w-5 h-5 text-blue-500" />{" "}
+                                                    {property.specs.floors || 1}
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        {/* Deskripsi */}
                                         <div>
-                                            <h3 className="text-lg font-bold text-slate-900 mb-4">
-                                                About the Project
+                                            <h3 className="text-xl font-extrabold text-slate-900 mb-4 flex items-center gap-2">
+                                                Tentang Proyek Ini
                                             </h3>
+                                            {/* Prose styling biar teks HTML dari backend keliatan rapi (butuh @tailwindcss/typography) */}
                                             <div
-                                                className="prose prose-slate max-w-none text-slate-600"
+                                                className="prose prose-slate prose-p:text-slate-500 prose-p:leading-relaxed prose-headings:font-bold prose-a:text-[#24608B] max-w-none text-sm md:text-base"
                                                 dangerouslySetInnerHTML={{
                                                     __html: property.description,
                                                 }}
                                             />
                                         </div>
-
-                                        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 p-4 bg-slate-50 rounded-xl">
-                                            <div>
-                                                <div className="text-xs text-slate-500 mb-1">
-                                                    Bedrooms
-                                                </div>
-                                                <div className="font-semibold flex items-center gap-2">
-                                                    <Bed className="w-4 h-4 text-blue-500" />
-                                                    {property.specs.bedroom}
-                                                </div>
-                                            </div>
-                                            <div>
-                                                <div className="text-xs text-slate-500 mb-1">
-                                                    Bathrooms
-                                                </div>
-                                                <div className="font-semibold flex items-center gap-2">
-                                                    <Bath className="w-4 h-4 text-blue-500" />
-                                                    {property.specs.bathroom}
-                                                </div>
-                                            </div>
-                                            <div>
-                                                <div className="text-xs text-slate-500 mb-1">
-                                                    Building Area
-                                                </div>
-                                                <div className="font-semibold flex items-center gap-2">
-                                                    <Maximize className="w-4 h-4 text-blue-500" />
-                                                    {property.specs.area}
-                                                </div>
-                                            </div>
-                                            <div>
-                                                <div className="text-xs text-slate-500 mb-1">
-                                                    Floors
-                                                </div>
-                                                <div className="font-semibold flex items-center gap-2">
-                                                    <Building2 className="w-4 h-4 text-blue-500" />
-                                                    {property.specs.floors || 1}
-                                                </div>
-                                            </div>
-                                        </div>
                                     </div>
                                 )}
 
+                                {/* TAB 2: FINANCIALS */}
                                 {activeTab === "financials" && (
-                                    <div className="space-y-6">
-                                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                                            <div className="p-4 border border-slate-200 rounded-xl">
-                                                <div className="flex items-center gap-2 mb-2">
-                                                    <TrendingUp className="w-5 h-5 text-green-500" />
-                                                    <span className="font-semibold text-slate-700">
-                                                        Est. ROI
+                                    <div className="space-y-8 animate-in fade-in slide-in-from-bottom-2 duration-500">
+                                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                            <div className="p-5 border border-slate-100 bg-emerald-50/50 rounded-2xl relative overflow-hidden group hover:border-emerald-200 transition-colors">
+                                                <div className="absolute -right-4 -top-4 w-16 h-16 bg-emerald-100 rounded-full blur-xl group-hover:bg-emerald-200 transition-colors"></div>
+                                                <div className="flex flex-col relative z-10">
+                                                    <span className="text-xs font-bold text-slate-500 mb-1 flex items-center gap-1.5">
+                                                        <TrendingUp className="w-4 h-4 text-emerald-600" />{" "}
+                                                        Estimasi ROI
                                                     </span>
-                                                </div>
-                                                <div className="text-2xl font-bold text-slate-900">
-                                                    {property.roi}
-                                                </div>
-                                                <div className="text-xs text-slate-500 mt-1">
-                                                    Annualized return
+                                                    <span className="text-3xl font-black text-slate-900 tracking-tight">
+                                                        {property.roi}
+                                                    </span>
+                                                    <span className="text-[10px] uppercase tracking-widest text-slate-400 mt-1">
+                                                        Per Tahun (Annualized)
+                                                    </span>
                                                 </div>
                                             </div>
-                                            <div className="p-4 border border-slate-200 rounded-xl">
-                                                <div className="flex items-center gap-2 mb-2">
-                                                    <Clock className="w-5 h-5 text-blue-500" />
-                                                    <span className="font-semibold text-slate-700">
-                                                        Project Durations
+
+                                            <div className="p-5 border border-slate-100 bg-blue-50/50 rounded-2xl relative overflow-hidden group hover:border-blue-200 transition-colors">
+                                                <div className="absolute -right-4 -top-4 w-16 h-16 bg-blue-100 rounded-full blur-xl group-hover:bg-blue-200 transition-colors"></div>
+                                                <div className="flex flex-col relative z-10">
+                                                    <span className="text-xs font-bold text-slate-500 mb-1 flex items-center gap-1.5">
+                                                        <Clock className="w-4 h-4 text-blue-600" />{" "}
+                                                        Tenor Proyek
                                                     </span>
-                                                </div>
-                                                <div className="text-2xl font-bold text-slate-900">
-                                                    {property.tenor}
-                                                </div>
-                                                <div className="text-xs text-slate-500 mt-1">
-                                                    Project duration
+                                                    <span className="text-3xl font-black text-slate-900 tracking-tight">
+                                                        {property.tenor}
+                                                    </span>
+                                                    <span className="text-[10px] uppercase tracking-widest text-slate-400 mt-1">
+                                                        Durasi Pendanaan
+                                                    </span>
                                                 </div>
                                             </div>
-                                            <div className="p-4 border border-slate-200 rounded-xl">
-                                                <div className="flex items-center gap-2 mb-2">
-                                                    <Banknote className="w-5 h-5 text-purple-500" />
-                                                    <span className="font-semibold text-slate-700">
-                                                        Min. Invest
+
+                                            <div className="p-5 border border-slate-100 bg-indigo-50/50 rounded-2xl relative overflow-hidden group hover:border-indigo-200 transition-colors">
+                                                <div className="absolute -right-4 -top-4 w-16 h-16 bg-indigo-100 rounded-full blur-xl group-hover:bg-indigo-200 transition-colors"></div>
+                                                <div className="flex flex-col relative z-10">
+                                                    <span className="text-xs font-bold text-slate-500 mb-1 flex items-center gap-1.5">
+                                                        <Banknote className="w-4 h-4 text-indigo-600" />{" "}
+                                                        Min. Pembelian
                                                     </span>
-                                                </div>
-                                                <div className="text-2xl font-bold text-slate-900">
-                                                    {formatCurrency(
-                                                        property.min_contribution,
-                                                    )}
-                                                </div>
-                                                <div className="text-xs text-slate-500 mt-1">
-                                                    Minimum contribution
+                                                    <span className="text-2xl font-black text-slate-900 tracking-tight mt-1">
+                                                        {formatCurrency(
+                                                            property.min_contribution,
+                                                        )}
+                                                    </span>
+                                                    <span className="text-[10px] uppercase tracking-widest text-slate-400 mt-1">
+                                                        Per 1 Lot/Token
+                                                    </span>
                                                 </div>
                                             </div>
                                         </div>
 
-                                        <div className="bg-blue-50 p-6 rounded-xl">
-                                            <h4 className="font-bold text-blue-900 mb-2">
-                                                Why invest in this project?
+                                        <div className="bg-slate-900 p-6 rounded-2xl text-white relative overflow-hidden">
+                                            <div className="absolute right-0 bottom-0 opacity-10 pointer-events-none">
+                                                <Building2
+                                                    size={120}
+                                                    className="-mb-4 -mr-4"
+                                                />
+                                            </div>
+                                            <h4 className="font-extrabold text-lg mb-4 relative z-10">
+                                                Kenapa Investasi di Proyek Ini?
                                             </h4>
-                                            <ul className="space-y-2">
-                                                <li className="flex items-start gap-2 text-sm text-blue-800">
-                                                    <CheckCircle className="w-4 h-4 mt-0.5 text-blue-600 flex-shrink-0" />
-                                                    High potential for capital
-                                                    appreciation due to
-                                                    strategic location.
+                                            <ul className="space-y-3 relative z-10">
+                                                <li className="flex items-start gap-3 text-sm text-slate-300">
+                                                    <CheckCircle className="w-5 h-5 mt-0.5 text-emerald-400 flex-shrink-0" />
+                                                    Potensi kenaikan harga modal
+                                                    (Capital Gain) tinggi karena
+                                                    lokasi strategis di pusat
+                                                    kota.
                                                 </li>
-                                                <li className="flex items-start gap-2 text-sm text-blue-800">
-                                                    <CheckCircle className="w-4 h-4 mt-0.5 text-blue-600 flex-shrink-0" />
-                                                    Secured by underlying
-                                                    property asset.
+                                                <li className="flex items-start gap-3 text-sm text-slate-300">
+                                                    <CheckCircle className="w-5 h-5 mt-0.5 text-emerald-400 flex-shrink-0" />
+                                                    Dana dilindungi dengan
+                                                    underlying asset berupa
+                                                    fisik properti (Aman).
                                                 </li>
-                                                <li className="flex items-start gap-2 text-sm text-blue-800">
-                                                    <CheckCircle className="w-4 h-4 mt-0.5 text-blue-600 flex-shrink-0" />
-                                                    Managed by experienced
-                                                    property developers.
+                                                <li className="flex items-start gap-3 text-sm text-slate-300">
+                                                    <CheckCircle className="w-5 h-5 mt-0.5 text-emerald-400 flex-shrink-0" />
+                                                    Dikelola penuh oleh
+                                                    developer dan operator
+                                                    properti berpengalaman.
                                                 </li>
                                             </ul>
                                         </div>
                                     </div>
                                 )}
 
+                                {/* TAB 3: DOCUMENTS */}
                                 {activeTab === "documents" && (
-                                    <div className="space-y-4">
+                                    <div className="animate-in fade-in slide-in-from-bottom-2 duration-500">
                                         {property.documents &&
                                         property.documents.length > 0 ? (
-                                            property.documents.map(
-                                                (doc, idx) => (
-                                                    <a
-                                                        key={idx}
-                                                        href={doc.url}
-                                                        target="_blank"
-                                                        rel="noopener noreferrer"
-                                                        className="flex items-center justify-between p-4 border border-slate-200 rounded-xl hover:border-blue-300 hover:bg-blue-50 transition-colors group"
-                                                    >
-                                                        <div className="flex items-center gap-3">
-                                                            <div className="w-10 h-10 bg-slate-100 rounded-lg flex items-center justify-center text-slate-500 group-hover:bg-blue-200 group-hover:text-blue-700 transition-colors">
-                                                                <FileText className="w-5 h-5" />
-                                                            </div>
-                                                            <div>
-                                                                <div className="font-medium text-slate-900 group-hover:text-blue-800">
-                                                                    {doc.name ||
-                                                                        `Document ${idx + 1}`}
+                                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                                {property.documents.map(
+                                                    (doc, idx) => (
+                                                        <a
+                                                            key={idx}
+                                                            href={doc.url}
+                                                            target="_blank"
+                                                            rel="noopener noreferrer"
+                                                            className="flex items-center justify-between p-4 bg-white border border-slate-200 rounded-2xl hover:border-[#24608B] hover:shadow-[0_8px_30px_rgba(36,96,139,0.08)] transition-all group"
+                                                        >
+                                                            <div className="flex items-center gap-4">
+                                                                <div className="w-12 h-12 bg-rose-50 rounded-xl flex items-center justify-center text-rose-500 group-hover:bg-rose-500 group-hover:text-white transition-colors">
+                                                                    <FileText className="w-6 h-6" />
                                                                 </div>
-                                                                <div className="text-xs text-slate-500">
-                                                                    PDF Document
+                                                                <div>
+                                                                    <div className="font-bold text-slate-900 group-hover:text-[#24608B] transition-colors line-clamp-1">
+                                                                        {doc.name ||
+                                                                            `Dokumen Legalitas ${idx + 1}`}
+                                                                    </div>
+                                                                    <div className="text-[11px] font-medium uppercase tracking-wider text-slate-400 mt-0.5">
+                                                                        PDF •
+                                                                        Disahkan
+                                                                        Notaris
+                                                                    </div>
                                                                 </div>
                                                             </div>
-                                                        </div>
-                                                        <Download className="w-5 h-5 text-slate-400 group-hover:text-blue-600" />
-                                                    </a>
-                                                ),
-                                            )
+                                                            <div className="w-8 h-8 rounded-full bg-slate-50 flex items-center justify-center text-slate-400 group-hover:bg-[#24608B] group-hover:text-white transition-all">
+                                                                <Download className="w-4 h-4" />
+                                                            </div>
+                                                        </a>
+                                                    ),
+                                                )}
+                                            </div>
                                         ) : (
-                                            <div className="text-center py-12 text-slate-500">
-                                                <FileText className="w-12 h-12 mx-auto mb-3 text-slate-300" />
-                                                <p>
-                                                    No documents available for
-                                                    this project yet.
+                                            <div className="text-center py-16 bg-slate-50 border border-dashed border-slate-200 rounded-2xl">
+                                                <FileText className="w-12 h-12 mx-auto mb-4 text-slate-300" />
+                                                <h4 className="font-bold text-slate-700 mb-1">
+                                                    Dokumen Belum Tersedia
+                                                </h4>
+                                                <p className="text-sm text-slate-500">
+                                                    Prospektus dan legalitas
+                                                    sedang dalam proses unggah.
                                                 </p>
                                             </div>
                                         )}
                                     </div>
                                 )}
 
+                                {/* TAB 4: LOCATION */}
                                 {activeTab === "location" && (
-                                    <div>
-                                        <div className="flex items-center gap-2 mb-4 text-slate-700">
-                                            <MapPin className="w-5 h-5 text-blue-500" />
-                                            <span className="font-medium">
+                                    <div className="animate-in fade-in slide-in-from-bottom-2 duration-500">
+                                        <div className="flex items-center gap-2 mb-4 bg-slate-50 w-fit px-4 py-2 rounded-xl border border-slate-100">
+                                            <MapPin className="w-5 h-5 text-rose-500" />
+                                            <span className="font-bold text-slate-700 text-sm">
                                                 {property.loc}
                                             </span>
                                         </div>
-                                        <div className="bg-slate-100 rounded-xl h-[400px] flex items-center justify-center text-slate-500">
+
+                                        <div className="bg-slate-200 rounded-2xl h-[400px] flex items-center justify-center text-slate-500 overflow-hidden shadow-inner relative border border-slate-200">
                                             {property.map_url ? (
-                                                <iframe
+                                                <>
+                                                    <div className="absolute inset-0 pointer-events-none rounded-2xl ring-1 ring-inset ring-slate-900/10 z-10"></div>
+                                                    <iframe
                                                         src={property.map_url}
                                                         width="100%"
                                                         height="100%"
@@ -462,13 +526,15 @@ export default function Show({ property }) {
                                                         allowFullScreen=""
                                                         loading="lazy"
                                                         referrerPolicy="no-referrer-when-downgrade"
+                                                        className="grayscale-[20%] contrast-125" // Filter CSS biar mapnya keliatan lebih "aesthetic"
                                                     ></iframe>
+                                                </>
                                             ) : (
                                                 <div className="text-center">
                                                     <MapPin className="w-12 h-12 mx-auto mb-3 text-slate-300" />
-                                                    <p>
-                                                        Map location not
-                                                        available
+                                                    <p className="font-medium">
+                                                        Pin lokasi peta belum
+                                                        ditambahkan.
                                                     </p>
                                                 </div>
                                             )}
@@ -481,115 +547,129 @@ export default function Show({ property }) {
 
                     {/* Right Column - Sidebar */}
                     <div className="space-y-6">
-                        {/* Investment Card */}
-                        <div className="bg-white rounded-2xl shadow-lg border border-slate-100 p-6 sticky top-24">
-                            <div className="flex justify-between items-start mb-6">
+                        <div className="bg-white rounded-[2rem] border border-slate-100 shadow-[0_20px_50px_rgba(0,0,0,0.06)] p-8 sticky top-24">
+                            {/* Status Badge + Funding Header */}
+                            <div className="flex justify-between items-start mb-8">
                                 <div>
-                                    <div className="text-sm text-slate-500 mb-1">
-                                        Funding Goal
+                                    <div className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">
+                                        Target Pendanaan
                                     </div>
-                                    <div className="text-2xl font-bold text-slate-900">
+                                    <div className="text-3xl font-black text-slate-900 tracking-tight">
                                         {formatCurrency(property.goal)}
                                     </div>
                                 </div>
-                                <div
-                                    className={`px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider ${
+                                {/* Status Badge Modern */}
+                                <span
+                                    className={`px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest border ${
                                         property.status === "Open"
-                                            ? "bg-green-100 text-green-700"
-                                            : property.status === "Success"
-                                              ? "bg-blue-100 text-blue-700"
-                                              : "bg-slate-100 text-slate-700"
+                                            ? "bg-emerald-50 text-emerald-600 border-emerald-100"
+                                            : "bg-slate-100 text-slate-600 border-slate-200"
                                     }`}
                                 >
                                     {property.status}
-                                </div>
+                                </span>
                             </div>
 
-                            {/* Progress Bar */}
-                            <div className="mb-6">
-                                <div className="flex justify-between text-sm font-semibold text-slate-700 mb-2">
-                                    <span className="text-blue-600">
-                                        {property.progress}% Funded
+                            {/* Progres Bar Dinamis */}
+                            <div className="mb-8">
+                                <div className="flex justify-between items-center text-xs font-bold mb-3">
+                                    <span className="text-[#24608B] flex items-center gap-1.5">
+                                        <Zap
+                                            size={14}
+                                            className="fill-[#24608B]"
+                                        />{" "}
+                                        {property.progress}% Terkumpul
                                     </span>
-                                    <span>
+                                    <span className="text-slate-900 font-black">
                                         {formatCurrency(property.collected)}
                                     </span>
                                 </div>
-                                <div className="w-full bg-slate-100 rounded-full h-3 overflow-hidden">
+                                <div className="w-full bg-slate-100 rounded-full h-3 overflow-hidden shadow-inner">
                                     <div
-                                        className="bg-blue-600 h-full rounded-full transition-all duration-1000 ease-out"
+                                        className="bg-gradient-to-r from-blue-600 to-blue-500 h-full rounded-full transition-all duration-1000 ease-out"
                                         style={{
-                                            width: `${Math.max(property.progress, 0)}%`,
+                                            width: `${Math.min(property.progress, 100)}%`,
                                         }}
                                     ></div>
                                 </div>
-                                <div className="text-xs text-slate-500 mt-2 text-right">
-                                    from {formatCurrency(property.goal)} goal
-                                </div>
                             </div>
 
-                            <div className="grid grid-cols-2 gap-4 mb-6">
-                                <div className="p-3 bg-slate-50 rounded-lg text-center">
-                                    <div className="text-xs text-slate-500 mb-1">
-                                        Min. Invest
+                            {/* Grid Info Keuangan (Dibuat lebih rapi dan ikonik) */}
+                            <div className="grid grid-cols-2 gap-3 mb-8">
+                                <div className="bg-slate-50 p-4 rounded-2xl border border-slate-100">
+                                    <div className="text-[9px] font-bold text-slate-400 uppercase tracking-widest mb-1">
+                                        Min. Investasi
                                     </div>
-                                    <div className="font-bold text-slate-900">
+                                    <div className="font-black text-slate-900 text-sm">
                                         {formatCurrency(
                                             property.min_contribution,
                                         )}
                                     </div>
                                 </div>
-                                <div className="p-3 bg-slate-50 rounded-lg text-center">
-                                    <div className="text-xs text-slate-500 mb-1">
+                                <div className="bg-emerald-50/50 p-4 rounded-2xl border border-emerald-100">
+                                    <div className="text-[9px] font-bold text-emerald-600 uppercase tracking-widest mb-1">
                                         Est. ROI
                                     </div>
-                                    <div className="font-bold text-green-600">
+                                    <div className="font-black text-emerald-700 text-sm">
                                         {property.roi}
                                     </div>
                                 </div>
                             </div>
 
+                            {/* Tombol CTA Utama */}
                             {auth.user ? (
                                 <Link
                                     href={route(
                                         "crowdfunding.purchase",
                                         property.id,
                                     )}
-                                    className="block text-center w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 rounded-xl shadow-lg shadow-blue-200 transition-all transform hover:-translate-y-1 active:translate-y-0"
+                                    className="w-full group flex items-center justify-center gap-2 bg-slate-900 hover:bg-[#24608B] text-white font-black py-4 rounded-2xl transition-all shadow-lg hover:shadow-blue-900/20 hover:-translate-y-0.5"
                                 >
-                                    Invest Now
+                                    Invest Sekarang{" "}
+                                    <ChevronRight
+                                        size={18}
+                                        className="group-hover:translate-x-1 transition-transform"
+                                    />
                                 </Link>
                             ) : (
-                                <a
+                                <Link
                                     href={route("login")}
-                                    className="block text-center w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 rounded-xl shadow-lg shadow-blue-200 transition-all transform hover:-translate-y-1 active:translate-y-0"
+                                    className="w-full flex items-center justify-center gap-2 border-2 border-slate-900 text-slate-900 hover:bg-slate-900 hover:text-white font-black py-4 rounded-2xl transition-all duration-300 transform hover:-translate-y-0.5"
                                 >
-                                    Login to Invest
-                                </a>
+                                    <Lock size={16} /> Login untuk Investasi
+                                </Link>
                             )}
 
-                            <p className="text-xs text-slate-400 text-center mt-4">
-                                By clicking "Invest Now", you agree to our Terms
-                                of Service and Risk Disclosure.
-                            </p>
+                            {/* Trust Markers */}
+                            <div className="mt-6 flex items-center justify-center gap-2 text-[10px] font-bold text-slate-400 uppercase tracking-widest">
+                                <ShieldCheck
+                                    size={14}
+                                    className="text-emerald-500"
+                                />{" "}
+                                Transaksi Terenkripsi
+                            </div>
                         </div>
 
                         {/* Help Card */}
-                        <div className="bg-slate-50 rounded-2xl p-6 border border-slate-200">
-                            <h4 className="font-bold text-slate-900 mb-2 flex items-center gap-2">
-                                <Info className="w-5 h-5 text-blue-500" />
-                                Need Help?
-                            </h4>
-                            <p className="text-sm text-slate-600 mb-4">
-                                Have questions about this project? Our
-                                investment team is here to help.
-                            </p>
-                            <a
-                                href="#"
-                                className="text-blue-600 text-sm font-semibold hover:underline"
-                            >
-                                Contact Support &rarr;
-                            </a>
+                        <div className="bg-white rounded-3xl p-6 border border-slate-100 shadow-sm flex items-center gap-4">
+                            <div className="w-12 h-12 bg-blue-50 rounded-full flex items-center justify-center text-blue-600 flex-none">
+                                <Info size={20} />
+                            </div>
+                            <div>
+                                <h4 className="font-bold text-slate-900 text-sm">
+                                    Butuh Bantuan?
+                                </h4>
+                                <p className="text-[11px] text-slate-500 mb-2 leading-relaxed">
+                                    Tim investasi kami siap membantu pertanyaan
+                                    Anda.
+                                </p>
+                                <a
+                                    href="#"
+                                    className="text-xs font-bold text-[#24608B] hover:underline flex items-center gap-1"
+                                >
+                                    Kontak Support <ArrowRight size={12} />
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -635,30 +715,5 @@ export default function Show({ property }) {
                 </div>
             )}
         </PublicLayout>
-    );
-}
-
-function Building2({ className }) {
-    return (
-        <svg
-            className={className}
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-        >
-            <path d="M6 22V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v18Z" />
-            <path d="M6 12H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2" />
-            <path d="M18 9h2a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-2" />
-            <path d="M10 6h4" />
-            <path d="M10 10h4" />
-            <path d="M10 14h4" />
-            <path d="M10 18h4" />
-        </svg>
     );
 }
