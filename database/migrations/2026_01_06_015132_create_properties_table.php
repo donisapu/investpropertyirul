@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('property_location');
             $table->integer('bedroom');
             $table->integer('bathroom');
-            $table->enum('property_type', ['Villa', 'House']);
+            $table->enum('property_type', ['Villa', 'Rumah', 'Apartemen', 'Kos', 'Restoran', 'Hotel', 'Ruko']);
             $table->integer('land_area');
             $table->integer('building_area');
             $table->text('listing_url');

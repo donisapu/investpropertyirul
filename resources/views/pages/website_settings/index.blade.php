@@ -128,6 +128,49 @@
                             <iframe id="youtubePreview" src="" allowfullscreen></iframe>
                         </div>
                     </div>
+                    <div class="col-md-6">
+                        <div class="card mt-3">
+                            <div class="card-header h5">Partners</div>
+                            <div class="card-body">
+
+                                {{-- existing documents --}}
+                                <ul class="list-group mb-3">
+                                    @foreach ($partner as $partner)
+                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                            <a href="{{ Storage::url($partner->image_url) }}" target="_blank">
+                                                {{ $partner->name }}
+                                            </a>
+                                            <button type="button" class="btn btn-sm btn-danger delete-document"
+                                                data-id="{{ $partner->id }}">
+                                                Delete
+                                            </button>
+                                        </li>
+                                    @endforeach
+                                </ul>
+
+                                {{-- add new documents --}}
+                                <button type="button" class="btn btn-sm btn-primary mb-2" id="addDocument">
+                                    + Add Partner
+                                </button>
+
+                                <div id="documentWrapper">
+                                    <div class="document-item row mb-2 align-items-center">
+                                        <div class="col-5">
+                                            <input type="text" name="name[]" class="form-control"
+                                                placeholder="Partner Name">
+                                        </div>
+                                        <div class="col-6">
+                                            <input type="file" name="images[]" class="form-control">
+                                        </div>
+                                        <div class="col-1">
+                                            <button type="button"
+                                                class="btn btn-danger btn-sm remove-document">✕</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
                 </div>
             </div>
@@ -258,6 +301,47 @@
                 // Re-enable submit button
                 submitButton.disabled = false;
                 submitButton.innerText = 'Save Changes';
+            }
+        });
+
+        const documentWrapper = document.getElementById('documentWrapper');
+
+        document.getElementById('addDocument').addEventListener('click', function() {
+            const count = documentWrapper.querySelectorAll('.document-item').length;
+            if (count >= 10) return;
+
+            const div = document.createElement('div');
+            div.className = 'document-item row mb-2 align-items-center';
+            div.innerHTML = `
+            <div class="col-5">
+                <input type="text" name="name[]" class="form-control" placeholder="Partner Name">
+            </div>
+            <div class="col-6">
+                <input type="file" name="images[]" class="form-control">
+            </div>
+            <div class="col-1">
+                <button type="button" class="btn btn-danger btn-sm remove-document">✕</button>
+            </div>
+        `;
+            documentWrapper.appendChild(div);
+        });
+
+        documentWrapper.addEventListener('click', function(e) {
+            if (e.target.classList.contains('remove-document')) {
+                e.target.closest('.document-item').remove();
+            }
+        });
+
+        document.addEventListener('click', function(e) {
+            if (e.target.classList.contains('delete-document')) {
+                fetch(`/admin/partner/${e.target.dataset.id}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                    }
+                }).then(() => {
+                    e.target.closest('.list-group-item').remove();
+                });
             }
         });
     </script>

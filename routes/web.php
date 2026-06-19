@@ -28,6 +28,7 @@ use App\Http\Controllers\user\PaymentController;
 use App\Http\Controllers\User\PortfolioController;
 use App\Http\Controllers\User\TransactionController;
 use App\Models\WebsiteSetting;
+use App\Models\Partner;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
@@ -53,8 +54,10 @@ Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $requ
 })->middleware(['auth', 'signed'])->name('verification.verify');
 Route::get('/', function () {
     $settings = WebsiteSetting::getSettings();
+    $partners = Partner::all();
     return Inertia::render('Welcome', [
         'settings' => $settings,
+        'partners' => $partners,
         'villa' => \App\Models\Properties::where('property_name', 'Nusa Dua Ocean Breeze')->first(),
         'laravelVersion' => Illuminate\Foundation\Application::VERSION,
         'phpVersion' => PHP_VERSION,
@@ -198,6 +201,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin'])->grou
     // Website Settings
     Route::get('/website-settings', [WebsiteSettingController::class, 'edit'])->name('website-settings.edit');
     Route::put('/website-settings', [WebsiteSettingController::class, 'update'])->name('website-settings.update');
+    Route::delete('partner/{id}', [WebsiteSettingController::class, 'deletePartner'])->name('partner.delete');
 
     // Profile
     Route::get('profile', [AdminProfileController::class, 'index'])->name('profile');

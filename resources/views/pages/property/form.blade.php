@@ -31,7 +31,13 @@
                         <div class="col-4">
                             <label for="" class="form-label">Property Type</label>
                             <select name="property_type" class="form-control" id="">
-                                <option value="House" @if ($btn == 'edit' && $data->property_type == 'House') selected @endif>House</option>
+                                <option value="Rumah" @if ($btn == 'edit' && $data->property_type == 'Rumah') selected @endif>Rumah</option>
+                                <option value="Apartemen" @if ($btn == 'edit' && $data->property_type == 'Apartemen') selected @endif>Apartemen
+                                </option>
+                                <option value="Kos" @if ($btn == 'edit' && $data->property_type == 'Kos') selected @endif>Kos</option>
+                                <option value="Restoran" @if ($btn == 'edit' && $data->property_type == 'Restoran') selected @endif>Restoran</option>
+                                <option value="Hotel" @if ($btn == 'edit' && $data->property_type == 'Hotel') selected @endif>Hotel</option>
+                                <option value="Ruko" @if ($btn == 'edit' && $data->property_type == 'Ruko') selected @endif>Ruko</option>
                                 <option value="Villa" @if ($btn == 'edit' && $data->property_type == 'Villa') selected @endif>Villa</option>
                             </select>
                         </div>
@@ -55,19 +61,39 @@
                 </div>
                 <div class="mb-3">
                     <label for="" class="form-label">Listing Url</label>
-                    <textarea name="listing_url" class="form-control" placeholder="Lising Url on Airbnb etc (optional)" id="" cols="30" rows="2">@if ($btn == 'edit'){{ $data->listing_url }}@endif</textarea>
+                    <textarea name="listing_url" class="form-control" placeholder="Lising Url on Airbnb etc (optional)" id=""
+                        cols="30" rows="2">
+@if ($btn == 'edit')
+{{ $data->listing_url }}
+@endif
+</textarea>
                 </div>
                 <div class="mb-3">
                     <label for="" class="form-label">Detail</label>
-                    <textarea name="detail" class="form-control" placeholder="Property Detail" id="" cols="30" rows="10">@if ($btn == 'edit'){{ $data->detail }}@endif</textarea>
+                    <textarea name="detail" class="form-control" placeholder="Property Detail" id="" cols="30"
+                        rows="10">
+@if ($btn == 'edit')
+{{ $data->detail }}
+@endif
+</textarea>
                 </div>
                 <div class="mb-3">
                     <label for="" class="form-label">Market</label>
-                    <textarea name="market" class="form-control" placeholder="Property Market" id="" cols="30" rows="10">@if ($btn == 'edit'){{ $data->market }}@endif</textarea>
+                    <textarea name="market" class="form-control" placeholder="Property Market" id="" cols="30"
+                        rows="10">
+@if ($btn == 'edit')
+{{ $data->market }}
+@endif
+</textarea>
                 </div>
                 <div class="mb-3">
                     <label for="" class="form-label">Timeline</label>
-                    <textarea name="timeline" class="form-control" placeholder="Property Timeline" id="" cols="30" rows="10">@if ($btn == 'edit'){{ $data->timeline }}@endif</textarea>
+                    <textarea name="timeline" class="form-control" placeholder="Property Timeline" id="" cols="30"
+                        rows="10">
+@if ($btn == 'edit')
+{{ $data->timeline }}
+@endif
+</textarea>
                 </div>
                 <div class="mb-3">
                     <label for="" class="form-label">Url Map</label>

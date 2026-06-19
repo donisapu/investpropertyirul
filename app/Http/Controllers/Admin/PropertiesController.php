@@ -51,7 +51,7 @@ class PropertiesController extends AdminController
     public function store(Request $request)
     {
         $request->validate([
-            'images.*' => 'image|max:2048',
+            'images.*' => 'image|max:10240',
             'documents.*' => 'file|max:5120',
             'document_names.*' => 'nullable|string|max:255',
         ]);
