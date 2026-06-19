@@ -51,58 +51,70 @@ class PropertiesController extends AdminController
     public function store(Request $request)
     {
         $request->validate([
+            'property_name' => 'required|string|max:255',
             'images.*' => 'image|max:10240',
             'documents.*' => 'file|max:5120',
             'document_names.*' => 'nullable|string|max:255',
         ]);
 
-        DB::transaction(function () use ($request) {
-            $property = Properties::create($request->only([
-                'property_name',
-                'property_location',
-                'bedroom',
-                'bathroom',
-                'property_type',
-                'land_area',
-                'building_area',
-                'listing_url',
-                'detail',
-                'market',
-                'timeline',
-                'map_url',
-            ]));
+        try {
 
-            if ($request->hasFile('images')) {
-                foreach ($request->file('images') as $image) {
-                    $path = $image->store(
-                        "properties/{$property->id}/images",
-                        'public'
-                    );
+            DB::transaction(function () use ($request) {
 
-                    PropertyImage::create([
-                        'property_id' => $property->id,
-                        'image_url' => $path,
-                    ]);
+                $property = Properties::create($request->only([
+                    'property_name',
+                    'property_location',
+                    'bedroom',
+                    'bathroom',
+                    'property_type',
+                    'land_area',
+                    'building_area',
+                    'listing_url',
+                    'detail',
+                    'market',
+                    'timeline',
+                    'map_url',
+                ]));
+
+                if ($request->hasFile('images')) {
+                    foreach ($request->file('images') as $image) {
+                        $path = $image->store(
+                            "properties/{$property->id}/images",
+                            'public'
+                        );
+
+                        PropertyImage::create([
+                            'property_id' => $property->id,
+                            'image_url' => $path,
+                        ]);
+                    }
                 }
-            }
 
-            if ($request->hasFile('documents')) {
-                foreach ($request->file('documents') as $index => $doc) {
-                    $path = $doc->store(
-                        "properties/{$property->id}/documents",
-                        'public'
-                    );
+                if ($request->hasFile('documents')) {
+                    foreach ($request->file('documents') as $index => $doc) {
+                        $path = $doc->store(
+                            "properties/{$property->id}/documents",
+                            'public'
+                        );
 
-                    PropertyDocument::create([
-                        'property_id' => $property->id,
-                        'document_name' => $request->document_names[$index] ?? 'Document',
-                        'document_url' => $path,
-                    ]);
+                        PropertyDocument::create([
+                            'property_id' => $property->id,
+                            'document_name' => $request->document_names[$index] ?? 'Document',
+                            'document_url' => $path,
+                        ]);
+                    }
                 }
-            }
-        });
+            });
 
-        return redirect()->route('admin.properties');
+            return redirect()
+                ->route('admin.properties')
+                ->with('success', 'Property berhasil ditambahkan.');
+        } catch (\Exception $e) {
+
+            return back()
+                ->withInput()
+                ->with('error', $e->getMessage());
+        }
     }
 
     /**
@@ -245,7 +257,7 @@ class PropertiesController extends AdminController
             ->orWhere('property_location', 'ilike', "%{$q}%")
             ->limit(20)
             ->get()
-            ->map(fn ($p) => [
+            ->map(fn($p) => [
                 'id' => $p->id,
                 'text' => "{$p->property_name} - {$p->property_location}",
             ]);

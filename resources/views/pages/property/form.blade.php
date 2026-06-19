@@ -1,6 +1,27 @@
 @extends('layouts.app')
 @section('content')
+
     <form action="{{ $action }}" method="POST" enctype="multipart/form-data">
+        @if (session('error'))
+            <div class="alert alert-danger">
+                {{ session('error') }}
+            </div>
+        @endif
+
+        @if (session('success'))
+            <div class="alert alert-success">
+                {{ session('success') }}
+            </div>
+        @endif
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul class="mb-0">
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
         @csrf
         <div class="card">
             <div class="card-header h5">{{ $title }}</div>
@@ -35,7 +56,8 @@
                                 <option value="Apartemen" @if ($btn == 'edit' && $data->property_type == 'Apartemen') selected @endif>Apartemen
                                 </option>
                                 <option value="Kos" @if ($btn == 'edit' && $data->property_type == 'Kos') selected @endif>Kos</option>
-                                <option value="Restoran" @if ($btn == 'edit' && $data->property_type == 'Restoran') selected @endif>Restoran</option>
+                                <option value="Restoran" @if ($btn == 'edit' && $data->property_type == 'Restoran') selected @endif>Restoran
+                                </option>
                                 <option value="Hotel" @if ($btn == 'edit' && $data->property_type == 'Hotel') selected @endif>Hotel</option>
                                 <option value="Ruko" @if ($btn == 'edit' && $data->property_type == 'Ruko') selected @endif>Ruko</option>
                                 <option value="Villa" @if ($btn == 'edit' && $data->property_type == 'Villa') selected @endif>Villa</option>
