@@ -4,13 +4,12 @@ import { FacebookIcon, Instagram, Youtube } from "lucide-react";
 import { Toaster } from "react-hot-toast";
 
 export default function PublicLayout({ children }) {
-    const { auth, settings } = usePage().props;
+    const { auth, settings, partners } = usePage().props;
     const { url } = usePage();
     const [isScrolled, setIsScrolled] = useState(false);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const dropdownRef = useRef(null);
     const [accountOpen, setAccountOpen] = useState(false);
-    console.log(settings);
     // Helper to check active route
     const isActive = (path) =>
         url === path || (path !== "/" && url.startsWith(path));
@@ -73,8 +72,8 @@ export default function PublicLayout({ children }) {
                 <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                     <div className="flex h-20 items-center justify-between">
                         {/* Logo */}
-                        <div className="flex-shrink-0 flex items-center">
-                            <a href="/">
+                        <div className="flex-shrink-0 flex items-center gap-3">
+                            <a href="/" className="flex items-center gap-3">
                                 <img
                                     src={
                                         settings?.logo
@@ -88,6 +87,12 @@ export default function PublicLayout({ children }) {
                                     alt="logo"
                                     className="h-10 w-auto sm:h-12 lg:h-14 object-contain max-w-[150px] sm:max-w-[200px]"
                                 />
+                                {/* Tambahkan Site Name di sini */}
+                                <span
+                                    className={`text-lg font-bold uppercase tracking-wider ${isScrolled || isMobileMenuOpen ? "text-slate-900" : "text-white"}`}
+                                >
+                                    {settings?.site_name || "Gain Properties"}
+                                </span>
                             </a>
                         </div>
 
@@ -398,7 +403,7 @@ export default function PublicLayout({ children }) {
 }
 
 function Footer() {
-    const { settings } = usePage().props;
+    const { settings, partners } = usePage().props;
     const scrollRef = useRef(null);
     const [canScrollLeft, setCanScrollLeft] = useState(false);
     const [canScrollRight, setCanScrollRight] = useState(false);
@@ -449,66 +454,17 @@ function Footer() {
                     </p>
                 </div>
 
-                <div className="mt-6 relative group">
-                    {canScrollLeft && (
-                        <button
-                            onClick={() => scroll(-300)}
-                            className="absolute left-0 top-1/2 -translate-y-1/2 h-8 w-8 rounded-full bg-white shadow border border-slate-200 text-slate-700 hover:bg-slate-50 z-10 flex items-center justify-center"
-                        >
-                            ‹
-                        </button>
-                    )}
-
-                    <div
-                        ref={scrollRef}
-                        className="overflow-x-auto flex items-center justify-center whitespace-nowrap scrollbar-hide px-10 no-scrollbar"
-                        style={{
-                            scrollbarWidth: "none",
-                            msOverflowStyle: "none",
-                        }}
-                    >
-                        <div className="inline-flex items-center gap-8">
-                            <img
-                                src="https://dummyimage.com/120x40/eaecf0/111&text=Mandiri"
-                                alt="Mandiri"
-                                className="h-10 object-contain"
-                            />
-                            <img
-                                src="https://dummyimage.com/120x40/eaecf0/111&text=BRI"
-                                alt="BRI"
-                                className="h-10 object-contain"
-                            />
-                            <img
-                                src="https://dummyimage.com/120x40/eaecf0/111&text=BNI"
-                                alt="BNI"
-                                className="h-10 object-contain"
-                            />
-                            <img
-                                src="https://dummyimage.com/120x40/eaecf0/111&text=Bule"
-                                alt="Bule"
-                                className="h-10 object-contain"
-                            />
-                            <img
-                                src="https://dummyimage.com/120x40/eaecf0/111&text=X+I+BOBA"
-                                alt="X I BOBA"
-                                className="h-10 object-contain"
-                            />
-                            <img
-                                src="https://dummyimage.com/120x40/eaecf0/111&text=Partner"
-                                alt="Partner"
-                                className="h-10 object-contain"
-                            />
-                        </div>
-                    </div>
-
-                    {canScrollRight && (
-                        <button
-                            onClick={() => scroll(300)}
-                            className="absolute right-0 top-1/2 -translate-y-1/2 h-8 w-8 rounded-full bg-white shadow border border-slate-200 text-slate-700 hover:bg-slate-50 z-10 flex items-center justify-center"
-                        >
-                            ›
-                        </button>
-                    )}
+                <div className="mt-10 flex flex-wrap items-center justify-center gap-12">
+                    {partners &&
+                        partners.map((partner) => (
+                            <div key={partner.id} className="flex-shrink-0">
+                                <img
+                                    src={`/storage/${partner.image_url}`}
+                                    alt={partner.name}
+                                    className="h-16 object-contain grayscale opacity-70 hover:opacity-100 hover:grayscale-0 transition duration-300"
+                                />
+                            </div>
+                        ))}
                 </div>
 
                 <div className="mt-10 grid gap-8 md:grid-cols-3">

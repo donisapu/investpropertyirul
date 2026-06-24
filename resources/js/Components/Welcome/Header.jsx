@@ -47,8 +47,8 @@ export default function Header() {
             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                 <div className="flex h-20 items-center justify-between">
                     {/* Logo */}
-                    <div className="flex-shrink-0 flex items-center">
-                        <Link href="/">
+                    <div className="flex-shrink-0 flex items-center gap-3">
+                        <a href="/" className="flex items-center gap-3">
                             <img
                                 src={
                                     settings?.logo
@@ -61,7 +61,13 @@ export default function Header() {
                                 alt="logo"
                                 className="h-10 w-auto sm:h-12 lg:h-14 object-contain max-w-[150px] sm:max-w-[200px]"
                             />
-                        </Link>
+                            {/* Tambahkan Site Name di sini */}
+                            <span
+                                className={`text-lg font-bold uppercase tracking-wider ${scrolled || open ? "text-slate-900" : "text-white"}`}
+                            >
+                                {settings?.site_name || "Gain Properties"}
+                            </span>
+                        </a>
                     </div>
 
                     {/* Desktop Menu */}

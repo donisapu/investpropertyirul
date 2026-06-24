@@ -11,8 +11,7 @@ import {
 } from "lucide-react";
 import PublicLayout from "@/Layouts/PublicLayout";
 
-export default function Investments({ properties, settings }) {
-    console.log(properties);
+export default function Investments({ properties, settings, partners }) {
     return (
         <PublicLayout>
             <Head title="Investments" />

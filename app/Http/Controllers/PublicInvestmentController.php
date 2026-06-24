@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\InvestmentPortfolio;
 use App\Models\PropertyInvestment;
 use App\Models\WebsiteSetting;
+use App\Models\Partner;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;

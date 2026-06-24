@@ -74,6 +74,30 @@ export default function Show({ property }) {
         }).format(value);
     };
 
+    const extractMapUrl = (htmlString) => {
+        if (!htmlString) return null;
+
+        let url = htmlString.trim();
+
+        if (url.includes("<iframe")) {
+            const match = url.match(/src=["'](.*?)["']/);
+            url = match ? match[1] : null;
+        }
+
+        if (!url) return null;
+
+        if (url.startsWith("embed?pb=")) {
+            return `https://www.google.com/maps/${url}`;
+        }
+
+        if (url.startsWith("www.")) {
+            return `https://${url}`;
+        }
+
+        return url;
+    };
+    const finalMapUrl = extractMapUrl(property.map_url);
+
     return (
         <PublicLayout>
             <Head title={property.name} />
@@ -380,17 +404,29 @@ export default function Show({ property }) {
                                         {/* Location Map */}
                                         {property.map_url && (
                                             <div>
-                                                <h3 className="text-xl font-black text-slate-900 mb-4">
-                                                    Lokasi Strategis
+                                                <h3 className="text-lg font-extrabold text-slate-900 mb-3 flex items-center gap-2">
+                                                    <MapPin className="w-5 h-5 text-emerald-600" />
+                                                    Lokasi & Sekitar
                                                 </h3>
-                                                <div className="aspect-video w-full rounded-3xl overflow-hidden shadow-lg border border-slate-100">
-                                                    <iframe
-                                                        src={property.map_url}
-                                                        className="w-full h-full grayscale-[50%] hover:grayscale-0 transition-all duration-500"
-                                                        style={{ border: 0 }}
-                                                        allowFullScreen=""
-                                                        loading="lazy"
-                                                    ></iframe>
+                                                <div className="aspect-video w-full rounded-2xl overflow-hidden bg-slate-100 border border-slate-100 shadow-inner">
+                                                    {finalMapUrl ? (
+                                                        <iframe
+                                                            src={finalMapUrl}
+                                                            width="100%"
+                                                            height="100%"
+                                                            style={{
+                                                                border: 0,
+                                                            }}
+                                                            allowFullScreen=""
+                                                            loading="lazy"
+                                                            referrerPolicy="no-referrer-when-downgrade"
+                                                        ></iframe>
+                                                    ) : (
+                                                        <div className="w-full h-full flex items-center justify-center text-slate-400 text-sm font-medium">
+                                                            Peta lokasi belum
+                                                            tersedia
+                                                        </div>
+                                                    )}
                                                 </div>
                                             </div>
                                         )}

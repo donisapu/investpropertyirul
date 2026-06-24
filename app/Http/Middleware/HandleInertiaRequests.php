@@ -40,6 +40,7 @@ class HandleInertiaRequests extends Middleware
             'auth' => [
                 'user' => $request->user(),
             ],
+            'partners' => \App\Models\Partner::all(),
             'ziggy' => function () use ($request) {
                 return array_merge((new \Tighten\Ziggy\Ziggy)->toArray(), [
                     'location' => $request->url(),

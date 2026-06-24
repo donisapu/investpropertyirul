@@ -20,7 +20,7 @@ return new class extends Migration
             $table->enum('property_type', ['Villa', 'Rumah', 'Apartemen', 'Kos', 'Restoran', 'Hotel', 'Ruko']);
             $table->integer('land_area');
             $table->integer('building_area');
-            $table->text('listing_url');
+            $table->text('listing_url')->nullable();
             $table->text('detail')->nullable();
             $table->text('market')->nullable();
             $table->text('timeline')->nullable();

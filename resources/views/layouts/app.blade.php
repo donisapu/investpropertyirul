@@ -150,7 +150,7 @@
                     <li class="menu-item {{ request()->routeIs('admin.consignment-properties') ? 'active' : '' }}">
                         <a href="{{ route('admin.consignment-properties') }}" class="menu-link">
                             <i class="menu-icon tf-icons bx bx-key"></i>
-                            <div data-i18n="Analytics">Consignment</div>
+                            <div data-i18n="Analytics">Property For Sale</div>
                         </a>
                     </li>
 
@@ -167,11 +167,11 @@
                                     <div data-i18n="Analytics">Auction</div>
                                 </a>
                             </li>
-                            <li class="menu-item {{ request()->routeIs('admin.financials') ? 'active' : '' }}">
+                            {{-- <li class="menu-item {{ request()->routeIs('admin.financials') ? 'active' : '' }}">
                                 <a href="{{ route('admin.financials') }}" class="menu-link">
                                     <div data-i18n="Without menu">Bidding</div>
                                 </a>
-                            </li>
+                            </li> --}}
                         </ul>
                     </li>
                     <li class="menu-header small text-uppercase">
