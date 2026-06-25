@@ -13,7 +13,18 @@
     <meta name="description" content="" />
 
     <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="{{ asset('assets/img/favicon/favicon.ico') }}" />
+    @php
+        $settings = DB::table('website_settings')->first();
+        $logo = $settings->logo ?? null;
+
+        if ($logo) {
+            $finalLogo =
+                str_starts_with($logo, 'http') || str_starts_with($logo, '/') ? $logo : asset('storage/' . $logo);
+        } else {
+            $finalLogo = asset('assets/img/logo.png');
+        }
+    @endphp
+    <link rel="icon" type="image/x-icon" href="{{ $finalLogo }}" />
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -64,10 +75,10 @@
                                 ? $settings->logo
                                 : asset('storage/' . $settings->logo))
                             : asset('assets/img/logo.png') }}"
-                            alt="logo"
-                            style="width: 50px; height: auto; margin-top: 10px; margin-bottom: 10px;">
+                            alt="logo" style="width: 50px; height: auto; margin-top: 10px; margin-bottom: 10px;">
                     </a>
-                    <span class="app-brand-text menu-text fw-bolder ms-2">{{ $settings->site_name ?? 'Invest Property' }}</span>
+                    <span
+                        class="app-brand-text menu-text fw-bolder ms-2">{{ $settings->site_name ?? 'Invest Property' }}</span>
 
                     <a href="javascript:void(0);"
                         class="layout-menu-toggle menu-link text-large ms-auto d-block d-xl-none">

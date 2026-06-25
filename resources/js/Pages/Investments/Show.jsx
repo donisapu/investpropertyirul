@@ -47,6 +47,7 @@ export default function Show({ property }) {
 
         let url = htmlString.trim();
 
+        // 1. Kalau input masih berupa tag iframe, ambil src-nya
         if (url.includes("<iframe")) {
             const match = url.match(/src=["'](.*?)["']/);
             url = match ? match[1] : null;
@@ -54,10 +55,16 @@ export default function Show({ property }) {
 
         if (!url) return null;
 
-        if (url.startsWith("embed?pb=")) {
-            return `https://www.google.com/maps/${url}`;
+        // 2. Logika baru: Handle googleusercontent atau link maps standar
+        // Kalau sudah mengandung domain tersebut, langsung return apa adanya
+        if (
+            url.includes("googleusercontent.com") ||
+            url.includes("maps.google.com")
+        ) {
+            return url;
         }
 
+        // 3. Handle kalau user cuma input "www.google.com/maps..."
         if (url.startsWith("www.")) {
             return `https://${url}`;
         }
