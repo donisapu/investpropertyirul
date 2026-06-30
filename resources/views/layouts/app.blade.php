@@ -195,10 +195,24 @@
                         </a>
                     </li>
                     <li class="menu-item {{ request()->routeIs('admin.developers') ? 'active' : '' }}">
-                        <a href="{{ route('admin.developers') }}" class="menu-link">
+                        <a href="javascript:void(0);" class="menu-link menu-toggle">
                             <i class="menu-icon tf-icons bx bx-home-circle"></i>
-                            <div data-i18n="Analytics">Developer</div>
+                            <div data-i18n="Layouts">Developer</div>
                         </a>
+
+                        <ul class="menu-sub">
+                            <li
+                                class="menu-item {{ request()->routeIs('admin.developers') ? 'active' : '' }}">
+                                <a href="{{ route('admin.developers') }}" class="menu-link">
+                                    <div data-i18n="Analytics">Site Setting</div>
+                                </a>
+                            </li>
+                            <li class="menu-item {{ request()->routeIs('admin.projects') ? 'active' : '' }}">
+                                <a href="{{ route('admin.projects') }}" class="menu-link">
+                                    <div data-i18n="Without menu">Project</div>
+                                </a>
+                            </li>
+                        </ul>
                     </li>
                     <li class="menu-item {{ request()->routeIs('admin.campaigns') ? 'active' : '' }}">
                         <a href="{{ route('admin.campaigns') }}" class="menu-link">

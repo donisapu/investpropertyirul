@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\CampaignController;
 use App\Http\Controllers\Admin\CrowdfundingFinancialsController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\DeveloperController;
+use App\Http\Controllers\Admin\DeveloperProjectController;
 use App\Http\Controllers\Admin\ProfileController as AdminProfileController;
 use App\Http\Controllers\Admin\PropertiesController;
 use App\Http\Controllers\Admin\PropertyAuctionController;
@@ -27,6 +28,7 @@ use App\Http\Controllers\User\DashboardController as UserDashboardController;
 use App\Http\Controllers\user\PaymentController;
 use App\Http\Controllers\User\PortfolioController;
 use App\Http\Controllers\User\TransactionController;
+use App\Models\DeveloperProject;
 use App\Models\WebsiteSetting;
 use App\Models\Partner;
 use Illuminate\Support\Facades\Route;
@@ -55,9 +57,11 @@ Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $requ
 Route::get('/', function () {
     $settings = WebsiteSetting::getSettings();
     $partners = Partner::all();
+    $project = DeveloperProject::take(4)->get();
     return Inertia::render('Welcome', [
         'settings' => $settings,
         'partners' => $partners,
+        'projects'  => $project,
         'villa' => \App\Models\Properties::where('property_name', 'Nusa Dua Ocean Breeze')->first(),
         'laravelVersion' => Illuminate\Foundation\Application::VERSION,
         'phpVersion' => PHP_VERSION,
@@ -161,6 +165,18 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin'])->grou
     Route::post('developers/store', [DeveloperController::class, 'store'])->name('developers.store');
     Route::post('developers/update/{id}', [DeveloperController::class, 'update'])->name('developers.update');
     Route::delete('developers/destroy/{id}', [DeveloperController::class, 'destroy'])->name('developers.destroy');
+
+    // Developer Project
+    Route::get('projects', [DeveloperProjectController::class, 'index'])->name('projects');
+    Route::get('projects/data', [DeveloperProjectController::class, 'data'])->name('projects.data');
+    Route::get('projects/edit/{id}', [DeveloperProjectController::class, 'edit'])->name('projects.edit');
+    Route::get('projects/create', [DeveloperProjectController::class, 'create'])->name('projects.create');
+    Route::get('projects/show/{id}', [DeveloperProjectController::class, 'show'])->name('projects.show');
+    Route::get('projects/search', [DeveloperProjectController::class, 'search'])->name('projects.search');
+    Route::post('projects/store', [DeveloperProjectController::class, 'store'])->name('projects.store');
+    Route::post('projects/update/{id}', [DeveloperProjectController::class, 'update'])->name('projects.update');
+    Route::delete('projects/destroy/{id}', [DeveloperProjectController::class, 'destroy'])->name('projects.destroy');
+    Route::delete('projects-image/{id}', [DeveloperProjectController::class, 'deleteImage']);
 
     // Campaign Master
     Route::get('campaigns', [CampaignController::class, 'index'])->name('campaigns');

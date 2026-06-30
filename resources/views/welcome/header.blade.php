@@ -5,7 +5,7 @@
             <!-- Logo -->
             <div class="flex-shrink-0 flex items-center">
                 <a href="{{ url('/') }}">
-                    <img src="{{ asset('assets/img/logo.png') }}" alt="logo"
+                    <img src="{{ asset('storage/' . $setting->logo) }}" alt="logo"
                         class="h-10 w-auto sm:h-12 lg:h-14 object-contain max-w-[150px] sm:max-w-[200px]">
                 </a>
             </div>

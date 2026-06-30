@@ -12,8 +12,8 @@ export default function Welcome({
     phpVersion,
     settings,
     partners,
+    projects,
 }) {
-
     return (
         <>
             <Head title="InvestProperti">
@@ -31,7 +31,7 @@ export default function Welcome({
                     <main className="flex-1 text-slate-50">
                         <Hero />
                         <OurVilla villa={villa} />
-                        <DeveloperProjects />
+                        <DeveloperProjects project={projects} />
                         <OurLocation />
                     </main>
 

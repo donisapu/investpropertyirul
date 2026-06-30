@@ -9,11 +9,11 @@
 <body class="font-sans antialiased bg-slate-950">
     <div class="min-h-screen flex flex-col">
         @include('welcome.header')
-        
+
         <section id="top" class="relative h-[60vh] md:h-[70vh] overflow-hidden">
-            <img src="{{ asset('assets/img/elements/hero.jpg') }}" alt="" class="absolute inset-0 w-full h-full object-cover">
+            <img src="{{ asset('storage/' . $project->banner_image) }}" alt="" class="absolute inset-0 w-full h-full object-cover">
             <div class="absolute inset-0 bg-gradient-to-r from-black/50 via-black/30 to-transparent"></div>
-            
+
             <div class="relative h-full">
                 <div class="flex h-full items-center">
                     <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 w-full">
@@ -125,18 +125,9 @@
                 <div class="mt-14">
                     <h3 class="text-center text-sm font-semibold tracking-[0.35em] uppercase text-slate-900">Gallery</h3>
                     <div class="mt-6 columns-2 md:columns-3 gap-4">
-                        <img class="mb-4 w-full rounded-lg" src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?q=80&w=1280&auto=format&fit=crop" alt="">
-                        <img class="mb-4 w-full rounded-lg" src="https://images.unsplash.com/photo-1614149162883-504ce63356ea?q=80&w=1280&auto=format&fit=crop" alt="">
-                        <img class="mb-4 w-full rounded-lg" src="https://images.unsplash.com/photo-1560448070-432999fb2e4d?q=80&w=1280&auto=format&fit=crop" alt="">
-                        <img class="mb-4 w-full rounded-lg" src="https://images.unsplash.com/photo-1505691938895-1758d7feb511?q=80&w=1280&auto=format&fit=crop" alt="">
-                        <img class="mb-4 w-full rounded-lg" src="https://images.unsplash.com/photo-1600585154526-990dced4db0d?q=80&w=1280&auto=format&fit=crop" alt="">
-                        <img class="mb-4 w-full rounded-lg" src="https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?q=80&w=1280&auto=format&fit=crop" alt="">
-                        <img class="mb-4 w-full rounded-lg" src="https://images.unsplash.com/photo-1658280024253-34cafdfbb002?q=80&w=1280&auto=format&fit=crop" alt="">
-                        <img class="mb-4 w-full rounded-lg" src="https://images.unsplash.com/photo-1560448070-432999fb2e4d?q=80&w=1280&auto=format&fit=crop" alt="">
-                        <img class="mb-4 w-full rounded-lg" src="https://images.unsplash.com/photo-1505691938895-1758d7feb511?q=80&w=1280&auto=format&fit=crop" alt="">
-                        <img class="mb-4 w-full rounded-lg" src="https://images.unsplash.com/photo-1600585154526-990dced4db0d?q=80&w=1280&auto=format&fit=crop" alt="">
-                        <img class="mb-4 w-full rounded-lg" src="https://images.unsplash.com/photo-1564013799919-ab600027ffc6?q=80&w=1280&auto=format&fit=crop" alt="">
-                        <img class="mb-4 w-full rounded-lg" src="https://images.unsplash.com/photo-1658280024253-34cafdfbb002?q=80&w=1280&auto=format&fit=crop" alt="">
+                        @foreach ($image as $image)
+                        <img class="mb-4 w-full rounded-lg" src="{{ asset('storage/' . $image->image_path) }}" alt="">
+                        @endforeach
                     </div>
                 </div>
             </section>
