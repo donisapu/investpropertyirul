@@ -57,6 +57,7 @@ class PropertyAuctionController extends AdminController
                 'date_start',
                 'date_finish',
                 'status',
+                'market_value',
             ]));
         });
 
@@ -112,6 +113,7 @@ class PropertyAuctionController extends AdminController
                 'date_start',
                 'date_finish',
                 'status',
+                'market_value',
             ]));
         });
 

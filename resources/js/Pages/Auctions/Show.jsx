@@ -7,23 +7,22 @@ import {
     MapPin,
     ChevronRight,
     ChevronLeft,
-    Gavel,
-    Calendar,
     Banknote,
+    Phone,
     X,
-    CheckCircle,
-    Clock,
     Building2,
     Home,
     TrendingUp,
-    Target,
     FileText,
+    Mail,
+    ShieldCheck,
     Download,
 } from "lucide-react";
 import PublicLayout from "@/Layouts/PublicLayout";
 
 export default function Show({ auction }) {
     const [lightboxOpen, setLightboxOpen] = useState(false);
+    const { settings } = usePage().props;
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
     const [activeTab, setActiveTab] = useState("overview");
 
@@ -153,6 +152,19 @@ export default function Show({ auction }) {
         return url;
     };
     const finalMapUrl = extractMapUrl(property.map_url);
+
+    const hargaProperti = auction.open_bid;
+    const hargaPasar = auction.market_value;
+
+    const perbedaanPersen = ((hargaProperti - hargaPasar) / hargaPasar) * 100;
+    const isDiBawahPasar = perbedaanPersen < 0;
+    const warnaPersen = isDiBawahPasar ? "text-green-600" : "text-red-600";
+    const labelPersen = isDiBawahPasar
+        ? "Di bawah harga pasar"
+        : "Di atas harga pasar";
+
+    const persentaseIsi = Math.abs(perbedaanPersen);
+    const progressWidth = Math.min(100, Math.max(0, persentaseIsi));
 
     return (
         <PublicLayout>
@@ -514,7 +526,7 @@ export default function Show({ auction }) {
 
                     {/* Right Column - Auction Info */}
                     <div className="space-y-6">
-                        <div className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden sticky top-24">
+                        {/* <div className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden sticky top-24">
                             <div className="p-6 bg-slate-900 text-white">
                                 <h3 className="font-bold text-lg mb-1 capitalize">
                                     {auction.type} Details
@@ -541,10 +553,7 @@ export default function Show({ auction }) {
                                     )}
                                 </div>
 
-                                {/* ... (Bagian increment, start date, end date tetap biarkan seperti aslinya) ... */}
-
                                 <div className="pt-6">
-                                    {/* Alert Flash Messages */}
                                     {flash?.success && (
                                         <div className="mb-4 text-sm font-medium text-emerald-700 bg-emerald-100 p-3 rounded-lg flex items-center gap-2">
                                             <CheckCircle className="w-4 h-4" />{" "}
@@ -618,6 +627,81 @@ export default function Show({ auction }) {
                                         </div>
                                     )}
                                 </div>
+                            </div>
+                        </div> */}
+
+                        <div className="bg-white rounded-[2rem] p-8 shadow-[0_20px_50px_rgba(0,0,0,0.05)] border border-slate-100 sticky top-24">
+                            {/* 1. Header Harga */}
+                            <div className="mb-8">
+                                {/* Judul Section */}
+                                <h3 className="text-lg font-bold text-slate-950 mb-5">
+                                    Perbandingan Harga
+                                </h3>
+
+                                {/* Daftar Harga Berpasangan */}
+                                <div className="space-y-3 mb-6">
+                                    {/* Row Listing */}
+                                    <div className="flex justify-between items-center text-sm">
+                                        <span className="text-slate-500 font-medium">
+                                            Listing:
+                                        </span>
+                                        {/* Harga Properti (Listing) - Pakai warna hijau buat indikator positif */}
+                                        <span className="font-bold text-green-700 tabular-nums">
+                                            {formatCurrency(hargaProperti)}
+                                        </span>
+                                    </div>
+
+                                    {/* Row Harga Pasar */}
+                                    <div className="flex justify-between items-center text-sm">
+                                        <span className="text-slate-500 font-medium">
+                                            Harga Pasar:
+                                        </span>
+                                        {/* Harga Pasar - Warna default */}
+                                        <span className="font-bold text-slate-900 tabular-nums">
+                                            {formatCurrency(hargaPasar)}
+                                        </span>
+                                    </div>
+                                </div>
+
+                                {/* Section Progress Bar & Analisis */}
+                                <div className="space-y-2">
+                                    {/* Progress Bar Container */}
+                                    <div className="w-full h-2.5 bg-slate-100 rounded-full overflow-hidden">
+                                        <div
+                                            className={`h-full rounded-full ${isDiBawahPasar ? "bg-green-600" : "bg-red-600"}`}
+                                            style={{
+                                                width: `${progressWidth}%`,
+                                            }}
+                                        ></div>
+                                    </div>
+
+                                    {/* Teks Analisis Persentase */}
+                                    <p
+                                        className={`text-sm font-medium ${warnaPersen}`}
+                                    >
+                                        {labelPersen} (
+                                        {perbedaanPersen.toFixed(1)}%)
+                                    </p>
+                                </div>
+                            </div>
+
+                            {/* 2. Action Buttons */}
+                            <div className="space-y-3 mb-8">
+                                <a
+                                    href={`https://wa.me/${settings?.whatsapp || "62818580891"}`}
+                                    target="_blank"
+                                    className="w-full bg-slate-900 hover:bg-[#24608B] text-white font-black py-4 rounded-2xl transition-all flex items-center justify-center gap-2 shadow-lg hover:shadow-blue-900/20"
+                                >
+                                    <Phone size={18} /> Contact Agent
+                                </a>
+                                <button className="w-full bg-white border-2 border-slate-100 hover:border-[#24608B] hover:text-[#24608B] text-slate-700 font-bold py-4 rounded-2xl transition-all flex items-center justify-center gap-2">
+                                    <Mail size={18} /> Request Info
+                                </button>
+                            </div>
+
+                            {/* 4. Trust Badge (Opsional, buat bikin makin Pro) */}
+                            <div className="mt-8 flex items-center justify-center gap-2 text-[10px] font-bold text-slate-400">
+                                <ShieldCheck size={14} /> Terverifikasi Aman
                             </div>
                         </div>
                     </div>

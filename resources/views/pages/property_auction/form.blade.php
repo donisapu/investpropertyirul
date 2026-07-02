@@ -26,6 +26,11 @@
                         id="" @if ($btn == 'edit') value="{{ $data->bid_increment }}" @endif>
                 </div>
                 <div class="mb-3">
+                    <label for="">Market Value</label>
+                    <input type="number" class="form-control" name="market_value" placeholder="Market Value"
+                        id="" @if ($btn == 'edit') value="{{ $data->market_value }}" @endif>
+                </div>
+                <div class="mb-3">
                     <div class="row">
                         <div class="col-6">
                             <label for="">Start Date</label>

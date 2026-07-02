@@ -16,6 +16,7 @@ return new class extends Migration
             $table->foreignId('property_id')->constrained()->cascadeOnDelete();
             $table->decimal('open_bid', 16, 2);
             $table->decimal('bid_increment', 16, 2);
+            $table->decimal('market_value', 16, 2);
             $table->date('date_start');
             $table->date('date_finish');
             $table->enum('status', ['draft', 'upcoming', 'active', 'closed', 'suspended'])->default('draft');

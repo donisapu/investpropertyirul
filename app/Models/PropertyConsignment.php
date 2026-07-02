@@ -16,6 +16,7 @@ class PropertyConsignment extends Model
         'listing_type',
         'lease_term',
         'status',
+        'market_value'
     ];
 
     public function property()

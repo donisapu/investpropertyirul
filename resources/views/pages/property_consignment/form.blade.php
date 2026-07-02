@@ -21,6 +21,11 @@
                         id="" @if ($btn == 'edit') value="{{ $data->property_value }}" @endif>
                 </div>
                 <div class="mb-3">
+                    <label for="" class="form-label">Market Value</label>
+                    <input type="number" class="form-control" name="market_value" placeholder="Market Value"
+                        id="" @if ($btn == 'edit') value="{{ $data->market_value }}" @endif>
+                </div>
+                <div class="mb-3">
                     <label for="">Ownership</label>
                     <select name="ownership" class="form-control" id="">
                         <option value="SHM" @if ($btn == 'edit' && $data->ownership == 'SHM') selected @endif>SHM</option>

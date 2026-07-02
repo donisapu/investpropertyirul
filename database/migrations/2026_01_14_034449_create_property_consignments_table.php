@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('property_id')->constrained()->cascadeOnDelete();
             $table->decimal('property_value', 16, 2);
+            $table->decimal('market_value', 16, 2);
             $table->string('ownership');
             $table->enum('listing_type', ['Freehold', 'Leasehold']);
             $table->string('lease_term')->nullable();

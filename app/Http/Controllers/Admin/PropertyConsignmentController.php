@@ -57,6 +57,7 @@ class PropertyConsignmentController extends AdminController
                 'listing_type',
                 'lease_term',
                 'status',
+                'market_value'
             ]));
         });
 
@@ -106,6 +107,7 @@ class PropertyConsignmentController extends AdminController
                 'listing_type',
                 'lease_term',
                 'status',
+                'market_value'
             ]));
         });
 

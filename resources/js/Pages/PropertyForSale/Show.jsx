@@ -26,6 +26,19 @@ export default function Show({ property }) {
     const [lightboxOpen, setLightboxOpen] = useState(false);
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
+    const hargaProperti = property.financials.price;
+    const hargaPasar = property.financials.market_price;
+
+    const perbedaanPersen = ((hargaProperti - hargaPasar) / hargaPasar) * 100;
+    const isDiBawahPasar = perbedaanPersen < 0;
+    const warnaPersen = isDiBawahPasar ? "text-green-600" : "text-red-600";
+    const labelPersen = isDiBawahPasar
+        ? "Di bawah harga pasar"
+        : "Di atas harga pasar";
+
+    const persentaseIsi = Math.abs(perbedaanPersen);
+    const progressWidth = Math.min(100, Math.max(0, persentaseIsi));
+
     const openLightbox = (index) => {
         setCurrentImageIndex(index);
         setLightboxOpen(true);
@@ -501,11 +514,55 @@ export default function Show({ property }) {
                         <div className="bg-white rounded-[2rem] p-8 shadow-[0_20px_50px_rgba(0,0,0,0.05)] border border-slate-100 sticky top-24">
                             {/* 1. Header Harga */}
                             <div className="mb-8">
-                                <span className="text-[10px] font-black uppercase tracking-widest text-slate-400 block mb-2">
-                                    Harga Properti
-                                </span>
-                                <div className="text-4xl font-black text-slate-900 tracking-tighter">
-                                    {formatCurrency(property.financials.price)}
+                                {/* Judul Section */}
+                                <h3 className="text-lg font-bold text-slate-950 mb-5">
+                                    Perbandingan Harga
+                                </h3>
+
+                                {/* Daftar Harga Berpasangan */}
+                                <div className="space-y-3 mb-6">
+                                    {/* Row Listing */}
+                                    <div className="flex justify-between items-center text-sm">
+                                        <span className="text-slate-500 font-medium">
+                                            Listing:
+                                        </span>
+                                        {/* Harga Properti (Listing) - Pakai warna hijau buat indikator positif */}
+                                        <span className="font-bold text-green-700 tabular-nums">
+                                            {formatCurrency(hargaProperti)}
+                                        </span>
+                                    </div>
+
+                                    {/* Row Harga Pasar */}
+                                    <div className="flex justify-between items-center text-sm">
+                                        <span className="text-slate-500 font-medium">
+                                            Harga Pasar:
+                                        </span>
+                                        {/* Harga Pasar - Warna default */}
+                                        <span className="font-bold text-slate-900 tabular-nums">
+                                            {formatCurrency(hargaPasar)}
+                                        </span>
+                                    </div>
+                                </div>
+
+                                {/* Section Progress Bar & Analisis */}
+                                <div className="space-y-2">
+                                    {/* Progress Bar Container */}
+                                    <div className="w-full h-2.5 bg-slate-100 rounded-full overflow-hidden">
+                                        <div
+                                            className={`h-full rounded-full ${isDiBawahPasar ? "bg-green-600" : "bg-red-600"}`}
+                                            style={{
+                                                width: `${progressWidth}%`,
+                                            }}
+                                        ></div>
+                                    </div>
+
+                                    {/* Teks Analisis Persentase */}
+                                    <p
+                                        className={`text-sm font-medium ${warnaPersen}`}
+                                    >
+                                        {labelPersen} (
+                                        {perbedaanPersen.toFixed(1)}%)
+                                    </p>
                                 </div>
                                 <div className="flex flex-wrap gap-2 mt-4">
                                     <span className="px-3 py-1.5 bg-slate-50 border border-slate-100 rounded-lg text-[10px] font-bold text-slate-600">

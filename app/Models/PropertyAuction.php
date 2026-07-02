@@ -18,6 +18,7 @@ class PropertyAuction extends Model
         'date_finish',
         'status',
         'type',
+        'market_value'
     ];
 
     public function property()

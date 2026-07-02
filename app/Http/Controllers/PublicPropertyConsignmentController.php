@@ -145,6 +145,7 @@ class PublicPropertyConsignmentController extends Controller
                 'price' => $consignment->property_value,
                 'ownership' => $consignment->ownership,
                 'lease_term' => $consignment->lease_term,
+                'market_price' => $consignment->market_value,
             ],
             'images' => $consignment->property->images->map(function ($img) {
                 return Storage::url($img->image_url);
