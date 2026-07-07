@@ -26,7 +26,7 @@ use App\Http\Controllers\PublicProjectController;
 use App\Http\Controllers\PublicPropertyController;
 use App\Http\Controllers\User\BidController;
 use App\Http\Controllers\User\DashboardController as UserDashboardController;
-use App\Http\Controllers\user\PaymentController;
+use App\Http\Controllers\User\PaymentController;
 use App\Http\Controllers\User\PortfolioController;
 use App\Http\Controllers\User\TransactionController;
 use App\Models\DeveloperProject;
