@@ -115,7 +115,7 @@ export default function Footer({
                             </li>
                             <li>
                                 <a
-                                    href="#property"
+                                    href="/property-for-sale"
                                     className="hover:text-emerald-600"
                                 >
                                     Property for Sale

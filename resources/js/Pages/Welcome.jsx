@@ -13,6 +13,8 @@ export default function Welcome({
     settings,
     partners,
     projects,
+    landings,
+    landmarks,
 }) {
     return (
         <>
@@ -29,10 +31,16 @@ export default function Welcome({
                     <Header />
 
                     <main className="flex-1 text-slate-50">
-                        <Hero />
+                        <Hero landings={landings} />
                         <OurVilla villa={villa} />
-                        <DeveloperProjects project={projects} />
-                        <OurLocation />
+                        <DeveloperProjects
+                            project={projects}
+                            landings={landings}
+                        />
+                        <OurLocation
+                            landings={landings}
+                            landmarks={landmarks}
+                        />
                     </main>
 
                     <Footer

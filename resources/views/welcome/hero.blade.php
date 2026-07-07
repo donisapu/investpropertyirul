@@ -2,7 +2,7 @@
     <div class="absolute inset-0">
         <div class="h-full w-full bg-gray-500/60">
             <div class="h-full w-full bg-cover bg-center mix-blend-overlay"
-                 style="background-image: url('{{ asset('assets/img/elements/hero.jpg') }}')"></div>
+                 style="background-image: url('{{ asset('assets/img/elements/hero.jpgs') }}')"></div>
         </div>
     </div>
 

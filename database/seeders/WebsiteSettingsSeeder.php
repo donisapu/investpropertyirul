@@ -15,7 +15,7 @@ class WebsiteSettingsSeeder extends Seeder
     {
         DB::table('website_settings')->updateOrInsert(
             [
-                'id' => 1, // enforce single row
+                'id' => 1,
             ],
             [
                 'logo' => null,

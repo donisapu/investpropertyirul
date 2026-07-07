@@ -22,6 +22,7 @@ class DatabaseSeeder extends Seeder
             // PropertyConsignmentSeeder::class,
             // PropertyAuctionSeeder::class,
             // DeveloperSeeder::class,
+            LandingPageSeeder::class,
         ]);
     }
 }

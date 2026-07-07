@@ -1,7 +1,7 @@
 import { Link } from "@inertiajs/react";
 import { route } from "ziggy-js";
 
-export default function DeveloperProjects({ project }) {
+export default function DeveloperProjects({ project, landings }) {
     return (
         <section id="developer-projects" className="bg-white text-slate-900">
             <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-12">
@@ -15,16 +15,7 @@ export default function DeveloperProjects({ project }) {
                         </h2>
                     </div>
                     <p className="mt-4 text-sm leading-relaxed text-slate-700 max-w-3xl mx-auto">
-                        Konsep pengembangan properti kami berfokus pada inovasi
-                        berkelanjutan, menjangkau segmen perumahan dan villa.
-                        Kami memastikan setiap proyek terbukti mengikuti tren
-                        pasar terkini dan menawarkan fleksibilitas desain untuk
-                        selaras dengan kebutuhan spesifik klien. Nikmati
-                        keuntungan dari lokasi proyek yang strategis dengan
-                        jaminan harga properti yang kompetitif dan terjangkau.
-                        Untuk mengakomodasi berbagai kebutuhan investasi, kami
-                        secara konsisten menyediakan opsi kepemilikan Freehold
-                        dan Leasehold pada seluruh portofolio proyek kami.
+                        {landings.developer_project_desc}
                     </p>
                 </div>
 

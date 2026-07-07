@@ -189,10 +189,24 @@
                         <span class="menu-header-text">Settings</span>
                     </li>
                     <li class="menu-item {{ request()->routeIs('admin.website-settings.edit') ? 'active' : '' }}">
-                        <a href="{{ route('admin.website-settings.edit') }}" class="menu-link">
+                        <a href="javascript:void(0);" class="menu-link menu-toggle">
                             <i class="menu-icon tf-icons bx bx-home-circle"></i>
-                            <div data-i18n="Analytics">Website</div>
+                            <div data-i18n="Layouts">Website Setting</div>
                         </a>
+
+                        <ul class="menu-sub">
+                            <li
+                                class="menu-item {{ request()->routeIs('admin.website-settings.edit') ? 'active' : '' }}">
+                                <a href="{{ route('admin.website-settings.edit') }}" class="menu-link">
+                                    <div data-i18n="Analytics">Website</div>
+                                </a>
+                            </li>
+                            <li class="menu-item {{ request()->routeIs('admin.landing-settings') ? 'active' : '' }}">
+                                <a href="{{ route('admin.landing-settings') }}" class="menu-link">
+                                    <div data-i18n="Analytics">Landing Page</div>
+                                </a>
+                            </li>
+                        </ul>
                     </li>
                     <li class="menu-item {{ request()->routeIs('admin.developers') ? 'active' : '' }}">
                         <a href="javascript:void(0);" class="menu-link menu-toggle">
@@ -201,8 +215,7 @@
                         </a>
 
                         <ul class="menu-sub">
-                            <li
-                                class="menu-item {{ request()->routeIs('admin.developers') ? 'active' : '' }}">
+                            <li class="menu-item {{ request()->routeIs('admin.developers') ? 'active' : '' }}">
                                 <a href="{{ route('admin.developers') }}" class="menu-link">
                                     <div data-i18n="Analytics">Site Setting</div>
                                 </a>

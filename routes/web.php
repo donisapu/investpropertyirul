@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\CrowdfundingFinancialsController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\DeveloperController;
 use App\Http\Controllers\Admin\DeveloperProjectController;
+use App\Http\Controllers\Admin\LandingSettingController;
 use App\Http\Controllers\Admin\ProfileController as AdminProfileController;
 use App\Http\Controllers\Admin\PropertiesController;
 use App\Http\Controllers\Admin\PropertyAuctionController;
@@ -29,6 +30,8 @@ use App\Http\Controllers\user\PaymentController;
 use App\Http\Controllers\User\PortfolioController;
 use App\Http\Controllers\User\TransactionController;
 use App\Models\DeveloperProject;
+use App\Models\LandingPage;
+use App\Models\Landmark;
 use App\Models\WebsiteSetting;
 use App\Models\Partner;
 use Illuminate\Support\Facades\Route;
@@ -56,12 +59,16 @@ Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $requ
 })->middleware(['auth', 'signed'])->name('verification.verify');
 Route::get('/', function () {
     $settings = WebsiteSetting::getSettings();
+    $landings = LandingPage::getSettings();
     $partners = Partner::all();
+    $landmark = Landmark::all();
     $project = DeveloperProject::take(4)->get();
     return Inertia::render('Welcome', [
         'settings' => $settings,
         'partners' => $partners,
+        'landings' => $landings,
         'projects'  => $project,
+        'landmarks'  => $landmark,
         'villa' => \App\Models\Properties::where('property_name', 'Nusa Dua Ocean Breeze')->first(),
         'laravelVersion' => Illuminate\Foundation\Application::VERSION,
         'phpVersion' => PHP_VERSION,
@@ -217,7 +224,12 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin'])->grou
     // Website Settings
     Route::get('/website-settings', [WebsiteSettingController::class, 'edit'])->name('website-settings.edit');
     Route::put('/website-settings', [WebsiteSettingController::class, 'update'])->name('website-settings.update');
-    Route::delete('partner/{id}', [WebsiteSettingController::class, 'deletePartner'])->name('partner.delete');
+    Route::delete('/partner/{id}', [WebsiteSettingController::class, 'deletePartner'])->name('partner.delete');
+
+    // Landing Setting
+    Route::get('/landing-settings', [LandingSettingController::class, 'edit'])->name('landing-settings');
+    Route::put('/landing-settings', [LandingSettingController::class, 'update'])->name('landing-settings.update');
+    Route::delete('/landmark/{id}', [LandingSettingController::class, 'deleteLandmark'])->name('landmark.delete');
 
     // Profile
     Route::get('profile', [AdminProfileController::class, 'index'])->name('profile');
