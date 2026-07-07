@@ -3,6 +3,9 @@
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div class="flex h-20 items-center justify-between">
             <!-- Logo -->
+            @php
+                $setting = DB::table('website_settings')->first();
+            @endphp
             <div class="flex-shrink-0 flex items-center">
                 <a href="{{ url('/') }}">
                     <img src="{{ asset('storage/' . $setting->logo) }}" alt="logo"
