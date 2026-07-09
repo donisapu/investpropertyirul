@@ -1,31 +1,68 @@
-<x-guest-layout>
-    <div class="mb-4 text-sm text-gray-600 dark:text-gray-400">
-        {{ __('Thanks for signing up! Before getting started, could you verify your email address by clicking on the link we just emailed to you? If you didn\'t receive the email, we will gladly send you another.') }}
-    </div>
+@extends('layouts.auth')
 
-    @if (session('status') == 'verification-link-sent')
-        <div class="mb-4 font-medium text-sm text-green-600 dark:text-green-400">
-            {{ __('A new verification link has been sent to the email address you provided during registration.') }}
-        </div>
-    @endif
+@section('content')
+<div class="container-xxl">
+    <div class="authentication-wrapper authentication-basic container-p-y">
+        <div class="authentication-inner">
 
-    <div class="mt-4 flex items-center justify-between">
-        <form method="POST" action="{{ route('verification.send') }}">
-            @csrf
+            <div class="card">
+                <div class="card-body">
 
-            <div>
-                <x-primary-button>
-                    {{ __('Resend Verification Email') }}
-                </x-primary-button>
+                    <!-- Logo -->
+                    <div class="app-brand justify-content-center">
+                        <a href="/" class="app-brand-link">
+                            @php
+                                $settings = DB::table('website_settings')->first();
+                            @endphp
+
+                            <img src="{{ isset($settings->logo)
+                                ? (str_starts_with($settings->logo, 'http') || str_starts_with($settings->logo, '/')
+                                    ? $settings->logo
+                                    : asset('storage/' . $settings->logo))
+                                : asset('assets/img/logo.png') }}"
+                                alt="Logo"
+                                style="width:100px; margin:10px auto 20px;">
+                        </a>
+                    </div>
+
+                    <h4 class="mb-2 text-center">
+                        Verify Your Email 📧
+                    </h4>
+
+                    <p class="text-muted text-center mb-4">
+                        Thank you for registering.<br>
+                        Before you can continue, please verify your email address by clicking
+                        the verification link we sent to your inbox.
+                    </p>
+
+                    @if (session('status') == 'verification-link-sent')
+                        <div class="alert alert-success">
+                            A new verification link has been sent to your email address.
+                        </div>
+                    @endif
+
+                    <form method="POST" action="{{ route('verification.send') }}">
+                        @csrf
+
+                        <button class="btn btn-primary d-grid w-100 mb-3" type="submit">
+                            <i class="bx bx-envelope me-1"></i>
+                            Resend Verification Email
+                        </button>
+                    </form>
+
+                    <form method="POST" action="{{ route('logout') }}">
+                        @csrf
+
+                        <button class="btn btn-outline-secondary d-grid w-100" type="submit">
+                            <i class="bx bx-log-out me-1"></i>
+                            Logout
+                        </button>
+                    </form>
+
+                </div>
             </div>
-        </form>
 
-        <form method="POST" action="{{ route('logout') }}">
-            @csrf
-
-            <button type="submit" class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800">
-                {{ __('Log Out') }}
-            </button>
-        </form>
+        </div>
     </div>
-</x-guest-layout>
+</div>
+@endsection

@@ -57,6 +57,7 @@ Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $requ
 
     return redirect($user->redirectTo());
 })->middleware(['auth', 'signed'])->name('verification.verify');
+
 Route::get('/', function () {
     $settings = WebsiteSetting::getSettings();
     $landings = LandingPage::getSettings();
