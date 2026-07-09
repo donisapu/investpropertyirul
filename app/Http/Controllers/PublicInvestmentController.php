@@ -107,8 +107,8 @@ class PublicInvestmentController extends Controller
                 ];
             }),
         ];
-
-        return Inertia::render('Investments/Show', compact('property'));
+        $settings = WebsiteSetting::getSettings();
+        return Inertia::render('Investments/Show', compact('property', 'settings'));
     }
 
     public function purchase($id)
@@ -154,8 +154,8 @@ class PublicInvestmentController extends Controller
             'sold' => $investment->status === 'sold' || ($investment->total_lot - $investment->sold_lot) <= 0,
             'map_url' => $investment->property->map_url,
         ];
-
-        return Inertia::render('Investments/Purchase', compact('property'));
+        $settings = WebsiteSetting::getSettings();
+        return Inertia::render('Investments/Purchase', compact('property', 'settings'));
     }
 
     public function sell($id)
@@ -206,7 +206,8 @@ class PublicInvestmentController extends Controller
                 'lot_held' => $portfolio->total_lot,
             ],
         ];
+        $settings = WebsiteSetting::getSettings();
 
-        return Inertia::render('Investments/Sell', compact('property'));
+        return Inertia::render('Investments/Sell', compact('property', 'settings'));
     }
 }

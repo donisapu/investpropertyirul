@@ -31,7 +31,7 @@ import {
 } from "recharts";
 import PublicLayout from "@/Layouts/PublicLayout";
 
-export default function Show({ property }) {
+export default function Show({ property , settings}) {
     const [activeTab, setActiveTab] = useState("details");
     const [lightboxOpen, setLightboxOpen] = useState(false);
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
