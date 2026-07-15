@@ -33,14 +33,70 @@
                         @if ($btn == 'edit') value="{{ $data->title }}" @endif>
                 </div>
                 <div class="mb-3">
+                    <label for="">Project Banner</label>
+                    <input type="file" name="banner_image" class="form-control" id="">
+                </div>
+                <div class="mb-3">
                     <label for="" class="form-label">Project Location</label>
                     <input type="text" class="form-control" name="location" placeholder="Project Location" id=""
                         @if ($btn == 'edit') value="{{ $data->location }}" @endif>
                 </div>
                 <div class="mb-3">
-                    <label for="" class="form-label">Description</label>
+                    <label for="" class="form-label">Description 1</label>
                     <textarea name="description" class="form-control" placeholder="Project Description" id="" cols="30"
-                        rows="10">@if ($btn == 'edit'){{ $data->description }}@endif</textarea>
+                        rows="10">
+@if ($btn == 'edit')
+{{ $data->description }}
+@endif
+</textarea>
+                </div>
+                <div class="mb-3">
+                    <label for="" class="form-label">Description 2</label>
+                    <textarea name="description_1" class="form-control" placeholder="Project Description" id="" cols="30"
+                        rows="10">
+@if ($btn == 'edit')
+{{ $data->description_1 }}
+@endif
+</textarea>
+                </div>
+                <div class="mb-3">
+                    <label for="" class="form-label">Description 3</label>
+                    <textarea name="description_2" class="form-control" placeholder="Project Description" id="" cols="30"
+                        rows="10">
+@if ($btn == 'edit')
+{{ $data->description_2 }}
+@endif
+</textarea>
+                </div>
+                <div class="mb-3">
+                    <label for="" class="form-label">Description 4</label>
+                    <textarea name="description_3" class="form-control" placeholder="Project Description" id="" cols="30"
+                        rows="10">
+@if ($btn == 'edit')
+{{ $data->description_3 }}
+@endif
+</textarea>
+                </div>
+                <div class="mb-3">
+                    <label for="">Project Highlight</label>
+                    <input type="file" name="highlight_path" class="form-control" id="">
+                </div>
+                <div class="mb-3">
+                    <label for="">Project Highlight 2</label>
+                    <input type="file" name="highlight_2_path" class="form-control" id="">
+                </div>
+                {{-- YOUTUBE VIDEO --}}
+                <div class="col-md-12">
+                    <label class="form-label fw-medium">YouTube Video</label>
+
+                    <input type="url" name="youtube_url" id="youtubeInput" class="form-control"
+                        @if ($btn == 'edit') value="{{ $data->youtube_url }}" @endif
+                        placeholder="https://www.youtube.com/watch?v=...">
+                    <small class="text-danger error" id="error-youtubeInput"></small>
+
+                    <div class="ratio ratio-16x9 mt-3 d-none" id="youtubePreviewWrapper">
+                        <iframe id="youtubePreview" src="" allowfullscreen></iframe>
+                    </div>
                 </div>
                 <div class="mb-3">
                     <label for="" class="form-label">Url Map</label>
@@ -48,14 +104,17 @@
                         @if ($btn == 'edit') value="{{ $data->maps_url }}" @endif>
                 </div>
                 <div class="mb-3">
-                    <label for="">Project Banner</label>
-                    <input type="file" name="banner_image" class="form-control" id="">
+                    <label for="">Type</label>
+                    <input type="text" name="type" class="form-control" id=""
+                        @if ($btn == 'edit') value="{{ $data->type }}" @endif>
                 </div>
                 <div class="mb-3">
                     <label for="">Status</label>
                     <select name="status" class="form-control" id="">
-                        <option value="Segera Hadir" @if ($btn == 'edit' && $data->status == 'Segera Hadir') selected @endif>Segera Hadir</option>
-                        <option value="Dalam Proses" @if ($btn == 'edit' && $data->status == 'Dalam Proses') selected @endif>Dalam Proses</option>
+                        <option value="Segera Hadir" @if ($btn == 'edit' && $data->status == 'Segera Hadir') selected @endif>Segera Hadir
+                        </option>
+                        <option value="Dalam Proses" @if ($btn == 'edit' && $data->status == 'Dalam Proses') selected @endif>Dalam Proses
+                        </option>
                         <option value="Selesai" @if ($btn == 'edit' && $data->status == 'Selesai') selected @endif>Selesai</option>
                         <option value="Terjual" @if ($btn == 'edit' && $data->status == 'Terjual') selected @endif>Terjual</option>
                     </select>
@@ -134,5 +193,47 @@
                 });
             }
         });
+
+        const ytInput = document.getElementById('youtubeInput');
+        const ytPreview = document.getElementById('youtubePreview');
+        const ytWrapper = document.getElementById('youtubePreviewWrapper');
+
+        function extractYoutubeId(url) {
+            if (!url) return null;
+
+            const regExp =
+                /(?:youtube\.com\/.*v=|youtu\.be\/)([^&]+)/;
+            const match = url.match(regExp);
+
+            return match ? match[1] : null;
+        }
+
+        function isValidYoutube(url) {
+            return !!extractYoutubeId(url);
+        }
+
+        function updateYoutubePreview() {
+            const videoId = extractYoutubeId(ytInput.value);
+
+            if (videoId) {
+                ytPreview.src = `https://www.youtube.com/embed/${videoId}`;
+                ytWrapper.classList.remove('d-none');
+            } else {
+                ytPreview.src = '';
+                ytWrapper.classList.add('d-none');
+            }
+        }
+
+        ytInput.addEventListener('input', updateYoutubePreview);
+
+        // Auto-load preview on edit page
+        updateYoutubePreview();
+
+        // YouTube
+        const yt = document.getElementById('youtubeInput')?.value.trim();
+        if (yt && !isValidYoutube(yt)) {
+            showError('youtube_url', 'Invalid YouTube URL.');
+            isValid = false;
+        }
     </script>
 @endpush

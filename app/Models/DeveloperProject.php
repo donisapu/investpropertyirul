@@ -12,7 +12,7 @@ class DeveloperProject extends Model
 {
     use HasSlug;
     use HasFactory;
-    protected $fillable = ['title', 'description', 'location', 'status', 'maps_url', 'slug', 'banner_image'];
+    protected $fillable = ['title', 'description', 'description_1', 'description_2', 'description_3', 'youtube_url', 'highlight_path', 'highlight_2_path', 'location', 'status', 'maps_url', 'slug', 'banner_image', 'type'];
     public function getSlugOptions(): SlugOptions
     {
         return SlugOptions::create()

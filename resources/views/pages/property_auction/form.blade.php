@@ -7,7 +7,7 @@
             <div class="card-body">
                 <div class="mb-3">
                     <label for="" class="form-label">Property</label>
-                    <select name="property_id" id="property_id" class="form-control">
+                    <select name="property_id" id="property_id" class="form-control" @required(true)>
                         @if ($btn == 'edit')
                             <option value="{{ $data->property->id }}" selected>
                                 {{ $data->property->property_name }}
@@ -18,35 +18,36 @@
                 <div class="mb-3">
                     <label for="">Open Bid</label>
                     <input type="number" class="form-control" name="open_bid" placeholder="Open Bid" id=""
-                        @if ($btn == 'edit') value="{{ $data->open_bid }}" @endif>
+                        @if ($btn == 'edit') value="{{ $data->open_bid }}" @endif @required(true)>
                 </div>
                 <div class="mb-3">
                     <label for="">Bid Increment</label>
                     <input type="number" class="form-control" name="bid_increment" placeholder="Bid Increment"
-                        id="" @if ($btn == 'edit') value="{{ $data->bid_increment }}" @endif>
+                        id="" @if ($btn == 'edit') value="{{ $data->bid_increment }}" @endif
+                        @required(true)>
                 </div>
                 <div class="mb-3">
                     <label for="">Market Value</label>
-                    <input type="number" class="form-control" name="market_value" placeholder="Market Value"
-                        id="" @if ($btn == 'edit') value="{{ $data->market_value }}" @endif>
+                    <input type="number" class="form-control" name="market_value" placeholder="Market Value" id=""
+                        @if ($btn == 'edit') value="{{ $data->market_value }}" @endif @required(true)>
                 </div>
                 <div class="mb-3">
                     <div class="row">
                         <div class="col-6">
                             <label for="">Start Date</label>
                             <input type="date" class="form-control" name="date_start" id=""
-                                @if ($btn == 'edit') value="{{ $data->date_start }}" @endif>
+                                @if ($btn == 'edit') value="{{ $data->date_start }}" @endif @required(true)>
                         </div>
                         <div class="col-6">
                             <label for="">Finish Date</label>
                             <input type="date" class="form-control" name="date_finish" id=""
-                                @if ($btn == 'edit') value="{{ $data->date_finish }}" @endif>
+                                @if ($btn == 'edit') value="{{ $data->date_finish }}" @endif @required(true)>
                         </div>
                     </div>
                 </div>
                 <div class="mb-3">
                     <label for="" class="form-label">Status</label>
-                    <select name="status" class="form-control" id="">
+                    <select name="status" class="form-control" id="" @required(true)>
                         <option value="draft" @if ($btn == 'edit' && $data->status == 'draft') selected @endif>Draft</option>
                         <option value="upcoming" @if ($btn == 'edit' && $data->status == 'upcoming') selected @endif>Upcoming</option>
                         <option value="active" @if ($btn == 'edit' && $data->status == 'active') selected @endif>Active</option>

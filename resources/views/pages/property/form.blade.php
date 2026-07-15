@@ -30,28 +30,32 @@
                 <div class="mb-3">
                     <label for="" class="form-label">Property Name</label>
                     <input type="text" class="form-control" name="property_name" placeholder="Property Name"
-                        id="" @if ($btn == 'edit') value="{{ $data->property_name }}" @endif>
+                        id="" @if ($btn == 'edit') value="{{ $data->property_name }}" @endif
+                        @required(true)>
                 </div>
                 <div class="mb-3">
                     <label for="" class="form-label">Property Location</label>
                     <input type="text" class="form-control" name="property_location" placeholder="Property Location"
-                        id="" @if ($btn == 'edit') value="{{ $data->property_location }}" @endif>
+                        id="" @if ($btn == 'edit') value="{{ $data->property_location }}" @endif
+                        @required(true)>
                 </div>
                 <div class="mb-3">
                     <div class="row">
                         <div class="col-4">
                             <label for="" class="form-label">Bedroom</label>
                             <input type="number" min="1" class="form-control" name="bedroom" placeholder="Bedroom"
-                                id="" @if ($btn == 'edit') value="{{ $data->bedroom }}" @endif>
+                                id="" @if ($btn == 'edit') value="{{ $data->bedroom }}" @endif
+                                @required(true)>
                         </div>
                         <div class="col-4">
                             <label for="" class="form-label">Bathroom</label>
                             <input type="number" min="1" class="form-control" name="bathroom" placeholder="Bathroom"
-                                id="" @if ($btn == 'edit') value="{{ $data->bathroom }}" @endif>
+                                id="" @if ($btn == 'edit') value="{{ $data->bathroom }}" @endif
+                                @required(true)>
                         </div>
                         <div class="col-4">
                             <label for="" class="form-label">Property Type</label>
-                            <select name="property_type" class="form-control" id="">
+                            <select name="property_type" class="form-control" id="" @required(true)>
                                 <option value="Rumah" @if ($btn == 'edit' && $data->property_type == 'Rumah') selected @endif>Rumah</option>
                                 <option value="Apartemen" @if ($btn == 'edit' && $data->property_type == 'Apartemen') selected @endif>Apartemen
                                 </option>
@@ -71,51 +75,36 @@
                             <label for="" class="form-label">Land Area (m²)</label>
                             <input type="number" class="form-control" name="land_area" id=""
                                 placeholder="Land Area in m²"
-                                @if ($btn == 'edit') value="{{ $data->land_area }}" @endif>
+                                @if ($btn == 'edit') value="{{ $data->land_area }}" @endif @required(true)>
                         </div>
                         <div class="col-6">
                             <label for="" class="form-label">Building Area (m²)</label>
                             <input type="number" class="form-control" name="building_area" id=""
                                 placeholder="Building Area in m²"
-                                @if ($btn == 'edit') value="{{ $data->building_area }}" @endif>
+                                @if ($btn == 'edit') value="{{ $data->building_area }}" @endif
+                                @required(true)>
                         </div>
                     </div>
                 </div>
                 <div class="mb-3">
                     <label for="" class="form-label">Listing Url</label>
                     <textarea name="listing_url" class="form-control" placeholder="Lising Url on Airbnb etc (optional)" id=""
-                        cols="30" rows="2">
-@if ($btn == 'edit')
-{{ $data->listing_url }}
-@endif
-</textarea>
+                        cols="30" rows="2">@if ($btn == 'edit'){{ $data->listing_url }}@endif</textarea>
                 </div>
                 <div class="mb-3">
                     <label for="" class="form-label">Detail</label>
                     <textarea name="detail" class="form-control" placeholder="Property Detail" id="" cols="30"
-                        rows="10">
-@if ($btn == 'edit')
-{{ $data->detail }}
-@endif
-</textarea>
+                        rows="10">@if ($btn == 'edit'){{ $data->detail }}@endif</textarea>
                 </div>
                 <div class="mb-3">
                     <label for="" class="form-label">Market</label>
                     <textarea name="market" class="form-control" placeholder="Property Market" id="" cols="30"
-                        rows="10">
-@if ($btn == 'edit')
-{{ $data->market }}
-@endif
-</textarea>
+                        rows="10">@if ($btn == 'edit'){{ $data->market }}@endif</textarea>
                 </div>
                 <div class="mb-3">
                     <label for="" class="form-label">Timeline</label>
                     <textarea name="timeline" class="form-control" placeholder="Property Timeline" id="" cols="30"
-                        rows="10">
-@if ($btn == 'edit')
-{{ $data->timeline }}
-@endif
-</textarea>
+                        rows="10">@if ($btn == 'edit'){{ $data->timeline }}@endif</textarea>
                 </div>
                 <div class="mb-3">
                     <label for="" class="form-label">Url Map</label>

@@ -34,6 +34,7 @@ use App\Models\LandingPage;
 use App\Models\Landmark;
 use App\Models\WebsiteSetting;
 use App\Models\Partner;
+use App\Models\SliderImage;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
@@ -63,6 +64,7 @@ Route::get('/', function () {
     $landings = LandingPage::getSettings();
     $partners = Partner::all();
     $landmark = Landmark::all();
+    $sliders  = SliderImage::all();
     $project = DeveloperProject::take(4)->get();
     return Inertia::render('Welcome', [
         'settings' => $settings,
@@ -70,6 +72,7 @@ Route::get('/', function () {
         'landings' => $landings,
         'projects'  => $project,
         'landmarks'  => $landmark,
+        'sliders' => $sliders,
         'villa' => \App\Models\Properties::where('property_name', 'Nusa Dua Ocean Breeze')->first(),
         'laravelVersion' => Illuminate\Foundation\Application::VERSION,
         'phpVersion' => PHP_VERSION,
@@ -231,6 +234,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin'])->grou
     Route::get('/landing-settings', [LandingSettingController::class, 'edit'])->name('landing-settings');
     Route::put('/landing-settings', [LandingSettingController::class, 'update'])->name('landing-settings.update');
     Route::delete('/landmark/{id}', [LandingSettingController::class, 'deleteLandmark'])->name('landmark.delete');
+    Route::delete('/slider/{id}', [LandingSettingController::class, 'deleteSlider'])->name('slider.delete');
 
     // Profile
     Route::get('profile', [AdminProfileController::class, 'index'])->name('profile');

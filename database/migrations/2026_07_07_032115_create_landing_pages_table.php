@@ -21,6 +21,7 @@ return new class extends Migration
             $table->text('mapping_path')->nullable();
             $table->text('hero_path')->nullable();
             $table->text('location')->nullable();
+            $table->string('slider_title')->nullable();
 
             $table->timestamps();
         });

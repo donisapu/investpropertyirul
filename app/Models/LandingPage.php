@@ -18,6 +18,7 @@ class LandingPage extends Model
         'mapping_path',
         'hero_path',
         'location',
+        'slider_title'
     ];
 
     public static function getSettings(): ?self

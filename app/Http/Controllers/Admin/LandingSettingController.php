@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\LandingPage;
 use App\Models\Landmark;
+use App\Models\SliderImage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -18,11 +19,13 @@ class LandingSettingController extends AdminController
     {
         $setting = LandingPage::getSettings();
         $landmark = Landmark::all();
+        $slider = SliderImage::all();
 
         return $this->view('landing', [
             'title' => 'Landing Page Settings',
             'setting' => $setting,
             'landmark' => $landmark,
+            'slider' => $slider,
         ]);
     }
 
@@ -41,6 +44,7 @@ class LandingSettingController extends AdminController
             'developer_project_desc' => 'nullable|string',
             'location_desc' => 'nullable|string',
             'location'  => 'nullable|string',
+            'slider_title' => 'nullable|string',
 
             'images' => 'nullable|array',
             'images.*' => 'image|mimes:jpg,jpeg,png,webp|max:5120',
@@ -48,6 +52,8 @@ class LandingSettingController extends AdminController
             'name.*' => 'nullable|string|max:255',
             'distance' => 'nullable|array',
             'distance.*' => 'nullable|string|max:255',
+
+            'sliders.*' => 'image|mimes:jpg,jpeg,png,webp|max:5120',
         ]);
 
         // 3. Jalankan Transaksi Database
@@ -82,12 +88,21 @@ class LandingSettingController extends AdminController
                 }
             }
 
+            if ($request->hasFile('sliders')) {
+                foreach ($request->file('sliders') as $index => $image) {
+                    $path = $image->store('website/sliders/image', 'public');
+
+                    SliderImage::create([
+                        'image_path' => $path,
+                    ]);
+                }
+            }
+
             // UPDATE LANGSUNG MENGGUNAKAN INSTANCE DI DALAM TRANSACTION
             $setting->update($data);
         });
 
         // 4. Pengaman Tambahan (Force Save jika update() di dalam closure macet)
-        // Ini memastikan instance object di luar closure juga sinkron dan tersimpan.
         $setting->fill($data)->save();
         Cache::forget('landing_pages');
         return redirect()
@@ -101,6 +116,16 @@ class LandingSettingController extends AdminController
 
         Storage::disk('public')->delete($landmark->image_path);
         $landmark->delete();
+
+        return response()->json(['success' => true]);
+    }
+
+    public function deleteSlider($id)
+    {
+        $slider = SliderImage::findOrFail($id);
+
+        Storage::disk('public')->delete($slider->image_path);
+        $slider->delete();
 
         return response()->json(['success' => true]);
     }

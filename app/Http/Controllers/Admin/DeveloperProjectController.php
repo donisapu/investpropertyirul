@@ -55,16 +55,26 @@ class DeveloperProjectController extends AdminController
         $request->validate([
             'title'    => 'required|string|max:255',
             'banner_image'   => 'nullable|image|max:5120',
+            'highlight_path' => 'image|max:5120',
+            'highlight_2_path' => 'image|max:5120',
             'images.*' => 'image|max:10240',
         ]);
 
         try {
             DB::transaction(function () use ($request) {
 
-                $data = $request->only(['title', 'description', 'location', 'status', 'maps_url']);
+                $data = $request->only(['title', 'description', 'location', 'status', 'maps_url', 'description_1', 'description_2', 'description_3', 'type', 'youtube_url']);
 
                 if ($request->hasFile('banner_image')) {
                     $data['banner_image'] = $request->file('banner_image')->store('projects/banners', 'public');
+                }
+
+                if ($request->hasFile('highlight_path')) {
+                    $data['highlight_path'] = $request->file('highlight_path')->store('projects/highlight', 'public');
+                }
+
+                if ($request->hasFile('highlight_2_path')) {
+                    $data['highlight_2_path'] = $request->file('highlight_2_path')->store('projects/highlight', 'public');
                 }
 
                 $project = DeveloperProject::create($data);

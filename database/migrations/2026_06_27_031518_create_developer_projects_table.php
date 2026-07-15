@@ -15,7 +15,14 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->string('slug')->unique();
+            $table->string('type');
             $table->text('description');
+            $table->text('description_1');
+            $table->text('description_2');
+            $table->text('description_3');
+            $table->string('highlight_path');
+            $table->string('highlight_1_path');
+            $table->text('youtube_url');
             $table->text('location');
             $table->text('maps_url');
             $table->enum('status', ['Segera Hadir', 'Dalam Proses', 'Selesai', 'Terjual']);

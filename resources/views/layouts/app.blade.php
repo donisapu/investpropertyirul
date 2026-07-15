@@ -165,25 +165,11 @@
                         </a>
                     </li>
 
-                    <li class="menu-item">
-                        <a href="javascript:void(0);" class="menu-link menu-toggle">
+                    <li class="menu-item {{ request()->routeIs('admin.auction-properties') ? 'active' : '' }}">
+                        <a href="{{ route('admin.auction-properties') }}" class="menu-link">
                             <i class="menu-icon tf-icons bx bx-gavel"></i>
-                            <div data-i18n="Layouts">Auctions</div>
+                            <div data-i18n="Analytics">Auctions</div>
                         </a>
-
-                        <ul class="menu-sub">
-                            <li
-                                class="menu-item {{ request()->routeIs('admin.auction-properties') ? 'active' : '' }}">
-                                <a href="{{ route('admin.auction-properties') }}" class="menu-link">
-                                    <div data-i18n="Analytics">Auction</div>
-                                </a>
-                            </li>
-                            {{-- <li class="menu-item {{ request()->routeIs('admin.financials') ? 'active' : '' }}">
-                                <a href="{{ route('admin.financials') }}" class="menu-link">
-                                    <div data-i18n="Without menu">Bidding</div>
-                                </a>
-                            </li> --}}
-                        </ul>
                     </li>
                     <li class="menu-header small text-uppercase">
                         <span class="menu-header-text">Settings</span>

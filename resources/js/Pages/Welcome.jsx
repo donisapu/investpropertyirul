@@ -15,6 +15,7 @@ export default function Welcome({
     projects,
     landings,
     landmarks,
+    sliders,
 }) {
     return (
         <>
@@ -32,7 +33,11 @@ export default function Welcome({
 
                     <main className="flex-1 text-slate-50">
                         <Hero landings={landings} />
-                        <OurVilla villa={villa} />
+                        <OurVilla
+                            villa={villa}
+                            sliders={sliders}
+                            landings={landings}
+                        />
                         <DeveloperProjects
                             project={projects}
                             landings={landings}

@@ -159,6 +159,57 @@
                         </div>
                     </div>
 
+                    <div class="col-md-12">
+                        <label class="form-label fw-medium">Slider Title</label>
+                        <input type="text" name="slider_title" id="slider_title" class="form-control"
+                            value="{{ old('slider_title', $setting->slider_title) }}">
+
+                        @error('slider_title')
+                            <small class="text-danger">{{ $message }}</small>
+                        @enderror
+                        <small class="text-danger error" id="error-slider_title"></small>
+                    </div>
+
+                    <div class="col-md-12">
+                        <div class="card mt-3">
+                            <div class="card-header h5">Sliders</div>
+                            <div class="card-body">
+
+                                {{-- existing documents --}}
+                                <ul class="list-group mb-3">
+                                    @foreach ($slider as $slider)
+                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                            <a href="{{ Storage::url($slider->image_path) }}" target="_blank">Lihat
+                                                Gambar
+                                            </a>
+                                            <button type="button" class="btn btn-sm btn-danger delete-image"
+                                                data-id="{{ $slider->id }}">
+                                                Delete
+                                            </button>
+                                        </li>
+                                    @endforeach
+                                </ul>
+
+                                {{-- add new documents --}}
+                                <button type="button" class="btn btn-sm btn-primary mb-2" id="addImage">
+                                    + Add Image
+                                </button>
+
+                                <div id="imageWrapper">
+                                    <div class="document-item row mb-2 align-items-center">
+                                        <div class="col-5">
+                                            <input type="file" name="sliders[]" class="form-control">
+                                        </div>
+                                        <div class="col-1">
+                                            <button type="button"
+                                                class="btn btn-danger btn-sm remove-document">✕</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
 
@@ -271,6 +322,45 @@
         document.addEventListener('click', function(e) {
             if (e.target.classList.contains('delete-document')) {
                 fetch(`/admin/landmark/${e.target.dataset.id}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                    }
+                }).then((response) => {
+                    if (response.ok) {
+                        e.target.closest('.list-group-item').remove();
+                    }
+                });
+            }
+        });
+
+        const imageWrapper = document.getElementById('imageWrapper');
+        document.getElementById('addImage').addEventListener('click', function() {
+            const count = imageWrapper.querySelectorAll('.image-item').length;
+            if (count >= 10) return;
+
+            const div = document.createElement('div');
+            div.className = 'image-item row mb-2 align-items-center';
+            div.innerHTML = `
+            <div class="col-5">
+                <input type="file" name="sliders[]" class="form-control">
+            </div>
+            <div class="col-1">
+                <button type="button" class="btn btn-danger btn-sm remove-image">✕</button>
+            </div>
+        `;
+            imageWrapper.appendChild(div);
+        });
+
+        imageWrapper.addEventListener('click', function(e) {
+            if (e.target.classList.contains('remove-image')) {
+                e.target.closest('.image-item').remove();
+            }
+        });
+
+        document.addEventListener('click', function(e) {
+            if (e.target.classList.contains('delete-image')) {
+                fetch(`/admin/slider/${e.target.dataset.id}`, {
                     method: 'DELETE',
                     headers: {
                         'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content

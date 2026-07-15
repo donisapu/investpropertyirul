@@ -7,7 +7,7 @@
             <div class="card-body">
                 <div class="mb-3">
                     <label for="" class="form-label">Property</label>
-                    <select name="property_id" id="property_id" class="form-control">
+                    <select name="property_id" id="property_id" class="form-control" @required(true)>
                         @if ($btn == 'edit')
                             <option value="{{ $data->property->id }}" selected>
                                 {{ $data->property->property_name }}
@@ -18,23 +18,24 @@
                 <div class="mb-3">
                     <label for="" class="form-label">Property Value</label>
                     <input type="number" class="form-control" name="property_value" placeholder="Property Value"
-                        id="" @if ($btn == 'edit') value="{{ $data->property_value }}" @endif>
+                        id="" @if ($btn == 'edit') value="{{ $data->property_value }}" @endif
+                        @required(true)>
                 </div>
                 <div class="mb-3">
                     <label for="" class="form-label">Market Value</label>
-                    <input type="number" class="form-control" name="market_value" placeholder="Market Value"
-                        id="" @if ($btn == 'edit') value="{{ $data->market_value }}" @endif>
+                    <input type="number" class="form-control" name="market_value" placeholder="Market Value" id=""
+                        @if ($btn == 'edit') value="{{ $data->market_value }}" @endif @required(true)>
                 </div>
                 <div class="mb-3">
                     <label for="">Ownership</label>
-                    <select name="ownership" class="form-control" id="">
+                    <select name="ownership" class="form-control" id="" @required(true)>
                         <option value="SHM" @if ($btn == 'edit' && $data->ownership == 'SHM') selected @endif>SHM</option>
                         <option value="SHGB" @if ($btn == 'edit' && $data->ownership == 'SHGB') selected @endif>SHGB</option>
                     </select>
                 </div>
                 <div class="mb-3">
                     <label for="">Listing Type</label>
-                    <select name="listing_type" class="form-control" id="listing_type">
+                    <select name="listing_type" class="form-control" id="listing_type" @required(true)>
                         <option value="Freehold" @if ($btn == 'edit' && $data->listing_type == 'Freehold') selected @endif>
                             Freehold
                         </option>
@@ -46,11 +47,11 @@
                 <div class="mb-3" id="lease_term_wrapper">
                     <label for="">Lease Term</label>
                     <input type="text" class="form-control" name="lease_term" placeholder="Lease Term"
-                        @if ($btn == 'edit') value="{{ $data->lease_term }}" @endif>
+                        @if ($btn == 'edit') value="{{ $data->lease_term }}" @endif @required(true)>
                 </div>
                 <div class="mb-3">
                     <label for="" class="form-label">Status</label>
-                    <select name="status" class="form-control" id="">
+                    <select name="status" class="form-control" id="" @required(true)>
                         <option value="draft" @if ($btn == 'edit' && $data->status == 'draft') selected @endif>Draft</option>
                         <option value="active" @if ($btn == 'edit' && $data->status == 'active') selected @endif>Active</option>
                         <option value="sold" @if ($btn == 'edit' && $data->status == 'sold') selected @endif>Sold</option>
