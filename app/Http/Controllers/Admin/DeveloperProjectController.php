@@ -56,7 +56,7 @@ class DeveloperProjectController extends AdminController
             'title'    => 'required|string|max:255',
             'banner_image'   => 'nullable|image|max:5120',
             'highlight_path' => 'image|max:5120',
-            'highlight_2_path' => 'image|max:5120',
+            'highlight_1_path' => 'image|max:5120',
             'images.*' => 'image|max:10240',
         ]);
 
@@ -73,8 +73,8 @@ class DeveloperProjectController extends AdminController
                     $data['highlight_path'] = $request->file('highlight_path')->store('projects/highlight', 'public');
                 }
 
-                if ($request->hasFile('highlight_2_path')) {
-                    $data['highlight_2_path'] = $request->file('highlight_2_path')->store('projects/highlight', 'public');
+                if ($request->hasFile('highlight_1_path')) {
+                    $data['highlight_1_path'] = $request->file('highlight_1_path')->store('projects/highlight', 'public');
                 }
 
                 $project = DeveloperProject::create($data);

@@ -83,7 +83,7 @@
                 </div>
                 <div class="mb-3">
                     <label for="">Project Highlight 2</label>
-                    <input type="file" name="highlight_2_path" class="form-control" id="">
+                    <input type="file" name="highlight_1_path" class="form-control" id="">
                 </div>
                 {{-- YOUTUBE VIDEO --}}
                 <div class="col-md-12">
