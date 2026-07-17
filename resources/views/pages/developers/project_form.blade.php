@@ -42,7 +42,7 @@
                         @if ($btn == 'edit') value="{{ $data->location }}" @endif>
                 </div>
                 <div class="mb-3">
-                    <label for="" class="form-label">Description 1</label>
+                    <label for="" class="form-label">Upper Sub-headline</label>
                     <textarea name="description" class="form-control" placeholder="Project Description" id="" cols="30"
                         rows="10">
 @if ($btn == 'edit')
@@ -51,7 +51,7 @@
 </textarea>
                 </div>
                 <div class="mb-3">
-                    <label for="" class="form-label">Description 2</label>
+                    <label for="" class="form-label">Video Description</label>
                     <textarea name="description_1" class="form-control" placeholder="Project Description" id="" cols="30"
                         rows="10">
 @if ($btn == 'edit')
@@ -60,7 +60,7 @@
 </textarea>
                 </div>
                 <div class="mb-3">
-                    <label for="" class="form-label">Description 3</label>
+                    <label for="" class="form-label">Project Short Description</label>
                     <textarea name="description_2" class="form-control" placeholder="Project Description" id="" cols="30"
                         rows="10">
 @if ($btn == 'edit')
@@ -69,7 +69,7 @@
 </textarea>
                 </div>
                 <div class="mb-3">
-                    <label for="" class="form-label">Description 4</label>
+                    <label for="" class="form-label">CTA Description</label>
                     <textarea name="description_3" class="form-control" placeholder="Project Description" id="" cols="30"
                         rows="10">
 @if ($btn == 'edit')
@@ -82,7 +82,7 @@
                     <input type="file" name="highlight_path" class="form-control" id="">
                 </div>
                 <div class="mb-3">
-                    <label for="">Project Highlight 2</label>
+                    <label for="">CTA Image</label>
                     <input type="file" name="highlight_1_path" class="form-control" id="">
                 </div>
                 {{-- YOUTUBE VIDEO --}}
