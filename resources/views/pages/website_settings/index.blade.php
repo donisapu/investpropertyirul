@@ -160,7 +160,7 @@
                                                 placeholder="Partner Name">
                                         </div>
                                         <div class="col-6">
-                                            <input type="file" name="images[]" class="form-control">
+                                            <input type="file" name="images[]" class="form-control" accept="image/*">
                                         </div>
                                         <div class="col-1">
                                             <button type="button"
@@ -317,7 +317,7 @@
                 <input type="text" name="name[]" class="form-control" placeholder="Partner Name">
             </div>
             <div class="col-6">
-                <input type="file" name="images[]" class="form-control">
+                <input type="file" name="images[]" class="form-control" accept="image/*">
             </div>
             <div class="col-1">
                 <button type="button" class="btn btn-danger btn-sm remove-document">✕</button>

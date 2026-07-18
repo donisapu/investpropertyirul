@@ -89,22 +89,38 @@
                 <div class="mb-3">
                     <label for="" class="form-label">Listing Url</label>
                     <textarea name="listing_url" class="form-control" placeholder="Lising Url on Airbnb etc (optional)" id=""
-                        cols="30" rows="2">@if ($btn == 'edit'){{ $data->listing_url }}@endif</textarea>
+                        cols="30" rows="2">
+@if ($btn == 'edit')
+{{ $data->listing_url }}
+@endif
+</textarea>
                 </div>
                 <div class="mb-3">
                     <label for="" class="form-label">Detail</label>
                     <textarea name="detail" class="form-control" placeholder="Property Detail" id="" cols="30"
-                        rows="10">@if ($btn == 'edit'){{ $data->detail }}@endif</textarea>
+                        rows="10">
+@if ($btn == 'edit')
+{{ $data->detail }}
+@endif
+</textarea>
                 </div>
                 <div class="mb-3">
                     <label for="" class="form-label">Market</label>
                     <textarea name="market" class="form-control" placeholder="Property Market" id="" cols="30"
-                        rows="10">@if ($btn == 'edit'){{ $data->market }}@endif</textarea>
+                        rows="10">
+@if ($btn == 'edit')
+{{ $data->market }}
+@endif
+</textarea>
                 </div>
                 <div class="mb-3">
                     <label for="" class="form-label">Timeline</label>
                     <textarea name="timeline" class="form-control" placeholder="Property Timeline" id="" cols="30"
-                        rows="10">@if ($btn == 'edit'){{ $data->timeline }}@endif</textarea>
+                        rows="10">
+@if ($btn == 'edit')
+{{ $data->timeline }}
+@endif
+</textarea>
                 </div>
                 <div class="mb-3">
                     <label for="" class="form-label">Url Map</label>
@@ -179,7 +195,7 @@
                                 placeholder="Document Name">
                         </div>
                         <div class="col-6">
-                            <input type="file" name="documents[]" class="form-control">
+                            <input type="file" name="documents[]" class="form-control" accept=".pdf">
                         </div>
                         <div class="col-1">
                             <button type="button" class="btn btn-danger btn-sm remove-document">✕</button>
@@ -222,7 +238,7 @@
                 <input type="text" name="document_names[]" class="form-control" placeholder="Document Name">
             </div>
             <div class="col-6">
-                <input type="file" name="documents[]" class="form-control">
+                <input type="file" name="documents[]" class="form-control" accept=".pdf">
             </div>
             <div class="col-1">
                 <button type="button" class="btn btn-danger btn-sm remove-document">✕</button>

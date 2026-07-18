@@ -147,7 +147,7 @@
                                                 placeholder="Landmark Distance">
                                         </div>
                                         <div class="col-5">
-                                            <input type="file" name="images[]" class="form-control">
+                                            <input type="file" name="images[]" class="form-control" accept="image/*">
                                         </div>
                                         <div class="col-1">
                                             <button type="button"
@@ -198,7 +198,7 @@
                                 <div id="imageWrapper">
                                     <div class="document-item row mb-2 align-items-center">
                                         <div class="col-5">
-                                            <input type="file" name="sliders[]" class="form-control">
+                                            <input type="file" name="sliders[]" class="form-control" accept="image/*">
                                         </div>
                                         <div class="col-1">
                                             <button type="button"
@@ -304,7 +304,7 @@
                 <input type="text" name="distance[]" class="form-control" placeholder="Landmark Distance">
             </div>
             <div class="col-5">
-                <input type="file" name="images[]" class="form-control">
+                <input type="file" name="images[]" class="form-control" accept="image/*">
             </div>
             <div class="col-1">
                 <button type="button" class="btn btn-danger btn-sm remove-document">✕</button>
@@ -343,7 +343,7 @@
             div.className = 'image-item row mb-2 align-items-center';
             div.innerHTML = `
             <div class="col-5">
-                <input type="file" name="sliders[]" class="form-control">
+                <input type="file" name="sliders[]" class="form-control" accept="image/*">
             </div>
             <div class="col-1">
                 <button type="button" class="btn btn-danger btn-sm remove-image">✕</button>
