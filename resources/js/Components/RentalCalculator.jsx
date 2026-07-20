@@ -95,8 +95,7 @@ export default function RentalCalculator() {
                 </div>
             </div>
             <p className="text-[10px] text-slate-400 mt-6 text-center italic">
-                *Simulasi ini hanya estimasi kasar. Pengeluaran bulanan
-                diasumsikan {formatRupiah(monthlyCharges)}
+                *Simulasi ini hanya estimasi kasar.
             </p>
         </div>
     );

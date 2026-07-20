@@ -39,10 +39,10 @@ export default function Investments({ properties, settings, partners }) {
                             </p>
 
                             {/* Tombol CTA Baru */}
-                            <button className="mt-4 bg-emerald-600 text-white font-semibold px-8 py-3.5 rounded-xl shadow-lg hover:bg-emerald-700 transition duration-150 inline-flex items-center gap-2.5">
+                            {/* <button className="mt-4 bg-emerald-600 text-white font-semibold px-8 py-3.5 rounded-xl shadow-lg hover:bg-emerald-700 transition duration-150 inline-flex items-center gap-2.5">
                                 <Building2 className="w-6 h-6" />
                                 Jelajahi Peluang Investasi
-                            </button>
+                            </button> */}
                         </div>
 
                         {/* Ikon Dekoratif Halus (Sekarang Sisi-Kanan) */}

@@ -22,6 +22,7 @@ use App\Http\Controllers\PublicCrowdfundingController;
 use App\Http\Controllers\AuctionController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\PublicCampaignController;
 use App\Http\Controllers\PublicProjectController;
 use App\Http\Controllers\PublicPropertyController;
 use App\Http\Controllers\User\BidController;
@@ -29,6 +30,7 @@ use App\Http\Controllers\User\DashboardController as UserDashboardController;
 use App\Http\Controllers\User\PaymentController;
 use App\Http\Controllers\User\PortfolioController;
 use App\Http\Controllers\User\TransactionController;
+use App\Models\Campaign;
 use App\Models\DeveloperProject;
 use App\Models\LandingPage;
 use App\Models\Landmark;
@@ -66,6 +68,7 @@ Route::get('/', function () {
     $landmark = Landmark::all();
     $sliders  = SliderImage::all();
     $project = DeveloperProject::take(4)->get();
+    $campaign = Campaign::where('status','active')->get();
     return Inertia::render('Welcome', [
         'settings' => $settings,
         'partners' => $partners,
@@ -73,6 +76,7 @@ Route::get('/', function () {
         'projects'  => $project,
         'landmarks'  => $landmark,
         'sliders' => $sliders,
+        'campaigns' => $campaign,
         'villa' => \App\Models\Properties::where('property_name', 'Nusa Dua Ocean Breeze')->first(),
         'laravelVersion' => Illuminate\Foundation\Application::VERSION,
         'phpVersion' => PHP_VERSION,
@@ -81,6 +85,8 @@ Route::get('/', function () {
 
 // Public villa detail (example)
 Route::get('/villa/{slug}', [VillaController::class, 'show'])->name('villa.show');
+
+Route::get('/campaigns/{campaign}', [PublicCampaignController::class, 'show'])->name('campaigns.detail');
 
 Route::get('/properties/{property}', [PublicPropertyController::class, 'show'])->name('property.show')->where('property', '[0-9]+');
 Route::get('/projects/{slug}', [PublicProjectController::class, 'show'])->name('project.show');

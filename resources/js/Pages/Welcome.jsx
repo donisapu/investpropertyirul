@@ -16,6 +16,7 @@ export default function Welcome({
     landings,
     landmarks,
     sliders,
+    campaigns
 }) {
     return (
         <>
@@ -53,6 +54,7 @@ export default function Welcome({
                         laravelVersion={laravelVersion}
                         phpVersion={phpVersion}
                         partners={partners}
+                        campaigns={campaigns}
                     />
                 </div>
             </div>

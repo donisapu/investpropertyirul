@@ -34,7 +34,7 @@ export default function OurVilla({ villa, sliders, landings }) {
     }, []);
 
     const go = (n) => {
-        const len = imgs.length;
+        const len = activeImages.length;
         setI((n + len) % len);
     };
 

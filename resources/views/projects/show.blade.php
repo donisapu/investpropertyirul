@@ -12,9 +12,20 @@
     <div class="min-h-screen flex flex-col">
         @include('welcome.header')
 
+        @php
+            $heroImages = collect([$project->banner_image])
+                ->merge($image->pluck('image_path'))
+                ->filter()
+                ->values();
+        @endphp
         <section id="top" class="relative h-[60vh] md:h-[70vh] overflow-hidden">
-            <img src="{{ asset('storage/' . $project->banner_image) }}" alt=""
-                class="absolute inset-0 w-full h-full object-cover">
+            <div class="absolute inset-0">
+                @foreach ($heroImages as $index => $heroImage)
+                    <img src="{{ asset('storage/' . $heroImage) }}"
+                        class="hero-slide absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 {{ $index == 0 ? 'opacity-100' : 'opacity-0' }}"
+                        alt="">
+                @endforeach
+            </div>
             <div class="absolute inset-0 bg-gradient-to-r from-black/50 via-black/30 to-transparent"></div>
 
             <div class="relative h-full">
@@ -25,15 +36,10 @@
                                 class="text-3xl sm:text-4xl lg:text-5xl font-semibold tracking-[0.16em] text-white uppercase">
                                 {{ \Illuminate\Support\Str::of($slug)->replace('-', ' ')->upper() }}
                             </h1>
-                            <div class="mt-6 flex items-center gap-3">
-                                <span
-                                    class="inline-flex items-center rounded-full bg-white/90 text-slate-900 px-4 py-1.5 text-xs font-semibold shadow">
-                                    Project
-                                </span>
-                                <span
-                                    class="inline-flex items-center rounded-full border border-white/70 text-white px-4 py-1.5 text-xs font-semibold">
-                                    {{ $project->type }}
-                                </span>
+                            <div class="mt-6 flex items-center gap-3 text-white/90 uppercase tracking-[0.25em] text-xs">
+                                <span>Project</span>
+                                <span class="w-8 h-px bg-white/40"></span>
+                                <span>{{ $project->type }}</span>
                             </div>
                         </div>
                     </div>
@@ -172,4 +178,20 @@
     }
 
     updateYoutubePreview();
+
+    const slides = document.querySelectorAll(".hero-slide");
+
+    let currentSlide = 0;
+
+    if (slides.length > 1) {
+        setInterval(() => {
+            slides[currentSlide].classList.remove("opacity-100");
+            slides[currentSlide].classList.add("opacity-0");
+
+            currentSlide = (currentSlide + 1) % slides.length;
+
+            slides[currentSlide].classList.remove("opacity-0");
+            slides[currentSlide].classList.add("opacity-100");
+        }, 10000);
+    }
 </script>

@@ -32,7 +32,11 @@ import "swiper/css";
 import "swiper/css/effect-coverflow";
 import "swiper/css/navigation";
 
-export default function Crowdfunding({ properties, settings }) {
+export default function Crowdfunding({
+    properties,
+    settings,
+    topCrowdfundingId,
+}) {
     return (
         <PublicLayout>
             <Head title="Crowdfunding" />
@@ -84,9 +88,21 @@ export default function Crowdfunding({ properties, settings }) {
 
                             {/* Tombol Aksi Transaksi */}
                             <div className="flex flex-col sm:flex-row justify-center lg:justify-start gap-4">
-                                <button className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-xl font-bold text-sm transition-all shadow-lg shadow-blue-600/20 hover:shadow-xl hover:shadow-blue-600/30 hover:-translate-y-0.5 active:scale-98">
-                                    Mulai Investasi
-                                </button>
+                                {topCrowdfundingId ? (
+                                    <Link
+                                        href={`/crowdfunding/${topCrowdfundingId}`}
+                                        className="inline-block bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-xl font-bold text-sm transition-all shadow-lg shadow-blue-600/20 hover:shadow-xl hover:shadow-blue-600/30 hover:-translate-y-0.5 active:scale-98 text-center"
+                                    >
+                                        Mulai Investasi
+                                    </Link>
+                                ) : (
+                                    <button
+                                        disabled
+                                        className="bg-gray-400 text-white px-8 py-4 rounded-xl font-bold text-sm cursor-not-allowed"
+                                    >
+                                        Belum Ada Investasi Dibuka
+                                    </button>
+                                )}
                                 <a
                                     href="#projects"
                                     className="inline-flex items-center justify-center gap-2 bg-white hover:bg-slate-50 text-slate-700 border-2 border-slate-200/80 px-6 py-4 rounded-xl font-bold text-sm transition-all"

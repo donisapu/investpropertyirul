@@ -20,7 +20,7 @@ class PublicCrowdfundingController extends Controller
             ->paginate(9);
 
         /** @var \Illuminate\Pagination\LengthAwarePaginator $properties */
-        $properties->through(function ($crowdfunding) {
+        $mappedProperties = $properties->through(function ($crowdfunding) {
             // Calculate progress based on collected amount vs funding goal
             $progress = 0;
             if ($crowdfunding->funding_goal > 0) {
@@ -49,8 +49,16 @@ class PublicCrowdfundingController extends Controller
         });
 
         $settings = WebsiteSetting::getSettings();
+        $topCrowdfunding = collect($mappedProperties->items())
+            ->where('status', 'Open')
+            ->sortByDesc('collected')
+            ->first();
 
-        return Inertia::render('Crowdfunding/Index', compact('properties', 'settings'));
+        return Inertia::render('Crowdfunding/Index', [
+            'properties' => $mappedProperties,
+            'topCrowdfundingId' => $topCrowdfunding ? $topCrowdfunding['crowdfunding_id'] : null,
+            'settings' => $settings,
+        ]);
     }
 
     public function project()

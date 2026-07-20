@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Campaign;
 use App\Models\InvestmentPortfolio;
 use App\Models\PropertyInvestment;
 use App\Models\WebsiteSetting;
@@ -207,7 +208,8 @@ class PublicInvestmentController extends Controller
             ],
         ];
         $settings = WebsiteSetting::getSettings();
+        $campaigns = Campaign::where('status', 'active')->get();
 
-        return Inertia::render('Investments/Sell', compact('property', 'settings'));
+        return Inertia::render('Investments/Sell', compact('property', 'settings','campaigns'));
     }
 }

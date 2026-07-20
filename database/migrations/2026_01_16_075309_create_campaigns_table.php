@@ -26,7 +26,7 @@ return new class extends Migration
             $table->string('banner_path')->nullable();
 
             // Discount
-            $table->decimal('discount_percent', 5, 2); // e.g. 99.99%
+            $table->decimal('discount_percent', 5, 2);
 
             // Period
             $table->date('start_date');

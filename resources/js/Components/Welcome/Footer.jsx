@@ -1,10 +1,12 @@
 import { useState, useRef, useEffect } from "react";
+import { Head, Link } from "@inertiajs/react";
 
 export default function Footer({
     settings,
     laravelVersion,
     phpVersion,
     partners,
+    campaigns,
 }) {
     const rowRef = useRef(null);
     const [canScroll, setCanScroll] = useState(false);
@@ -47,6 +49,166 @@ export default function Footer({
     return (
         <footer className="bg-white text-slate-900">
             <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-12">
+                {campaigns && campaigns.length > 0 && (
+                    <div className="mb-16 w-full max-w-5xl mx-auto px-4">
+                        {campaigns.length === 1 ? (
+                            // JIKA CUMA 1: Dibungkus Link
+                            <Link
+                                href={`/campaigns/${campaigns[0].id}`}
+                                className="block w-full overflow-hidden rounded-2xl shadow-lg hover:opacity-95 transition group"
+                            >
+                                <div className="relative overflow-hidden">
+                                    <img
+                                        src={`/storage/${campaigns[0].banner_path}`}
+                                        alt={campaigns[0].title}
+                                        className="w-full h-auto object-cover aspect-[21/9] sm:aspect-[3/1] group-hover:scale-105 transition duration-500"
+                                    />
+                                    {/* Overlay Title Singkat ala Crowdfunding */}
+                                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent flex items-end p-6">
+                                        <h3 className="text-white font-bold text-xl sm:text-2xl">
+                                            {campaigns[0].title}
+                                        </h3>
+                                    </div>
+                                </div>
+                            </Link>
+                        ) : (
+                            // JIKA LEBIH DARI 1: Carousel Aktif dengan Link di tiap gambar
+                            (() => {
+                                const [currentIndex, setCurrentIndex] =
+                                    useState(0);
+
+                                useEffect(() => {
+                                    const timer = setInterval(() => {
+                                        setCurrentIndex((prevIndex) =>
+                                            prevIndex === campaigns.length - 1
+                                                ? 0
+                                                : prevIndex + 1,
+                                        );
+                                    }, 5000);
+                                    return () => clearInterval(timer);
+                                }, [currentIndex]);
+
+                                const prevSlide = () => {
+                                    setCurrentIndex((prev) =>
+                                        prev === 0
+                                            ? campaigns.length - 1
+                                            : prev - 1,
+                                    );
+                                };
+
+                                const nextSlide = () => {
+                                    setCurrentIndex((prev) =>
+                                        prev === campaigns.length - 1
+                                            ? 0
+                                            : prev + 1,
+                                    );
+                                };
+
+                                return (
+                                    <div className="relative w-full overflow-hidden rounded-2xl shadow-lg group/main">
+                                        {/* Wrapper Gambar */}
+                                        <div
+                                            className="flex transition-transform duration-700 ease-in-out"
+                                            style={{
+                                                transform: `translateX(-${currentIndex * 100}%)`,
+                                            }}
+                                        >
+                                            {campaigns.map((campaign) => (
+                                                <Link
+                                                    key={campaign.id}
+                                                    href={`/campaigns/${campaign.id}`}
+                                                    className="w-full flex-shrink-0 block relative group overflow-hidden"
+                                                >
+                                                    <img
+                                                        src={`/storage/${campaign.banner_path}`}
+                                                        alt={campaign.title}
+                                                        className="w-full h-auto object-cover aspect-[21/9] sm:aspect-[3/1] group-hover:scale-105 transition duration-500"
+                                                    />
+                                                    {/* Gradient Overlay biar title keliatan jelas */}
+                                                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent flex items-end p-6 sm:p-10">
+                                                        <div className="text-left">
+                                                            <h3 className="text-white font-bold text-lg sm:text-2xl tracking-wide mb-1">
+                                                                {campaign.title}
+                                                            </h3>
+                                                            {/* Skenario diskon investasi (jika ada) */}
+                                                            {parseFloat(
+                                                                campaign.discount_percent,
+                                                            ) > 0 && (
+                                                                <span className="inline-block bg-red-500 text-white text-xs px-2 py-0.5 rounded font-semibold animate-pulse">
+                                                                    Diskon{" "}
+                                                                    {parseFloat(
+                                                                        campaign.discount_percent,
+                                                                    )}
+                                                                    %
+                                                                </span>
+                                                            )}
+                                                        </div>
+                                                    </div>
+                                                </Link>
+                                            ))}
+                                        </div>
+
+                                        {/* Tombol Arrow Kiri */}
+                                        <button
+                                            onClick={prevSlide}
+                                            className="absolute top-1/2 left-4 -translate-y-1/2 bg-black/40 hover:bg-black/70 text-white p-2 rounded-full backdrop-blur-sm opacity-0 group-hover/main:opacity-100 transition-opacity duration-300 z-10"
+                                        >
+                                            <svg
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                fill="none"
+                                                viewBox="0 0 24 24"
+                                                strokeWidth={2.5}
+                                                stroke="currentColor"
+                                                className="w-6 h-6"
+                                            >
+                                                <path
+                                                    strokeLinecap="round"
+                                                    strokeLinejoin="round"
+                                                    d="M15.75 19.5L8.25 12l7.5-7.5"
+                                                />
+                                            </svg>
+                                        </button>
+
+                                        {/* Tombol Arrow Kanan */}
+                                        <button
+                                            onClick={nextSlide}
+                                            className="absolute top-1/2 right-4 -translate-y-1/2 bg-black/40 hover:bg-black/70 text-white p-2 rounded-full backdrop-blur-sm opacity-0 group-hover/main:opacity-100 transition-opacity duration-300 z-10"
+                                        >
+                                            <svg
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                fill="none"
+                                                viewBox="0 0 24 24"
+                                                strokeWidth={2.5}
+                                                stroke="currentColor"
+                                                className="w-6 h-6"
+                                            >
+                                                <path
+                                                    strokeLinecap="round"
+                                                    strokeLinejoin="round"
+                                                    d="M8.25 4.5l7.5 7.5-7.5 7.5"
+                                                />
+                                            </svg>
+                                        </button>
+
+                                        {/* Indikator Titik (Dots) */}
+                                        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-10">
+                                            {campaigns.map((_, index) => (
+                                                <button
+                                                    key={index}
+                                                    onClick={() =>
+                                                        setCurrentIndex(index)
+                                                    }
+                                                    className={`h-2 rounded-full transition-all duration-300 ${currentIndex === index ? "w-6 bg-amber-400" : "w-2 bg-white/60"}`}
+                                                />
+                                            ))}
+                                        </div>
+                                    </div>
+                                );
+                            })()
+                        )}
+                    </div>
+                )}
+
                 <div className="text-center">
                     <div className="flex gap-2 items-center justify-center">
                         <span className="inline-block rounded-lg bg-amber-200 px-2 py-1 text-amber-900 text-2xl sm:text-3xl font-semibold tracking-wide">
@@ -68,7 +230,7 @@ export default function Footer({
                             <img
                                 src={`/storage/${partner.image_url}`}
                                 alt={partner.name}
-                                className="h-16 object-contain grayscale opacity-70 hover:opacity-100 hover:grayscale-0 transition duration-300"
+                                className="h-16 object-contain opacity-100 hover:opacity-70 hover:grayscale-0 transition duration-300"
                             />
                         </div>
                     ))}

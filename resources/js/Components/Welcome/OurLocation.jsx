@@ -63,7 +63,7 @@ export default function OurLocation({ landings, landmarks }) {
 
                 <div className="mt-6 flex items-center justify-center">
                     <a
-                        href="#properties"
+                        href={route("property-for-sale.index")}
                         className="inline-flex items-center rounded-full bg-slate-900 text-white px-4 py-2 text-sm font-semibold hover:bg-emerald-600 transition"
                     >
                         Lihat Unit Tersedia
