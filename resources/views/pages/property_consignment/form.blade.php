@@ -47,7 +47,7 @@
                 <div class="mb-3" id="lease_term_wrapper">
                     <label for="">Lease Term</label>
                     <input type="text" class="form-control" name="lease_term" placeholder="Lease Term"
-                        @if ($btn == 'edit') value="{{ $data->lease_term }}" @endif @required(true)>
+                        @if ($btn == 'edit') value="{{ $data->lease_term }}" @endif>
                 </div>
                 <div class="mb-3">
                     <label for="" class="form-label">Status</label>
