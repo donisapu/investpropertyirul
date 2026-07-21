@@ -110,10 +110,13 @@ class PublicCrowdfundingController extends Controller
             ->where('status', '!=', 'draft')
             ->firstOrFail();
 
-        // Calculate progress based on collected amount vs funding goal
         $progress = 0;
         if ($crowdfunding->funding_goal > 0) {
             $progress = ($crowdfunding->collected_amount / $crowdfunding->funding_goal) * 100;
+        }
+
+        if ($progress >= 100 && $crowdfunding->status !== 'Funded') {
+            $crowdfunding->update(['status' => 'Funded']);
         }
 
         $property = [
@@ -128,8 +131,9 @@ class PublicCrowdfundingController extends Controller
             'goal' => $crowdfunding->funding_goal,
             'collected' => $crowdfunding->collected_amount,
             'min_contribution' => $crowdfunding->min_contribution,
-            'progress' => $progress,
+            'progress' => min($progress, 100), // Batasi max 100% untuk tampilan UI
             'status' => ucfirst($crowdfunding->status),
+            'is_funded' => $progress >= 100 || strtolower($crowdfunding->status) === 'Funded',
             'specs' => [
                 'bedroom' => $crowdfunding->property->bedroom,
                 'bathroom' => $crowdfunding->property->bathroom,

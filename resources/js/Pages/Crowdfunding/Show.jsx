@@ -656,7 +656,15 @@ export default function Show({ property }) {
                             </div>
 
                             {/* Tombol CTA Utama */}
-                            {auth.user ? (
+                            {property.is_funded ? (
+                                <button
+                                    disabled
+                                    className="w-full flex items-center justify-center gap-2 bg-slate-300 text-slate-500 font-black py-4 rounded-2xl cursor-not-allowed shadow-none"
+                                >
+                                    <CheckCircle2 size={18} /> Pendanaan Selesai
+                                    (Funded)
+                                </button>
+                            ) : auth.user ? (
                                 <Link
                                     href={route(
                                         "crowdfunding.purchase",
