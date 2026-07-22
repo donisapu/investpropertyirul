@@ -89,7 +89,7 @@
                             {{ $project->description_2 }}
                         </p>
 
-                        <div class="mt-8 max-w-3xl mx-auto">
+                        {{-- <div class="mt-8 max-w-3xl mx-auto">
                             <div class="border-t border-slate-200"></div>
                             <div class="py-4 flex items-center justify-center gap-6 text-slate-700 text-sm">
                                 <span>Residential</span>
@@ -99,7 +99,7 @@
                                 <span>Strategic Location</span>
                             </div>
                             <div class="border-t border-slate-200"></div>
-                        </div>
+                        </div> --}}
 
                         <div class="mt-6">
                             <a href="mailto:umahbalimesari@gmail.com"

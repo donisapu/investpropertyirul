@@ -70,18 +70,15 @@ export default function OurLocation({ landings, landmarks }) {
                     </a>
                 </div>
 
-                <div className="mt-10 rounded-2xl overflow-hidden relative">
-                    <img
-                        src="/assets/img/elements/location-highlight.png"
-                        alt=""
-                        className="w-full h-full object-cover"
-                    />
-                    <div className="absolute inset-x-0 bottom-4 flex items-center justify-center">
-                        <div className="rounded-full bg-white/90 px-3 py-1 text-xs font-semibold">
-                            Samani Villa Ungasan
-                        </div>
-                    </div>
-                </div>
+                {landings && landings.mapping_path ? (
+    <div className="mt-10 rounded-2xl overflow-hidden relative">
+        <img
+            src={`/storage/${landings.mapping_path}`}
+            alt="Mapping"
+            className="w-full h-full object-cover"
+        />
+    </div>
+) : null}
 
                 <h3 className="mt-10 text-center text-xl sm:text-2xl font-semibold uppercase">
                     Lokasi
