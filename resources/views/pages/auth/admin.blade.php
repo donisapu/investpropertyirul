@@ -92,12 +92,17 @@
                                 </div>
                             </div>
                             <div class="mb-3">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" id="remember-me" />
-                                    <label class="form-check-label" for="remember-me"> Remember Me </label>
-                                </div>
-                            </div>
-                            <div class="mb-3">
+                <div class="d-flex justify-content-between">
+                  <div class="form-check mb-0">
+                    <input class="form-check-input" type="checkbox" id="remember-me" />
+                    <label class="form-check-label" for="remember-me"> Remember Me </label>
+                  </div>
+                  <a href="/forgot-password">
+                    <span>Forgot Password?</span>
+                  </a>
+                </div>
+              </div>
+                            <div class="mb-6">
                                 <button class="btn btn-primary d-grid w-100" type="submit">Login</button>
                             </div>
                         </form>
