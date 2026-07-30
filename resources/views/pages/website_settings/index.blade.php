@@ -129,6 +129,12 @@
                         </div>
                     </div>
                     <div class="col-md-6">
+                        <label class="form-label fw-medium">Email</label>
+                        <input type="text" id="email" name="email" class="form-control"
+                            value="{{ old('email', $setting->email) }}">
+                        <small class="text-danger error" id="error-email"></small>
+                    </div>
+                    <div class="col-md-6">
                         <div class="card mt-3">
                             <div class="card-header h5">Partners</div>
                             <div class="card-body">

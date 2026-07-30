@@ -42,6 +42,7 @@ class WebsiteSettingController extends AdminController
             'address' => 'nullable|string',
             'location' => 'nullable|string',
             'whatsapp' => 'nullable|string|max:20',
+            'email' => 'nullable|string',
 
             'instagram_url' => 'nullable|url',
             'tiktok_url' => 'nullable|url',
@@ -108,7 +109,7 @@ class WebsiteSettingController extends AdminController
             ->with('success', 'Website settings updated successfully.');
     }
 
-     public function deletePartner($id)
+    public function deletePartner($id)
     {
         $partner = Partner::findOrFail($id);
 

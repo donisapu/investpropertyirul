@@ -26,6 +26,7 @@ class WebsiteSetting extends Model
         'facebook_url',
         'youtube_url',
         'youtube_video_url',
+        'email',
     ];
 
     /* ------------------------------------
@@ -45,7 +46,7 @@ class WebsiteSetting extends Model
     public function getWhatsappLinkAttribute()
     {
         return $this->whatsapp
-            ? 'https://wa.me/'.preg_replace('/\D/', '', $this->whatsapp)
+            ? 'https://wa.me/' . preg_replace('/\D/', '', $this->whatsapp)
             : null;
     }
 

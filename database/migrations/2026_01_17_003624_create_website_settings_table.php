@@ -14,14 +14,15 @@ return new class extends Migration
         Schema::create('website_settings', function (Blueprint $table) {
             $table->id();
             // Branding
-            $table->string('logo')->nullable();           // path logo
-            $table->string('site_name');                  // Nama web
-            $table->text('description')->nullable();      // Deskripsi
+            $table->string('logo')->nullable();
+            $table->string('site_name');
+            $table->text('description')->nullable();
 
             // Contact & Location
-            $table->text('address')->nullable();          // Alamat
-            $table->string('location')->nullable();       // Lokasi (map link / short text)
-            $table->string('whatsapp')->nullable();       // WA number
+            $table->text('address')->nullable();
+            $table->string('location')->nullable();
+            $table->string('whatsapp')->nullable();
+            $table->string('email')->nullable();
 
             // Social Media Links
             $table->string('instagram_url')->nullable();
@@ -31,7 +32,7 @@ return new class extends Migration
             $table->string('youtube_url')->nullable();
 
             // Video
-            $table->string('youtube_video_url')->nullable(); // Video (YouTube link)
+            $table->string('youtube_video_url')->nullable();
 
             $table->timestamps();
         });

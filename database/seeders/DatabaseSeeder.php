@@ -16,13 +16,13 @@ class DatabaseSeeder extends Seeder
             // RoleSeeder::class,
             // UserSeeder::class,
             // UserRoleSeeder::class,
-            // WebsiteSettingsSeeder::class,
+            WebsiteSettingsSeeder::class,
             // PropertySeeder::class,
             // PropertyCrowdfundingSeeder::class,
             // PropertyConsignmentSeeder::class,
             // PropertyAuctionSeeder::class,
             // DeveloperSeeder::class,
-            LandingPageSeeder::class,
+            // LandingPageSeeder::class,
         ]);
     }
 }

@@ -693,10 +693,10 @@ function Footer() {
                             <li className="flex items-center gap-2">
                                 <span className="text-slate-500">✉️</span>
                                 <a
-                                    href="mailto:umahbalimesari@gmail.com"
+                                    href={`mailto:${settings?.email}`}
                                     className="hover:text-emerald-600"
                                 >
-                                    umahbalimesari@gmail.com
+                                    {settings?.email}
                                 </a>
                             </li>
                         </ul>

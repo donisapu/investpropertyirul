@@ -269,14 +269,6 @@ export default function Footer({
                             </li>
                             <li>
                                 <a
-                                    href="/auctions"
-                                    className="hover:text-emerald-600"
-                                >
-                                    Lelang/Cessie
-                                </a>
-                            </li>
-                            <li>
-                                <a
                                     href="/property-for-sale"
                                     className="hover:text-emerald-600"
                                 >
@@ -310,16 +302,16 @@ export default function Footer({
                             <li className="flex items-center gap-2">
                                 <span className="text-slate-500">✉️</span>
                                 <a
-                                    href="mailto:umahbalimesari@gmail.com"
+                                    href={`mailto:${settings?.email}`}
                                     className="hover:text-emerald-600"
                                 >
-                                    umahbalimesari@gmail.com
+                                    {settings?.email}
                                 </a>
                             </li>
                         </ul>
                         <div className="mt-4 flex items-center gap-3">
                             <a
-                                href="#"
+                                href={settings?.facebook_url || "#"}
                                 className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-slate-900 text-white hover:bg-emerald-600"
                                 aria-label="Facebook"
                             >
@@ -332,7 +324,7 @@ export default function Footer({
                                 </svg>
                             </a>
                             <a
-                                href="#"
+                                href={settings?.instagram_url || "#"}
                                 className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-slate-900 text-white hover:bg-emerald-600"
                                 aria-label="Instagram"
                             >
@@ -345,7 +337,7 @@ export default function Footer({
                                 </svg>
                             </a>
                             <a
-                                href="#"
+                                href={settings?.youtube_url || "#"}
                                 className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-slate-900 text-white hover:bg-emerald-600"
                                 aria-label="YouTube"
                             >
@@ -364,9 +356,8 @@ export default function Footer({
             <div className="border-t border-slate-200 bg-slate-50">
                 <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-4 flex flex-col sm:flex-row items-center justify-between gap-2 text-slate-600">
                     <p className="text-[0.8rem]">
-                        © {new Date().getFullYear()}{" "}
-                        {settings?.site_name || "Umah Bali Mesari"}. All rights
-                        reserved.
+                        © {new Date().getFullYear()} {settings?.site_name}. All
+                        rights reserved.
                     </p>
                 </div>
             </div>
