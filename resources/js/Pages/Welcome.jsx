@@ -20,7 +20,7 @@ export default function Welcome({
 }) {
     return (
         <>
-            <Head title="InvestProperti">
+            <Head title="Investasi Mudah & Aman">
                 <link rel="preconnect" href="https://fonts.bunny.net" />
                 <link
                     href="https://fonts.bunny.net/css?family=figtree:400,500,600,700&display=swap"

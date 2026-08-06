@@ -15,7 +15,13 @@
                 <div class="row g-4">
                     {{-- LOGO --}}
                     <div class="col-md-12">
-                        <label class="form-label fw-medium">Hero</label>
+                        <div class="d-flex justify-content-between align-items-center mb-1">
+                            <label class="form-label fw-medium mb-0">Hero Image</label>
+                            <span class="badge bg-light text-secondary border fw-normal" data-bs-toggle="tooltip"
+                                title="Dimensi ideal untuk tampilan Desktop & Mobile">
+                                Max: 10MB | 1920x1280px
+                            </span>
+                        </div>
 
                         {{-- ID diubah jadi heroDropzone --}}
                         <div id="heroDropzone" class="border rounded-3 p-3 text-center position-relative"
@@ -36,7 +42,13 @@
                     </div>
 
                     <div class="col-md-12">
-                        <label class="form-label fw-medium">Location Mapping</label>
+                        <div class="d-flex justify-content-between align-items-center mb-1">
+                            <label class="form-label fw-medium mb-0">Location Mapping</label>
+                            <span class="badge bg-light text-secondary border fw-normal" data-bs-toggle="tooltip"
+                                title="Dimensi ideal untuk tampilan Desktop & Mobile">
+                                Max: 10MB | 1920x1280px
+                            </span>
+                        </div>
 
                         {{-- ID diubah jadi mappingDropzone --}}
                         <div id="mappingDropzone" class="border rounded-3 p-3 text-center position-relative"
@@ -194,11 +206,15 @@
                                 <button type="button" class="btn btn-sm btn-primary mb-2" id="addImage">
                                     + Add Image
                                 </button>
+                                <small class="text-muted ms-2 d-inline-block">
+                                    *Maks. ukuran gambar: 10MB (Rekomendasi: 1920x1280, JPG/PNG)
+                                </small>
 
                                 <div id="imageWrapper">
                                     <div class="document-item row mb-2 align-items-center">
                                         <div class="col-5">
-                                            <input type="file" name="sliders[]" class="form-control" accept="image/*">
+                                            <input type="file" name="sliders[]" class="form-control"
+                                                accept="image/*">
                                         </div>
                                         <div class="col-1">
                                             <button type="button"

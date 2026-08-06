@@ -84,7 +84,7 @@
         <div
             class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-4 flex flex-col sm:flex-row items-center justify-between gap-2 text-slate-600">
             <p class="text-[0.8rem]">
-                © {{ date('Y') }} InvestProperti
+                © {{ date('Y') }} {{ $setting->site_name }}. All rights reserved.
             </p>
             <p class="text-[0.8rem]">
                 Laravel v{{ Illuminate\Foundation\Application::VERSION }} · PHP v{{ PHP_VERSION }}

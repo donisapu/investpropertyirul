@@ -153,6 +153,9 @@
                 <button type="button" class="btn btn-sm btn-primary mb-2" id="addImage">
                     + Add Image
                 </button>
+                <small class="text-muted ms-2 d-inline-block">
+                    *Maks. ukuran gambar: 10MB (Rekomendasi: 2400x1600, JPG/PNG)
+                </small>
 
                 <div id="imageWrapper">
                     <div class="image-item mb-2 d-flex gap-2">
@@ -187,6 +190,9 @@
                 <button type="button" class="btn btn-sm btn-primary mb-2" id="addDocument">
                     + Add Document
                 </button>
+                <small class="text-muted ms-2 d-inline-block">
+                    *Maks. ukuran dokumen: 5MB (PDF)
+                </small>
 
                 <div id="documentWrapper">
                     <div class="document-item row mb-2 align-items-center">
