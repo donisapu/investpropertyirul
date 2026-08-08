@@ -3,18 +3,18 @@ import { route } from "ziggy-js";
 
 export default function DeveloperProjects({ project, landings }) {
     return (
-        <section id="developer-projects" className="bg-white text-slate-900">
+        <section id="developer-projects" className="bg-mono-900 text-mono-100">
             <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-12">
                 <div className="text-center">
                     <div className="flex gap-2 items-center justify-center">
-                        <span className="inline-block rounded-lg bg-amber-200 px-2 py-1 text-amber-900 text-2xl sm:text-3xl font-semibold tracking-wide">
+                        <span className="inline-block text-mono-500 text-2xl sm:text-3xl font-semibold tracking-wide">
                             Developer
                         </span>
-                        <h2 className="text-2xl sm:text-3xl font-semibold">
+                        <h2 className="text-2xl sm:text-3xl font-semibold text-mono-100">
                             Project
                         </h2>
                     </div>
-                    <p className="mt-4 text-sm leading-relaxed text-slate-700 max-w-3xl mx-auto">
+                    <p className="mt-4 text-sm leading-relaxed text-mono-300 max-w-3xl mx-auto">
                         {landings.developer_project_desc}
                     </p>
                 </div>
@@ -24,7 +24,7 @@ export default function DeveloperProjects({ project, landings }) {
                         <a
                             key={item.id}
                             href={route("project.show", { slug: item.slug })}
-                            className="group relative block overflow-hidden rounded-2xl border-2 border-amber-300 bg-white shadow-sm"
+                            className="group relative block overflow-hidden rounded-2xl border border-mono-700 bg-mono-900 shadow-sm hover:border-mono-500 transition"
                         >
                             <div className="aspect-[16/9] w-full">
                                 <img
@@ -35,15 +35,15 @@ export default function DeveloperProjects({ project, landings }) {
                             </div>
 
                             <div className="absolute left-3 top-3 flex items-center gap-2">
-                                <span className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-white/90 text-slate-900 text-xs font-bold">
+                                <span className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-mono-100 text-mono-900 text-xs font-bold">
                                     {index + 1}
                                 </span>
-                                <span className="rounded-full bg-white/90 px-2 py-1 text-[0.7rem] font-semibold">
+                                <span className="rounded-full bg-mono-900/80 border border-mono-500 px-3 py-1 text-[0.7rem] font-semibold text-mono-100 backdrop-blur-sm">
                                     {item.title}
                                 </span>
                             </div>
 
-                            <div className="px-4 py-3 text-center text-amber-900 font-semibold">
+                            <div className="px-4 py-4 text-center text-mono-100 font-semibold">
                                 {item.title}
                             </div>
                         </a>

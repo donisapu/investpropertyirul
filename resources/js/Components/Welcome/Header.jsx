@@ -34,11 +34,12 @@ export default function Header() {
         };
     }, []);
 
-    const navClass = scrolled || open ? "text-slate-900" : "text-white";
+    const navClass = scrolled || open ? "text-mono-900" : "text-mono-100";
+
     const headerClass =
         scrolled || open
-            ? "bg-white border-b border-slate-200 shadow-sm"
-            : "bg-slate-700/20 border-b border-transparent";
+            ? "bg-mono-100/95 backdrop-blur-md border-b border-mono-500/30"
+            : "bg-mono-900/20 backdrop-blur-sm border-b border-mono-100/10";
 
     return (
         <header
@@ -76,35 +77,35 @@ export default function Header() {
                     >
                         <Link
                             href="/"
-                            className="hover:text-emerald-600 transition-colors"
+                            className="hover:text-mono-700 transition-colors"
                         >
                             HOME
                         </Link>
                         <span className="text-slate-300">|</span>
                         <Link
                             href="/investments"
-                            className="hover:text-emerald-600 transition-colors"
+                            className="hover:text-mono-700 transition-colors"
                         >
                             INVESTMENT
                         </Link>
                         <span className="text-slate-300">|</span>
                         <Link
                             href="/crowdfunding"
-                            className="hover:text-emerald-600 transition-colors"
+                            className="hover:text-mono-700 transition-colors"
                         >
                             CROWDFUNDING
                         </Link>
                         <span className="text-slate-300">|</span>
                         <Link
                             href="/property-for-sale"
-                            className="hover:text-emerald-600 transition-colors"
+                            className="hover:text-mono-700 transition-colors"
                         >
                             PROPERTY FOR SALE
                         </Link>
                         <span className="text-slate-300">|</span>
                         <Link
                             href="/how-to-invest"
-                            className="hover:text-emerald-600 transition-colors"
+                            className="hover:text-mono-700 transition-colors"
                         >
                             HOW TO INVEST
                         </Link>
@@ -115,7 +116,7 @@ export default function Header() {
                             <div className="relative" ref={dropdownRef}>
                                 <button
                                     onClick={() => setAccountOpen(!accountOpen)}
-                                    className="flex items-center gap-1 font-bold text-emerald-400 hover:text-emerald-600 transition-colors focus:outline-none uppercase"
+                                    className="flex items-center gap-1 font-bold text-mono-900 hover:text-mono-500 transition-colors focus:outline-none uppercase"
                                 >
                                     MY ACCOUNT
                                     <svg
@@ -137,31 +138,31 @@ export default function Header() {
                                     <div className="absolute right-0 mt-3 w-48 bg-white rounded-lg shadow-lg border border-slate-200 py-2 z-50 normal-case">
                                         <a
                                             href={route("user.dashboard")}
-                                            className="block px-4 py-2 text-sm text-slate-700 hover:bg-emerald-50 hover:text-emerald-600"
+                                            className="block px-4 py-2 text-sm text-slate-700 hover:bg-emerald-50 hover:text-mono-700"
                                         >
                                             Dashboard
                                         </a>
                                         <a
                                             href={route("user.portfolio")}
-                                            className="block px-4 py-2 text-sm text-slate-700 hover:bg-emerald-50 hover:text-emerald-600"
+                                            className="block px-4 py-2 text-sm text-slate-700 hover:bg-emerald-50 hover:text-mono-700"
                                         >
                                             My Portfolio
                                         </a>
                                         <a
                                             href={route("user.portfolio")}
-                                            className="block px-4 py-2 text-sm text-slate-700 hover:bg-emerald-50 hover:text-emerald-600"
+                                            className="block px-4 py-2 text-sm text-slate-700 hover:bg-emerald-50 hover:text-mono-700"
                                         >
                                             My Bids
                                         </a>
                                         <a
                                             href={route("user.portfolio")}
-                                            className="block px-4 py-2 text-sm text-slate-700 hover:bg-emerald-50 hover:text-emerald-600"
+                                            className="block px-4 py-2 text-sm text-slate-700 hover:bg-emerald-50 hover:text-mono-700"
                                         >
                                             Transactions
                                         </a>
                                         <a
                                             href={route("user.portfolio")}
-                                            className="block px-4 py-2 text-sm text-slate-700 hover:bg-emerald-50 hover:text-emerald-600"
+                                            className="block px-4 py-2 text-sm text-slate-700 hover:bg-emerald-50 hover:text-mono-700"
                                         >
                                             Account Setting
                                         </a>
@@ -181,7 +182,7 @@ export default function Header() {
                         ) : (
                             <a
                                 href={route("login")}
-                                className="hover:text-emerald-600 transition-colors font-bold text-emerald-400"
+                                className="hover:text-mono-700 transition-colors font-bold text-emerald-400"
                             >
                                 MY ACCOUNT
                             </a>
@@ -240,32 +241,32 @@ export default function Header() {
                         {/* Navigasi Utama */}
                         <Link
                             href="/"
-                            className="block rounded-md py-2 px-3 text-base font-medium text-slate-900 hover:bg-slate-50 hover:text-emerald-600"
+                            className="block rounded-md py-2 px-3 text-base font-medium text-slate-900 hover:bg-slate-50 hover:text-mono-700"
                         >
                             HOME
                         </Link>
                         <Link
                             href={route("investments.index")}
-                            className="block rounded-md py-2 px-3 text-base font-medium text-slate-900 hover:bg-slate-50 hover:text-emerald-600"
+                            className="block rounded-md py-2 px-3 text-base font-medium text-slate-900 hover:bg-slate-50 hover:text-mono-700"
                         >
                             INVESTMENT
                         </Link>
                         <Link
                             href={route("crowdfunding.index")}
-                            className="block rounded-md py-2 px-3 text-base font-medium text-slate-900 hover:bg-slate-50 hover:text-emerald-600"
+                            className="block rounded-md py-2 px-3 text-base font-medium text-slate-900 hover:bg-slate-50 hover:text-mono-700"
                         >
                             CROWDFUNDING
                         </Link>
                         <Link
-                            href={route("property-for-sale")}
-                            className="block rounded-md py-2 px-3 text-base font-medium text-slate-900 hover:bg-slate-50 hover:text-emerald-600"
+                            href={route("property-for-sale.index")}
+                            className="block rounded-md py-2 px-3 text-base font-medium text-slate-900 hover:bg-slate-50 hover:text-mono-700"
                         >
                             PROPERTY FOR SALE
                         </Link>
 
                         <Link
                             href="/how-to-invest"
-                            className="block rounded-md py-2 px-3 text-base font-medium text-slate-900 hover:bg-slate-50 hover:text-emerald-600"
+                            className="block rounded-md py-2 px-3 text-base font-medium text-slate-900 hover:bg-slate-50 hover:text-mono-700"
                         >
                             HOW TO INVEST
                         </Link>
@@ -295,31 +296,31 @@ export default function Header() {
                                         <div className="ml-4 mt-1 space-y-1 normal-case relative z-[999]">
                                             <a
                                                 href={route("user.dashboard")}
-                                                className="block px-3 py-2 text-sm text-slate-700 hover:bg-emerald-50 hover:text-emerald-600"
+                                                className="block px-3 py-2 text-sm text-slate-700 hover:bg-emerald-50 hover:text-mono-700"
                                             >
                                                 Dashboard
                                             </a>
                                             <a
                                                 href={route("user.portfolio")}
-                                                className="block px-3 py-2 text-sm text-slate-700 hover:bg-emerald-50 hover:text-emerald-600"
+                                                className="block px-3 py-2 text-sm text-slate-700 hover:bg-emerald-50 hover:text-mono-700"
                                             >
                                                 My Portfolio
                                             </a>
                                             <a
                                                 href={route("user.portfolio")}
-                                                className="block px-3 py-2 text-sm text-slate-700 hover:bg-emerald-50 hover:text-emerald-600"
+                                                className="block px-3 py-2 text-sm text-slate-700 hover:bg-emerald-50 hover:text-mono-700"
                                             >
                                                 My Bids
                                             </a>
                                             <a
                                                 href={route("user.portfolio")}
-                                                className="block px-3 py-2 text-sm text-slate-700 hover:bg-emerald-50 hover:text-emerald-600"
+                                                className="block px-3 py-2 text-sm text-slate-700 hover:bg-emerald-50 hover:text-mono-700"
                                             >
                                                 Transactions
                                             </a>
                                             <a
                                                 href={route("user.portfolio")}
-                                                className="block px-3 py-2 text-sm text-slate-700 hover:bg-emerald-50 hover:text-emerald-600"
+                                                className="block px-3 py-2 text-sm text-slate-700 hover:bg-emerald-50 hover:text-mono-700"
                                             >
                                                 Account Setting
                                             </a>
@@ -340,7 +341,7 @@ export default function Header() {
                             ) : (
                                 <a
                                     href={route("login")}
-                                    className="hover:text-emerald-600 px-3 py-2 transition-colors font-bold text-emerald-400"
+                                    className="hover:text-mono-700 px-3 py-2 transition-colors font-bold text-emerald-400"
                                 >
                                     MY ACCOUNT
                                 </a>

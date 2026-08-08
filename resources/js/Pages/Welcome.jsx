@@ -16,7 +16,7 @@ export default function Welcome({
     landings,
     landmarks,
     sliders,
-    campaigns
+    campaigns,
 }) {
     return (
         <>
@@ -33,7 +33,7 @@ export default function Welcome({
                     <Header />
 
                     <main className="flex-1 text-slate-50">
-                        <Hero landings={landings} />
+                        <Hero landings={landings} settings={settings} />
                         <OurVilla
                             villa={villa}
                             sliders={sliders}

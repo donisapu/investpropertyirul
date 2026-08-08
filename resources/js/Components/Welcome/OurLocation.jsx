@@ -28,7 +28,7 @@ export default function OurLocation({ landings, landmarks }) {
     const finalMapUrl = extractMapUrl(landings.location);
 
     return (
-        <section id="our-location" className="bg-white text-slate-900">
+        <section id="our-location" className="bg-mono-100 text-mono-900">
             <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-12">
                 <h2 className="text-center text-2xl sm:text-3xl font-semibold uppercase">
                     Berada di Lokasi Strategis
@@ -42,7 +42,7 @@ export default function OurLocation({ landings, landmarks }) {
                         landmarks.map((landmark, index) => (
                             <div
                                 key={index}
-                                className="rounded-xl overflow-hidden bg-white shadow-sm"
+                                className="rounded-xl overflow-hidden bg-mono-100 border border-mono-500/30 shadow-sm"
                             >
                                 <img
                                     src={`/storage/${landmark.image_path}`}
@@ -50,10 +50,10 @@ export default function OurLocation({ landings, landmarks }) {
                                     className="h-36 w-full object-cover"
                                 />
                                 <div className="px-4 py-3">
-                                    <div className="font-semibold">
+                                    <div className="font-semibold text-mono-900">
                                         {landmark.name}{" "}
                                     </div>
-                                    <div className="text-slate-600 text-sm">
+                                    <div className="text-mono-500 text-sm">
                                         {landmark.distance}{" "}
                                     </div>
                                 </div>
@@ -64,21 +64,21 @@ export default function OurLocation({ landings, landmarks }) {
                 <div className="mt-6 flex items-center justify-center">
                     <a
                         href={route("property-for-sale.index")}
-                        className="inline-flex items-center rounded-full bg-slate-900 text-white px-4 py-2 text-sm font-semibold hover:bg-emerald-600 transition"
+                        className="inline-flex items-center rounded-full bg-mono-900 text-mono-100 px-4 py-2 text-sm font-semibold hover:bg-mono-700 transition"
                     >
                         Lihat Unit Tersedia
                     </a>
                 </div>
 
                 {landings && landings.mapping_path ? (
-    <div className="mt-10 rounded-2xl overflow-hidden relative">
-        <img
-            src={`/storage/${landings.mapping_path}`}
-            alt="Mapping"
-            className="w-full h-full object-cover"
-        />
-    </div>
-) : null}
+                    <div className="mt-10 rounded-2xl overflow-hidden relative">
+                        <img
+                            src={`/storage/${landings.mapping_path}`}
+                            alt="Mapping"
+                            className="w-full h-full object-cover"
+                        />
+                    </div>
+                ) : null}
 
                 <h3 className="mt-10 text-center text-xl sm:text-2xl font-semibold uppercase">
                     Lokasi

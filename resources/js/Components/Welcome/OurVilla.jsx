@@ -64,16 +64,19 @@ export default function OurVilla({ villa, sliders, landings }) {
     };
 
     return (
-        <section id="our-villa" className="bg-white relative text-slate-900">
+        <section
+            id="our-villa"
+            className="bg-[#E0E0E0] relative text-mono-900"
+        >
             <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-10">
-                <h2 className="text-center text-2xl sm:text-3xl font-semibold tracking-wide uppercase">
+                <h2 className="text-center text-2xl sm:text-3xl font-semibold tracking-wide uppercase text-mono-900">
                     {landings?.slider_title}
                 </h2>
                 {/* Carousel */}
                 <div className="mt-6">
                     <div
                         ref={trackRef}
-                        className="relative overflow-hidden rounded-md select-none touch-pan-x"
+                        className="relative overflow-hidden rounded-md select-none touch-pan-x border border-mono-500/40"
                         onMouseDown={start}
                         onMouseMove={move}
                         onMouseUp={end}
@@ -106,7 +109,7 @@ export default function OurVilla({ villa, sliders, landings }) {
                         <button
                             type="button"
                             onClick={prev}
-                            className="absolute left-3 top-1/2 -translate-y-1/2 h-8 w-8 rounded-full bg-white/80 text-slate-900 shadow hover:bg-white"
+                            className="absolute left-3 top-1/2 -translate-y-1/2 h-8 w-8 rounded-full bg-mono-100/90 text-mono-900 shadow hover:bg-mono-900 hover:text-mono-100"
                         >
                             <svg
                                 className="h-5 w-5 mx-auto"
@@ -152,97 +155,6 @@ export default function OurVilla({ villa, sliders, landings }) {
                         </div>
                     </div>
                 </div>
-
-                {/* <div className="mt-20 grid gap-8 md:grid-cols-[minmax(0,1.2fr),minmax(0,1fr)] items-start">
-                    <div>
-                        <h3 className="text-xl sm:text-2xl font-semibold uppercase">
-                            Nusa Dua Ocean Breeze
-                        </h3>
-                        <p className="mt-3 text-sm leading-relaxed text-slate-700">
-                            A peaceful villa complex nestled in the heart of
-                            Nusa Dua, Bali. Our thoughtfully designed one- and
-                            two-bedroom villas offer a perfect blend of modern
-                            amenities and Bali’s natural surroundings. It offers
-                            a comfortable and serene living experience.
-                        </p>
-                        <ul className="mt-4 space-y-2 text-sm text-slate-700">
-                            <li className="flex items-start gap-2">
-                                <span className="mt-2 h-1.5 w-1.5 rounded-full bg-slate-900"></span>
-                                <span>
-                                    Topology: Villa Complex with 1–2 Bedrooms
-                                </span>
-                            </li>
-                            <li className="flex items-start gap-2">
-                                <span class="mt-2 h-1.5 w-1.5 rounded-full bg-slate-900"></span>
-                                <span>Land Size: 2500m²</span>
-                            </li>
-                            <li className="flex items-start gap-2">
-                                <span className="mt-2 h-1.5 w-1.5 rounded-full bg-slate-900"></span>
-                                <span>Building Size: 83m² & 108m²</span>
-                            </li>
-                            <li className="flex items-start gap-2">
-                                <span className="mt-2 h-1.5 w-1.5 rounded-full bg-slate-900"></span>
-                                <span>Location: Nusa Dua</span>
-                            </li>
-                            <li className="flex items-start gap-2">
-                                <span className="mt-2 h-1.5 w-1.5 rounded-full bg-slate-900"></span>
-                                <span>
-                                    Status: Design finished & On progress
-                                </span>
-                            </li>
-                        </ul>
-
-                        {villa ? (
-                            <a
-                                href={route("property.show", {
-                                    property: villa.id,
-                                })}
-                                className="mt-6 inline-flex items-center rounded-full border border-slate-900 px-4 py-2 text-sm font-semibold hover:bg-slate-900 hover:text-white transition"
-                            >
-                                Details
-                                <svg
-                                    className="ml-2 h-4 w-4"
-                                    viewBox="0 0 20 20"
-                                    fill="currentColor"
-                                >
-                                    <path
-                                        fillRule="evenodd"
-                                        d="M10.293 3.293a1 1 0 011.414 0l5 5a1 1 0 010 1.414l-5 5a1 1 0 01-1.414-1.414L13.586 10 10.293 6.707a1 1 0 010-1.414z"
-                                        clipRule="evenodd"
-                                    />
-                                </svg>
-                            </a>
-                        ) : (
-                            <a
-                                href={route("villa.show", {
-                                    slug: "nusa-dua-penida",
-                                })}
-                                className="mt-6 inline-flex items-center rounded-full border border-slate-900 px-4 py-2 text-sm font-semibold hover:bg-slate-900 hover:text-white transition"
-                            >
-                                Details
-                                <svg
-                                    className="ml-2 h-4 w-4"
-                                    viewBox="0 0 20 20"
-                                    fill="currentColor"
-                                >
-                                    <path
-                                        fillRule="evenodd"
-                                        d="M10.293 3.293a1 1 0 011.414 0l5 5a1 1 0 010 1.414l-5 5a1 1 0 01-1.414-1.414L13.586 10 10.293 6.707a1 1 0 010-1.414z"
-                                        clipRule="evenodd"
-                                    />
-                                </svg>
-                            </a>
-                        )}
-                    </div>
-
-                    <div className="rounded-md overflow-hidden">
-                        <img
-                            src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?q=80&w=1280&auto=format&fit=crop"
-                            alt="Nusa Dua Ocean Breeze"
-                            className="w-full h-full object-cover"
-                        />
-                    </div>
-                </div> */}
             </div>
         </section>
     );

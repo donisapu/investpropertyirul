@@ -47,7 +47,7 @@ export default function Footer({
     };
 
     return (
-        <footer className="bg-white text-slate-900">
+        <footer className="bg-mono-900 text-mono-100">
             <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-12">
                 {campaigns && campaigns.length > 0 && (
                     <div className="mb-16 w-full max-w-5xl mx-auto px-4">
@@ -211,14 +211,14 @@ export default function Footer({
 
                 <div className="text-center">
                     <div className="flex gap-2 items-center justify-center">
-                        <span className="inline-block rounded-lg bg-amber-200 px-2 py-1 text-amber-900 text-2xl sm:text-3xl font-semibold tracking-wide">
+                        <span className="inline-block text-mono-500 text-2xl sm:text-3xl font-semibold tracking-wide">
                             Partner
                         </span>
                         <h2 className="text-2xl sm:text-3xl font-semibold">
                             Kami
                         </h2>
                     </div>
-                    <p className="mt-3 text-sm leading-relaxed text-slate-700">
+                    <p className="mt-3 text-sm leading-relaxed text-mono-100">
                         Kami memiliki beberapa partner yang membantu kami dalam
                         membangun rumah untuk klien-klien kami.
                     </p>
@@ -238,23 +238,23 @@ export default function Footer({
 
                 <div className="mt-10 grid gap-8 md:grid-cols-3">
                     <div>
-                        <h3 className="text-base font-semibold">
+                        <h3 className="text-mono-100 font-semibold">
                             Tentang Kami
                         </h3>
-                        <p className="mt-2 text-sm text-slate-700">
+                        <p className="mt-2 text-sm text-mono-300">
                             {settings?.description}
                         </p>
-                        <div className="mt-2 text-sm text-slate-700">
+                        <div className="mt-2 text-sm text-mono-300">
                             <span className="mr-2">📍</span> {settings?.address}
                         </div>
                     </div>
                     <div>
-                        <h3 className="text-base font-semibold">Beranda</h3>
+                        <h3 className="text-mono-100 font-semibold">Beranda</h3>
                         <ul className="mt-2 space-y-1 text-sm">
                             <li>
                                 <a
                                     href="/investments"
-                                    className="hover:text-emerald-600"
+                                    className="text-mono-100 hover:text-mono-300"
                                 >
                                     Investment
                                 </a>
@@ -262,7 +262,7 @@ export default function Footer({
                             <li>
                                 <a
                                     href="/crowdfunding"
-                                    className="hover:text-emerald-600"
+                                    className="text-mono-100 hover:text-mono-300"
                                 >
                                     Crowdfunding
                                 </a>
@@ -270,7 +270,7 @@ export default function Footer({
                             <li>
                                 <a
                                     href="/property-for-sale"
-                                    className="hover:text-emerald-600"
+                                    className="text-mono-100 hover:text-mono-300"
                                 >
                                     Property for Sale
                                 </a>
@@ -278,7 +278,7 @@ export default function Footer({
                             <li>
                                 <a
                                     href="/how-to-invest"
-                                    className="hover:text-emerald-600"
+                                    className="text-mono-100 hover:text-mono-300"
                                 >
                                     How to Invest
                                 </a>
@@ -293,8 +293,8 @@ export default function Footer({
                             <li className="flex items-center gap-2">
                                 <span className="text-slate-500">📞</span>
                                 <a
-                                    href={`tel:+${settings?.whatsapp}`}
-                                    className="hover:text-emerald-600"
+                                    href={`https://wa.me/${settings?.whatsapp}`}
+                                    className="text-mono-100 hover:text-mono-300"
                                 >
                                     +{settings?.whatsapp}
                                 </a>
@@ -303,7 +303,7 @@ export default function Footer({
                                 <span className="text-slate-500">✉️</span>
                                 <a
                                     href={`mailto:${settings?.email}`}
-                                    className="hover:text-emerald-600"
+                                    className="text-mono-100 hover:text-mono-300"
                                 >
                                     {settings?.email}
                                 </a>
@@ -312,7 +312,7 @@ export default function Footer({
                         <div className="mt-4 flex items-center gap-3">
                             <a
                                 href={settings?.facebook_url || "#"}
-                                className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-slate-900 text-white hover:bg-emerald-600"
+                                className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-mono-700 text-mono-100 hover:bg-mono-100 hover:text-mono-900 transition"
                                 aria-label="Facebook"
                             >
                                 <svg
@@ -325,7 +325,7 @@ export default function Footer({
                             </a>
                             <a
                                 href={settings?.instagram_url || "#"}
-                                className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-slate-900 text-white hover:bg-emerald-600"
+                                className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-mono-700 text-mono-100 hover:bg-mono-100 hover:text-mono-900 transition"
                                 aria-label="Instagram"
                             >
                                 <svg
@@ -338,7 +338,7 @@ export default function Footer({
                             </a>
                             <a
                                 href={settings?.youtube_url || "#"}
-                                className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-slate-900 text-white hover:bg-emerald-600"
+                                className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-mono-700 text-mono-100 hover:bg-mono-100 hover:text-mono-900 transition"
                                 aria-label="YouTube"
                             >
                                 <svg

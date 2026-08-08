@@ -1,11 +1,11 @@
-export default function Hero({ landings }) {
+export default function Hero({ landings, settings }) {
     return (
         <section
             id="top"
-            className="static h-[70vh] md:h-[90vh] overflow-hidden"
+            className="relative h-[70vh] md:h-[90vh] overflow-hidden bg-mono-900"
         >
             <div className="absolute inset-0">
-                <div className="h-full w-full bg-gray-500/60">
+                <div className="h-full w-full bg-mono-900/70">
                     <div
                         className="h-full w-full bg-cover bg-center mix-blend-overlay"
                         style={{
@@ -18,15 +18,15 @@ export default function Hero({ landings }) {
             <div className="relative h-full">
                 <div className="flex h-full items-center justify-center">
                     <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 text-center">
-                        <p className="text-[0.75rem] font-semibold tracking-[0.25em] text-slate-200 uppercase">
+                        <p className="text-[0.75rem] font-semibold tracking-[0.25em] text-mono-300 uppercase">
                             {landings?.subheader}
                         </p>
 
-                        <h1 className="mt-4 text-3xl sm:text-4xl lg:text-5xl font-semibold tracking-[0.16em] text-white uppercase">
+                        <h1 className="mt-4 text-3xl sm:text-4xl lg:text-5xl font-semibold tracking-[0.16em] text-mono-100 uppercase">
                             {landings?.header}
                         </h1>
 
-                        <p className="mt-4 text-[0.8rem] sm:text-sm leading-relaxed text-slate-200 max-w-xl mx-auto">
+                        <p className="mt-4 text-[0.8rem] sm:text-sm leading-relaxed text-mono-300 max-w-xl mx-auto">
                             {landings?.description}
                         </p>
 
@@ -50,13 +50,13 @@ export default function Hero({ landings }) {
                                     <span>Real Estate Agency</span>
                                 </div>
                             </div>
-                            <div className="h-px w-full bg-white/60"></div>
+                            <div className="h-px w-full bg-mono-500/50"></div>
                         </div>
 
                         <div className="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row sm:gap-6">
                             <a
-                                href="#properti"
-                                className="inline-flex items-center justify-center rounded-full border border-white px-7 py-2.5 text-xs sm:text-sm font-semibold tracking-[0.16em] uppercase bg-white/5 hover:bg-white hover:text-slate-900 transition"
+                                href={`https://wa.me/${settings?.whatsapp}`}
+                                className="inline-flex items-center justify-center rounded-full border border-mono-100 px-7 py-2.5 text-xs sm:text-sm font-semibold tracking-[0.16em] uppercase text-mono-100 hover:bg-mono-100 hover:text-mono-900 transition"
                             >
                                 Contact Us
                             </a>
