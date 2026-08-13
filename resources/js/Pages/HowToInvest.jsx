@@ -60,34 +60,34 @@ export default function HowToInvest({ auth }) {
             color: "emerald",
             link: route("investments.index"),
         },
-        {
-            title: "Urun Dana (Crowdfunding)",
-            icon: <Users className="w-12 h-12 text-blue-600 mb-4" />,
-            description:
-                "Berpartisipasi dalam pendanaan properti secara kolektif. Dapatkan imbal hasil pasti dalam jangka waktu tertentu dengan berkontribusi pada pengembangan atau akuisisi properti.",
-            features: [
-                "Ekuitas ter-tokenisasi",
-                "Kenaikan nilai modal",
-                "Jangka menengah-panjang",
-                "Porsi kepemilikan langsung",
-            ],
-            color: "blue",
-            link: route("crowdfunding.index"),
-        },
-        {
-            title: "Lelang & Cessie",
-            icon: <Gavel className="w-12 h-12 text-amber-600 mb-4" />,
-            description:
-                "Ajukan penawaran untuk properti di bawah harga pasar. Dapatkan hak kepemilikan penuh melalui proses lelang yang transparan atau hak cessie bank.",
-            features: [
-                "Di bawah harga pasar",
-                "Kepemilikan penuh",
-                "Potensi imbal hasil tinggi",
-                "Jual beli aset cepat",
-            ],
-            color: "amber",
-            link: route("property-for-sale.index"),
-        },
+        // {
+        //     title: "Urun Dana (Crowdfunding)",
+        //     icon: <Users className="w-12 h-12 text-blue-600 mb-4" />,
+        //     description:
+        //         "Berpartisipasi dalam pendanaan properti secara kolektif. Dapatkan imbal hasil pasti dalam jangka waktu tertentu dengan berkontribusi pada pengembangan atau akuisisi properti.",
+        //     features: [
+        //         "Ekuitas ter-tokenisasi",
+        //         "Kenaikan nilai modal",
+        //         "Jangka menengah-panjang",
+        //         "Porsi kepemilikan langsung",
+        //     ],
+        //     color: "blue",
+        //     link: route("crowdfunding.index"),
+        // },
+        // {
+        //     title: "Lelang & Cessie",
+        //     icon: <Gavel className="w-12 h-12 text-amber-600 mb-4" />,
+        //     description:
+        //         "Ajukan penawaran untuk properti di bawah harga pasar. Dapatkan hak kepemilikan penuh melalui proses lelang yang transparan atau hak cessie bank.",
+        //     features: [
+        //         "Di bawah harga pasar",
+        //         "Kepemilikan penuh",
+        //         "Potensi imbal hasil tinggi",
+        //         "Jual beli aset cepat",
+        //     ],
+        //     color: "amber",
+        //     link: route("property-for-sale.index"),
+        // },
     ];
 
     return (
