@@ -609,7 +609,7 @@ export default function Show({ property , settings}) {
                                         <input
                                             type="range"
                                             min="1000000"
-                                            max="100000000"
+                                            max="10000000000"
                                             step="1000000"
                                             value={investmentAmount}
                                             onChange={(e) =>
@@ -622,7 +622,7 @@ export default function Show({ property , settings}) {
                                         <div className="flex justify-between text-[10px] text-slate-400 font-bold mt-2">
                                             <span>{formatRupiah(1000000)}</span>
                                             <span>
-                                                {formatRupiah(100000000)}
+                                                {formatRupiah(10000000000)}
                                             </span>
                                         </div>
                                     </div>

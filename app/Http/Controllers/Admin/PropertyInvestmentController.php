@@ -8,6 +8,7 @@ use App\Models\PropertyInvestment;
 use App\Traits\AdminDataTable;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class PropertyInvestmentController extends AdminController
 {
@@ -68,7 +69,7 @@ class PropertyInvestmentController extends AdminController
             'total_lot'         => 'required|integer',
             'min_lot_size'      => 'required|integer',
             'max_lot_size'      => 'required|integer',
-            'roi_period_months'  => 'required|integer',
+            'roi_period_months' => 'required|integer',
             'status'            => 'required|string',
         ]);
 
@@ -118,8 +119,16 @@ class PropertyInvestmentController extends AdminController
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, PropertyInvestment $investment)
+    public function update(Request $request, $id)
     {
+        $investment = PropertyInvestment::findOrFail($id);
+
+        Log::info('UPDATE HIT', [
+            'investment_id' => $investment->id,
+            'exists' => $investment->exists,
+            'input' => $request->all(),
+        ]);
+
         $validated = $request->validate([
             'property_id'       => 'required|exists:properties,id',
             'asset_price'       => 'required|numeric',
@@ -130,12 +139,13 @@ class PropertyInvestmentController extends AdminController
             'appreciation_rate' => 'required|numeric',
             'price_per_lot'     => 'required|numeric',
             'total_lot'         => 'required|integer',
-            'sold_lot'          => 'required|integer|lte:total_lot',
             'min_lot_size'      => 'required|integer',
             'max_lot_size'      => 'required|integer',
-            'roi_period_months'  => 'required|integer',
+            'roi_period_months' => 'required|integer',
             'status'            => 'required|string',
         ]);
+
+        Log::info('VALIDATED', $validated);
 
         $total_investment = $request->asset_price + $request->property_upgrades + $request->notary_fee + $request->platform_fee;
         $projected_roi    = $request->rental_yield + $request->appreciation_rate;
@@ -146,6 +156,8 @@ class PropertyInvestmentController extends AdminController
                 'projected_roi'          => $projected_roi,
             ]));
         });
+
+        Log::info('AFTER UPDATE', $investment->fresh()->toArray());
 
         return redirect()->route('admin.investment-properties')
             ->with('success', 'Data investasi berhasil diperbarui!');

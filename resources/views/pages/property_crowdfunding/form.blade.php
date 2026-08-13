@@ -2,6 +2,9 @@
 @section('content')
     <form action="{{ $action }}" method="POST" enctype="multipart/form-data">
         @csrf
+        @if ($btn === 'edit')
+            @method('PUT')
+        @endif
         <div class="card">
             <div class="card-header h5">{{ $title }}</div>
             <div class="card-body">

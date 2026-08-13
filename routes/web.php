@@ -138,7 +138,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin'])->grou
     Route::get('investment-properties/show/{id}', [PropertyInvestmentController::class, 'show'])->name('investment-properties.show');
     Route::get('investment-properties/edit/{id}', [PropertyInvestmentController::class, 'edit'])->name('investment-properties.edit');
     Route::post('investment-properties/store', [PropertyInvestmentController::class, 'store'])->name('investment-properties.store');
-    Route::post('investment-properties/update/{id}', [PropertyInvestmentController::class, 'update'])->name('investment-properties.update');
+    Route::put('investment-properties/update/{id}', [PropertyInvestmentController::class, 'update'])->name('investment-properties.update');
     Route::delete('investment-properties/destroy/{id}', [PropertyInvestmentController::class, 'destroy'])->name('investment-properties.destroy');
 
     // Consigntment
@@ -148,7 +148,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin'])->grou
     Route::get('consignment-properties/show/{id}', [PropertyConsignmentController::class, 'show'])->name('consignment-properties.show');
     Route::get('consignment-properties/edit/{id}', [PropertyConsignmentController::class, 'edit'])->name('consignment-properties.edit');
     Route::post('consignment-properties/store', [PropertyConsignmentController::class, 'store'])->name('consignment-properties.store');
-    Route::post('consignment-properties/update/{id}', [PropertyConsignmentController::class, 'update'])->name('consignment-properties.update');
+    Route::put('consignment-properties/update/{id}', [PropertyConsignmentController::class, 'update'])->name('consignment-properties.update');
     Route::delete('consignment-properties/destroy/{id}', [PropertyConsignmentController::class, 'destroy'])->name('consignment-properties.destroy');
 
     // Crowdfunding
@@ -158,7 +158,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin'])->grou
     Route::get('crowdfunding-properties/show/{id}', [PropertyCrowdfundingController::class, 'show'])->name('crowdfunding-properties.show');
     Route::get('crowdfunding-properties/edit/{id}', [PropertyCrowdfundingController::class, 'edit'])->name('crowdfunding-properties.edit');
     Route::post('crowdfunding-properties/store', [PropertyCrowdfundingController::class, 'store'])->name('crowdfunding-properties.store');
-    Route::post('crowdfunding-properties/update/{id}', [PropertyCrowdfundingController::class, 'update'])->name('crowdfunding-properties.update');
+    Route::put('crowdfunding-properties/update/{id}', [PropertyCrowdfundingController::class, 'update'])->name('crowdfunding-properties.update');
     Route::delete('crowdfunding-properties/destroy/{id}', [PropertyCrowdfundingController::class, 'destroy'])->name('crowdfunding-properties.destroy');
 
     // Auction
@@ -168,7 +168,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin'])->grou
     Route::get('auction-properties/show/{id}', [PropertyAuctionController::class, 'show'])->name('auction-properties.show');
     Route::get('auction-properties/edit/{id}', [PropertyAuctionController::class, 'edit'])->name('auction-properties.edit');
     Route::post('auction-properties/store', [PropertyAuctionController::class, 'store'])->name('auction-properties.store');
-    Route::post('auction-properties/update/{id}', [PropertyAuctionController::class, 'update'])->name('auction-properties.update');
+    Route::put('auction-properties/update/{id}', [PropertyAuctionController::class, 'update'])->name('auction-properties.update');
     Route::delete('auction-properties/destroy/{id}', [PropertyAuctionController::class, 'destroy'])->name('auction-properties.destroy');
     Route::get('auction-properties/{id}/bids', [PropertyAuctionController::class, 'getBids'])->name('admin.auction-properties.bids');
 

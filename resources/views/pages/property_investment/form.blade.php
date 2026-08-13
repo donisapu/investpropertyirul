@@ -11,6 +11,10 @@
     @endif --}}
     <form action="{{ $action }}" method="POST" enctype="multipart/form-data">
         @csrf
+        @if ($btn === 'edit')
+            @method('PUT')
+        @endif
+
         <div class="card">
             <div class="card-header h5">{{ $title }}</div>
             <div class="card-body">
@@ -34,19 +38,19 @@
                         <div class="col-4">
                             <label for="" class="form-label">Property Upgrades</label>
                             <input type="number" class="form-control" name="property_upgrades"
-                                placeholder="Property Upgrades" id="" value="0"
+                                placeholder="Property Upgrades" id=""
                                 @if ($btn == 'edit') value="{{ $data->property_upgrades }}" @endif
                                 @required(true)>
                         </div>
                         <div class="col-4">
                             <label for="" class="form-label">Notary Fee</label>
-                            <input type="number" class="form-control" value="0" name="notary_fee"
+                            <input type="number" class="form-control"  name="notary_fee"
                                 placeholder="Notary Fee" id=""
                                 @if ($btn == 'edit') value="{{ $data->notary_fee }}" @endif @required(true)>
                         </div>
                         <div class="col-4">
                             <label for="" class="form-label">Platform Fee</label>
-                            <input type="number" class="form-control" value="0" name="platform_fee"
+                            <input type="number" class="form-control"  name="platform_fee"
                                 placeholder="Platform Fee" id=""
                                 @if ($btn == 'edit') value="{{ $data->platform_fee }}" @endif
                                 @required(true)>
@@ -78,25 +82,20 @@
                 </div>
                 <div class="mb-3">
                     <div class="row">
-                        <div class="col-3">
+                        <div class="col-4">
                             <label for="" class="form-label">Total Lot</label>
                             <input type="number" class="form-control" name="total_lot" placeholder="Total Lot"
                                 id="" @if ($btn == 'edit') value="{{ $data->total_lot }}" @endif
                                 @required(true)>
                         </div>
-                        <div class="col-3">
-                            <label for="" class="form-label">Sold Lot</label>
-                            <input type="number" class="form-control" name="sold_lot" placeholder="Sold Lot" id=""
-                                value="{{ $btn == 'edit' ? $data->sold_lot : 0 }}" @required(true)>
-                        </div>
-                        <div class="col-3">
+                        <div class="col-4">
                             <label for="" class="form-label">Min Lot Size</label>
                             <input type="number" name="min_lot_size" class="form-control" id=""
                                 placeholder="Mininum Buying"
                                 @if ($btn == 'edit') value="{{ $data->min_lot_size }}" @endif
                                 @required(true)>
                         </div>
-                        <div class="col-3">
+                        <div class="col-4">
                             <label for="" class="form-label">Max Lot Size</label>
                             <input type="number" class="form-control" name="max_lot_size" placeholder="Maximum Buying"
                                 id="" @if ($btn == 'edit') value="{{ $data->max_lot_size }}" @endif
@@ -126,6 +125,7 @@
         </div>
         <div class="mt-3">
             <button class="btn btn-primary" type="submit">Submit</button>
+            <a href="{{ route('admin.investment-properties') }}" class="btn btn-secondary">Cancel</a>
         </div>
     </form>
 @endsection
