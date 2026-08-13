@@ -55,7 +55,10 @@ export default function HowToInvest({ auth }) {
                 "Minimum investasi rendah",
                 "Passive income",
                 "Jangka pendek-menengah",
-                
+                "Ekuitas ter-tokenisasi",
+                "Kenaikan nilai modal",
+                "Jangka menengah-panjang",
+                "Porsi kepemilikan langsung",
             ],
             color: "emerald",
             link: route("investments.index"),
