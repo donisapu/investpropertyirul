@@ -51,10 +51,11 @@ export default function HowToInvest({ auth }) {
             description:
                 "Beli lot properti untuk kepemilikan ekuitas langsung. Dapatkan keuntungan dari kenaikan nilai modal (capital appreciation) dan potensi dividen sewa dengan target ROI yang jelas.",
             features: [
-                "Ekuitas ter-tokenisasi",
-                "Kenaikan nilai modal",
-                "Jangka menengah-panjang",
-                "Porsi kepemilikan langsung",
+                "Tenor & ROI pasti",
+                "Minimum investasi rendah",
+                "Passive income",
+                "Jangka pendek-menengah",
+                
             ],
             color: "emerald",
             link: route("investments.index"),
@@ -65,10 +66,10 @@ export default function HowToInvest({ auth }) {
             description:
                 "Berpartisipasi dalam pendanaan properti secara kolektif. Dapatkan imbal hasil pasti dalam jangka waktu tertentu dengan berkontribusi pada pengembangan atau akuisisi properti.",
             features: [
-                "Tenor & ROI pasti",
-                "Minimum investasi rendah",
-                "Passive income",
-                "Jangka pendek-menengah",
+                "Ekuitas ter-tokenisasi",
+                "Kenaikan nilai modal",
+                "Jangka menengah-panjang",
+                "Porsi kepemilikan langsung",
             ],
             color: "blue",
             link: route("crowdfunding.index"),
