@@ -129,7 +129,7 @@ export default function HowToInvest({ auth }) {
                 <div className="max-w-7xl mx-auto">
                     <div className="text-center mb-16">
                         <h2 className="text-3xl font-bold text-slate-900 mb-4">
-                            Tiga Cara Berinvestasi
+                            Cara Berinvestasi
                         </h2>
                         <p className="text-slate-600 max-w-2xl mx-auto">
                             Baik Anda ingin mulai dari nominal kecil atau besar,
@@ -137,7 +137,7 @@ export default function HowToInvest({ auth }) {
                         </p>
                     </div>
 
-                    <div className="grid md:grid-cols-3 gap-8 max-w-7xl mx-auto">
+                    <div className="grid md:grid-cols-1 gap-8 max-w-7xl mx-auto">
                         {methods.map((method, index) => (
                             <div
                                 key={index}
