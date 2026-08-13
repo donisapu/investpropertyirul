@@ -80,9 +80,9 @@ export default function OurLocation({ landings, landmarks }) {
                     </div>
                 ) : null}
 
-                <h3 className="mt-10 text-center text-xl sm:text-2xl font-semibold uppercase">
+                {/* <h3 className="mt-10 text-center text-xl sm:text-2xl font-semibold uppercase">
                     Lokasi
-                </h3>
+                </h3> */}
                 <div className="mt-4 rounded-2xl overflow-hidden bg-slate-100">
                     {/* <iframe
                         src="https://www.google.com/maps?q=-8.802645,115.165608&z=13&output=embed"
@@ -90,7 +90,7 @@ export default function OurLocation({ landings, landmarks }) {
                         loading="lazy"
                         referrerPolicy="no-referrer-when-downgrade"
                     ></iframe> */}
-                    {finalMapUrl ? (
+                    {/* {finalMapUrl ? (
                         <iframe
                             src={finalMapUrl}
                             width="100%"
@@ -106,7 +106,7 @@ export default function OurLocation({ landings, landmarks }) {
                         <div className="w-full h-full flex items-center justify-center text-slate-400 text-sm font-medium">
                             Peta lokasi belum tersedia
                         </div>
-                    )}
+                    )} */}
                 </div>
             </div>
         </section>
