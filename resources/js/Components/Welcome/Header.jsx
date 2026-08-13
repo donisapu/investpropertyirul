@@ -88,7 +88,7 @@ export default function Header() {
                         >
                             INVESTMENT
                         </Link>
-                        <span className="text-slate-300">|</span>
+                        {/* <span className="text-slate-300">|</span>
                         <Link
                             href="/crowdfunding"
                             className="hover:text-mono-700 transition-colors"
@@ -101,7 +101,7 @@ export default function Header() {
                             className="hover:text-mono-700 transition-colors"
                         >
                             PROPERTY FOR SALE
-                        </Link>
+                        </Link> */}
                         <span className="text-slate-300">|</span>
                         <Link
                             href="/how-to-invest"
@@ -251,7 +251,7 @@ export default function Header() {
                         >
                             INVESTMENT
                         </Link>
-                        <Link
+                        {/* <Link
                             href={route("crowdfunding.index")}
                             className="block rounded-md py-2 px-3 text-base font-medium text-slate-900 hover:bg-slate-50 hover:text-mono-700"
                         >
@@ -262,7 +262,7 @@ export default function Header() {
                             className="block rounded-md py-2 px-3 text-base font-medium text-slate-900 hover:bg-slate-50 hover:text-mono-700"
                         >
                             PROPERTY FOR SALE
-                        </Link>
+                        </Link> */}
 
                         <Link
                             href="/how-to-invest"

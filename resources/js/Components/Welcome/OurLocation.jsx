@@ -31,7 +31,7 @@ export default function OurLocation({ landings, landmarks }) {
         <section id="our-location" className="bg-mono-100 text-mono-900">
             <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-12">
                 <h2 className="text-center text-2xl sm:text-3xl font-semibold uppercase">
-                    Berada di Lokasi Strategis
+                    We only choose hot spot tourism area.
                 </h2>
                 <p className="mt-4 text-sm leading-relaxed text-slate-700 max-w-3xl mx-auto text-center">
                     {landings.location_desc}

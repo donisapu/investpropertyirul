@@ -259,7 +259,7 @@ export default function Footer({
                                     Investment
                                 </a>
                             </li>
-                            <li>
+                            {/* <li>
                                 <a
                                     href="/crowdfunding"
                                     className="text-mono-100 hover:text-mono-300"
@@ -274,7 +274,7 @@ export default function Footer({
                                 >
                                     Property for Sale
                                 </a>
-                            </li>
+                            </li> */}
                             <li>
                                 <a
                                     href="/how-to-invest"

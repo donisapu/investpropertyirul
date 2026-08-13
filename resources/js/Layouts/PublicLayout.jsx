@@ -117,7 +117,7 @@ export default function PublicLayout({ children }) {
                             >
                                 INVESTMENT
                             </Link>
-                            <span className="text-slate-300">|</span>
+                            {/* <span className="text-slate-300">|</span>
                             <Link
                                 href="/crowdfunding"
                                 className={`${isActive("/crowdfunding") ? "text-emerald-700 font-bold" : "hover:text-emerald-600"} transition-colors`}
@@ -130,7 +130,7 @@ export default function PublicLayout({ children }) {
                                 className={`${isActive("/property-for-sale") ? "text-emerald-700 font-bold" : "hover:text-emerald-600"} transition-colors`}
                             >
                                 PROPERTY FOR SALE
-                            </Link>
+                            </Link> */}
                             <span className="text-slate-300">|</span>
                             <Link
                                 href="/how-to-invest"
@@ -283,7 +283,7 @@ export default function PublicLayout({ children }) {
                             >
                                 INVESTMENT
                             </Link>
-                            <Link
+                            {/* <Link
                                 href={route("crowdfunding.index")}
                                 className="block rounded-md py-2 px-3 text-base font-medium text-slate-900 hover:bg-slate-50 hover:text-emerald-600"
                             >
@@ -294,7 +294,7 @@ export default function PublicLayout({ children }) {
                                 className="block rounded-md py-2 px-3 text-base font-medium text-slate-900 hover:bg-slate-50 hover:text-emerald-600"
                             >
                                 PROPERTY FOR SALE
-                            </Link>
+                            </Link> */}
                             <Link
                                 href="/how-to-invest"
                                 className="block rounded-md py-2 px-3 text-base font-medium text-slate-900 hover:bg-slate-50 hover:text-emerald-600"
@@ -649,7 +649,7 @@ function Footer() {
                                     Investment
                                 </a>
                             </li>
-                            <li>
+                            {/* <li>
                                 <a
                                     href="/crowdfunding"
                                     className="text-mono-100 hover:text-mono-300"
@@ -664,7 +664,7 @@ function Footer() {
                                 >
                                     Property for Sale
                                 </a>
-                            </li>
+                            </li> */}
                             <li>
                                 <a
                                     href="/how-to-invest"
