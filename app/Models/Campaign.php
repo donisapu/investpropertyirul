@@ -31,6 +31,8 @@ class Campaign extends Model
         'end_date' => 'date',
     ];
 
+    protected $appends = ['type', 'target_id'];
+
     /* ======================
      |  Relationships
      |======================*/
@@ -48,5 +50,31 @@ class Campaign extends Model
             ->where('status', 'active')
             ->whereDate('start_date', '<=', now())
             ->whereDate('end_date', '>=', now());
+    }
+
+    public function getTypeAttribute()
+    {
+        if ($this->property && $this->property->investment) {
+            return 'investment';
+        }
+
+        if ($this->property && $this->property->crowdfunding) {
+            return 'crowdfunding';
+        }
+
+        return null;
+    }
+
+    public function getTargetIdAttribute()
+    {
+        if ($this->type === 'investment') {
+            return $this->property->investment->id;
+        }
+
+        if ($this->type === 'crowdfunding') {
+            return $this->property->crowdfunding->id;
+        }
+
+        return null;
     }
 }

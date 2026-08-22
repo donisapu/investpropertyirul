@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\PropertyCrowdfunding;
+use App\Models\Campaign;
 use App\Models\WebsiteSetting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -157,12 +158,40 @@ class PublicCrowdfundingController extends Controller
         return Inertia::render('Crowdfunding/Show', compact('property', 'settings'));
     }
 
-    public function purchase($id)
+    public function purchase(Request $request, $id)
     {
         $crowdfunding = PropertyCrowdfunding::with(['property.images', 'property.documents'])
             ->where('id', $id)
             ->where('status', '!=', 'draft')
             ->firstOrFail();
+
+        // 1. Cek validasi campaign aktif jika campaign_id dikirim via query
+        $discountPercent = 0;
+        $campaignData = null;
+
+        if ($request->has('campaign_id')) {
+            $campaign = Campaign::where('id', $request->query('campaign_id'))
+                ->where('property_id', $crowdfunding->property_id)
+                ->where('status', 'active')
+                ->first();
+
+            if ($campaign) {
+                $discountPercent = (float) $campaign->discount_percent;
+                $campaignData = [
+                    'id' => $campaign->id,
+                    'title' => $campaign->title,
+                    'discount_percent' => $discountPercent,
+                ];
+            }
+        }
+
+        // 2. Hitung diskon untuk nilai minimal kontribusi
+        $originalMinContribution = (float) $crowdfunding->min_contribution;
+        $discountedMinContribution = $originalMinContribution;
+
+        if ($discountPercent > 0) {
+            $discountedMinContribution = $originalMinContribution - ($originalMinContribution * ($discountPercent / 100));
+        }
 
         // Calculate progress based on collected amount vs funding goal
         $progress = 0;
@@ -181,9 +210,12 @@ class PublicCrowdfundingController extends Controller
             'tenor' => $crowdfunding->tenor . ' Months',
             'goal' => $crowdfunding->funding_goal,
             'collected' => $crowdfunding->collected_amount,
-            'min_contribution' => $crowdfunding->min_contribution,
+            'min_contribution' => $originalMinContribution,
+            'discounted_min_contribution' => $discountedMinContribution,
+            'discount_percent' => $discountPercent,
             'progress' => $progress,
             'status' => ucfirst($crowdfunding->status),
+            'campaign' => $campaignData, // Passing data campaign ke frontend
             'specs' => [
                 'bedroom' => $crowdfunding->property->bedroom,
                 'bathroom' => $crowdfunding->property->bathroom,

@@ -6,24 +6,23 @@ import {
     Plus,
     Info,
     ShieldCheck,
-    AlertCircle,
+    Tag,
     Calendar,
 } from "lucide-react";
-import {
-    AreaChart,
-    Area,
-    XAxis,
-    YAxis,
-    CartesianGrid,
-    Tooltip,
-    ResponsiveContainer,
-} from "recharts";
 import PublicLayout from "@/Layouts/PublicLayout";
 
 export default function Show({ property }) {
     const minLot = parseInt(property.financials?.min_lot || 1);
     const [quantity, setQuantity] = useState(minLot);
-    const tokenPrice = parseFloat(property.financials.price_per_lot);
+
+    // 1. Cek apakah ada diskon dari campaign
+    const hasDiscount = (property.financials?.discount_percent || 0) > 0;
+    const originalPrice = parseFloat(property.financials.price_per_lot);
+
+    // Jika ada diskon, gunakan discounted_price_per_lot
+    const tokenPrice = hasDiscount
+        ? parseFloat(property.financials.discounted_price_per_lot)
+        : originalPrice;
 
     const handleIncrement = () => setQuantity((prev) => prev + 1);
     const handleDecrement = () =>
@@ -41,110 +40,29 @@ export default function Show({ property }) {
         }
     };
 
+    // 2. Tambahkan campaign_id ke payload form
     const { data, setData, post, processing } = useForm({
         lot: quantity,
+        campaign_id: property.campaign?.id || null,
     });
 
     useEffect(() => {
-        setData("lot", quantity);
+        setData((prev) => ({ ...prev, lot: quantity }));
     }, [quantity]);
 
     const handlePaymentSubmit = (e) => {
         e.preventDefault();
-        // Tembak ke route payment lu
         post(route("user.payment.investment", property.id));
     };
 
+    // 3. Kalkulasi Total & Total Hemat
     const totalPayment = quantity * tokenPrice;
-
-    const [activeTab, setActiveTab] = useState("details");
-    const [lightboxOpen, setLightboxOpen] = useState(false);
-    const [currentImageIndex, setCurrentImageIndex] = useState(0);
-
-    const openLightbox = (index) => {
-        setCurrentImageIndex(index);
-        setLightboxOpen(true);
-        document.body.style.overflow = "hidden";
-    };
-
-    const closeLightbox = () => {
-        setLightboxOpen(false);
-        document.body.style.overflow = "unset";
-    };
-
-    const nextImage = (e) => {
-        e.stopPropagation();
-        setCurrentImageIndex((prev) =>
-            prev === (property.images?.length || 0) - 1 ? 0 : prev + 1,
-        );
-    };
-
-    const prevImage = (e) => {
-        e.stopPropagation();
-        setCurrentImageIndex((prev) =>
-            prev === 0 ? (property.images?.length || 0) - 1 : prev - 1,
-        );
-    };
-
-    // Handle keyboard navigation
-    useEffect(() => {
-        const handleKeyDown = (e) => {
-            if (!lightboxOpen) return;
-
-            if (e.key === "Escape") closeLightbox();
-            if (e.key === "ArrowRight") nextImage(e);
-            if (e.key === "ArrowLeft") prevImage(e);
-        };
-
-        window.addEventListener("keydown", handleKeyDown);
-        return () => window.removeEventListener("keydown", handleKeyDown);
-    }, [lightboxOpen]);
-
-    // Dummy chart data
-    const chartData = [
-        { name: "Jan 2025", returns: 8.5, avg: 10 },
-        { name: "Feb 2025", returns: 8.8, avg: 10 },
-        { name: "Mar 2025", returns: 9.2, avg: 10 },
-        { name: "Apr 2025", returns: 9.0, avg: 10 },
-        { name: "May 2025", returns: 9.5, avg: 10 },
-        { name: "Jun 2025", returns: 9.8, avg: 10 },
-        { name: "Jul 2025", returns: 10.0, avg: 10 },
-        { name: "Aug 2025", returns: 10.2, avg: 10 },
-        { name: "Sep 2025", returns: 10.1, avg: 10 },
-        { name: "Oct 2025", returns: 9.5, avg: 10 },
-        { name: "Nov 2025", returns: 8.0, avg: 10 },
-        { name: "Dec 2025", returns: 9.5, avg: 10 },
-    ];
-
-    // Dummy leaderboard data
-    const leaderboard = [
-        {
-            id: 1,
-            name: "k3ptian",
-            tokens: 50,
-            avatar: "https://i.pravatar.cc/150?u=1",
-        },
-        {
-            id: 2,
-            name: "borkangvilla",
-            tokens: 120,
-            avatar: "https://i.pravatar.cc/150?u=2",
-            rank: 1,
-        },
-        {
-            id: 3,
-            name: "0xdansk",
-            tokens: 85,
-            avatar: "https://i.pravatar.cc/150?u=3",
-        },
-        { id: 4, name: "GORO3214120795", tokens: 40 },
-        { id: 5, name: "GORO2130274444", tokens: 35 },
-        { id: 6, name: "GORO4726486714", tokens: 30 },
-    ];
+    const totalOriginalPayment = quantity * originalPrice;
+    const totalSavings = totalOriginalPayment - totalPayment;
 
     return (
         <PublicLayout>
-            <Head title={property.name} />
+            <Head title={`Pembelian ${property.name}`} />
 
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 min-h-screen">
                 {/* Tombol Back & Judul Halaman */}
@@ -160,11 +78,32 @@ export default function Show({ property }) {
                     </h1>
                 </div>
 
-                {/* Grid Utama: Pembagian Asimetris (Kiri 3 Kolom, Kanan 2 Kolom) */}
                 <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 items-start">
-                    {/* ================= KOLOM KIRI: KONFIGURASI ORDER (Span 3) ================= */}
+                    {/* ================= KOLOM KIRI (Span 3) ================= */}
                     <div className="lg:col-span-3 space-y-6">
-                        {/* Info Ringkas Produk (Ganti gaya hero banner lama dengan gaya list item e-commerce premium) */}
+                        {/* Banner Promo Campaign Jika Ada */}
+                        {hasDiscount && property.campaign && (
+                            <div className="bg-gradient-to-r from-amber-500 to-red-500 rounded-3xl p-4 text-white shadow-lg flex items-center justify-between">
+                                <div className="flex items-center gap-3">
+                                    <div className="p-2.5 bg-white/20 rounded-2xl backdrop-blur-md">
+                                        <Tag className="w-5 h-5 text-white" />
+                                    </div>
+                                    <div>
+                                        <div className="text-xs font-semibold text-amber-100 uppercase tracking-wider">
+                                            Promo Aktif Applied
+                                        </div>
+                                        <div className="text-sm font-bold">
+                                            {property.campaign.title}
+                                        </div>
+                                    </div>
+                                </div>
+                                <span className="bg-white text-red-600 px-3 py-1 rounded-full text-xs font-black">
+                                    Diskon {property.financials.discount_percent}%
+                                </span>
+                            </div>
+                        )}
+
+                        {/* Info Ringkas Produk */}
                         <div className="bg-white rounded-3xl p-5 border border-slate-100 shadow-[0_2px_10px_-3px_rgba(6,81,237,0.03)] flex items-center gap-5">
                             <div className="w-24 h-24 rounded-2xl overflow-hidden bg-slate-100 flex-none">
                                 <img
@@ -191,7 +130,7 @@ export default function Show({ property }) {
                             </div>
                         </div>
 
-                        {/* Pemilih Jumlah Kuantitas Lot */}
+                        {/* Pemilih Kuantitas */}
                         <div className="bg-white rounded-3xl p-6 md:p-8 border border-slate-100 shadow-[0_2px_10px_-3px_rgba(6,81,237,0.03)]">
                             <h3 className="text-xs font-bold text-slate-400 uppercase tracking-widest block mb-4">
                                 Tentukan Jumlah Pembelian
@@ -202,17 +141,25 @@ export default function Show({ property }) {
                                     <div className="text-sm font-bold text-slate-900 mb-0.5">
                                         Kuantitas Lot (Token)
                                     </div>
-                                    <div className="text-xs font-medium text-slate-500">
-                                        IDR {tokenPrice.toLocaleString()}{" "}
+
+                                    {/* Display Harga Normal vs Harga Diskon */}
+                                    <div className="flex items-center gap-2">
+                                        <span className="text-xs font-bold text-slate-900">
+                                            IDR {tokenPrice.toLocaleString()}
+                                        </span>
+                                        {hasDiscount && (
+                                            <span className="text-[11px] text-slate-400 line-through">
+                                                IDR {originalPrice.toLocaleString()}
+                                            </span>
+                                        )}
                                         <span className="text-[10px] text-slate-400">
                                             / lot
                                         </span>
                                     </div>
                                 </div>
 
-                                {/* Widget Plus Minus & Preset Button disatuin biar ga makan tempat */}
                                 <div className="flex flex-col items-end gap-3">
-                                    {/* Counter Input Box */}
+                                    {/* Counter Box */}
                                     <div className="flex items-center bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm p-1">
                                         <button
                                             type="button"
@@ -224,14 +171,9 @@ export default function Show({ property }) {
                                         <input
                                             type="number"
                                             min={minLot}
-                                            className="w-16 text-center font-extrabold text-slate-900 focus:outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none text-sm"
+                                            className="w-16 text-center font-extrabold text-slate-900 focus:outline-none text-sm"
                                             value={quantity}
-                                            onChange={
-                                                quantity <=
-                                                property.financials.tokens_left
-                                                    ? handleInputChange
-                                                    : undefined
-                                            }
+                                            onChange={handleInputChange}
                                             onBlur={handleBlur}
                                         />
                                         <button
@@ -243,8 +185,8 @@ export default function Show({ property }) {
                                         </button>
                                     </div>
 
-                                    {/* Preset Buttons Quick Pick */}
-                                    <div className="flex gap-1.5 w-full sm:w-auto">
+                                    {/* Quick Pick Presets */}
+                                    <div className="flex gap-1.5">
                                         {[25, 50, 100].map((val) => (
                                             <button
                                                 key={val}
@@ -265,35 +207,36 @@ export default function Show({ property }) {
                         </div>
                     </div>
 
-                    {/* ================= KOLOM KANAN: RINGKASAN & INVOICE (Span 2) ================= */}
+                    {/* ================= KOLOM KANAN (Span 2) ================= */}
                     <div className="lg:col-span-2 space-y-6">
-                        {/* Sticky Order Summary Card */}
                         <div className="bg-white rounded-3xl p-6 md:p-8 shadow-[0_8px_30px_rgb(0,0,0,0.03)] border border-slate-100 sticky top-24">
                             <h5 className="text-lg font-extrabold text-slate-900 mb-6 pb-4 border-b border-slate-100">
                                 Ringkasan Pembayaran
                             </h5>
 
-                            {/* Rincian item nota */}
                             <div className="space-y-4 text-sm font-medium">
                                 <div className="flex justify-between items-center text-slate-500">
-                                    <span>Subtotal ({quantity} Lot)</span>
-                                    <span className="text-slate-900 font-semibold">
-                                        IDR {totalPayment.toLocaleString()}
+                                    <span>Harga Lot ({quantity} Lot)</span>
+                                    <span className={`${hasDiscount ? 'line-through text-slate-400 text-xs' : 'text-slate-900 font-semibold'}`}>
+                                        IDR {totalOriginalPayment.toLocaleString()}
                                     </span>
                                 </div>
+
+                                {/* Rincian Diskon Promo jika ada */}
+                                {hasDiscount && (
+                                    <div className="flex justify-between items-center text-red-600 font-semibold">
+                                        <span className="flex items-center gap-1">
+                                            Diskon Promo ({property.financials.discount_percent}%)
+                                        </span>
+                                        <span>
+                                            - IDR {totalSavings.toLocaleString()}
+                                        </span>
+                                    </div>
+                                )}
+
                                 <div className="flex justify-between items-center text-slate-500">
                                     <span className="flex items-center gap-1">
-                                        Biaya Transaksi{" "}
-                                        <Info className="w-3.5 h-3.5 text-slate-300" />
-                                    </span>
-                                    <span className="text-xs font-extrabold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded">
-                                        GRATIS
-                                    </span>
-                                </div>
-                                <div className="flex justify-between items-center text-slate-500">
-                                    <span className="flex items-center gap-1">
-                                        Biaya Gerbang Pembayaran{" "}
-                                        <Info className="w-3.5 h-3.5 text-slate-300" />
+                                        Biaya Transaksi <Info className="w-3.5 h-3.5 text-slate-300" />
                                     </span>
                                     <span className="text-xs font-extrabold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded">
                                         GRATIS
@@ -303,17 +246,24 @@ export default function Show({ property }) {
 
                             <div className="my-5 border-t border-dashed border-slate-200"></div>
 
-                            {/* Total Akhir Tagihan */}
+                            {/* Total Pembayaran */}
                             <div className="flex justify-between items-center mb-6">
-                                <span className="text-sm font-bold text-slate-800">
-                                    Total Pembayaran
-                                </span>
+                                <div>
+                                    <span className="text-sm font-bold text-slate-800 block">
+                                        Total Pembayaran
+                                    </span>
+                                    {hasDiscount && (
+                                        <span className="text-[11px] font-bold text-red-500">
+                                            Hemat IDR {totalSavings.toLocaleString()}
+                                        </span>
+                                    )}
+                                </div>
                                 <span className="text-2xl font-black text-slate-950 tracking-tight">
                                     IDR {totalPayment.toLocaleString()}
                                 </span>
                             </div>
 
-                            {/* Syarat & Ketentuan Perjanjian */}
+                            {/* Terms Checkbox */}
                             <div className="flex gap-3 bg-slate-50 rounded-2xl p-4 border border-slate-100 mb-5">
                                 <input
                                     type="checkbox"
@@ -324,36 +274,14 @@ export default function Show({ property }) {
                                     htmlFor="agree"
                                     className="text-[11px] leading-relaxed text-slate-500 font-medium cursor-pointer"
                                 >
-                                    Saya menyatakan telah membaca dan menyetujui
-                                    seluruh isi berkas{" "}
+                                    Saya menyatakan telah membaca dan menyetujui seluruh isi berkas{" "}
                                     <span className="text-emerald-600 font-bold underline hover:text-emerald-700">
                                         Surat Perjanjian Kepemilikan Fraksional
-                                        Aset Properti (Tokenisasi)
-                                    </span>{" "}
-                                    yang berlaku.
+                                    </span>.
                                 </label>
                             </div>
 
-                            {/* Info Banner Deviden - Diubah warnanya biar gak tabrakan jadi info card soft */}
-                            <div className="bg-blue-50/70 border border-blue-100 rounded-2xl p-3.5 flex items-start gap-3 mb-6 text-blue-800 text-[11px] leading-relaxed">
-                                <div className="p-1.5 bg-white rounded-lg shadow-sm flex-none border border-blue-100">
-                                    <Calendar className="w-4 h-4 text-blue-600" />
-                                </div>
-                                <div>
-                                    <span className="font-bold text-blue-900 block text-xs mb-0.5">
-                                        Siklus Bagi Hasil Bulanan
-                                    </span>
-                                    Dividen didistribusikan setiap{" "}
-                                    <span className="font-bold text-blue-700 underline">
-                                        tanggal 5 pada bulan berikutnya
-                                    </span>
-                                    . Nilai imbal hasil dihitung berdasarkan
-                                    laporan pendapatan bersih properti bulanan
-                                    yang proporsional dengan jumlah lot Anda.
-                                </div>
-                            </div>
-
-                            {/* Tombol Utama Bayar */}
+                            {/* Submit Button */}
                             <button
                                 onClick={handlePaymentSubmit}
                                 disabled={processing}
@@ -364,28 +292,7 @@ export default function Show({ property }) {
                                 }`}
                             >
                                 {processing ? (
-                                    <>
-                                        <svg
-                                            className="animate-spin h-4 w-4 text-white"
-                                            fill="none"
-                                            viewBox="0 0 24 24"
-                                        >
-                                            <circle
-                                                className="opacity-25"
-                                                cx="12"
-                                                cy="12"
-                                                r="10"
-                                                stroke="currentColor"
-                                                strokeWidth="4"
-                                            ></circle>
-                                            <path
-                                                className="opacity-75"
-                                                fill="currentColor"
-                                                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                                            ></path>
-                                        </svg>
-                                        Memproses Transaksi...
-                                    </>
+                                    <span>Memproses...</span>
                                 ) : (
                                     <>
                                         <ShieldCheck className="w-4 h-4" />
@@ -397,53 +304,6 @@ export default function Show({ property }) {
                     </div>
                 </div>
             </div>
-            {/* Lightbox Modal */}
-            {lightboxOpen && (
-                <div
-                    className="fixed inset-0 z-[100] bg-black/90 flex items-center justify-center p-4 backdrop-blur-sm"
-                    onClick={closeLightbox}
-                >
-                    {/* Close Button */}
-                    <button
-                        onClick={closeLightbox}
-                        className="absolute top-4 right-4 text-white/70 hover:text-white transition-colors p-2 z-50"
-                    >
-                        <X size={32} />
-                    </button>
-
-                    {/* Navigation Buttons */}
-                    <button
-                        onClick={prevImage}
-                        className="absolute left-4 text-white/70 hover:text-white transition-colors p-2 hover:bg-white/10 rounded-full z-50"
-                    >
-                        <ChevronLeft size={48} />
-                    </button>
-
-                    <button
-                        onClick={nextImage}
-                        className="absolute right-4 text-white/70 hover:text-white transition-colors p-2 hover:bg-white/10 rounded-full z-50"
-                    >
-                        <ChevronRight size={48} />
-                    </button>
-
-                    {/* Main Image */}
-                    <div
-                        className="relative max-w-7xl w-full h-full flex items-center justify-center"
-                        onClick={(e) => e.stopPropagation()}
-                    >
-                        <img
-                            src={property.images[currentImageIndex]}
-                            alt={`Gallery image ${currentImageIndex + 1}`}
-                            className="max-h-[85vh] max-w-full object-contain rounded-lg shadow-2xl"
-                        />
-
-                        {/* Counter */}
-                        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-black/50 text-white px-4 py-2 rounded-full backdrop-blur-md text-sm font-medium">
-                            {currentImageIndex + 1} / {property.images.length}
-                        </div>
-                    </div>
-                </div>
-            )}
         </PublicLayout>
     );
 }

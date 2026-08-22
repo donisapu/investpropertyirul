@@ -112,9 +112,37 @@ class PublicInvestmentController extends Controller
         return Inertia::render('Investments/Show', compact('property', 'settings'));
     }
 
-    public function purchase($id)
+    public function purchase(Request $request, $id)
     {
         $investment = PropertyInvestment::with(['property.images'])->where('property_id', $id)->firstOrFail();
+
+        // 1. Cek campaign aktif berdasarkan request query
+        $discountPercent = 0;
+        $campaignData = null;
+
+        if ($request->has('campaign_id')) {
+            $campaign = Campaign::where('id', $request->query('campaign_id'))
+                ->where('property_id', $id)
+                ->where('status', 'active')
+                ->first();
+
+            if ($campaign) {
+                $discountPercent = (float) $campaign->discount_percent;
+                $campaignData = [
+                    'id' => $campaign->id,
+                    'title' => $campaign->title,
+                    'discount_percent' => $discountPercent,
+                ];
+            }
+        }
+
+        // 2. Kalkulasi harga asli & harga diskon
+        $originalPricePerLot = (float) $investment->price_per_lot;
+        $discountedPricePerLot = $originalPricePerLot;
+
+        if ($discountPercent > 0) {
+            $discountedPricePerLot = $originalPricePerLot - ($originalPricePerLot * ($discountPercent / 100));
+        }
 
         $property = [
             'id' => $investment->property->id,
@@ -131,30 +159,28 @@ class PublicInvestmentController extends Controller
                 'type' => $investment->property->property_type,
             ],
             'financials' => [
-                'price' => $investment->property_value,
-                'price_per_lot' => $investment->price_per_lot,
+                'price' => $investment->total_investment_value,
+                'price_per_lot' => $originalPricePerLot,
+                'discounted_price_per_lot' => $discountedPricePerLot,
+                'discount_percent' => $discountPercent,
                 'min_lot' => $investment->min_lot_size,
                 'total_tokens' => $investment->total_lot,
                 'tokens_left' => $investment->total_lot - $investment->sold_lot,
                 'progress' => $investment->total_lot > 0 ? round(($investment->sold_lot / $investment->total_lot) * 100) : 0,
-                'irr' => $investment->estimated_roi . '%',
-                'ery' => $investment->estimated_roi . '%',
-                'roi_period' => $investment->roi_period,
-                'min_investment' => $investment->price_perlot,
+                'irr' => $investment->projected_roi . '%',
+                'ery' => $investment->projected_roi . '%',
+                'roi_period' => $investment->roi_period_months,
+                'min_investment' => $discountedPricePerLot * $investment->min_lot_size,
             ],
+            'campaign' => $campaignData, // Data campaign jika ada
             'images' => $investment->property->images->map(function ($img) {
                 return Storage::url($img->image_url);
             }),
-            // 'images' => $investment->property->images->map(function ($img) {
-            //     return asset($img->image_url);
-            // }),
             'main_image' => $investment->property->images->first() ? Storage::url($investment->property->images->first()->image_url) : null,
-            // 'main_image' => $investment->property->images->first()
-            //     ? asset($investment->property->images->first()->image_url)
-            //     : null,
-            'sold' => $investment->status === 'sold' || ($investment->total_lot - $investment->sold_lot) <= 0,
+            'sold' => $investment->status === 'Finished' || ($investment->total_lot - $investment->sold_lot) <= 0,
             'map_url' => $investment->property->map_url,
         ];
+
         $settings = WebsiteSetting::getSettings();
         return Inertia::render('Investments/Purchase', compact('property', 'settings'));
     }
@@ -210,6 +236,6 @@ class PublicInvestmentController extends Controller
         $settings = WebsiteSetting::getSettings();
         $campaigns = Campaign::where('status', 'active')->get();
 
-        return Inertia::render('Investments/Sell', compact('property', 'settings','campaigns'));
+        return Inertia::render('Investments/Sell', compact('property', 'settings', 'campaigns'));
     }
 }
