@@ -137,7 +137,7 @@ export default function HowToInvest({ auth }) {
                         </p>
                     </div>
 
-                    <div className="grid md:grid-cols-1 gap-8 max-w-7xl mx-auto">
+                    <div className="grid md:grid-cols-3 gap-8 max-w-7xl mx-auto">
                         {methods.map((method, index) => (
                             <div
                                 key={index}

@@ -38,103 +38,71 @@ export default function OurLocation({ landings, landmarks }) {
             ====================================================== */}
                 <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
 
-                    {/* BIG ORGANIC SHAPE - TOP RIGHT */}
+                    {/* Soft atmospheric gradient */}
                     <div
-                        className="
-                            absolute
-                            -right-[180px]
-                            -top-[180px]
-                            h-[650px]
-                            w-[850px]
-                            rotate-[-18deg]
-                            rounded-[48%_52%_60%_40%]
-                            bg-[#c8c8c6]
-                        "
+                        className="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(255,255,255,0.95),transparent_48%),linear-gradient(180deg,#f2f2f0_0%,#e8e8e6_52%,#dededc_100%)]"
                     />
 
-                    {/* CUTOUT */}
+                    {/* Giant architectural arc */}
                     <div
-                        className="
-                            absolute
-                            -right-[80px]
-                            -top-[80px]
-                            h-[480px]
-                            w-[680px]
-                            rotate-[-18deg]
-                            rounded-[48%_52%_60%_40%]
-                            bg-[#e5e5e3]
-                        "
+                        className="absolute -right-[260px] -top-[300px] h-[760px] w-[760px] rounded-full border-[72px] border-black/[0.055]"
                     />
 
-                    {/* SECOND ORGANIC SHAPE - BOTTOM LEFT */}
+                    {/* Left architectural silhouette */}
+                    <div className="absolute bottom-0 left-[-70px] h-[520px] w-[500px] opacity-[0.10]">
+                        <div className="absolute bottom-0 left-8 h-[330px] w-[150px] skew-x-[-8deg] bg-gradient-to-t from-black/40 to-black/5" />
+
+                        <div className="absolute bottom-0 left-[150px] h-[430px] w-[190px] skew-x-[-5deg] bg-gradient-to-t from-black/45 to-black/5" />
+
+                        <div className="absolute bottom-0 left-[315px] h-[285px] w-[135px] skew-x-[8deg] bg-gradient-to-t from-black/35 to-black/5" />
+                    </div>
+
+                    {/* Contour lines */}
+                    <div className="absolute -left-24 top-[-80px] h-[480px] w-[560px] opacity-[0.08]">
+                        <div className="absolute inset-0 rounded-[48%] border border-black/40 rotate-[-18deg]" />
+                        <div className="absolute inset-[28px] rounded-[48%] border border-black/30 rotate-[-18deg]" />
+                        <div className="absolute inset-[56px] rounded-[48%] border border-black/25 rotate-[-18deg]" />
+                        <div className="absolute inset-[84px] rounded-[48%] border border-black/20 rotate-[-18deg]" />
+                    </div>
+
+                    {/* Dot grid */}
                     <div
-                        className="
-                            absolute
-                            -bottom-[280px]
-                            -left-[180px]
-                            h-[550px]
-                            w-[800px]
-                            rotate-[18deg]
-                            rounded-[55%_45%_40%_60%]
-                            bg-[#cececc]
-                        "
+                        className="absolute right-[7%] top-[13%] h-28 w-28 opacity-30"
+                        style={{
+                            backgroundImage:
+                                "radial-gradient(circle, #777 1.5px, transparent 1.5px)",
+                            backgroundSize: "14px 14px",
+                        }}
                     />
 
-                    {/* CUTOUT */}
-                    <div
-                        className="
-                            absolute
-                            -bottom-[190px]
-                            -left-[80px]
-                            h-[390px]
-                            w-[650px]
-                            rotate-[18deg]
-                            rounded-[55%_45%_40%_60%]
-                            bg-[#e5e5e3]
-                        "
-                    />
+                    {/* Flowing lines */}
+                    <svg
+                        className="absolute bottom-[-20px] left-0 h-[280px] w-full opacity-20"
+                        viewBox="0 0 1440 280"
+                        fill="none"
+                        preserveAspectRatio="none"
+                    >
+                        <path
+                            d="M-40 190C220 40 330 250 590 150C830 58 1010 42 1490 150"
+                            stroke="currentColor"
+                            strokeWidth="1.2"
+                            className="text-black"
+                        />
 
-                    {/* LARGE CENTER CIRCLE */}
-                    <div
-                        className="
-                            absolute
-                            left-[-180px]
-                            top-[35%]
-                            h-[420px]
-                            w-[420px]
-                            rounded-full
-                            border-[60px]
-                            border-[#d0d0ce]
-                        "
-                    />
+                        <path
+                            d="M-80 235C180 95 340 300 620 190C900 80 1110 90 1510 195"
+                            stroke="currentColor"
+                            strokeWidth="1"
+                            className="text-black"
+                        />
 
-                    {/* SMALL DECORATIVE CIRCLE */}
-                    <div
-                        className="
-                            absolute
-                            right-[28%]
-                            top-[18%]
-                            h-24
-                            w-24
-                            rounded-full
-                            border-[16px]
-                            border-[#d0d0ce]
-                        "
-                    />
-
-                    {/* SOFT SHADOW / DEPTH */}
-                    <div
-                        className="
-                            absolute
-                            right-[8%]
-                            top-[10%]
-                            h-[450px]
-                            w-[450px]
-                            rounded-full
-                            bg-white/30
-                            blur-[80px]
-                        "
-                    />
+                        <path
+                            d="M-80 265C190 130 350 320 650 220C940 120 1130 125 1510 225"
+                            stroke="currentColor"
+                            strokeWidth="0.8"
+                            className="text-black"
+                        />
+                    </svg>
 
                 </div>
 
