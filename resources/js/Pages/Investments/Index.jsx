@@ -23,10 +23,19 @@ export default function Investments({ properties, settings, partners }) {
 
                     {/* ==================== BACKGROUND IMAGE ==================== */}
                     <div
-                        className="absolute inset-0 bg-cover bg-center transition-transform duration-[1200ms] ease-out group-hover:scale-[1.025]"
+                        className="
+                            absolute
+                            inset-0
+                            bg-cover
+                            bg-center
+                            transition-transform
+                            duration-[1200ms]
+                            ease-out
+                            group-hover:scale-[1.025]
+                        "
                         style={{
                             backgroundImage:
-                                "url('https://images.pexels.com/photos/323780/pexels-photo-323780.jpeg?auto=compress&cs=tinysrgb&w=1600')",
+                                "url('https://images.pexels.com/photos/28300250/pexels-photo-28300250.jpeg?auto=compress&cs=tinysrgb&w=1600')",
                         }}
                     />
 
@@ -38,18 +47,25 @@ export default function Investments({ properties, settings, partners }) {
 
                     <div className="pointer-events-none absolute -bottom-40 left-1/3 h-96 w-96 rounded-full bg-[#e2c681]/[0.04] blur-3xl" />
 
-
                     {/* ==================== CONTENT ==================== */}
                     <div className="relative z-10 flex min-h-[400px] items-center px-7 py-14 md:px-12 md:py-16 lg:px-16">
 
                         <div className="max-w-2xl">
 
-                            {/* Eyebrow */}
+                            {/* ==================== EYEBROW ==================== */}
                             <div className="mb-6 flex items-center gap-3">
 
-                                <span className="h-px w-10 bg-[#c9a45c]/70" />
+                                <span className="h-px w-8 bg-[#c9a45c]/70" />
 
-                                <span className="text-[10px] font-medium uppercase tracking-[0.32em] text-[#d5b66f]">
+                                <span
+                                    className="
+                                        text-[10px]
+                                        font-semibold
+                                        uppercase
+                                        tracking-[0.3em]
+                                        text-[#d5b66f]
+                                    "
+                                >
                                     Property Investment
                                 </span>
 
@@ -57,20 +73,32 @@ export default function Investments({ properties, settings, partners }) {
 
 
                             {/* ==================== HEADING ==================== */}
-                            <h2 className="font-serif text-[2.15rem] leading-[1.08] tracking-[-0.02em] text-[#f5f1e8] md:text-5xl lg:text-[3.5rem]">
-
+                            <h2
+                                className="
+                                    text-4xl
+                                    font-semibold
+                                    uppercase
+                                    leading-[1.02]
+                                    tracking-[0.08em]
+                                    text-[#f5f1e8]
+                                    drop-shadow-2xl
+                                    sm:text-5xl
+                                    md:text-6xl
+                                    lg:text-[3.8rem]
+                                "
+                            >
                                 Mulai Investasi Properti
-                                <span className="mt-2 block text-[#d8d0c2]">
+
+                                <span className="mt-3 block text-[#d8d0c2]">
                                     Bersama{" "}
                                     <span className="text-[#d1ad62]">
                                         {settings?.site_name}
                                     </span>
                                 </span>
-
                             </h2>
 
 
-                            {/* Gold Divider */}
+                            {/* ==================== GOLD DIVIDER ==================== */}
                             <div className="mt-7 flex items-center gap-3">
 
                                 <span className="h-px w-14 bg-[#c9a45c]/60" />
@@ -80,14 +108,21 @@ export default function Investments({ properties, settings, partners }) {
                             </div>
 
 
-                            {/* Description */}
-                            <p className="mt-6 max-w-xl text-sm leading-7 text-[#c9c2b6] md:text-[15px]">
-
+                            {/* ==================== DESCRIPTION ==================== */}
+                            <p
+                                className="
+                                    mt-6
+                                    max-w-xl
+                                    text-sm
+                                    leading-7
+                                    text-[#c9c2b6]
+                                    sm:text-base
+                                "
+                            >
                                 Temukan peluang investasi properti premium dengan
                                 potensi imbal hasil yang menarik, didukung oleh
                                 aset properti nyata dan proses investasi yang
                                 transparan.
-
                             </p>
 
 
@@ -96,9 +131,29 @@ export default function Investments({ properties, settings, partners }) {
 
                                 <a
                                     href="#investment-projects"
-                                    className="inline-flex items-center gap-3 rounded-full bg-[#c9a45c] px-7 py-3.5 text-[10px] font-semibold uppercase tracking-[0.22em] text-[#171512] transition duration-300 hover:bg-[#e0c27a]"
+                                    className="
+                                        inline-flex
+                                        items-center
+                                        gap-4
+                                        rounded-full
+                                        bg-[#c9a45c]
+                                        px-7
+                                        py-3.5
+                                        text-[10px]
+                                        font-semibold
+                                        uppercase
+                                        tracking-[0.16em]
+                                        text-[#171512]
+                                        shadow-xl
+                                        transition-all
+                                        duration-300
+                                        hover:-translate-y-1
+                                        hover:bg-[#e0c27a]
+                                    "
                                 >
-                                    Jelajahi Investasi
+                                    <span>
+                                        Jelajahi Investasi
+                                    </span>
 
                                     <span className="text-sm">
                                         →
@@ -108,7 +163,19 @@ export default function Investments({ properties, settings, partners }) {
 
                                 <a
                                     href="#how-it-works"
-                                    className="inline-flex items-center gap-3 text-[10px] font-semibold uppercase tracking-[0.22em] text-[#d4cdc0]/70 transition duration-300 hover:text-[#d8b96d]"
+                                    className="
+                                        inline-flex
+                                        items-center
+                                        gap-3
+                                        text-[10px]
+                                        font-semibold
+                                        uppercase
+                                        tracking-[0.2em]
+                                        text-[#d4cdc0]/70
+                                        transition
+                                        duration-300
+                                        hover:text-[#d8b96d]
+                                    "
                                 >
                                     Cara Berinvestasi
 
@@ -123,7 +190,20 @@ export default function Investments({ properties, settings, partners }) {
 
 
                         {/* ==================== DECORATIVE ELEMENT ==================== */}
-                        <div className="pointer-events-none absolute right-8 top-1/2 hidden h-[270px] w-[230px] -translate-y-1/2 md:block lg:right-14">
+                        <div
+                            className="
+                                pointer-events-none
+                                absolute
+                                right-8
+                                top-1/2
+                                hidden
+                                h-[270px]
+                                w-[230px]
+                                -translate-y-1/2
+                                md:block
+                                lg:right-14
+                            "
+                        >
 
                             {/* Outer Frame */}
                             <div className="absolute inset-0 rotate-3 border border-[#d1ad62]/20" />
@@ -135,11 +215,28 @@ export default function Investments({ properties, settings, partners }) {
                             {/* Number */}
                             <div className="absolute right-7 top-1/2 -translate-y-1/2 text-right">
 
-                                <div className="font-serif text-[90px] leading-none text-[#d1ad62]/15">
+                                <div
+                                    className="
+                                        text-[90px]
+                                        font-semibold
+                                        leading-none
+                                        tracking-[0.04em]
+                                        text-[#d1ad62]/15
+                                    "
+                                >
                                     01
                                 </div>
 
-                                <div className="mt-4 text-[9px] font-medium uppercase tracking-[0.35em] text-[#e4ded3]/30">
+                                <div
+                                    className="
+                                        mt-4
+                                        text-[9px]
+                                        font-medium
+                                        uppercase
+                                        tracking-[0.35em]
+                                        text-[#e4ded3]/30
+                                    "
+                                >
                                     Investment
                                 </div>
 
