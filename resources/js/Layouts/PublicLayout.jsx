@@ -849,45 +849,31 @@ function Footer() {
 
 
                     {/* COMPANY */}
-                    {/* <div className="lg:col-span-2">
+                    <div className="lg:col-span-2">
 
                         <h3 className="mb-6 text-[10px] font-semibold uppercase tracking-[0.18em] text-white/35">
-                            Company
+                            Membership
                         </h3>
 
                         <div className="flex flex-col gap-3">
 
                             <a
-                                href="/about"
+                                href="https://gainproperties.id/login"
                                 className="text-sm text-white/60 transition hover:text-white"
                             >
-                                Tentang Kami
+                                Member Login
                             </a>
 
                             <a
-                                href="/partner"
+                                href="https://gainproperties.id/register"
                                 className="text-sm text-white/60 transition hover:text-white"
                             >
-                                Partner
-                            </a>
-
-                            <a
-                                href="/faq"
-                                className="text-sm text-white/60 transition hover:text-white"
-                            >
-                                FAQ
-                            </a>
-
-                            <a
-                                href="/contact"
-                                className="text-sm text-white/60 transition hover:text-white"
-                            >
-                                Kontak
+                                Member Register
                             </a>
 
                         </div>
 
-                    </div> */}
+                    </div>
 
 
                     {/* CONTACT */}
@@ -899,88 +885,201 @@ function Footer() {
 
                         <div className="space-y-4">
 
-                            {settings?.whatsapp && (
-                                <a
-                                    href={`https://wa.me/${settings.whatsapp}`}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="block text-sm text-white/60 transition hover:text-white"
+                        {settings?.whatsapp && (
+                            <a
+                                href={`https://wa.me/${settings.whatsapp}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="
+                                    group flex items-center gap-3
+                                    text-sm text-white/60
+                                    transition-all duration-300
+                                    hover:text-white
+                                "
+                            >
+                                {/* WhatsApp Icon */}
+                                <span
+                                    className="
+                                        flex h-10 w-10 shrink-0 items-center justify-center
+                                        rounded-full
+                                        border border-white/10
+                                        bg-white/[0.03]
+                                        text-white/60
+                                        transition-all duration-300
+                                        group-hover:-translate-y-0.5
+                                        group-hover:border-white/30
+                                        group-hover:bg-white/[0.08]
+                                        group-hover:text-white
+                                    "
                                 >
+                                    <svg
+                                        className="h-5 w-5"
+                                        viewBox="0 0 24 24"
+                                        fill="currentColor"
+                                        aria-hidden="true"
+                                    >
+                                        <path d="M20.52 3.48A11.82 11.82 0 0012.06 0C5.53 0 .22 5.31.22 11.84c0 2.09.55 4.13 1.59 5.93L.11 24l6.37-1.67a11.83 11.83 0 005.58 1.42h.01c6.53 0 11.84-5.31 11.84-11.84 0-3.16-1.23-6.13-3.39-8.43zM12.07 21.7h-.01a9.84 9.84 0 01-5.02-1.37l-.36-.21-3.78.99 1.01-3.68-.23-.38a9.84 9.84 0 01-1.51-5.21C2.17 6.4 6.6 1.97 12.07 1.97c2.65 0 5.14 1.03 7.01 2.9a9.85 9.85 0 012.91 7.02c0 5.47-4.45 9.81-9.92 9.81zm5.39-7.35c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.17-.17.2-.35.22-.65.07-.3-.15-1.27-.47-2.42-1.5-.9-.8-1.5-1.78-1.68-2.08-.17-.3-.02-.46.13-.61.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.07-.15-.67-1.61-.92-2.2-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.8.37-.27.3-1.04 1.02-1.04 2.49 0 1.47 1.07 2.89 1.22 3.09.15.2 2.1 3.2 5.08 4.49.71.31 1.26.49 1.69.63.71.23 1.35.2 1.86.12.57-.08 1.76-.72 2.01-1.41.25-.69.25-1.28.17-1.41-.07-.12-.27-.2-.57-.35z" />
+                                    </svg>
+                                </span>
+
+                                <span className="truncate">
                                     +{settings.whatsapp}
-                                </a>
-                            )}
+                                </span>
+                            </a>
+                        )}
 
-                            {settings?.email && (
-                                <a
-                                    href={`mailto:${settings.email}`}
-                                    className="block break-all text-sm text-white/60 transition hover:text-white"
+                        {settings?.email && (
+                            <a
+                                href={`mailto:${settings.email}`}
+                                className="
+                                    group flex items-center gap-3
+                                    text-sm text-white/60
+                                    transition-all duration-300
+                                    hover:text-white
+                                "
+                            >
+                                {/* Email Icon */}
+                                <span
+                                    className="
+                                        flex h-10 w-10 shrink-0 items-center justify-center
+                                        rounded-full
+                                        border border-white/10
+                                        bg-white/[0.03]
+                                        text-white/60
+                                        transition-all duration-300
+                                        group-hover:-translate-y-0.5
+                                        group-hover:border-white/30
+                                        group-hover:bg-white/[0.08]
+                                        group-hover:text-white
+                                    "
                                 >
+                                    <svg
+                                        className="h-5 w-5"
+                                        viewBox="0 0 24 24"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        strokeWidth="1.7"
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        aria-hidden="true"
+                                    >
+                                        <rect
+                                            x="3"
+                                            y="5"
+                                            width="18"
+                                            height="14"
+                                            rx="2"
+                                        />
+                                        <path d="M3 7l9 6 9-6" />
+                                    </svg>
+                                </span>
+
+                                <span className="break-all">
                                     {settings.email}
-                                </a>
-                            )}
+                                </span>
+                            </a>
+                        )}
 
-                        </div>
+                    </div>
 
 
-                        {/* SOCIAL */}
-                        <div className="mt-7 flex gap-2">
+                    {/* SOCIAL */}
+                    <div className="mt-7 flex items-center gap-3">
 
-                            {settings?.facebook_url && (
-                                <a
-                                    href={settings.facebook_url}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    aria-label="Facebook"
-                                    className="flex h-9 w-9 items-center justify-center rounded-full border border-white/10 text-xs text-white/50 transition hover:border-white/40 hover:text-white"
-                                >
+                        {settings?.facebook_url && (
+                            <a
+                                href={settings.facebook_url}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                aria-label="Facebook"
+                                className="
+                                    flex h-11 w-11 items-center justify-center
+                                    rounded-full
+                                    border border-white/15
+                                    bg-white/[0.03]
+                                    text-white/60
+                                    shadow-sm
+                                    transition-all duration-300
+                                    hover:-translate-y-1
+                                    hover:border-white/40
+                                    hover:bg-white/[0.08]
+                                    hover:text-white
+                                    hover:shadow-lg
+                                "
+                            >
                                 <svg
-                                    className="h-4 w-4"
+                                    className="h-5 w-5"
                                     viewBox="0 0 24 24"
                                     fill="currentColor"
                                 >
                                     <path d="M22 12a10 10 0 10-11.5 9.9v-7h-2v-3h2v-2.3c0-2 1.2-3.1 3-3.1.9 0 1.8.2 1.8.2v2h-1c-1 0-1.3.6-1.3 1.2V12h2.2l-.3 3h-1.9v7A10 10 0 0022 12z" />
                                 </svg>
+                            </a>
+                        )}
 
-                                </a>
-                            )}
-
-                            {settings?.instagram_url && (
-                                <a
-                                    href={settings.instagram_url}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    aria-label="Instagram"
-                                    className="flex h-9 w-9 items-center justify-center rounded-full border border-white/10 text-xs text-white/50 transition hover:border-white/40 hover:text-white"
-                                >
+                        {settings?.instagram_url && (
+                            <a
+                                href={settings.instagram_url}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                aria-label="Instagram"
+                                className="
+                                    flex h-11 w-11 items-center justify-center
+                                    rounded-full
+                                    border border-white/15
+                                    bg-white/[0.03]
+                                    text-white/60
+                                    shadow-sm
+                                    transition-all duration-300
+                                    hover:-translate-y-1
+                                    hover:border-white/40
+                                    hover:bg-white/[0.08]
+                                    hover:text-white
+                                    hover:shadow-lg
+                                "
+                            >
                                 <svg
-                                    className="h-4 w-4"
+                                    className="h-5 w-5"
                                     viewBox="0 0 24 24"
                                     fill="currentColor"
                                 >
                                     <path d="M7 2C4.24 2 2 4.24 2 7v10c0 2.76 2.24 5 5 5h10c2.76 0 5-2.24 5-5V7c0-2.76-2.24-5-5-5H7zm10 2c1.66 0 3 1.34 3 3v10c0 1.66-1.34 3-3 3H7c-1.66 0-3-1.34-3-3V7c0-1.66 1.34-3 3-3h10zm-5 3a5 5 0 100 10 5 5 0 000-10zm6-1a1 1 0 100 2 1 1 0 000-2z" />
                                 </svg>
-                                </a>
-                            )}
+                            </a>
+                        )}
 
-                            {settings?.youtube_url && (
-                                <a
-                                    href={settings.youtube_url}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    aria-label="YouTube"
-                                    className="flex h-9 w-9 items-center justify-center rounded-full border border-white/10 text-xs text-white/50 transition hover:border-white/40 hover:text-white"
-                                >
+                        {settings?.youtube_url && (
+                            <a
+                                href={settings.youtube_url}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                aria-label="YouTube"
+                                className="
+                                    flex h-11 w-11 items-center justify-center
+                                    rounded-full
+                                    border border-white/15
+                                    bg-white/[0.03]
+                                    text-white/60
+                                    shadow-sm
+                                    transition-all duration-300
+                                    hover:-translate-y-1
+                                    hover:border-white/40
+                                    hover:bg-white/[0.08]
+                                    hover:text-white
+                                    hover:shadow-lg
+                                "
+                            >
                                 <svg
-                                    className="h-4 w-4"
+                                    className="h-5 w-5"
                                     viewBox="0 0 24 24"
                                     fill="currentColor"
                                 >
                                     <path d="M23.5 6.2a3 3 0 00-2.1-2.1C19.8 3.6 12 3.6 12 3.6s-7.8 0-9.4.5A3 3 0 00.6 6.2 31.6 31.6 0 000 12a31.6 31.6 0 00.6 5.8 3 3 0 002.1 2.1c1.6.5 9.4.5 9.4.5s7.8 0 9.4-.5a3 3 0 002.1-2.1c.4-1.9.6-3.8.6-5.8s-.2-3.9-.6-5.8zM9.7 15.5V8.5l6.2 3.5-6.2 3.5z" />
                                 </svg>
-                                </a>
-                            )}
+                            </a>
+                        )}
 
-                        </div>
+                    </div>
 
                     </div>
 
