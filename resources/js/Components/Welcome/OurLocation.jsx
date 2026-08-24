@@ -33,37 +33,39 @@ export default function OurLocation({ landings, landmarks }) {
             id="our-location"
             className="relative overflow-hidden bg-mono-100 text-mono-900"
         >
-            <div className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
-                {/* Soft blobs */}
-                <div className="absolute -left-40 -top-40 h-[550px] w-[550px] rounded-full bg-white/80 blur-3xl" />
+             <div className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
+                {/* Large soft circle */}
+                <div className="absolute -left-32 top-20 h-[420px] w-[420px] rounded-full bg-white/70 blur-3xl" />
 
-                <div className="absolute -right-40 top-[-120px] h-[600px] w-[600px] rounded-full bg-mono-300/40 blur-3xl" />
+                {/* Dark blurred shape */}
+                <div className="absolute -right-40 top-[-100px] h-[500px] w-[500px] rounded-full bg-mono-300/40 blur-3xl" />
 
-                <div className="absolute bottom-[-250px] left-[20%] h-[600px] w-[800px] rounded-full bg-mono-200/70 blur-3xl" />
+                {/* Bottom shape */}
+                <div className="absolute bottom-[-180px] left-1/3 h-[500px] w-[700px] rounded-full bg-mono-200/60 blur-3xl" />
 
-                {/* Topographic circles */}
-                <div className="absolute right-[-120px] top-[5%] h-[700px] w-[700px] rounded-full border border-mono-500/10" />
-
-                <div className="absolute right-[-70px] top-[10%] h-[600px] w-[600px] rounded-full border border-mono-500/10" />
-
-                <div className="absolute right-[-20px] top-[15%] h-[500px] w-[500px] rounded-full border border-mono-500/10" />
-
-                <div className="absolute right-[30px] top-[20%] h-[400px] w-[400px] rounded-full border border-mono-500/10" />
-
-                <div className="absolute right-[80px] top-[25%] h-[300px] w-[300px] rounded-full border border-mono-500/10" />
+                {/* Abstract circles */}
+                <div className="absolute right-[8%] top-[18%] h-64 w-64 rounded-full border border-mono-400/20" />
+                <div className="absolute right-[10%] top-[20%] h-80 w-80 rounded-full border border-mono-400/10" />
+                <div className="absolute right-[13%] top-[23%] h-96 w-96 rounded-full border border-mono-400/10" />
 
                 {/* Grid */}
                 <div
-                    className="absolute inset-0 opacity-[0.08]"
+                    className="absolute inset-0 opacity-[0.12]"
                     style={{
                         backgroundImage: `
-                            linear-gradient(#525252 1px, transparent 1px),
-                            linear-gradient(90deg, #525252 1px, transparent 1px)
+                            linear-gradient(to right, #737373 1px, transparent 1px),
+                            linear-gradient(to bottom, #737373 1px, transparent 1px)
                         `,
-                        backgroundSize: "80px 80px",
+                        backgroundSize: "70px 70px",
                     }}
                 />
+
+                {/* Diagonal abstract lines */}
+                <div className="absolute -left-20 top-1/2 h-px w-[700px] rotate-[-25deg] bg-mono-500/10" />
+                <div className="absolute -left-10 top-[55%] h-px w-[650px] rotate-[-25deg] bg-mono-500/10" />
+                <div className="absolute -left-5 top-[60%] h-px w-[600px] rotate-[-25deg] bg-mono-500/10" />
             </div>
+
             {/* Decorative background */}
             <div className="pointer-events-none absolute -right-32 top-20 h-72 w-72 rounded-full bg-mono-200/60 blur-3xl" />
             <div className="pointer-events-none absolute -left-32 bottom-20 h-72 w-72 rounded-full bg-mono-200/50 blur-3xl" />
