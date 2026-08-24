@@ -1,4 +1,3 @@
-import { Link } from "@inertiajs/react";
 import { route } from "ziggy-js";
 
 export default function DeveloperProjects({ project, landings }) {
@@ -14,259 +13,172 @@ export default function DeveloperProjects({ project, landings }) {
             "
         >
             {/* =====================================================
-                BALI BATIK SIDE ORNAMENT
+                BALI ORNAMENT BACKGROUND
             ====================================================== */}
             <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
 
-                {/* Left decorative area */}
-                <div
+                {/* ================= LEFT SIDE ================= */}
+
+                {/* Main Patra Bunga */}
+                <img
+                    src="/images/ornaments/patra-bunga.svg"
+                    alt=""
+                    aria-hidden="true"
                     className="
                         absolute
-                        left-[-180px]
-                        top-1/2
-                        h-[620px]
-                        w-[420px]
-                        -translate-y-1/2
-                        opacity-[0.12]
+                        left-[-170px]
+                        top-[8%]
+                        w-[600px]
+                        rotate-[-10deg]
+                        opacity-[0.10]
+                        brightness-0
+                        invert
                     "
-                >
-                    <svg
-                        viewBox="0 0 420 620"
-                        className="h-full w-full"
-                        fill="none"
-                    >
-                        {/* Large diamond */}
-                        <path
-                            d="
-                                M210 20
-                                L390 180
-                                L210 340
-                                L30 180
-                                Z
-                            "
-                            stroke="#d6d6d2"
-                            strokeWidth="2"
-                        />
+                />
 
-                        {/* Inner diamond */}
-                        <path
-                            d="
-                                M210 70
-                                L335 180
-                                L210 290
-                                L85 180
-                                Z
-                            "
-                            stroke="#d6d6d2"
-                            strokeWidth="1.5"
-                        />
-
-                        {/* Bali inspired central ornament */}
-                        <path
-                            d="
-                                M210 105
-                                C235 135 250 150 270 180
-                                C250 210 235 225 210 255
-                                C185 225 170 210 150 180
-                                C170 150 185 135 210 105
-                                Z
-                            "
-                            stroke="#d6d6d2"
-                            strokeWidth="2"
-                        />
-
-                        {/* Decorative branches */}
-                        <path
-                            d="
-                                M210 105
-                                C190 90 175 72 170 50
-                                M210 105
-                                C230 90 245 72 250 50
-
-                                M150 180
-                                C120 175 95 160 75 140
-                                M150 180
-                                C120 185 95 200 75 220
-
-                                M270 180
-                                C300 175 325 160 345 140
-                                M270 180
-                                C300 185 325 200 345 220
-                            "
-                            stroke="#d6d6d2"
-                            strokeWidth="1.5"
-                        />
-
-                        {/* Small ornamental diamonds */}
-                        <path
-                            d="M210 20 L235 42 L210 64 L185 42 Z"
-                            stroke="#d6d6d2"
-                        />
-
-                        <path
-                            d="M30 180 L55 202 L30 224 L5 202 Z"
-                            stroke="#d6d6d2"
-                        />
-
-                        <path
-                            d="M390 180 L415 202 L390 224 L365 202 Z"
-                            stroke="#d6d6d2"
-                        />
-
-                        {/* Repeated contour diamonds */}
-                        <path
-                            d="
-                                M210 -35
-                                L445 180
-                                L210 395
-                                L-25 180
-                                Z
-                            "
-                            stroke="#d6d6d2"
-                            strokeWidth="1"
-                            opacity="0.5"
-                        />
-
-                        <path
-                            d="
-                                M210 -85
-                                L495 180
-                                L210 445
-                                L-75 180
-                                Z
-                            "
-                            stroke="#d6d6d2"
-                            strokeWidth="1"
-                            opacity="0.35"
-                        />
-                    </svg>
-                </div>
-
-                {/* Right decorative area */}
-                <div
+                {/* Kakul upper left */}
+                <img
+                    src="/images/ornaments/kakul-1.svg"
+                    alt=""
+                    aria-hidden="true"
                     className="
                         absolute
-                        right-[-180px]
-                        top-1/2
-                        h-[620px]
+                        left-[-120px]
+                        top-[28%]
+                        w-[480px]
+                        rotate-[8deg]
+                        opacity-[0.12]
+                        brightness-0
+                        invert
+                    "
+                />
+
+                {/* Kakul lower left */}
+                <img
+                    src="/images/ornaments/kakul-2.svg"
+                    alt=""
+                    aria-hidden="true"
+                    className="
+                        absolute
+                        bottom-[8%]
+                        left-[-80px]
                         w-[420px]
+                        rotate-[-7deg]
+                        opacity-[0.10]
+                        brightness-0
+                        invert
+                    "
+                />
+
+                {/* Mas-masan vertical decoration */}
+                <img
+                    src="/images/ornaments/mas-masan.svg"
+                    alt=""
+                    aria-hidden="true"
+                    className="
+                        absolute
+                        left-[-260px]
+                        top-1/2
+                        w-[600px]
                         -translate-y-1/2
+                        rotate-90
+                        opacity-[0.06]
+                        brightness-0
+                        invert
+                    "
+                />
+
+                {/* ================= RIGHT SIDE ================= */}
+
+                {/* Main Patra Bunga */}
+                <img
+                    src="/images/ornaments/patra-bunga.svg"
+                    alt=""
+                    aria-hidden="true"
+                    className="
+                        absolute
+                        right-[-170px]
+                        top-[8%]
+                        w-[600px]
+                        rotate-[10deg]
+                        scale-x-[-1]
+                        opacity-[0.10]
+                        brightness-0
+                        invert
+                    "
+                />
+
+                {/* Kakul upper right */}
+                <img
+                    src="/images/ornaments/kakul-1.svg"
+                    alt=""
+                    aria-hidden="true"
+                    className="
+                        absolute
+                        right-[-120px]
+                        top-[28%]
+                        w-[480px]
+                        rotate-[-8deg]
                         scale-x-[-1]
                         opacity-[0.12]
+                        brightness-0
+                        invert
                     "
-                >
-                    <svg
-                        viewBox="0 0 420 620"
-                        className="h-full w-full"
-                        fill="none"
-                    >
-                        <path
-                            d="
-                                M210 20
-                                L390 180
-                                L210 340
-                                L30 180
-                                Z
-                            "
-                            stroke="#d6d6d2"
-                            strokeWidth="2"
-                        />
+                />
 
-                        <path
-                            d="
-                                M210 70
-                                L335 180
-                                L210 290
-                                L85 180
-                                Z
-                            "
-                            stroke="#d6d6d2"
-                            strokeWidth="1.5"
-                        />
+                {/* Kakul lower right */}
+                <img
+                    src="/images/ornaments/kakul-2.svg"
+                    alt=""
+                    aria-hidden="true"
+                    className="
+                        absolute
+                        bottom-[8%]
+                        right-[-80px]
+                        w-[420px]
+                        rotate-[7deg]
+                        scale-x-[-1]
+                        opacity-[0.10]
+                        brightness-0
+                        invert
+                    "
+                />
 
-                        <path
-                            d="
-                                M210 105
-                                C235 135 250 150 270 180
-                                C250 210 235 225 210 255
-                                C185 225 170 210 150 180
-                                C170 150 185 135 210 105
-                                Z
-                            "
-                            stroke="#d6d6d2"
-                            strokeWidth="2"
-                        />
+                {/* Mas-masan vertical decoration */}
+                <img
+                    src="/images/ornaments/mas-masan.svg"
+                    alt=""
+                    aria-hidden="true"
+                    className="
+                        absolute
+                        right-[-260px]
+                        top-1/2
+                        w-[600px]
+                        -translate-y-1/2
+                        -rotate-90
+                        opacity-[0.06]
+                        brightness-0
+                        invert
+                    "
+                />
 
-                        <path
-                            d="
-                                M210 105
-                                C190 90 175 72 170 50
-                                M210 105
-                                C230 90 245 72 250 50
-
-                                M150 180
-                                C120 175 95 160 75 140
-                                M150 180
-                                C120 185 95 200 75 220
-
-                                M270 180
-                                C300 175 325 160 345 140
-                                M270 180
-                                C300 185 325 200 345 220
-                            "
-                            stroke="#d6d6d2"
-                            strokeWidth="1.5"
-                        />
-
-                        <path
-                            d="M210 20 L235 42 L210 64 L185 42 Z"
-                            stroke="#d6d6d2"
-                        />
-
-                        <path
-                            d="M30 180 L55 202 L30 224 L5 202 Z"
-                            stroke="#d6d6d2"
-                        />
-
-                        <path
-                            d="M390 180 L415 202 L390 224 L365 202 Z"
-                            stroke="#d6d6d2"
-                        />
-
-                        <path
-                            d="
-                                M210 -35
-                                L445 180
-                                L210 395
-                                L-25 180
-                                Z
-                            "
-                            stroke="#d6d6d2"
-                            strokeWidth="1"
-                            opacity="0.5"
-                        />
-
-                        <path
-                            d="
-                                M210 -85
-                                L495 180
-                                L210 445
-                                L-75 180
-                                Z
-                            "
-                            stroke="#d6d6d2"
-                            strokeWidth="1"
-                            opacity="0.35"
-                        />
-                    </svg>
-                </div>
-
-                {/* Soft fade toward center */}
+                {/* =================================================
+                    SOFT CENTER FADE
+                ================================================== */}
                 <div
                     className="
                         absolute
                         inset-0
-                        bg-[linear-gradient(90deg,rgba(23,23,23,0.15)_0%,rgba(23,23,23,0.85)_18%,rgba(23,23,23,1)_35%,rgba(23,23,23,1)_65%,rgba(23,23,23,0.85)_82%,rgba(23,23,23,0.15)_100%)]
+                        bg-[linear-gradient(90deg,rgba(23,23,23,0.05)_0%,rgba(23,23,23,0.45)_14%,rgba(23,23,23,0.92)_30%,rgba(23,23,23,1)_50%,rgba(23,23,23,0.92)_70%,rgba(23,23,23,0.45)_86%,rgba(23,23,23,0.05)_100%)]
+                    "
+                />
+
+                {/* Top / bottom fade */}
+                <div
+                    className="
+                        absolute
+                        inset-0
+                        bg-[linear-gradient(180deg,rgba(23,23,23,0.35)_0%,transparent_20%,transparent_80%,rgba(23,23,23,0.45)_100%)]
                     "
                 />
             </div>
@@ -287,9 +199,7 @@ export default function DeveloperProjects({ project, landings }) {
                     lg:py-20
                 "
             >
-                {/* =================================================
-                    HEADER
-                ================================================== */}
+                {/* HEADER */}
                 <div className="mx-auto max-w-3xl text-center">
 
                     <div
@@ -301,21 +211,21 @@ export default function DeveloperProjects({ project, landings }) {
                             gap-3
                         "
                     >
-                        <span className="h-px w-8 bg-mono-500" />
+                        <span className="h-px w-10 bg-mono-600" />
 
                         <span
                             className="
                                 text-xs
                                 font-semibold
                                 uppercase
-                                tracking-[0.28em]
+                                tracking-[0.3em]
                                 text-mono-400
                             "
                         >
                             Developer
                         </span>
 
-                        <span className="h-px w-8 bg-mono-500" />
+                        <span className="h-px w-10 bg-mono-600" />
                     </div>
 
                     <h2
@@ -323,7 +233,7 @@ export default function DeveloperProjects({ project, landings }) {
                             text-3xl
                             font-semibold
                             uppercase
-                            tracking-tight
+                            tracking-[0.08em]
                             text-mono-100
                             sm:text-4xl
                         "
@@ -341,15 +251,12 @@ export default function DeveloperProjects({ project, landings }) {
                             text-mono-400
                         "
                     >
-                        {landings.developer_project_desc}
+                        {landings?.developer_project_desc}
                     </p>
                 </div>
 
-                {/* =================================================
-                    PROJECT CARDS
-                ================================================== */}
+                {/* PROJECTS */}
                 <div className="mt-12 grid gap-6 md:grid-cols-2">
-
                     {project.map((item, index) => (
                         <a
                             key={item.id}
@@ -364,7 +271,7 @@ export default function DeveloperProjects({ project, landings }) {
                                 rounded-2xl
                                 border
                                 border-mono-700/80
-                                bg-mono-900/80
+                                bg-mono-900/90
                                 shadow-xl
                                 backdrop-blur-sm
                                 transition-all
@@ -374,7 +281,7 @@ export default function DeveloperProjects({ project, landings }) {
                                 hover:shadow-2xl
                             "
                         >
-                            {/* Image */}
+                            {/* IMAGE */}
                             <div className="relative aspect-[16/9] w-full overflow-hidden">
                                 <img
                                     src={`/storage/${item.banner_image}`}
@@ -389,13 +296,12 @@ export default function DeveloperProjects({ project, landings }) {
                                     "
                                 />
 
-                                {/* Image overlay */}
                                 <div
                                     className="
                                         absolute
                                         inset-0
                                         bg-gradient-to-t
-                                        from-black/75
+                                        from-black/80
                                         via-black/10
                                         to-transparent
                                     "
@@ -415,7 +321,7 @@ export default function DeveloperProjects({ project, landings }) {
                                         rounded-full
                                         border
                                         border-white/30
-                                        bg-black/30
+                                        bg-black/40
                                         text-xs
                                         font-semibold
                                         text-white
@@ -425,7 +331,7 @@ export default function DeveloperProjects({ project, landings }) {
                                     {String(index + 1).padStart(2, "0")}
                                 </span>
 
-                                {/* Title badge */}
+                                {/* Project badge */}
                                 <span
                                     className="
                                         absolute
@@ -440,25 +346,17 @@ export default function DeveloperProjects({ project, landings }) {
                                         text-[10px]
                                         font-semibold
                                         uppercase
-                                        tracking-[0.12em]
+                                        tracking-[0.15em]
                                         text-white
                                         backdrop-blur-md
                                     "
                                 >
-                                    {item.title}
+                                    Project
                                 </span>
                             </div>
 
-                            {/* Bottom content */}
-                            <div
-                                className="
-                                    flex
-                                    items-center
-                                    justify-between
-                                    px-5
-                                    py-4
-                                "
-                            >
+                            {/* CONTENT */}
+                            <div className="flex items-center justify-between px-5 py-4">
                                 <div>
                                     <p
                                         className="
@@ -468,7 +366,7 @@ export default function DeveloperProjects({ project, landings }) {
                                             text-mono-500
                                         "
                                     >
-                                        Development Project
+                                        Development
                                     </p>
 
                                     <h3
