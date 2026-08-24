@@ -33,6 +33,37 @@ export default function OurLocation({ landings, landmarks }) {
             id="our-location"
             className="relative overflow-hidden bg-mono-100 text-mono-900"
         >
+            <div className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
+                {/* Soft blobs */}
+                <div className="absolute -left-40 -top-40 h-[550px] w-[550px] rounded-full bg-white/80 blur-3xl" />
+
+                <div className="absolute -right-40 top-[-120px] h-[600px] w-[600px] rounded-full bg-mono-300/40 blur-3xl" />
+
+                <div className="absolute bottom-[-250px] left-[20%] h-[600px] w-[800px] rounded-full bg-mono-200/70 blur-3xl" />
+
+                {/* Topographic circles */}
+                <div className="absolute right-[-120px] top-[5%] h-[700px] w-[700px] rounded-full border border-mono-500/10" />
+
+                <div className="absolute right-[-70px] top-[10%] h-[600px] w-[600px] rounded-full border border-mono-500/10" />
+
+                <div className="absolute right-[-20px] top-[15%] h-[500px] w-[500px] rounded-full border border-mono-500/10" />
+
+                <div className="absolute right-[30px] top-[20%] h-[400px] w-[400px] rounded-full border border-mono-500/10" />
+
+                <div className="absolute right-[80px] top-[25%] h-[300px] w-[300px] rounded-full border border-mono-500/10" />
+
+                {/* Grid */}
+                <div
+                    className="absolute inset-0 opacity-[0.08]"
+                    style={{
+                        backgroundImage: `
+                            linear-gradient(#525252 1px, transparent 1px),
+                            linear-gradient(90deg, #525252 1px, transparent 1px)
+                        `,
+                        backgroundSize: "80px 80px",
+                    }}
+                />
+            </div>
             {/* Decorative background */}
             <div className="pointer-events-none absolute -right-32 top-20 h-72 w-72 rounded-full bg-mono-200/60 blur-3xl" />
             <div className="pointer-events-none absolute -left-32 bottom-20 h-72 w-72 rounded-full bg-mono-200/50 blur-3xl" />
