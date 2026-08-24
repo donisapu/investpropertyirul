@@ -71,15 +71,17 @@ export default function PublicLayout({ children }) {
             >
                 <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                     <div className="flex h-20 items-center justify-between">
-                        {/* Logo */}
+
+                        {/* =====================================================
+                            LOGO
+                        ====================================================== */}
                         <div className="flex-shrink-0 flex items-center gap-3">
                             <a href="/" className="flex items-center gap-3">
                                 <img
                                     src={
                                         settings?.logo
-                                            ? settings.logo.startsWith(
-                                                  "http",
-                                              ) || settings.logo.startsWith("/")
+                                            ? settings.logo.startsWith("http") ||
+                                            settings.logo.startsWith("/")
                                                 ? settings.logo
                                                 : `/storage/${settings.logo}`
                                             : "/assets/img/logo.png"
@@ -87,70 +89,138 @@ export default function PublicLayout({ children }) {
                                     alt="logo"
                                     className="h-10 w-auto sm:h-12 lg:h-14 object-contain max-w-[150px] sm:max-w-[200px]"
                                 />
-                                {/* Tambahkan Site Name di sini */}
+
                                 <span
-                                    className={`text-lg font-bold uppercase tracking-wider ${isScrolled || isMobileMenuOpen ? "text-slate-900" : "text-white"}`}
+                                    className={`text-lg font-bold uppercase tracking-wider ${
+                                        isScrolled || isMobileMenuOpen
+                                            ? "text-slate-900"
+                                            : "text-white"
+                                    }`}
                                 >
                                     {settings?.site_name || "Gain Properties"}
                                 </span>
                             </a>
                         </div>
 
-                        {/* Desktop Menu */}
+
+                        {/* =====================================================
+                            DESKTOP MENU
+                        ====================================================== */}
                         <nav
                             className={`hidden min-[900px]:flex items-center gap-2 xl:gap-3 text-[0.7rem] xl:text-sm font-medium uppercase tracking-wide ${
                                 isScrolled || isMobileMenuOpen
-                                    ? "text-slate-900"
-                                    : "text-white"
+                                    ? "text-slate-700"
+                                    : "text-white/80"
                             }`}
                         >
+
+                            {/* HOME */}
                             <a
                                 href="/"
-                                className={`${isActive("/") ? "text-emerald-700 font-bold" : "hover:text-emerald-600"} transition-colors`}
+                                className={`${
+                                    isActive("/")
+                                        ? "text-black font-bold"
+                                        : "text-slate-700 hover:text-slate-900"
+                                } transition-colors`}
                             >
                                 HOME
                             </a>
+
                             <span className="text-slate-300">|</span>
+
+
+                            {/* INVESTMENT */}
                             <Link
                                 href="/investments"
-                                className={`${isActive("/investments") ? "text-emerald-700 font-bold" : "hover:text-emerald-600"} transition-colors`}
+                                className={`${
+                                    isActive("/investments")
+                                        ? "text-black font-bold"
+                                        : "text-slate-700 hover:text-slate-900"
+                                } transition-colors`}
                             >
                                 INVESTMENT
                             </Link>
+
                             <span className="text-slate-300">|</span>
+
+
+                            {/* CROWDFUNDING */}
                             <Link
                                 href="/crowdfunding"
-                                className={`${isActive("/crowdfunding") ? "text-emerald-700 font-bold" : "hover:text-emerald-600"} transition-colors`}
+                                className={`${
+                                    isActive("/crowdfunding")
+                                        ? "text-black font-bold"
+                                        : "text-slate-700 hover:text-slate-900"
+                                } transition-colors`}
                             >
                                 CROWDFUNDING
                             </Link>
+
                             <span className="text-slate-300">|</span>
+
+
+                            {/* PROPERTY FOR SALE */}
                             <Link
                                 href="/property-for-sale"
-                                className={`${isActive("/property-for-sale") ? "text-emerald-700 font-bold" : "hover:text-emerald-600"} transition-colors`}
+                                className={`${
+                                    isActive("/property-for-sale")
+                                        ? "text-black font-bold"
+                                        : "text-slate-700 hover:text-slate-900"
+                                } transition-colors`}
                             >
                                 PROPERTY FOR SALE
                             </Link>
+
                             <span className="text-slate-300">|</span>
+
+
+                            {/* HOW TO INVEST */}
                             <Link
                                 href="/how-to-invest"
-                                className={`${isActive("/how-to-invest") ? "text-emerald-700 font-bold" : "hover:text-emerald-600"} transition-colors`}
+                                className={`${
+                                    isActive("/how-to-invest")
+                                        ? "text-black font-bold"
+                                        : "text-slate-700 hover:text-slate-900"
+                                } transition-colors`}
                             >
                                 HOW TO INVEST
                             </Link>
+
                             <span className="text-slate-300">|</span>
 
+
+                            {/* =================================================
+                                MY ACCOUNT
+                            ================================================== */}
                             {auth.user ? (
-                                <div className="relative" ref={dropdownRef}>
+                                <div
+                                    className="relative"
+                                    ref={dropdownRef}
+                                >
                                     <button
                                         onClick={() =>
                                             setAccountOpen(!accountOpen)
                                         }
-                                        className="flex items-center gap-1 font-bold text-emerald-400 hover:text-emerald-600 transition-colors focus:outline-none uppercase"
+                                        className="
+                                            flex
+                                            items-center
+                                            gap-1
+                                            font-bold
+                                            uppercase
+                                            text-[#9f7d3f]
+                                            hover:text-[#c9a45c]
+                                            transition-colors
+                                            focus:outline-none
+                                        "
                                     >
                                         MY ACCOUNT
+
                                         <svg
-                                            className={`w-4 h-4 transition-transform duration-200 ${accountOpen ? "rotate-180" : ""}`}
+                                            className={`w-4 h-4 transition-transform duration-200 ${
+                                                accountOpen
+                                                    ? "rotate-180"
+                                                    : ""
+                                            }`}
                                             fill="none"
                                             stroke="currentColor"
                                             strokeWidth="2"
@@ -164,44 +234,114 @@ export default function PublicLayout({ children }) {
                                         </svg>
                                     </button>
 
+
+                                    {/* Account Dropdown */}
                                     {accountOpen && (
-                                        <div className="absolute right-0 mt-3 w-48 bg-white rounded-lg shadow-lg border border-slate-200 py-2 z-50 normal-case">
+                                        <div
+                                            className="
+                                                absolute
+                                                right-0
+                                                mt-3
+                                                w-48
+                                                bg-white
+                                                rounded-lg
+                                                shadow-lg
+                                                border
+                                                border-slate-200
+                                                py-2
+                                                z-50
+                                                normal-case
+                                            "
+                                        >
                                             <a
                                                 href={route("user.dashboard")}
-                                                className="block px-4 py-2 text-sm text-slate-700 hover:bg-emerald-50 hover:text-emerald-600"
+                                                className="
+                                                    block
+                                                    px-4
+                                                    py-2
+                                                    text-sm
+                                                    text-slate-700
+                                                    hover:bg-slate-100
+                                                    hover:text-slate-900
+                                                "
                                             >
                                                 Dashboard
                                             </a>
+
                                             <a
                                                 href={route("user.portfolio")}
-                                                className="block px-4 py-2 text-sm text-slate-700 hover:bg-emerald-50 hover:text-emerald-600"
+                                                className="
+                                                    block
+                                                    px-4
+                                                    py-2
+                                                    text-sm
+                                                    text-slate-700
+                                                    hover:bg-slate-100
+                                                    hover:text-slate-900
+                                                "
                                             >
                                                 My Portfolio
                                             </a>
+
                                             <a
                                                 href={route("user.portfolio")}
-                                                className="block px-4 py-2 text-sm text-slate-700 hover:bg-emerald-50 hover:text-emerald-600"
+                                                className="
+                                                    block
+                                                    px-4
+                                                    py-2
+                                                    text-sm
+                                                    text-slate-700
+                                                    hover:bg-slate-100
+                                                    hover:text-slate-900
+                                                "
                                             >
                                                 My Bids
                                             </a>
+
                                             <a
                                                 href={route("user.portfolio")}
-                                                className="block px-4 py-2 text-sm text-slate-700 hover:bg-emerald-50 hover:text-emerald-600"
+                                                className="
+                                                    block
+                                                    px-4
+                                                    py-2
+                                                    text-sm
+                                                    text-slate-700
+                                                    hover:bg-slate-100
+                                                    hover:text-slate-900
+                                                "
                                             >
                                                 Transactions
                                             </a>
+
                                             <a
                                                 href={route("user.portfolio")}
-                                                className="block px-4 py-2 text-sm text-slate-700 hover:bg-emerald-50 hover:text-emerald-600"
+                                                className="
+                                                    block
+                                                    px-4
+                                                    py-2
+                                                    text-sm
+                                                    text-slate-700
+                                                    hover:bg-slate-100
+                                                    hover:text-slate-900
+                                                "
                                             >
                                                 Account Setting
                                             </a>
+
                                             <div className="border-t border-slate-100 mt-1">
                                                 <Link
                                                     href={route("logout")}
                                                     method="post"
                                                     as="button"
-                                                    className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50"
+                                                    className="
+                                                        w-full
+                                                        text-left
+                                                        px-4
+                                                        py-2
+                                                        text-sm
+                                                        text-red-600
+                                                        hover:bg-red-50
+                                                    "
                                                 >
                                                     LOGOUT
                                                 </Link>
@@ -212,23 +352,47 @@ export default function PublicLayout({ children }) {
                             ) : (
                                 <a
                                     href={route("login")}
-                                    className="hover:text-emerald-600 transition-colors font-bold text-emerald-400"
+                                    className="
+                                        transition-colors
+                                        font-bold
+                                        text-[#9f7d3f]
+                                        hover:text-[#c9a45c]
+                                    "
                                 >
                                     MY ACCOUNT
                                 </a>
                             )}
                         </nav>
 
-                        {/* Mobile Menu Button */}
+
+                        {/* =====================================================
+                            MOBILE MENU BUTTON
+                        ====================================================== */}
                         <div className="flex min-[900px]:hidden">
                             <button
                                 onClick={() =>
                                     setIsMobileMenuOpen(!isMobileMenuOpen)
                                 }
                                 type="button"
-                                className="inline-flex items-center justify-center rounded-md p-2 text-slate-700 hover:bg-slate-100 hover:text-slate-900 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-emerald-500"
+                                className="
+                                    inline-flex
+                                    items-center
+                                    justify-center
+                                    rounded-md
+                                    p-2
+                                    text-slate-700
+                                    hover:bg-slate-100
+                                    hover:text-slate-900
+                                    focus:outline-none
+                                    focus:ring-2
+                                    focus:ring-inset
+                                    focus:ring-[#c9a45c]
+                                "
                             >
-                                <span className="sr-only">Open main menu</span>
+                                <span className="sr-only">
+                                    Open main menu
+                                </span>
+
                                 {!isMobileMenuOpen ? (
                                     <svg
                                         className="h-6 w-6"
@@ -263,52 +427,111 @@ export default function PublicLayout({ children }) {
                     </div>
                 </div>
 
-                {/* Mobile Menu */}
+
+                {/* =============================================================
+                    MOBILE MENU
+                ============================================================= */}
                 {isMobileMenuOpen && (
                     <div
-                        className="min-[900px]:hidden bg-white border-t border-slate-200 relative z-50"
+                        className="
+                            min-[900px]:hidden
+                            bg-white
+                            border-t
+                            border-slate-200
+                            relative
+                            z-50
+                        "
                         id="mobile-menu"
                     >
                         <div className="space-y-1 px-4 py-6">
-                            {/* Navigasi Utama */}
+
+                            {/* HOME */}
                             <Link
                                 href="/"
-                                className="block rounded-md py-2 px-3 text-base font-medium text-slate-900 hover:bg-slate-50 hover:text-emerald-600"
+                                className={`block rounded-md py-2 px-3 text-base font-medium transition-colors ${
+                                    isActive("/")
+                                        ? "text-black font-bold bg-slate-50"
+                                        : "text-slate-700 hover:bg-slate-50 hover:text-slate-900"
+                                }`}
                             >
                                 HOME
                             </Link>
+
+
+                            {/* INVESTMENT */}
                             <Link
                                 href={route("investments.index")}
-                                className="block rounded-md py-2 px-3 text-base font-medium text-slate-900 hover:bg-slate-50 hover:text-emerald-600"
+                                className={`block rounded-md py-2 px-3 text-base font-medium transition-colors ${
+                                    isActive("/investments")
+                                        ? "text-black font-bold bg-slate-50"
+                                        : "text-slate-700 hover:bg-slate-50 hover:text-slate-900"
+                                }`}
                             >
                                 INVESTMENT
                             </Link>
+
+
+                            {/* CROWDFUNDING */}
                             <Link
                                 href={route("crowdfunding.index")}
-                                className="block rounded-md py-2 px-3 text-base font-medium text-slate-900 hover:bg-slate-50 hover:text-emerald-600"
+                                className={`block rounded-md py-2 px-3 text-base font-medium transition-colors ${
+                                    isActive("/crowdfunding")
+                                        ? "text-black font-bold bg-slate-50"
+                                        : "text-slate-700 hover:bg-slate-50 hover:text-slate-900"
+                                }`}
                             >
                                 CROWDFUNDING
                             </Link>
+
+
+                            {/* PROPERTY FOR SALE */}
                             <Link
                                 href="#property"
-                                className="block rounded-md py-2 px-3 text-base font-medium text-slate-900 hover:bg-slate-50 hover:text-emerald-600"
+                                className="
+                                    block
+                                    rounded-md
+                                    py-2
+                                    px-3
+                                    text-base
+                                    font-medium
+                                    text-slate-700
+                                    hover:bg-slate-50
+                                    hover:text-slate-900
+                                    transition-colors
+                                "
                             >
                                 PROPERTY FOR SALE
                             </Link>
+
+
+                            {/* HOW TO INVEST */}
                             <Link
                                 href="/how-to-invest"
-                                className="block rounded-md py-2 px-3 text-base font-medium text-slate-900 hover:bg-slate-50 hover:text-emerald-600"
+                                className={`block rounded-md py-2 px-3 text-base font-medium transition-colors ${
+                                    isActive("/how-to-invest")
+                                        ? "text-black font-bold bg-slate-50"
+                                        : "text-slate-700 hover:bg-slate-50 hover:text-slate-900"
+                                }`}
                             >
                                 HOW TO INVEST
                             </Link>
 
-                            {/* Account */}
+
+                            {/* =================================================
+                                MOBILE ACCOUNT
+                            ================================================== */}
                             <div
-                                className="mt-4 border-t border-slate-100 pt-4"
+                                className="
+                                    mt-4
+                                    border-t
+                                    border-slate-100
+                                    pt-4
+                                "
                                 ref={dropdownRef}
                             >
                                 {auth.user ? (
                                     <div className="flex flex-col">
+
                                         {/* Trigger */}
                                         <button
                                             type="button"
@@ -317,61 +540,142 @@ export default function PublicLayout({ children }) {
                                                 e.stopPropagation();
                                                 setAccountOpen(!accountOpen);
                                             }}
-                                            className="flex items-center justify-between w-full rounded-md py-2 px-3 text-base font-bold text-emerald-700 hover:bg-emerald-50 uppercase"
+                                            className="
+                                                flex
+                                                items-center
+                                                justify-between
+                                                w-full
+                                                rounded-md
+                                                py-2
+                                                px-3
+                                                text-base
+                                                font-bold
+                                                text-[#9f7d3f]
+                                                hover:bg-[#f5f1e8]
+                                                hover:text-[#80652f]
+                                                uppercase
+                                                transition-colors
+                                            "
                                         >
-                                            <span>MY ACCOUNT</span>
+                                            <span>
+                                                MY ACCOUNT
+                                            </span>
                                         </button>
+
 
                                         {/* Dropdown */}
                                         {accountOpen && (
-                                            <div className="ml-4 mt-1 space-y-1 normal-case relative z-[999]">
+                                            <div
+                                                className="
+                                                    ml-4
+                                                    mt-1
+                                                    space-y-1
+                                                    normal-case
+                                                    relative
+                                                    z-[999]
+                                                "
+                                            >
                                                 <a
                                                     href={route(
                                                         "user.dashboard",
                                                     )}
-                                                    className="block px-3 py-2 text-sm text-slate-700 hover:bg-emerald-50 hover:text-emerald-600"
+                                                    className="
+                                                        block
+                                                        px-3
+                                                        py-2
+                                                        text-sm
+                                                        text-slate-700
+                                                        hover:bg-slate-100
+                                                        hover:text-slate-900
+                                                    "
                                                 >
                                                     Dashboard
                                                 </a>
+
                                                 <a
                                                     href={route(
                                                         "user.portfolio",
                                                     )}
-                                                    className="block px-3 py-2 text-sm text-slate-700 hover:bg-emerald-50 hover:text-emerald-600"
+                                                    className="
+                                                        block
+                                                        px-3
+                                                        py-2
+                                                        text-sm
+                                                        text-slate-700
+                                                        hover:bg-slate-100
+                                                        hover:text-slate-900
+                                                    "
                                                 >
                                                     My Portfolio
                                                 </a>
+
                                                 <a
                                                     href={route(
                                                         "user.portfolio",
                                                     )}
-                                                    className="block px-3 py-2 text-sm text-slate-700 hover:bg-emerald-50 hover:text-emerald-600"
+                                                    className="
+                                                        block
+                                                        px-3
+                                                        py-2
+                                                        text-sm
+                                                        text-slate-700
+                                                        hover:bg-slate-100
+                                                        hover:text-slate-900
+                                                    "
                                                 >
                                                     My Bids
                                                 </a>
+
                                                 <a
                                                     href={route(
                                                         "user.portfolio",
                                                     )}
-                                                    className="block px-3 py-2 text-sm text-slate-700 hover:bg-emerald-50 hover:text-emerald-600"
+                                                    className="
+                                                        block
+                                                        px-3
+                                                        py-2
+                                                        text-sm
+                                                        text-slate-700
+                                                        hover:bg-slate-100
+                                                        hover:text-slate-900
+                                                    "
                                                 >
                                                     Transactions
                                                 </a>
+
                                                 <a
                                                     href={route(
                                                         "user.portfolio",
                                                     )}
-                                                    className="block px-3 py-2 text-sm text-slate-700 hover:bg-emerald-50 hover:text-emerald-600"
+                                                    className="
+                                                        block
+                                                        px-3
+                                                        py-2
+                                                        text-sm
+                                                        text-slate-700
+                                                        hover:bg-slate-100
+                                                        hover:text-slate-900
+                                                    "
                                                 >
                                                     Account Setting
                                                 </a>
 
+
+                                                {/* Logout */}
                                                 <div className="border-t border-slate-100 mt-2 pt-1">
                                                     <Link
                                                         href={route("logout")}
                                                         method="post"
                                                         as="button"
-                                                        className="w-full text-left px-3 py-2 text-sm text-red-600 hover:bg-red-50"
+                                                        className="
+                                                            w-full
+                                                            text-left
+                                                            px-3
+                                                            py-2
+                                                            text-sm
+                                                            text-red-600
+                                                            hover:bg-red-50
+                                                        "
                                                     >
                                                         Logout
                                                     </Link>
@@ -382,7 +686,14 @@ export default function PublicLayout({ children }) {
                                 ) : (
                                     <a
                                         href={route("login")}
-                                        className="hover:text-emerald-600 px-3 py-2 transition-colors font-bold text-emerald-400"
+                                        className="
+                                            hover:text-[#c9a45c]
+                                            px-3
+                                            py-2
+                                            transition-colors
+                                            font-bold
+                                            text-[#9f7d3f]
+                                        "
                                     >
                                         MY ACCOUNT
                                     </a>
