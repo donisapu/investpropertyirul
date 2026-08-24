@@ -31,72 +31,308 @@ export default function OurLocation({ landings, landmarks }) {
     return (
         <section
             id="our-location"
-            className="relative overflow-hidden bg-mono-100 text-mono-900"
+            className="relative isolate overflow-hidden bg-mono-100 text-mono-900"
         >
-             <div className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
-                {/* Large soft circle */}
-                <div className="absolute -left-32 top-20 h-[420px] w-[420px] rounded-full bg-white/70 blur-3xl" />
-
-                {/* Dark blurred shape */}
-                <div className="absolute -right-40 top-[-100px] h-[500px] w-[500px] rounded-full bg-mono-300/40 blur-3xl" />
-
-                {/* Bottom shape */}
-                <div className="absolute bottom-[-180px] left-1/3 h-[500px] w-[700px] rounded-full bg-mono-200/60 blur-3xl" />
-
-                {/* Abstract circles */}
-                <div className="absolute right-[8%] top-[18%] h-64 w-64 rounded-full border border-mono-400/20" />
-                <div className="absolute right-[10%] top-[20%] h-80 w-80 rounded-full border border-mono-400/10" />
-                <div className="absolute right-[13%] top-[23%] h-96 w-96 rounded-full border border-mono-400/10" />
-
-                {/* Grid */}
+            {/* =====================================================
+                ABSTRACT MONOCHROME BACKGROUND
+            ====================================================== */}
+            <div className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
+                {/* -----------------------------------------------
+                    TOP LEFT - BIG CIRCLE
+                ------------------------------------------------ */}
                 <div
-                    className="absolute inset-0 opacity-[0.12]"
-                    style={{
-                        backgroundImage: `
-                            linear-gradient(to right, #737373 1px, transparent 1px),
-                            linear-gradient(to bottom, #737373 1px, transparent 1px)
-                        `,
-                        backgroundSize: "70px 70px",
-                    }}
+                    className="
+                        absolute
+                        -left-32
+                        -top-32
+                        h-[420px]
+                        w-[420px]
+                        rounded-full
+                        border-[70px]
+                        border-white/40
+                    "
                 />
 
-                {/* Diagonal abstract lines */}
-                <div className="absolute -left-20 top-1/2 h-px w-[700px] rotate-[-25deg] bg-mono-500/10" />
-                <div className="absolute -left-10 top-[55%] h-px w-[650px] rotate-[-25deg] bg-mono-500/10" />
-                <div className="absolute -left-5 top-[60%] h-px w-[600px] rotate-[-25deg] bg-mono-500/10" />
+                {/* -----------------------------------------------
+                    TOP RIGHT - BIG SOFT CIRCLE
+                ------------------------------------------------ */}
+                <div
+                    className="
+                        absolute
+                        -right-40
+                        top-20
+                        h-[500px]
+                        w-[500px]
+                        rounded-full
+                        bg-mono-200/60
+                    "
+                />
+
+                {/* Circle outline */}
+                <div
+                    className="
+                        absolute
+                        -right-[100px]
+                        top-[120px]
+                        h-[420px]
+                        w-[420px]
+                        rounded-full
+                        border
+                        border-mono-400/20
+                    "
+                />
+
+                {/* -----------------------------------------------
+                    LEFT CENTER - ABSTRACT BLOB
+                ------------------------------------------------ */}
+                <div
+                    className="
+                        absolute
+                        -left-[100px]
+                        top-[45%]
+                        h-[300px]
+                        w-[500px]
+                        rotate-[-20deg]
+                        rounded-[50%]
+                        bg-white/50
+                        blur-sm
+                    "
+                />
+
+                {/* -----------------------------------------------
+                    BOTTOM RIGHT - LARGE BLOB
+                ------------------------------------------------ */}
+                <div
+                    className="
+                        absolute
+                        bottom-[-180px]
+                        right-[10%]
+                        h-[400px]
+                        w-[600px]
+                        rotate-[15deg]
+                        rounded-[50%]
+                        bg-mono-200/70
+                    "
+                />
+
+                {/* -----------------------------------------------
+                    TRIANGLE
+                ------------------------------------------------ */}
+                <div
+                    className="
+                        absolute
+                        left-[8%]
+                        top-[38%]
+                        h-0
+                        w-0
+                        rotate-[-15deg]
+                        border-l-[100px]
+                        border-r-[100px]
+                        border-b-[180px]
+                        border-l-transparent
+                        border-r-transparent
+                        border-b-white/30
+                    "
+                />
+
+                {/* -----------------------------------------------
+                    ROTATED SQUARE
+                ------------------------------------------------ */}
+                <div
+                    className="
+                        absolute
+                        right-[15%]
+                        bottom-[20%]
+                        h-40
+                        w-40
+                        rotate-45
+                        rounded-3xl
+                        border
+                        border-mono-400/20
+                        bg-white/20
+                    "
+                />
+
+                {/* -----------------------------------------------
+                    SMALL CIRCLES
+                ------------------------------------------------ */}
+                <div
+                    className="
+                        absolute
+                        left-[25%]
+                        top-[15%]
+                        h-16
+                        w-16
+                        rounded-full
+                        border
+                        border-mono-400/20
+                    "
+                />
+
+                <div
+                    className="
+                        absolute
+                        left-[28%]
+                        top-[18%]
+                        h-8
+                        w-8
+                        rounded-full
+                        bg-white/50
+                    "
+                />
+
+                <div
+                    className="
+                        absolute
+                        right-[30%]
+                        top-[45%]
+                        h-10
+                        w-10
+                        rounded-full
+                        bg-mono-300/50
+                    "
+                />
+
+                {/* -----------------------------------------------
+                    DIAGONAL LINES
+                ------------------------------------------------ */}
+                <div
+                    className="
+                        absolute
+                        -left-20
+                        top-[70%]
+                        h-px
+                        w-[600px]
+                        rotate-[-25deg]
+                        bg-mono-500/20
+                    "
+                />
+
+                <div
+                    className="
+                        absolute
+                        -left-10
+                        top-[73%]
+                        h-px
+                        w-[500px]
+                        rotate-[-25deg]
+                        bg-mono-500/10
+                    "
+                />
+
+                <div
+                    className="
+                        absolute
+                        left-[5%]
+                        top-[76%]
+                        h-px
+                        w-[400px]
+                        rotate-[-25deg]
+                        bg-mono-500/10
+                    "
+                />
+
+                {/* -----------------------------------------------
+                    SUBTLE GRID
+                ------------------------------------------------ */}
+                <div
+                    className="absolute inset-0 opacity-[0.035]"
+                    style={{
+                        backgroundImage: `
+                            linear-gradient(
+                                to right,
+                                #555 1px,
+                                transparent 1px
+                            ),
+                            linear-gradient(
+                                to bottom,
+                                #555 1px,
+                                transparent 1px
+                            )
+                        `,
+                        backgroundSize: "80px 80px",
+                    }}
+                />
             </div>
 
-            {/* Decorative background */}
-            <div className="pointer-events-none absolute -right-32 top-20 h-72 w-72 rounded-full bg-mono-200/60 blur-3xl" />
-            <div className="pointer-events-none absolute -left-32 bottom-20 h-72 w-72 rounded-full bg-mono-200/50 blur-3xl" />
-
+            {/* =====================================================
+                MAIN CONTENT
+            ====================================================== */}
             <div className="relative mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8 lg:py-28">
-                {/* ================= HEADER ================= */}
+
+                {/* =================================================
+                    HEADER
+                ================================================== */}
                 <div className="mx-auto max-w-3xl text-center">
-                    <span className="mb-4 inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.25em] text-mono-500">
+                    <span
+                        className="
+                            mb-4
+                            inline-flex
+                            items-center
+                            gap-2
+                            text-xs
+                            font-semibold
+                            uppercase
+                            tracking-[0.25em]
+                            text-mono-500
+                        "
+                    >
                         <span className="h-px w-8 bg-mono-400" />
+
                         Our Location
+
                         <span className="h-px w-8 bg-mono-400" />
                     </span>
 
-                    <h2 className="text-3xl font-semibold uppercase leading-tight tracking-tight sm:text-4xl lg:text-5xl">
+                    <h2
+                        className="
+                            text-3xl
+                            font-semibold
+                            uppercase
+                            leading-tight
+                            tracking-tight
+                            sm:text-4xl
+                            lg:text-5xl
+                        "
+                    >
                         We only choose
+
                         <span className="block text-mono-500">
                             hot spot tourism area.
                         </span>
                     </h2>
 
-                    <p className="mx-auto mt-6 max-w-2xl text-sm leading-7 text-mono-600 sm:text-base">
+                    <p
+                        className="
+                            mx-auto
+                            mt-6
+                            max-w-2xl
+                            text-sm
+                            leading-7
+                            text-mono-600
+                            sm:text-base
+                        "
+                    >
                         {landings?.location_desc}
                     </p>
                 </div>
 
-                {/* ================= LANDMARKS ================= */}
+                {/* =================================================
+                    LANDMARKS
+                ================================================== */}
                 {landmarks?.length > 0 && (
                     <div className="mt-14">
                         <div className="mb-5 flex items-end justify-between">
                             <div>
-                                <p className="text-xs font-semibold uppercase tracking-[0.2em] text-mono-500">
+                                <p
+                                    className="
+                                        text-xs
+                                        font-semibold
+                                        uppercase
+                                        tracking-[0.2em]
+                                        text-mono-500
+                                    "
+                                >
                                     Nearby
                                 </p>
 
@@ -114,25 +350,70 @@ export default function OurLocation({ landings, landmarks }) {
                             {landmarks.map((landmark, index) => (
                                 <div
                                     key={index}
-                                    className="group relative overflow-hidden rounded-2xl border border-mono-300/60 bg-white shadow-sm transition-all duration-500 hover:-translate-y-1 hover:shadow-xl"
+                                    className="
+                                        group
+                                        relative
+                                        overflow-hidden
+                                        rounded-2xl
+                                        border
+                                        border-mono-300/60
+                                        bg-white
+                                        shadow-sm
+                                        transition-all
+                                        duration-500
+                                        hover:-translate-y-1
+                                        hover:shadow-xl
+                                    "
                                 >
-                                    {/* Image */}
                                     <div className="relative h-52 overflow-hidden">
                                         <img
                                             src={`/storage/${landmark.image_path}`}
                                             alt={landmark.name}
-                                            className="h-full w-full object-cover transition duration-700 group-hover:scale-110"
+                                            className="
+                                                h-full
+                                                w-full
+                                                object-cover
+                                                transition
+                                                duration-700
+                                                group-hover:scale-110
+                                            "
                                         />
 
                                         {/* Image overlay */}
-                                        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
+                                        <div
+                                            className="
+                                                absolute
+                                                inset-0
+                                                bg-gradient-to-t
+                                                from-black/70
+                                                via-black/10
+                                                to-transparent
+                                            "
+                                        />
 
                                         {/* Number */}
-                                        <span className="absolute left-4 top-4 flex h-8 w-8 items-center justify-center rounded-full bg-white/90 text-xs font-bold text-mono-900 backdrop-blur">
+                                        <span
+                                            className="
+                                                absolute
+                                                left-4
+                                                top-4
+                                                flex
+                                                h-8
+                                                w-8
+                                                items-center
+                                                justify-center
+                                                rounded-full
+                                                bg-white/90
+                                                text-xs
+                                                font-bold
+                                                text-mono-900
+                                                backdrop-blur
+                                            "
+                                        >
                                             {String(index + 1).padStart(2, "0")}
                                         </span>
 
-                                        {/* Content on image */}
+                                        {/* Content */}
                                         <div className="absolute bottom-0 left-0 right-0 p-5 text-white">
                                             <h4 className="text-lg font-semibold leading-tight">
                                                 {landmark.name}
@@ -149,25 +430,67 @@ export default function OurLocation({ landings, landmarks }) {
                     </div>
                 )}
 
-                {/* ================= CTA ================= */}
+                {/* =================================================
+                    CTA
+                ================================================== */}
                 <div className="mt-10 flex justify-center">
                     <a
                         href={route("property-for-sale.index")}
-                        className="group inline-flex items-center gap-3 rounded-full bg-mono-900 px-6 py-3 text-sm font-semibold text-white shadow-lg transition-all duration-300 hover:bg-mono-700 hover:shadow-xl"
+                        className="
+                            group
+                            inline-flex
+                            items-center
+                            gap-3
+                            rounded-full
+                            bg-mono-900
+                            px-6
+                            py-3
+                            text-sm
+                            font-semibold
+                            text-white
+                            shadow-lg
+                            transition-all
+                            duration-300
+                            hover:bg-mono-700
+                            hover:shadow-xl
+                        "
                     >
                         <span>Lihat Unit Tersedia</span>
 
-                        <span className="flex h-7 w-7 items-center justify-center rounded-full bg-white/10 transition-transform duration-300 group-hover:translate-x-1">
+                        <span
+                            className="
+                                flex
+                                h-7
+                                w-7
+                                items-center
+                                justify-center
+                                rounded-full
+                                bg-white/10
+                                transition-transform
+                                duration-300
+                                group-hover:translate-x-1
+                            "
+                        >
                             →
                         </span>
                     </a>
                 </div>
 
-                {/* ================= MAPPING ================= */}
+                {/* =================================================
+                    MAPPING
+                ================================================== */}
                 {landings?.mapping_path && (
                     <div className="mt-20">
                         <div className="mb-6 text-center">
-                            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-mono-500">
+                            <p
+                                className="
+                                    text-xs
+                                    font-semibold
+                                    uppercase
+                                    tracking-[0.2em]
+                                    text-mono-500
+                                "
+                            >
                                 Location Overview
                             </p>
 
@@ -176,25 +499,54 @@ export default function OurLocation({ landings, landmarks }) {
                             </h3>
                         </div>
 
-                        <div className="group relative overflow-hidden rounded-3xl border border-mono-300/60 bg-white p-2 shadow-xl">
+                        <div
+                            className="
+                                group
+                                relative
+                                overflow-hidden
+                                rounded-3xl
+                                border
+                                border-mono-300/60
+                                bg-white
+                                p-2
+                                shadow-xl
+                            "
+                        >
                             <div className="relative overflow-hidden rounded-2xl">
                                 <img
                                     src={`/storage/${landings.mapping_path}`}
                                     alt="Mapping"
-                                    className="h-auto max-h-[650px] w-full object-cover transition duration-700 group-hover:scale-[1.01]"
+                                    className="
+                                        h-auto
+                                        max-h-[650px]
+                                        w-full
+                                        object-cover
+                                        transition
+                                        duration-700
+                                        group-hover:scale-[1.01]
+                                    "
                                 />
 
-                                {/* Overlay */}
                                 <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
                             </div>
                         </div>
                     </div>
                 )}
 
-                {/* ================= GOOGLE MAP ================= */}
+                {/* =================================================
+                    GOOGLE MAP
+                ================================================== */}
                 <div className="mt-20">
                     <div className="mb-6 text-center">
-                        <p className="text-xs font-semibold uppercase tracking-[0.2em] text-mono-500">
+                        <p
+                            className="
+                                text-xs
+                                font-semibold
+                                uppercase
+                                tracking-[0.2em]
+                                text-mono-500
+                            "
+                        >
                             Find Us
                         </p>
 
@@ -203,11 +555,27 @@ export default function OurLocation({ landings, landmarks }) {
                         </h3>
                     </div>
 
-                    <div className="overflow-hidden rounded-3xl border border-mono-300/60 bg-white p-2 shadow-xl">
+                    <div
+                        className="
+                            overflow-hidden
+                            rounded-3xl
+                            border
+                            border-mono-300/60
+                            bg-white
+                            p-2
+                            shadow-xl
+                        "
+                    >
                         {finalMapUrl ? (
                             <iframe
                                 src={finalMapUrl}
-                                className="h-[360px] w-full rounded-2xl sm:h-[450px] lg:h-[550px]"
+                                className="
+                                    h-[360px]
+                                    w-full
+                                    rounded-2xl
+                                    sm:h-[450px]
+                                    lg:h-[550px]
+                                "
                                 style={{
                                     border: 0,
                                 }}
@@ -216,7 +584,21 @@ export default function OurLocation({ landings, landmarks }) {
                                 referrerPolicy="no-referrer-when-downgrade"
                             />
                         ) : (
-                            <div className="flex h-[360px] items-center justify-center rounded-2xl bg-mono-200 text-sm font-medium text-mono-500 sm:h-[450px] lg:h-[550px]">
+                            <div
+                                className="
+                                    flex
+                                    h-[360px]
+                                    items-center
+                                    justify-center
+                                    rounded-2xl
+                                    bg-mono-200
+                                    text-sm
+                                    font-medium
+                                    text-mono-500
+                                    sm:h-[450px]
+                                    lg:h-[550px]
+                                "
+                            >
                                 Peta lokasi belum tersedia
                             </div>
                         )}
