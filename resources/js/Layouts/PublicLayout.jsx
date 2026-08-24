@@ -933,7 +933,14 @@ function Footer() {
                                     aria-label="Facebook"
                                     className="flex h-9 w-9 items-center justify-center rounded-full border border-white/10 text-xs text-white/50 transition hover:border-white/40 hover:text-white"
                                 >
-                                    f
+                                <svg
+                                    className="h-4 w-4"
+                                    viewBox="0 0 24 24"
+                                    fill="currentColor"
+                                >
+                                    <path d="M22 12a10 10 0 10-11.5 9.9v-7h-2v-3h2v-2.3c0-2 1.2-3.1 3-3.1.9 0 1.8.2 1.8.2v2h-1c-1 0-1.3.6-1.3 1.2V12h2.2l-.3 3h-1.9v7A10 10 0 0022 12z" />
+                                </svg>
+
                                 </a>
                             )}
 
@@ -945,7 +952,13 @@ function Footer() {
                                     aria-label="Instagram"
                                     className="flex h-9 w-9 items-center justify-center rounded-full border border-white/10 text-xs text-white/50 transition hover:border-white/40 hover:text-white"
                                 >
-                                    ◎
+                                <svg
+                                    className="h-4 w-4"
+                                    viewBox="0 0 24 24"
+                                    fill="currentColor"
+                                >
+                                    <path d="M7 2C4.24 2 2 4.24 2 7v10c0 2.76 2.24 5 5 5h10c2.76 0 5-2.24 5-5V7c0-2.76-2.24-5-5-5H7zm10 2c1.66 0 3 1.34 3 3v10c0 1.66-1.34 3-3 3H7c-1.66 0-3-1.34-3-3V7c0-1.66 1.34-3 3-3h10zm-5 3a5 5 0 100 10 5 5 0 000-10zm6-1a1 1 0 100 2 1 1 0 000-2z" />
+                                </svg>
                                 </a>
                             )}
 
@@ -957,7 +970,13 @@ function Footer() {
                                     aria-label="YouTube"
                                     className="flex h-9 w-9 items-center justify-center rounded-full border border-white/10 text-xs text-white/50 transition hover:border-white/40 hover:text-white"
                                 >
-                                    ▶
+                                <svg
+                                    className="h-4 w-4"
+                                    viewBox="0 0 24 24"
+                                    fill="currentColor"
+                                >
+                                    <path d="M23.5 6.2a3 3 0 00-2.1-2.1C19.8 3.6 12 3.6 12 3.6s-7.8 0-9.4.5A3 3 0 00.6 6.2 31.6 31.6 0 000 12a31.6 31.6 0 00.6 5.8 3 3 0 002.1 2.1c1.6.5 9.4.5 9.4.5s7.8 0 9.4-.5a3 3 0 002.1-2.1c.4-1.9.6-3.8.6-5.8s-.2-3.9-.6-5.8zM9.7 15.5V8.5l6.2 3.5-6.2 3.5z" />
+                                </svg>
                                 </a>
                             )}
 
