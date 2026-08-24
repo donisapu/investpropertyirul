@@ -378,7 +378,18 @@ export default function Footer({
                         <div className="flex items-center gap-3">
 
                             <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-white/20 text-sm font-semibold">
-                                G
+                               <img
+                                src={
+                                    settings?.logo
+                                        ? settings.logo.startsWith("http") ||
+                                          settings.logo.startsWith("/")
+                                            ? settings.logo
+                                            : `/storage/${settings.logo}`
+                                        : "/assets/img/logo.png"
+                                }
+                                alt="logo"
+                                className="h-10 w-auto sm:h-12 lg:h-14 object-contain max-w-[150px] sm:max-w-[200px]"
+                            />
                             </div>
 
                             <div>
@@ -450,7 +461,7 @@ export default function Footer({
 
 
                     {/* COMPANY */}
-                    <div className="lg:col-span-2">
+                    {/* <div className="lg:col-span-2">
 
                         <h3 className="mb-6 text-[10px] font-semibold uppercase tracking-[0.18em] text-white/35">
                             Company
@@ -488,7 +499,7 @@ export default function Footer({
 
                         </div>
 
-                    </div>
+                    </div> */}
 
 
                     {/* CONTACT */}
