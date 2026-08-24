@@ -4,595 +4,496 @@ export default function DeveloperProjects({ project, landings }) {
     return (
         <section
             id="developer-projects"
-            className="
-                relative
-                isolate
-                overflow-hidden
-                bg-mono-900
-                text-mono-100
-            "
+            className="relative isolate overflow-hidden bg-[#111111] text-white"
         >
             {/* =====================================================
-                BALI ORNAMENT BACKGROUND
+                BALI LUXURY ORNAMENT
                 INLINE SVG - NO EXTERNAL FILE
             ====================================================== */}
             <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
+                
+                {/* Dark radial atmosphere */}
+                <div
+                    className="
+                        absolute
+                        inset-0
+                        bg-[radial-gradient(circle_at_50%_45%,#242424_0%,#151515_42%,#0d0d0d_100%)]
+                    "
+                />
 
                 {/* =================================================
-                    LEFT ORNAMENT
+                    LEFT BALI ORNAMENT
                 ================================================== */}
                 <div
                     className="
                         absolute
-                        left-[-170px]
+                        -left-[190px]
                         top-1/2
-                        h-[760px]
-                        w-[620px]
+                        h-[850px]
+                        w-[650px]
                         -translate-y-1/2
-                        opacity-[0.23]
-                        sm:left-[-150px]
-                        lg:left-[-120px]
+                        opacity-70
+                        sm:-left-[150px]
+                        lg:-left-[100px]
                     "
                 >
                     <svg
-                        viewBox="0 0 620 760"
+                        viewBox="0 0 650 850"
                         className="h-full w-full"
                         fill="none"
                         xmlns="http://www.w3.org/2000/svg"
                     >
-                        {/* Outer decorative frame */}
+                        {/* =========================================
+                            OUTER ARCH / CARVING
+                        ========================================== */}
                         <path
                             d="
-                                M305 20
-                                C245 55 195 100 165 155
-                                C130 220 135 290 175 345
-                                C205 385 210 425 180 470
-                                C145 525 105 555 45 585
+                                M530 35
+                                C420 70 325 135 285 235
+                                C245 335 285 415 235 505
+                                C190 585 105 625 55 710
                             "
-                            stroke="#F4F4F1"
-                            strokeWidth="2"
+                            stroke="#C8A45D"
+                            strokeWidth="4"
+                            opacity="0.55"
                         />
 
                         <path
                             d="
-                                M350 35
-                                C285 85 250 125 225 175
-                                C195 235 200 295 240 345
-                                C275 390 275 425 240 475
-                                C205 525 160 560 90 600
+                                M555 40
+                                C450 95 360 160 320 250
+                                C280 340 320 420 270 510
+                                C220 600 130 640 75 730
                             "
-                            stroke="#CFCFCB"
+                            stroke="#F2EFE6"
+                            strokeWidth="1.5"
+                            opacity="0.25"
+                        />
+
+                        <path
+                            d="
+                                M580 55
+                                C490 125 410 185 370 270
+                                C335 345 365 425 315 520
+                                C270 610 185 670 110 750
+                            "
+                            stroke="#C8A45D"
                             strokeWidth="1"
+                            opacity="0.35"
                         />
 
-                        {/* Large Patra-inspired leaf */}
+                        {/* =========================================
+                            LARGE PATRA PUNGGEL
+                        ========================================== */}
                         <path
                             d="
-                                M305 85
-                                C255 125 230 175 245 220
-                                C260 260 295 275 330 245
-                                C350 225 355 190 345 155
-                                C338 128 322 105 305 85
+                                M390 115
+                                C330 100 270 130 255 185
+                                C245 225 270 260 310 258
+                                C355 255 390 210 390 115
                                 Z
                             "
-                            stroke="#FFFFFF"
+                            stroke="#C8A45D"
+                            strokeWidth="3"
+                            opacity="0.75"
+                        />
+
+                        <path
+                            d="
+                                M370 135
+                                C330 125 292 145 283 180
+                                C277 205 293 225 318 225
+                                C345 222 367 190 370 135
+                                Z
+                            "
+                            stroke="#F2EFE6"
+                            strokeWidth="1.5"
+                            opacity="0.45"
+                        />
+
+                        {/* Inner leaf vein */}
+                        <path
+                            d="
+                                M370 135
+                                C350 160 330 190 318 225
+                            "
+                            stroke="#C8A45D"
+                            strokeWidth="1.5"
+                            opacity="0.8"
+                        />
+
+                        {/* =========================================
+                            SECOND CURVED LEAF
+                        ========================================== */}
+                        <path
+                            d="
+                                M255 185
+                                C205 165 155 185 145 225
+                                C138 255 160 278 190 275
+                                C225 270 250 235 255 185
+                                Z
+                            "
+                            stroke="#C8A45D"
                             strokeWidth="2.5"
+                            opacity="0.65"
                         />
 
-                        {/* Inner leaf */}
                         <path
                             d="
-                                M305 115
-                                C275 145 266 180 277 207
-                                C287 230 307 237 324 220
-                                C340 202 340 175 330 150
-                                C323 134 314 122 305 115
-                                Z
+                                M245 200
+                                C210 190 180 205 172 230
+                                C168 245 180 256 195 253
+                                C218 247 237 225 245 200
                             "
-                            stroke="#D7D7D3"
-                            strokeWidth="1.4"
-                        />
-
-                        {/* Leaf vein */}
-                        <path
-                            d="
-                                M305 115
-                                C307 155 310 190 324 220
-                            "
-                            stroke="#FFFFFF"
+                            stroke="#F2EFE6"
                             strokeWidth="1"
+                            opacity="0.35"
                         />
 
-                        {/* Curved Bali leaves */}
+                        {/* =========================================
+                            BALI FLOWER / KEMBANG
+                        ========================================== */}
+                        <g transform="translate(165 355)">
+                            <circle
+                                cx="0"
+                                cy="0"
+                                r="24"
+                                stroke="#C8A45D"
+                                strokeWidth="3"
+                                opacity="0.75"
+                            />
+
+                            <path
+                                d="
+                                    M0 -24
+                                    C-28 -55 -65 -38 -54 -8
+                                    C-88 -12 -94 28 -58 34
+                                    C-78 58 -45 82 -20 58
+                                    C-10 92 30 90 32 58
+                                    C62 80 88 48 62 26
+                                    C92 12 76 -25 43 -16
+                                    C48 -48 15 -62 0 -24
+                                "
+                                stroke="#F2EFE6"
+                                strokeWidth="2"
+                                opacity="0.35"
+                            />
+
+                            <circle
+                                cx="0"
+                                cy="0"
+                                r="7"
+                                fill="#C8A45D"
+                                opacity="0.8"
+                            />
+                        </g>
+
+                        {/* =========================================
+                            GEOMETRIC BALI DIAMONDS
+                        ========================================== */}
+                        <g stroke="#C8A45D" opacity="0.65">
+                            <path
+                                d="M465 300L500 335L465 370L430 335Z"
+                                strokeWidth="3"
+                            />
+
+                            <path
+                                d="M505 385L530 410L505 435L480 410Z"
+                                strokeWidth="2"
+                            />
+
+                            <path
+                                d="M405 455L440 490L405 525L370 490Z"
+                                strokeWidth="2.5"
+                            />
+
+                            <path
+                                d="M330 575L355 600L330 625L305 600Z"
+                                strokeWidth="2"
+                            />
+                        </g>
+
+                        {/* Diamond inner details */}
+                        <g stroke="#F2EFE6" opacity="0.3">
+                            <path d="M465 315L485 335L465 355L445 335Z" />
+                            <path d="M405 470L425 490L405 510L385 490Z" />
+                        </g>
+
+                        {/* =========================================
+                            LOWER PATRA
+                        ========================================== */}
                         <path
                             d="
-                                M245 220
-                                C205 195 170 205 155 235
-                                C145 255 155 275 180 280
-                                C205 285 230 265 245 220
+                                M235 505
+                                C180 485 125 510 120 555
+                                C115 600 155 625 195 605
+                                C225 590 245 550 235 505
                                 Z
                             "
-                            stroke="#EEEEEB"
-                            strokeWidth="2"
+                            stroke="#C8A45D"
+                            strokeWidth="3"
+                            opacity="0.65"
                         />
 
                         <path
                             d="
-                                M240 345
-                                C195 330 160 345 150 375
-                                C143 397 158 415 182 412
-                                C210 408 232 385 240 345
-                                Z
+                                M220 520
+                                C185 510 150 530 147 555
+                                C145 580 166 590 188 578
+                                C205 568 218 545 220 520
                             "
-                            stroke="#D6D6D2"
-                            strokeWidth="1.8"
-                        />
-
-                        {/* Flower ornament */}
-                        <path
-                            d="
-                                M175 345
-                                C155 325 125 330 120 350
-                                C115 370 135 385 155 380
-                                C140 405 155 425 177 418
-                                C198 410 195 385 180 375
-                                C205 380 220 360 210 342
-                                C200 325 180 330 175 345
-                                Z
-                            "
-                            stroke="#FFFFFF"
-                            strokeWidth="2"
-                        />
-
-                        {/* Flower center */}
-                        <circle
-                            cx="172"
-                            cy="365"
-                            r="9"
-                            stroke="#FFFFFF"
+                            stroke="#F2EFE6"
                             strokeWidth="1.5"
+                            opacity="0.35"
                         />
 
-                        {/* Small petals */}
-                        <path
-                            d="M172 356C165 345 150 342 143 350"
-                            stroke="#D2D2CE"
-                            strokeWidth="1"
-                        />
-
-                        <path
-                            d="M180 365C193 360 202 350 201 340"
-                            stroke="#D2D2CE"
-                            strokeWidth="1"
-                        />
-
-                        <path
-                            d="M170 375C160 388 158 400 164 408"
-                            stroke="#D2D2CE"
-                            strokeWidth="1"
-                        />
-
-                        {/* Lower large leaf */}
+                        {/* =========================================
+                            SMALL CURLS
+                        ========================================== */}
                         <path
                             d="
-                                M180 470
-                                C130 450 90 470 85 510
-                                C82 545 115 565 150 550
-                                C180 537 195 505 180 470
-                                Z
+                                M120 555
+                                C75 530 35 550 40 590
+                                C45 625 82 635 105 605
                             "
-                            stroke="#F1F1EE"
-                            strokeWidth="2.2"
+                            stroke="#C8A45D"
+                            strokeWidth="3"
+                            opacity="0.55"
                         />
 
                         <path
                             d="
-                                M175 485
-                                C140 480 115 495 110 520
-                                C108 540 128 548 145 538
-                                C162 528 174 505 175 485
-                                Z
+                                M120 665
+                                C70 660 35 690 55 725
+                                C75 755 120 735 115 700
                             "
-                            stroke="#CFCFCA"
-                            strokeWidth="1.2"
-                        />
-
-                        {/* Decorative curls */}
-                        <path
-                            d="
-                                M85 510
-                                C45 490 20 505 25 535
-                                C30 565 65 570 85 550
-                            "
-                            stroke="#FFFFFF"
-                            strokeWidth="2"
-                        />
-
-                        <path
-                            d="
-                                M90 600
-                                C45 620 30 650 55 670
-                                C80 690 110 670 105 640
-                                C102 625 95 612 90 600
-                            "
-                            stroke="#D5D5D1"
+                            stroke="#F2EFE6"
                             strokeWidth="1.5"
+                            opacity="0.25"
                         />
 
-                        {/* Small diamonds / ornamental details */}
-                        <path
-                            d="M420 110L438 128L420 146L402 128Z"
-                            stroke="#E8E8E4"
-                            strokeWidth="1.5"
-                        />
-
-                        <path
-                            d="M455 175L468 188L455 201L442 188Z"
-                            stroke="#CFCFCB"
-                        />
-
-                        <path
-                            d="M430 500L450 520L430 540L410 520Z"
-                            stroke="#E8E8E4"
-                        />
-
-                        {/* Fine contour lines */}
-                        <path
-                            d="
-                                M400 75
-                                C470 140 500 220 470 295
-                                C450 345 455 405 490 455
-                                C520 500 525 550 500 600
-                            "
-                            stroke="#BDBDB8"
-                            strokeWidth="1"
-                        />
-
-                        <path
-                            d="
-                                M430 55
-                                C500 130 535 220 505 305
-                                C485 365 490 425 525 475
-                            "
-                            stroke="#AAAAA5"
-                            strokeWidth="0.8"
-                        />
+                        {/* =========================================
+                            SMALL GOLD DOTS
+                        ========================================== */}
+                        <g fill="#C8A45D" opacity="0.75">
+                            <circle cx="455" cy="250" r="4" />
+                            <circle cx="485" cy="275" r="2.5" />
+                            <circle cx="425" cy="405" r="3" />
+                            <circle cx="375" cy="545" r="4" />
+                            <circle cx="290" cy="650" r="2.5" />
+                            <circle cx="250" cy="700" r="3" />
+                        </g>
                     </svg>
                 </div>
 
                 {/* =================================================
-                    RIGHT ORNAMENT
+                    RIGHT BALI ORNAMENT
                 ================================================== */}
                 <div
                     className="
                         absolute
-                        right-[-170px]
+                        -right-[190px]
                         top-1/2
-                        h-[760px]
-                        w-[620px]
+                        h-[850px]
+                        w-[650px]
                         -translate-y-1/2
                         scale-x-[-1]
-                        opacity-[0.23]
-                        sm:right-[-150px]
-                        lg:right-[-120px]
+                        opacity-70
+                        sm:-right-[150px]
+                        lg:-right-[100px]
                     "
                 >
                     <svg
-                        viewBox="0 0 620 760"
+                        viewBox="0 0 650 850"
                         className="h-full w-full"
                         fill="none"
                         xmlns="http://www.w3.org/2000/svg"
                     >
                         <path
                             d="
-                                M305 20
-                                C245 55 195 100 165 155
-                                C130 220 135 290 175 345
-                                C205 385 210 425 180 470
-                                C145 525 105 555 45 585
+                                M530 35
+                                C420 70 325 135 285 235
+                                C245 335 285 415 235 505
+                                C190 585 105 625 55 710
                             "
-                            stroke="#F4F4F1"
-                            strokeWidth="2"
+                            stroke="#C8A45D"
+                            strokeWidth="4"
+                            opacity="0.55"
                         />
 
                         <path
                             d="
-                                M350 35
-                                C285 85 250 125 225 175
-                                C195 235 200 295 240 345
-                                C275 390 275 425 240 475
-                                C205 525 160 560 90 600
+                                M555 40
+                                C450 95 360 160 320 250
+                                C280 340 320 420 270 510
+                                C220 600 130 640 75 730
                             "
-                            stroke="#CFCFCB"
+                            stroke="#F2EFE6"
+                            strokeWidth="1.5"
+                            opacity="0.25"
+                        />
+
+                        <path
+                            d="
+                                M580 55
+                                C490 125 410 185 370 270
+                                C335 345 365 425 315 520
+                                C270 610 185 670 110 750
+                            "
+                            stroke="#C8A45D"
                             strokeWidth="1"
+                            opacity="0.35"
                         />
 
                         <path
                             d="
-                                M305 85
-                                C255 125 230 175 245 220
-                                C260 260 295 275 330 245
-                                C350 225 355 190 345 155
-                                C338 128 322 105 305 85
+                                M390 115
+                                C330 100 270 130 255 185
+                                C245 225 270 260 310 258
+                                C355 255 390 210 390 115
                                 Z
                             "
-                            stroke="#FFFFFF"
+                            stroke="#C8A45D"
+                            strokeWidth="3"
+                            opacity="0.75"
+                        />
+
+                        <path
+                            d="
+                                M370 135
+                                C330 125 292 145 283 180
+                                C277 205 293 225 318 225
+                                C345 222 367 190 370 135
+                                Z
+                            "
+                            stroke="#F2EFE6"
+                            strokeWidth="1.5"
+                            opacity="0.45"
+                        />
+
+                        <path
+                            d="
+                                M370 135
+                                C350 160 330 190 318 225
+                            "
+                            stroke="#C8A45D"
+                            strokeWidth="1.5"
+                            opacity="0.8"
+                        />
+
+                        <path
+                            d="
+                                M255 185
+                                C205 165 155 185 145 225
+                                C138 255 160 278 190 275
+                                C225 270 250 235 255 185
+                                Z
+                            "
+                            stroke="#C8A45D"
                             strokeWidth="2.5"
+                            opacity="0.65"
                         />
+
+                        <g transform="translate(165 355)">
+                            <circle
+                                cx="0"
+                                cy="0"
+                                r="24"
+                                stroke="#C8A45D"
+                                strokeWidth="3"
+                                opacity="0.75"
+                            />
+
+                            <path
+                                d="
+                                    M0 -24
+                                    C-28 -55 -65 -38 -54 -8
+                                    C-88 -12 -94 28 -58 34
+                                    C-78 58 -45 82 -20 58
+                                    C-10 92 30 90 32 58
+                                    C62 80 88 48 62 26
+                                    C92 12 76 -25 43 -16
+                                    C48 -48 15 -62 0 -24
+                                "
+                                stroke="#F2EFE6"
+                                strokeWidth="2"
+                                opacity="0.35"
+                            />
+
+                            <circle
+                                cx="0"
+                                cy="0"
+                                r="7"
+                                fill="#C8A45D"
+                                opacity="0.8"
+                            />
+                        </g>
+
+                        <g stroke="#C8A45D" opacity="0.65">
+                            <path
+                                d="M465 300L500 335L465 370L430 335Z"
+                                strokeWidth="3"
+                            />
+
+                            <path
+                                d="M505 385L530 410L505 435L480 410Z"
+                                strokeWidth="2"
+                            />
+
+                            <path
+                                d="M405 455L440 490L405 525L370 490Z"
+                                strokeWidth="2.5"
+                            />
+
+                            <path
+                                d="M330 575L355 600L330 625L305 600Z"
+                                strokeWidth="2"
+                            />
+                        </g>
 
                         <path
                             d="
-                                M305 115
-                                C275 145 266 180 277 207
-                                C287 230 307 237 324 220
-                                C340 202 340 175 330 150
-                                C323 134 314 122 305 115
+                                M235 505
+                                C180 485 125 510 120 555
+                                C115 600 155 625 195 605
+                                C225 590 245 550 235 505
                                 Z
                             "
-                            stroke="#D7D7D3"
-                            strokeWidth="1.4"
+                            stroke="#C8A45D"
+                            strokeWidth="3"
+                            opacity="0.65"
                         />
 
                         <path
                             d="
-                                M305 115
-                                C307 155 310 190 324 220
+                                M120 555
+                                C75 530 35 550 40 590
+                                C45 625 82 635 105 605
                             "
-                            stroke="#FFFFFF"
-                            strokeWidth="1"
+                            stroke="#C8A45D"
+                            strokeWidth="3"
+                            opacity="0.55"
                         />
 
-                        <path
-                            d="
-                                M245 220
-                                C205 195 170 205 155 235
-                                C145 255 155 275 180 280
-                                C205 285 230 265 245 220
-                                Z
-                            "
-                            stroke="#EEEEEB"
-                            strokeWidth="2"
-                        />
-
-                        <path
-                            d="
-                                M240 345
-                                C195 330 160 345 150 375
-                                C143 397 158 415 182 412
-                                C210 408 232 385 240 345
-                                Z
-                            "
-                            stroke="#D6D6D2"
-                            strokeWidth="1.8"
-                        />
-
-                        <path
-                            d="
-                                M175 345
-                                C155 325 125 330 120 350
-                                C115 370 135 385 155 380
-                                C140 405 155 425 177 418
-                                C198 410 195 385 180 375
-                                C205 380 220 360 210 342
-                                C200 325 180 330 175 345
-                                Z
-                            "
-                            stroke="#FFFFFF"
-                            strokeWidth="2"
-                        />
-
-                        <circle
-                            cx="172"
-                            cy="365"
-                            r="9"
-                            stroke="#FFFFFF"
-                            strokeWidth="1.5"
-                        />
-
-                        <path
-                            d="M172 356C165 345 150 342 143 350"
-                            stroke="#D2D2CE"
-                            strokeWidth="1"
-                        />
-
-                        <path
-                            d="M180 365C193 360 202 350 201 340"
-                            stroke="#D2D2CE"
-                            strokeWidth="1"
-                        />
-
-                        <path
-                            d="M170 375C160 388 158 400 164 408"
-                            stroke="#D2D2CE"
-                            strokeWidth="1"
-                        />
-
-                        <path
-                            d="
-                                M180 470
-                                C130 450 90 470 85 510
-                                C82 545 115 565 150 550
-                                C180 537 195 505 180 470
-                                Z
-                            "
-                            stroke="#F1F1EE"
-                            strokeWidth="2.2"
-                        />
-
-                        <path
-                            d="
-                                M175 485
-                                C140 480 115 495 110 520
-                                C108 540 128 548 145 538
-                                C162 528 174 505 175 485
-                                Z
-                            "
-                            stroke="#CFCFCA"
-                            strokeWidth="1.2"
-                        />
-
-                        <path
-                            d="
-                                M85 510
-                                C45 490 20 505 25 535
-                                C30 565 65 570 85 550
-                            "
-                            stroke="#FFFFFF"
-                            strokeWidth="2"
-                        />
-
-                        <path
-                            d="
-                                M90 600
-                                C45 620 30 650 55 670
-                                C80 690 110 670 105 640
-                                C102 625 95 612 90 600
-                            "
-                            stroke="#D5D5D1"
-                            strokeWidth="1.5"
-                        />
-
-                        <path
-                            d="M420 110L438 128L420 146L402 128Z"
-                            stroke="#E8E8E4"
-                            strokeWidth="1.5"
-                        />
-
-                        <path
-                            d="M455 175L468 188L455 201L442 188Z"
-                            stroke="#CFCFCB"
-                        />
-
-                        <path
-                            d="M430 500L450 520L430 540L410 520Z"
-                            stroke="#E8E8E4"
-                        />
-
-                        <path
-                            d="
-                                M400 75
-                                C470 140 500 220 470 295
-                                C450 345 455 405 490 455
-                                C520 500 525 550 500 600
-                            "
-                            stroke="#BDBDB8"
-                            strokeWidth="1"
-                        />
-
-                        <path
-                            d="
-                                M430 55
-                                C500 130 535 220 505 305
-                                C485 365 490 425 525 475
-                            "
-                            stroke="#AAAAA5"
-                            strokeWidth="0.8"
-                        />
+                        <g fill="#C8A45D" opacity="0.75">
+                            <circle cx="455" cy="250" r="4" />
+                            <circle cx="485" cy="275" r="2.5" />
+                            <circle cx="425" cy="405" r="3" />
+                            <circle cx="375" cy="545" r="4" />
+                            <circle cx="290" cy="650" r="2.5" />
+                            <circle cx="250" cy="700" r="3" />
+                        </g>
                     </svg>
                 </div>
 
                 {/* =================================================
-                    ADDITIONAL SMALL ORNAMENTS
-                ================================================== */}
-
-                {/* Left top flower */}
-                <svg
-                    className="
-                        absolute
-                        left-[2%]
-                        top-[7%]
-                        h-24
-                        w-24
-                        opacity-[0.18]
-                        sm:h-32
-                        sm:w-32
-                    "
-                    viewBox="0 0 120 120"
-                    fill="none"
-                >
-                    <circle
-                        cx="60"
-                        cy="60"
-                        r="22"
-                        stroke="#FFFFFF"
-                        strokeWidth="2"
-                    />
-
-                    <path
-                        d="
-                            M60 38
-                            C45 20 20 28 25 48
-                            C5 43 0 68 20 72
-                            C7 88 28 105 43 90
-                            C50 110 75 110 77 90
-                            C95 105 115 85 100 70
-                            C120 62 108 38 88 46
-                            C92 25 70 18 60 38
-                        "
-                        stroke="#DCDCD8"
-                        strokeWidth="2"
-                    />
-
-                    <path
-                        d="M60 15V38M60 82V105M15 60H38M82 60H105"
-                        stroke="#BDBDB8"
-                        strokeWidth="1"
-                    />
-                </svg>
-
-                {/* Right top flower */}
-                <svg
-                    className="
-                        absolute
-                        right-[2%]
-                        top-[7%]
-                        h-24
-                        w-24
-                        opacity-[0.18]
-                        sm:h-32
-                        sm:w-32
-                    "
-                    viewBox="0 0 120 120"
-                    fill="none"
-                >
-                    <circle
-                        cx="60"
-                        cy="60"
-                        r="22"
-                        stroke="#FFFFFF"
-                        strokeWidth="2"
-                    />
-
-                    <path
-                        d="
-                            M60 38
-                            C45 20 20 28 25 48
-                            C5 43 0 68 20 72
-                            C7 88 28 105 43 90
-                            C50 110 75 110 77 90
-                            C95 105 115 85 100 70
-                            C120 62 108 38 88 46
-                            C92 25 70 18 60 38
-                        "
-                        stroke="#DCDCD8"
-                        strokeWidth="2"
-                    />
-
-                    <path
-                        d="M60 15V38M60 82V105M15 60H38M82 60H105"
-                        stroke="#BDBDB8"
-                        strokeWidth="1"
-                    />
-                </svg>
-
-                {/* =================================================
-                    CENTER FADE
+                    CENTER DARK FADE
                 ================================================== */}
                 <div
                     className="
                         absolute
                         inset-0
-                        bg-[linear-gradient(90deg,rgba(17,17,17,0.05)_0%,rgba(17,17,17,0.38)_14%,rgba(17,17,17,0.88)_29%,rgba(17,17,17,0.98)_42%,rgba(17,17,17,0.98)_58%,rgba(17,17,17,0.88)_71%,rgba(17,17,17,0.38)_86%,rgba(17,17,17,0.05)_100%)]
+                        bg-[linear-gradient(90deg,rgba(17,17,17,0.15)_0%,rgba(17,17,17,0.65)_18%,rgba(17,17,17,0.96)_34%,rgba(17,17,17,1)_50%,rgba(17,17,17,0.96)_66%,rgba(17,17,17,0.65)_82%,rgba(17,17,17,0.15)_100%)]
                     "
                 />
 
@@ -600,13 +501,13 @@ export default function DeveloperProjects({ project, landings }) {
                     className="
                         absolute
                         inset-0
-                        bg-[linear-gradient(180deg,rgba(17,17,17,0.55)_0%,transparent_20%,transparent_80%,rgba(17,17,17,0.65)_100%)]
+                        bg-[linear-gradient(180deg,rgba(0,0,0,0.65)_0%,transparent_25%,transparent_75%,rgba(0,0,0,0.7)_100%)]
                     "
                 />
             </div>
 
             {/* =====================================================
-                MAIN CONTENT
+                CONTENT
             ====================================================== */}
             <div
                 className="
@@ -621,35 +522,24 @@ export default function DeveloperProjects({ project, landings }) {
                     lg:py-20
                 "
             >
-                {/* =================================================
-                    HEADER
-                ================================================== */}
+                {/* HEADER */}
                 <div className="mx-auto max-w-3xl text-center">
-
-                    <div
-                        className="
-                            mb-4
-                            flex
-                            items-center
-                            justify-center
-                            gap-3
-                        "
-                    >
-                        <span className="h-px w-10 bg-mono-600" />
+                    <div className="mb-4 flex items-center justify-center gap-4">
+                        <span className="h-px w-10 bg-[#C8A45D]/70" />
 
                         <span
                             className="
-                                text-xs
+                                text-[10px]
                                 font-semibold
                                 uppercase
-                                tracking-[0.3em]
-                                text-mono-400
+                                tracking-[0.35em]
+                                text-[#C8A45D]
                             "
                         >
                             Developer
                         </span>
 
-                        <span className="h-px w-10 bg-mono-600" />
+                        <span className="h-px w-10 bg-[#C8A45D]/70" />
                     </div>
 
                     <h2
@@ -657,8 +547,8 @@ export default function DeveloperProjects({ project, landings }) {
                             text-3xl
                             font-semibold
                             uppercase
-                            tracking-[0.08em]
-                            text-mono-100
+                            tracking-[0.12em]
+                            text-[#F2EFE6]
                             sm:text-4xl
                         "
                     >
@@ -672,16 +562,14 @@ export default function DeveloperProjects({ project, landings }) {
                             max-w-3xl
                             text-sm
                             leading-7
-                            text-mono-400
+                            text-white/50
                         "
                     >
                         {landings?.developer_project_desc}
                     </p>
                 </div>
 
-                {/* =================================================
-                    PROJECT CARDS
-                ================================================== */}
+                {/* PROJECTS */}
                 <div className="mt-12 grid gap-6 md:grid-cols-2">
                     {project.map((item, index) => (
                         <a
@@ -696,15 +584,15 @@ export default function DeveloperProjects({ project, landings }) {
                                 overflow-hidden
                                 rounded-2xl
                                 border
-                                border-mono-700/80
-                                bg-mono-900/95
-                                shadow-xl
+                                border-white/10
+                                bg-[#151515]/95
+                                shadow-2xl
                                 backdrop-blur-sm
                                 transition-all
                                 duration-500
                                 hover:-translate-y-1
-                                hover:border-mono-500
-                                hover:shadow-2xl
+                                hover:border-[#C8A45D]/50
+                                hover:shadow-[0_20px_60px_rgba(0,0,0,0.45)]
                             "
                         >
                             {/* IMAGE */}
@@ -727,8 +615,8 @@ export default function DeveloperProjects({ project, landings }) {
                                         absolute
                                         inset-0
                                         bg-gradient-to-t
-                                        from-black/80
-                                        via-black/10
+                                        from-black/85
+                                        via-black/15
                                         to-transparent
                                     "
                                 />
@@ -746,18 +634,18 @@ export default function DeveloperProjects({ project, landings }) {
                                         justify-center
                                         rounded-full
                                         border
-                                        border-white/30
-                                        bg-black/40
+                                        border-[#C8A45D]/50
+                                        bg-black/50
                                         text-xs
                                         font-semibold
-                                        text-white
+                                        text-[#D4B875]
                                         backdrop-blur-md
                                     "
                                 >
                                     {String(index + 1).padStart(2, "0")}
                                 </span>
 
-                                {/* Badge */}
+                                {/* Project Badge */}
                                 <span
                                     className="
                                         absolute
@@ -765,15 +653,15 @@ export default function DeveloperProjects({ project, landings }) {
                                         top-4
                                         rounded-full
                                         border
-                                        border-white/20
-                                        bg-black/40
+                                        border-[#C8A45D]/40
+                                        bg-black/45
                                         px-3
                                         py-1
-                                        text-[10px]
+                                        text-[9px]
                                         font-semibold
                                         uppercase
-                                        tracking-[0.15em]
-                                        text-white
+                                        tracking-[0.2em]
+                                        text-[#D4B875]
                                         backdrop-blur-md
                                     "
                                 >
@@ -788,7 +676,7 @@ export default function DeveloperProjects({ project, landings }) {
                                     items-center
                                     justify-between
                                     px-5
-                                    py-4
+                                    py-5
                                 "
                             >
                                 <div>
@@ -796,8 +684,8 @@ export default function DeveloperProjects({ project, landings }) {
                                         className="
                                             text-[9px]
                                             uppercase
-                                            tracking-[0.2em]
-                                            text-mono-500
+                                            tracking-[0.25em]
+                                            text-[#C8A45D]/70
                                         "
                                     >
                                         Development
@@ -808,7 +696,7 @@ export default function DeveloperProjects({ project, landings }) {
                                             mt-1
                                             text-base
                                             font-semibold
-                                            text-mono-100
+                                            text-[#F2EFE6]
                                         "
                                     >
                                         {item.title}
@@ -818,19 +706,19 @@ export default function DeveloperProjects({ project, landings }) {
                                 <span
                                     className="
                                         flex
-                                        h-9
-                                        w-9
+                                        h-10
+                                        w-10
                                         items-center
                                         justify-center
                                         rounded-full
                                         border
-                                        border-mono-700
-                                        text-mono-300
+                                        border-white/10
+                                        text-[#C8A45D]
                                         transition-all
                                         duration-300
                                         group-hover:translate-x-1
-                                        group-hover:border-mono-400
-                                        group-hover:text-white
+                                        group-hover:border-[#C8A45D]/60
+                                        group-hover:bg-[#C8A45D]/10
                                     "
                                 >
                                     →
