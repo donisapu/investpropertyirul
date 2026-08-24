@@ -36,93 +36,65 @@ export default function OurLocation({ landings, landmarks }) {
             {/* =====================================================
                 ABSTRACT MONOCHROME BACKGROUND
             ====================================================== */}
-            <div className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
+                <div className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
 
-                <div className="
-                    absolute
-                    -right-[280px]
-                    top-[-100px]
-                    h-[900px]
-                    w-[1100px]
-                    rounded-[50%]
-                    border
-                    border-mono-400/20
-                    rotate-[12deg]
-                " />
+                    {/* LARGE ORGANIC SHAPE */}
+                    <div
+                        className="
+                            absolute
+                            -right-[180px]
+                            -top-[220px]
+                            h-[700px]
+                            w-[900px]
+                            rotate-[-18deg]
+                            rounded-[45%_55%_60%_40%]
+                            bg-mono-300/70
+                        "
+                    />
 
-                <div className="
-                    absolute
-                    -right-[230px]
-                    top-[-50px]
-                    h-[800px]
-                    w-[1000px]
-                    rounded-[50%]
-                    border
-                    border-mono-400/20
-                    rotate-[12deg]
-                " />
+                    {/* INNER CUT / LIGHT SHAPE */}
+                    <div
+                        className="
+                            absolute
+                            -right-[80px]
+                            -top-[120px]
+                            h-[500px]
+                            w-[700px]
+                            rotate-[-18deg]
+                            rounded-[45%_55%_60%_40%]
+                            bg-[#e5e5e3]
+                        "
+                    />
 
-                <div className="
-                    absolute
-                    -right-[180px]
-                    top-0
-                    h-[700px]
-                    w-[900px]
-                    rounded-[50%]
-                    border
-                    border-mono-400/20
-                    rotate-[12deg]
-                " />
+                    {/* SECOND ORGANIC SHAPE */}
+                    <div
+                        className="
+                            absolute
+                            -left-[300px]
+                            bottom-[-250px]
+                            h-[600px]
+                            w-[850px]
+                            rotate-[15deg]
+                            rounded-[55%_45%_40%_60%]
+                            bg-mono-300/50
+                        "
+                    />
 
-                <div className="
-                    absolute
-                    -right-[130px]
-                    top-[50px]
-                    h-[600px]
-                    w-[800px]
-                    rounded-[50%]
-                    border
-                    border-mono-400/20
-                    rotate-[12deg]
-                " />
+                    {/* INNER LIGHT */}
+                    <div
+                        className="
+                            absolute
+                            -left-[180px]
+                            bottom-[-170px]
+                            h-[420px]
+                            w-[650px]
+                            rotate-[15deg]
+                            rounded-[55%_45%_40%_60%]
+                            bg-[#e5e5e3]
+                        "
+                    />
 
-                <div className="
-                    absolute
-                    -right-[80px]
-                    top-[100px]
-                    h-[500px]
-                    w-[700px]
-                    rounded-[50%]
-                    border
-                    border-mono-400/20
-                    rotate-[12deg]
-                " />
-
-                <div className="
-                    absolute
-                    -right-[30px]
-                    top-[150px]
-                    h-[400px]
-                    w-[600px]
-                    rounded-[50%]
-                    border
-                    border-mono-400/20
-                    rotate-[12deg]
-                " />
-
-                <div className="
-                    absolute
-                    right-[20px]
-                    top-[200px]
-                    h-[300px]
-                    w-[500px]
-                    rounded-[50%]
-                    border
-                    border-mono-400/20
-                    rotate-[12deg]
-                " />
-
-            </div>
+                </div>
 
             {/* =====================================================
                 MAIN CONTENT
