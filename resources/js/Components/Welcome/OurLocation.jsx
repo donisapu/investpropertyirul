@@ -37,222 +37,91 @@ export default function OurLocation({ landings, landmarks }) {
                 ABSTRACT MONOCHROME BACKGROUND
             ====================================================== */}
             <div className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
-                {/* -----------------------------------------------
-                    TOP LEFT - BIG CIRCLE
-                ------------------------------------------------ */}
-                <div
-                    className="
-                        absolute
-                        -left-32
-                        -top-32
-                        h-[420px]
-                        w-[420px]
-                        rounded-full
-                        border-[70px]
-                        border-white/40
-                    "
-                />
 
-                {/* -----------------------------------------------
-                    TOP RIGHT - BIG SOFT CIRCLE
-                ------------------------------------------------ */}
-                <div
-                    className="
-                        absolute
-                        -right-40
-                        top-20
-                        h-[500px]
-                        w-[500px]
-                        rounded-full
-                        bg-mono-200/60
-                    "
-                />
+                <div className="
+                    absolute
+                    -right-[280px]
+                    top-[-100px]
+                    h-[900px]
+                    w-[1100px]
+                    rounded-[50%]
+                    border
+                    border-mono-400/20
+                    rotate-[12deg]
+                " />
 
-                {/* Circle outline */}
-                <div
-                    className="
-                        absolute
-                        -right-[100px]
-                        top-[120px]
-                        h-[420px]
-                        w-[420px]
-                        rounded-full
-                        border
-                        border-mono-400/20
-                    "
-                />
+                <div className="
+                    absolute
+                    -right-[230px]
+                    top-[-50px]
+                    h-[800px]
+                    w-[1000px]
+                    rounded-[50%]
+                    border
+                    border-mono-400/20
+                    rotate-[12deg]
+                " />
 
-                {/* -----------------------------------------------
-                    LEFT CENTER - ABSTRACT BLOB
-                ------------------------------------------------ */}
-                <div
-                    className="
-                        absolute
-                        -left-[100px]
-                        top-[45%]
-                        h-[300px]
-                        w-[500px]
-                        rotate-[-20deg]
-                        rounded-[50%]
-                        bg-white/50
-                        blur-sm
-                    "
-                />
+                <div className="
+                    absolute
+                    -right-[180px]
+                    top-0
+                    h-[700px]
+                    w-[900px]
+                    rounded-[50%]
+                    border
+                    border-mono-400/20
+                    rotate-[12deg]
+                " />
 
-                {/* -----------------------------------------------
-                    BOTTOM RIGHT - LARGE BLOB
-                ------------------------------------------------ */}
-                <div
-                    className="
-                        absolute
-                        bottom-[-180px]
-                        right-[10%]
-                        h-[400px]
-                        w-[600px]
-                        rotate-[15deg]
-                        rounded-[50%]
-                        bg-mono-200/70
-                    "
-                />
+                <div className="
+                    absolute
+                    -right-[130px]
+                    top-[50px]
+                    h-[600px]
+                    w-[800px]
+                    rounded-[50%]
+                    border
+                    border-mono-400/20
+                    rotate-[12deg]
+                " />
 
-                {/* -----------------------------------------------
-                    TRIANGLE
-                ------------------------------------------------ */}
-                <div
-                    className="
-                        absolute
-                        left-[8%]
-                        top-[38%]
-                        h-0
-                        w-0
-                        rotate-[-15deg]
-                        border-l-[100px]
-                        border-r-[100px]
-                        border-b-[180px]
-                        border-l-transparent
-                        border-r-transparent
-                        border-b-white/30
-                    "
-                />
+                <div className="
+                    absolute
+                    -right-[80px]
+                    top-[100px]
+                    h-[500px]
+                    w-[700px]
+                    rounded-[50%]
+                    border
+                    border-mono-400/20
+                    rotate-[12deg]
+                " />
 
-                {/* -----------------------------------------------
-                    ROTATED SQUARE
-                ------------------------------------------------ */}
-                <div
-                    className="
-                        absolute
-                        right-[15%]
-                        bottom-[20%]
-                        h-40
-                        w-40
-                        rotate-45
-                        rounded-3xl
-                        border
-                        border-mono-400/20
-                        bg-white/20
-                    "
-                />
+                <div className="
+                    absolute
+                    -right-[30px]
+                    top-[150px]
+                    h-[400px]
+                    w-[600px]
+                    rounded-[50%]
+                    border
+                    border-mono-400/20
+                    rotate-[12deg]
+                " />
 
-                {/* -----------------------------------------------
-                    SMALL CIRCLES
-                ------------------------------------------------ */}
-                <div
-                    className="
-                        absolute
-                        left-[25%]
-                        top-[15%]
-                        h-16
-                        w-16
-                        rounded-full
-                        border
-                        border-mono-400/20
-                    "
-                />
+                <div className="
+                    absolute
+                    right-[20px]
+                    top-[200px]
+                    h-[300px]
+                    w-[500px]
+                    rounded-[50%]
+                    border
+                    border-mono-400/20
+                    rotate-[12deg]
+                " />
 
-                <div
-                    className="
-                        absolute
-                        left-[28%]
-                        top-[18%]
-                        h-8
-                        w-8
-                        rounded-full
-                        bg-white/50
-                    "
-                />
-
-                <div
-                    className="
-                        absolute
-                        right-[30%]
-                        top-[45%]
-                        h-10
-                        w-10
-                        rounded-full
-                        bg-mono-300/50
-                    "
-                />
-
-                {/* -----------------------------------------------
-                    DIAGONAL LINES
-                ------------------------------------------------ */}
-                <div
-                    className="
-                        absolute
-                        -left-20
-                        top-[70%]
-                        h-px
-                        w-[600px]
-                        rotate-[-25deg]
-                        bg-mono-500/20
-                    "
-                />
-
-                <div
-                    className="
-                        absolute
-                        -left-10
-                        top-[73%]
-                        h-px
-                        w-[500px]
-                        rotate-[-25deg]
-                        bg-mono-500/10
-                    "
-                />
-
-                <div
-                    className="
-                        absolute
-                        left-[5%]
-                        top-[76%]
-                        h-px
-                        w-[400px]
-                        rotate-[-25deg]
-                        bg-mono-500/10
-                    "
-                />
-
-                {/* -----------------------------------------------
-                    SUBTLE GRID
-                ------------------------------------------------ */}
-                <div
-                    className="absolute inset-0 opacity-[0.035]"
-                    style={{
-                        backgroundImage: `
-                            linear-gradient(
-                                to right,
-                                #555 1px,
-                                transparent 1px
-                            ),
-                            linear-gradient(
-                                to bottom,
-                                #555 1px,
-                                transparent 1px
-                            )
-                        `,
-                        backgroundSize: "80px 80px",
-                    }}
-                />
             </div>
 
             {/* =====================================================
