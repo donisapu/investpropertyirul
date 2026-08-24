@@ -98,7 +98,7 @@ export default function Footer({
                             <img
                                 src={`/storage/${campaigns[0].banner_path}`}
                                 alt={campaigns[0].title}
-                                className="w-full h-auto object-cover aspect-[21/9] sm:aspect-[3/1] group-hover:scale-105 transition duration-500"
+                                className="w-full h-auto object-contain group-hover:scale-[1.01] transition duration-500"
                             />
                             <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent flex items-end p-6">
                                 <h3 className="text-white font-bold text-xl sm:text-2xl">
@@ -590,7 +590,7 @@ export default function Footer({
                         All rights reserved.
                     </p>
 
-                    <div className="flex gap-6">
+                    {/* <div className="flex gap-6">
 
                         <a
                             href="/privacy-policy"
@@ -606,7 +606,7 @@ export default function Footer({
                             Terms &amp; Conditions
                         </a>
 
-                    </div>
+                    </div> */}
 
                 </div>
             </div>
