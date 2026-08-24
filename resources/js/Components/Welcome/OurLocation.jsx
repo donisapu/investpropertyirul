@@ -36,75 +36,209 @@ export default function OurLocation({ landings, landmarks }) {
             {/* =====================================================
                 ABSTRACT MONOCHROME BACKGROUND
             ====================================================== */}
-                <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
+            <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
 
-                    {/* Soft atmospheric gradient */}
+                {/* Base atmospheric background */}
+                <div
+                    className="
+                        absolute
+                        inset-0
+                        bg-[radial-gradient(circle_at_70%_10%,rgba(255,255,255,0.95),transparent_38%),linear-gradient(180deg,#f3f3f1_0%,#e8e8e6_55%,#ddddda_100%)]
+                    "
+                />
+
+                {/* Large architectural arc */}
+                <div
+                    className="
+                        absolute
+                        -right-[140px]
+                        -top-[180px]
+                        h-[560px]
+                        w-[560px]
+                        rounded-full
+                        border-[55px]
+                        border-black/[0.075]
+                    "
+                />
+
+                {/* Secondary arc */}
+                <div
+                    className="
+                        absolute
+                        right-[60px]
+                        top-[40px]
+                        h-[280px]
+                        w-[280px]
+                        rounded-full
+                        border
+                        border-black/[0.06]
+                    "
+                />
+
+                {/* Architectural silhouette */}
+                <div
+                    className="
+                        absolute
+                        bottom-0
+                        left-[-30px]
+                        h-[420px]
+                        w-[420px]
+                        opacity-[0.14]
+                    "
+                >
                     <div
-                        className="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(255,255,255,0.95),transparent_48%),linear-gradient(180deg,#f2f2f0_0%,#e8e8e6_52%,#dededc_100%)]"
+                        className="
+                            absolute
+                            bottom-0
+                            left-8
+                            h-[270px]
+                            w-[115px]
+                            skew-x-[-8deg]
+                            bg-gradient-to-t
+                            from-black/35
+                            to-black/5
+                        "
                     />
 
-                    {/* Giant architectural arc */}
                     <div
-                        className="absolute -right-[260px] -top-[300px] h-[760px] w-[760px] rounded-full border-[72px] border-black/[0.055]"
+                        className="
+                            absolute
+                            bottom-0
+                            left-[125px]
+                            h-[350px]
+                            w-[145px]
+                            skew-x-[-5deg]
+                            bg-gradient-to-t
+                            from-black/40
+                            to-black/5
+                        "
                     />
 
-                    {/* Left architectural silhouette */}
-                    <div className="absolute bottom-0 left-[-70px] h-[520px] w-[500px] opacity-[0.10]">
-                        <div className="absolute bottom-0 left-8 h-[330px] w-[150px] skew-x-[-8deg] bg-gradient-to-t from-black/40 to-black/5" />
-
-                        <div className="absolute bottom-0 left-[150px] h-[430px] w-[190px] skew-x-[-5deg] bg-gradient-to-t from-black/45 to-black/5" />
-
-                        <div className="absolute bottom-0 left-[315px] h-[285px] w-[135px] skew-x-[8deg] bg-gradient-to-t from-black/35 to-black/5" />
-                    </div>
-
-                    {/* Contour lines */}
-                    <div className="absolute -left-24 top-[-80px] h-[480px] w-[560px] opacity-[0.08]">
-                        <div className="absolute inset-0 rounded-[48%] border border-black/40 rotate-[-18deg]" />
-                        <div className="absolute inset-[28px] rounded-[48%] border border-black/30 rotate-[-18deg]" />
-                        <div className="absolute inset-[56px] rounded-[48%] border border-black/25 rotate-[-18deg]" />
-                        <div className="absolute inset-[84px] rounded-[48%] border border-black/20 rotate-[-18deg]" />
-                    </div>
-
-                    {/* Dot grid */}
                     <div
-                        className="absolute right-[7%] top-[13%] h-28 w-28 opacity-30"
-                        style={{
-                            backgroundImage:
-                                "radial-gradient(circle, #777 1.5px, transparent 1.5px)",
-                            backgroundSize: "14px 14px",
-                        }}
+                        className="
+                            absolute
+                            bottom-0
+                            left-[250px]
+                            h-[230px]
+                            w-[105px]
+                            skew-x-[8deg]
+                            bg-gradient-to-t
+                            from-black/30
+                            to-black/5
+                        "
                     />
-
-                    {/* Flowing lines */}
-                    <svg
-                        className="absolute bottom-[-20px] left-0 h-[280px] w-full opacity-20"
-                        viewBox="0 0 1440 280"
-                        fill="none"
-                        preserveAspectRatio="none"
-                    >
-                        <path
-                            d="M-40 190C220 40 330 250 590 150C830 58 1010 42 1490 150"
-                            stroke="currentColor"
-                            strokeWidth="1.2"
-                            className="text-black"
-                        />
-
-                        <path
-                            d="M-80 235C180 95 340 300 620 190C900 80 1110 90 1510 195"
-                            stroke="currentColor"
-                            strokeWidth="1"
-                            className="text-black"
-                        />
-
-                        <path
-                            d="M-80 265C190 130 350 320 650 220C940 120 1130 125 1510 225"
-                            stroke="currentColor"
-                            strokeWidth="0.8"
-                            className="text-black"
-                        />
-                    </svg>
-
                 </div>
+
+                {/* Contour lines */}
+                <div
+                    className="
+                        absolute
+                        -left-16
+                        top-[120px]
+                        h-[360px]
+                        w-[440px]
+                        opacity-[0.11]
+                    "
+                >
+                    <div
+                        className="
+                            absolute
+                            inset-0
+                            rounded-[48%]
+                            border
+                            border-black/35
+                            rotate-[-18deg]
+                        "
+                    />
+
+                    <div
+                        className="
+                            absolute
+                            inset-[28px]
+                            rounded-[48%]
+                            border
+                            border-black/30
+                            rotate-[-18deg]
+                        "
+                    />
+
+                    <div
+                        className="
+                            absolute
+                            inset-[56px]
+                            rounded-[48%]
+                            border
+                            border-black/25
+                            rotate-[-18deg]
+                        "
+                    />
+
+                    <div
+                        className="
+                            absolute
+                            inset-[84px]
+                            rounded-[48%]
+                            border
+                            border-black/20
+                            rotate-[-18deg]
+                        "
+                    />
+                </div>
+
+                {/* Dot grid */}
+                <div
+                    className="
+                        absolute
+                        right-[8%]
+                        top-[18%]
+                        h-24
+                        w-24
+                        opacity-40
+                    "
+                    style={{
+                        backgroundImage:
+                            "radial-gradient(circle, #666 1.5px, transparent 1.5px)",
+                        backgroundSize: "12px 12px",
+                    }}
+                />
+
+                {/* Flowing contour lines */}
+                <svg
+                    className="
+                        absolute
+                        bottom-0
+                        left-0
+                        h-[220px]
+                        w-full
+                        opacity-[0.22]
+                    "
+                    viewBox="0 0 1440 220"
+                    fill="none"
+                    preserveAspectRatio="none"
+                >
+                    <path
+                        d="M-40 150C220 30 330 210 590 120C830 40 1010 35 1490 125"
+                        stroke="currentColor"
+                        strokeWidth="1.2"
+                        className="text-black"
+                    />
+
+                    <path
+                        d="M-80 185C180 75 340 250 620 155C900 60 1110 70 1510 165"
+                        stroke="currentColor"
+                        strokeWidth="1"
+                        className="text-black"
+                    />
+
+                    <path
+                        d="M-80 210C190 105 350 270 650 180C940 85 1130 100 1510 195"
+                        stroke="currentColor"
+                        strokeWidth="0.8"
+                        className="text-black"
+                    />
+                </svg>
+
+            </div>
 
             {/* =====================================================
                 MAIN CONTENT
