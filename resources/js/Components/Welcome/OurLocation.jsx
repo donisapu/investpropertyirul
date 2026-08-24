@@ -31,66 +31,108 @@ export default function OurLocation({ landings, landmarks }) {
     return (
         <section
             id="our-location"
-            className="relative isolate overflow-hidden bg-mono-100 text-mono-900"
+            className="relative isolate overflow-hidden bg-[#e5e5e3] text-[#171717]"
         >
             {/* =====================================================
                 ABSTRACT MONOCHROME BACKGROUND
             ====================================================== */}
-                <div className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
+                <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
 
-                    {/* LARGE ORGANIC SHAPE */}
+                    {/* BIG ORGANIC SHAPE - TOP RIGHT */}
                     <div
                         className="
                             absolute
                             -right-[180px]
-                            -top-[220px]
-                            h-[700px]
-                            w-[900px]
+                            -top-[180px]
+                            h-[650px]
+                            w-[850px]
                             rotate-[-18deg]
-                            rounded-[45%_55%_60%_40%]
-                            bg-mono-300/70
+                            rounded-[48%_52%_60%_40%]
+                            bg-[#c8c8c6]
                         "
                     />
 
-                    {/* INNER CUT / LIGHT SHAPE */}
+                    {/* CUTOUT */}
                     <div
                         className="
                             absolute
                             -right-[80px]
-                            -top-[120px]
-                            h-[500px]
-                            w-[700px]
+                            -top-[80px]
+                            h-[480px]
+                            w-[680px]
                             rotate-[-18deg]
-                            rounded-[45%_55%_60%_40%]
+                            rounded-[48%_52%_60%_40%]
                             bg-[#e5e5e3]
                         "
                     />
 
-                    {/* SECOND ORGANIC SHAPE */}
+                    {/* SECOND ORGANIC SHAPE - BOTTOM LEFT */}
                     <div
                         className="
                             absolute
-                            -left-[300px]
-                            bottom-[-250px]
-                            h-[600px]
-                            w-[850px]
-                            rotate-[15deg]
-                            rounded-[55%_45%_40%_60%]
-                            bg-mono-300/50
-                        "
-                    />
-
-                    {/* INNER LIGHT */}
-                    <div
-                        className="
-                            absolute
+                            -bottom-[280px]
                             -left-[180px]
-                            bottom-[-170px]
-                            h-[420px]
+                            h-[550px]
+                            w-[800px]
+                            rotate-[18deg]
+                            rounded-[55%_45%_40%_60%]
+                            bg-[#cececc]
+                        "
+                    />
+
+                    {/* CUTOUT */}
+                    <div
+                        className="
+                            absolute
+                            -bottom-[190px]
+                            -left-[80px]
+                            h-[390px]
                             w-[650px]
-                            rotate-[15deg]
+                            rotate-[18deg]
                             rounded-[55%_45%_40%_60%]
                             bg-[#e5e5e3]
+                        "
+                    />
+
+                    {/* LARGE CENTER CIRCLE */}
+                    <div
+                        className="
+                            absolute
+                            left-[-180px]
+                            top-[35%]
+                            h-[420px]
+                            w-[420px]
+                            rounded-full
+                            border-[60px]
+                            border-[#d0d0ce]
+                        "
+                    />
+
+                    {/* SMALL DECORATIVE CIRCLE */}
+                    <div
+                        className="
+                            absolute
+                            right-[28%]
+                            top-[18%]
+                            h-24
+                            w-24
+                            rounded-full
+                            border-[16px]
+                            border-[#d0d0ce]
+                        "
+                    />
+
+                    {/* SOFT SHADOW / DEPTH */}
+                    <div
+                        className="
+                            absolute
+                            right-[8%]
+                            top-[10%]
+                            h-[450px]
+                            w-[450px]
+                            rounded-full
+                            bg-white/30
+                            blur-[80px]
                         "
                     />
 
@@ -99,7 +141,7 @@ export default function OurLocation({ landings, landmarks }) {
             {/* =====================================================
                 MAIN CONTENT
             ====================================================== */}
-            <div className="relative mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8 lg:py-28">
+            <div className="relative z-10 mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8 lg:py-28">
 
                 {/* =================================================
                     HEADER
