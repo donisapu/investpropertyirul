@@ -330,7 +330,7 @@ export default function Footer({
                     <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-8">
 
                         <div className="max-w-xl">
-                            <div className="mb-4 text-[10px] font-semibold uppercase tracking-[0.22em] text-white/40">
+                            <div className="mb-4 text-[10px] font-semibold uppercase tracking-[0.22em] text-[#C8A45D]/80">
                                 Trusted Partners
                             </div>
 

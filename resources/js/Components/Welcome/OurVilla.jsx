@@ -3,6 +3,68 @@ import { Link } from "@inertiajs/react";
 import { route } from "ziggy-js";
 
 export default function OurVilla({ villa, sliders, landings }) {
+    const CountUp = ({ end, suffix = "", duration = 1800 }) => {
+        const [count, setCount] = useState(0);
+        const [started, setStarted] = useState(false);
+        const ref = useRef(null);
+
+        useEffect(() => {
+            const observer = new IntersectionObserver(
+                ([entry]) => {
+                    if (entry.isIntersecting) {
+                        setStarted(true);
+                        observer.disconnect();
+                    }
+                },
+                { threshold: 0.3 }
+            );
+
+            if (ref.current) {
+                observer.observe(ref.current);
+            }
+
+            return () => observer.disconnect();
+        }, []);
+
+        useEffect(() => {
+            if (!started) return;
+
+            let startTime;
+            let animationFrame;
+
+            const animate = (timestamp) => {
+                if (!startTime) startTime = timestamp;
+
+                const progress = Math.min(
+                    (timestamp - startTime) / duration,
+                    1
+                );
+
+                // easeOutCubic
+                const eased = 1 - Math.pow(1 - progress, 3);
+
+                setCount(Math.floor(eased * end));
+
+                if (progress < 1) {
+                    animationFrame = requestAnimationFrame(animate);
+                } else {
+                    setCount(end);
+                }
+            };
+
+            animationFrame = requestAnimationFrame(animate);
+
+            return () => cancelAnimationFrame(animationFrame);
+        }, [started, end, duration]);
+
+        return (
+            <span ref={ref}>
+                {count}
+                {suffix}
+            </span>
+        );
+    };
+    
     const dummyImgs = [
         "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
         "https://images.unsplash.com/photo-1658280024253-34cafdfbb002?q=80&w=2960&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
@@ -74,6 +136,94 @@ export default function OurVilla({ villa, sliders, landings }) {
         setDragging(false);
         setDeltaX(0);
     };
+
+    return (
+        <section className="relative overflow-hidden py-20 md:py-28">
+            {/* Decorative glow */}
+            <div className="pointer-events-none absolute left-1/2 top-1/2 h-[500px] w-[500px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#c9a45c]/[0.04] blur-3xl" />
+
+            <div className="relative mx-auto max-w-7xl px-6 lg:px-8">
+
+                {/* Section Heading */}
+                <div className="mb-12 text-center md:mb-16">
+                    <div className="mb-4 text-[10px] font-semibold uppercase tracking-[0.3em] text-[#c9a45c]">
+                        Our Experience
+                    </div>
+
+                    <h2 className="font-serif text-3xl text-white md:text-4xl lg:text-5xl">
+                        A Stay Beyond Expectations
+                    </h2>
+
+                    <div className="mx-auto mt-5 h-px w-16 bg-[#c9a45c]/60" />
+                </div>
+
+                {/* Counting Cards */}
+                <div className="grid grid-cols-2 overflow-hidden rounded-2xl border border-white/10 bg-white/[0.025] backdrop-blur-sm md:grid-cols-4">
+
+                    {/* Card 1 */}
+                    <div className="group relative flex flex-col items-center justify-center px-5 py-10 text-center md:py-14">
+                        <div className="pointer-events-none absolute inset-0 bg-[#c9a45c]/[0.03] opacity-0 transition duration-500 group-hover:opacity-100" />
+
+                        <div className="relative">
+                            <div className="font-serif text-4xl font-medium tracking-tight text-[#c9a45c] md:text-5xl lg:text-6xl">
+                                <CountUp end={12} suffix="+" />
+                            </div>
+
+                            <div className="mt-3 text-[9px] font-semibold uppercase tracking-[0.25em] text-white/50 md:text-[10px]">
+                                Years Experience
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Card 2 */}
+                    <div className="group relative flex flex-col items-center justify-center border-l border-white/10 px-5 py-10 text-center md:py-14">
+                        <div className="pointer-events-none absolute inset-0 bg-[#c9a45c]/[0.03] opacity-0 transition duration-500 group-hover:opacity-100" />
+
+                        <div className="relative">
+                            <div className="font-serif text-4xl font-medium tracking-tight text-[#c9a45c] md:text-5xl lg:text-6xl">
+                                <CountUp end={25} suffix="+" />
+                            </div>
+
+                            <div className="mt-3 text-[9px] font-semibold uppercase tracking-[0.25em] text-white/50 md:text-[10px]">
+                                Luxury Villas
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Card 3 */}
+                    <div className="group relative flex flex-col items-center justify-center border-t border-white/10 px-5 py-10 text-center md:border-l md:border-t-0 md:py-14">
+                        <div className="pointer-events-none absolute inset-0 bg-[#c9a45c]/[0.03] opacity-0 transition duration-500 group-hover:opacity-100" />
+
+                        <div className="relative">
+                            <div className="font-serif text-4xl font-medium tracking-tight text-[#c9a45c] md:text-5xl lg:text-6xl">
+                                <CountUp end={98} suffix="%" />
+                            </div>
+
+                            <div className="mt-3 text-[9px] font-semibold uppercase tracking-[0.25em] text-white/50 md:text-[10px]">
+                                Guest Satisfaction
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Card 4 */}
+                    <div className="group relative flex flex-col items-center justify-center border-l border-t border-white/10 px-5 py-10 text-center md:py-14">
+                        <div className="pointer-events-none absolute inset-0 bg-[#c9a45c]/[0.03] opacity-0 transition duration-500 group-hover:opacity-100" />
+
+                        <div className="relative">
+                            <div className="font-serif text-4xl font-medium tracking-tight text-[#c9a45c] md:text-5xl lg:text-6xl">
+                                <CountUp end={15} suffix="+" />
+                            </div>
+
+                            <div className="mt-3 text-[9px] font-semibold uppercase tracking-[0.25em] text-white/50 md:text-[10px]">
+                                Destinations
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+    );
 
     return (
         <section

@@ -268,22 +268,6 @@ export default function Hero({ landings, settings, sliders }) {
                                     text-white/60
                                 "
                             >
-                                <span
-                                    className="
-                                        flex
-                                        h-7
-                                        w-7
-                                        items-center
-                                        justify-center
-                                        rounded-full
-                                        border
-                                        border-white/30
-                                        text-[8px]
-                                    "
-                                >
-                                    01
-                                </span>
-
                                 <span className="h-px w-8 bg-white/40" />
 
                                 <span>
@@ -806,38 +790,6 @@ export default function Hero({ landings, settings, sliders }) {
                 </div>
             </div>
 
-            {/* =====================================================
-                SCROLL INDICATOR
-            ====================================================== */}
-            <div
-                className="
-                    absolute
-                    bottom-8
-                    right-8
-                    z-20
-                    hidden
-                    flex-col
-                    items-center
-                    gap-3
-                    text-[9px]
-                    uppercase
-                    tracking-[0.25em]
-                    text-white/40
-                    md:flex
-                "
-            >
-                <span>Scroll</span>
-
-                <span
-                    className="
-                        h-10
-                        w-px
-                        bg-gradient-to-b
-                        from-white/50
-                        to-transparent
-                    "
-                />
-            </div>
         </section>
     );
 }
