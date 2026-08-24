@@ -116,11 +116,29 @@ export default function Header() {
                             <div className="relative" ref={dropdownRef}>
                                 <button
                                     onClick={() => setAccountOpen(!accountOpen)}
-                                    className="flex items-center gap-1 font-bold text-mono-900 hover:text-mono-500 transition-colors focus:outline-none uppercase"
+                                    className="
+                                        flex
+                                        items-center
+                                        gap-1
+                                        font-bold
+                                        uppercase
+                                        text-[#D4AF37]
+                                        transition-colors
+                                        duration-200
+                                        hover:text-[#F1D56A]
+                                        focus:outline-none
+                                    "
                                 >
                                     MY ACCOUNT
+
                                     <svg
-                                        className={`w-4 h-4 transition-transform duration-200 ${accountOpen ? "rotate-180" : ""}`}
+                                        className={`
+                                            h-4
+                                            w-4
+                                            transition-transform
+                                            duration-200
+                                            ${accountOpen ? "rotate-180" : ""}
+                                        `}
                                         fill="none"
                                         stroke="currentColor"
                                         strokeWidth="2"
