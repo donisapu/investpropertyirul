@@ -75,16 +75,16 @@ export default function Investments({ properties, settings, partners }) {
                             {/* ==================== HEADING ==================== */}
                             <h2
                                 className="
-                                    text-4xl
+                                    text-2xl
                                     font-semibold
                                     uppercase
                                     leading-[1.02]
                                     tracking-[0.08em]
                                     text-[#f5f1e8]
                                     drop-shadow-2xl
-                                    sm:text-5xl
-                                    md:text-6xl
-                                    lg:text-[3.8rem]
+                                    sm:text-3xl
+                                    md:text-4xl
+                                    lg:text-[2.5rem]
                                 "
                             >
                                 Mulai Investasi Properti
