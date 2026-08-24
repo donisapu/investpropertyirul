@@ -49,7 +49,7 @@ export default function Footer({
         return () => clearInterval(timer);
     }, [campaigns]);
 
-    if (!campaigns || campaigns.length === 0) return null;
+    if (!campaigns) return null;
 
     const prevSlide = (e) => {
         e.stopPropagation();
@@ -322,156 +322,281 @@ export default function Footer({
                     </div>
                 )}
 
-                <div className="text-center">
-                    <div className="flex gap-2 items-center justify-center">
-                        <span className="inline-block text-mono-500 text-2xl sm:text-3xl font-semibold tracking-wide">
-                            Partner
-                        </span>
-                        <h2 className="text-2xl sm:text-3xl font-semibold">
-                            Kami
-                        </h2>
-                    </div>
-                    <p className="mt-3 text-sm leading-relaxed text-mono-100">
-                        Kami memiliki beberapa partner yang membantu kami dalam
-                        membangun rumah untuk klien-klien kami.
-                    </p>
-                </div>
+                {/* ================================
+                    PARTNER / TRUSTED PARTNERS
+                ================================= */}
+                <div className="border-b border-white/10 py-16">
 
-                <div className="mt-10 flex flex-wrap items-center justify-center gap-12">
-                    {partners.map((partner) => (
-                        <div key={partner.id} className="flex-shrink-0">
-                            <img
-                                src={`/storage/${partner.image_url}`}
-                                alt={partner.name}
-                                className="h-16 object-contain opacity-100 hover:opacity-70 hover:grayscale-0 transition duration-300"
-                            />
+                    <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-8">
+
+                        <div className="max-w-xl">
+                            <div className="mb-4 text-[10px] font-semibold uppercase tracking-[0.22em] text-white/40">
+                                Trusted Partners
+                            </div>
+
+                            <h2 className="text-3xl sm:text-4xl font-semibold tracking-[-0.04em]">
+                                Dibangun bersama
+                                <br />
+                                partner terpercaya.
+                            </h2>
                         </div>
-                    ))}
+
+                        <p className="max-w-md text-sm leading-7 text-white/50">
+                            Kami bekerja sama dengan berbagai partner untuk
+                            menghadirkan pengalaman properti yang lebih baik
+                            bagi para klien dan investor.
+                        </p>
+
+                    </div>
+
+                    <div className="mt-12 flex flex-wrap items-center gap-x-12 gap-y-8">
+                        {partners?.map((partner) => (
+                            <div
+                                key={partner.id}
+                                className="group flex h-14 items-center"
+                            >
+                                <img
+                                    src={`/storage/${partner.image_url}`}
+                                    alt={partner.name}
+                                    className="max-h-12 w-auto max-w-[150px] object-contain grayscale opacity-50 transition duration-300 group-hover:grayscale-0 group-hover:opacity-100"
+                                />
+                            </div>
+                        ))}
+                    </div>
+
                 </div>
 
-                <div className="mt-10 grid gap-8 md:grid-cols-3">
-                    <div>
-                        <h3 className="text-mono-100 font-semibold">
-                            Tentang Kami
-                        </h3>
-                        <p className="mt-2 text-sm text-mono-300">
+
+                {/* ================================
+                    MAIN FOOTER
+                ================================= */}
+                <div className="grid grid-cols-1 gap-14 py-16 md:grid-cols-2 lg:grid-cols-12">
+
+                    {/* BRAND */}
+                    <div className="lg:col-span-5">
+
+                        <div className="flex items-center gap-3">
+
+                            <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-white/20 text-sm font-semibold">
+                                G
+                            </div>
+
+                            <div>
+                                <div className="text-lg font-bold tracking-[-0.04em]">
+                                    GAIN
+                                </div>
+
+                                <div className="text-[9px] font-medium tracking-[0.25em] text-white/40">
+                                    PROPERTIES
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <p className="mt-7 max-w-md text-sm leading-7 text-white/45">
                             {settings?.description}
                         </p>
-                        <div className="mt-2 text-sm text-mono-300">
-                            <span className="mr-2">📍</span> {settings?.address}
-                        </div>
+
+                        {settings?.address && (
+                            <div className="mt-6 flex gap-3 text-sm text-white/50">
+                                <span className="text-white/70">+</span>
+                                <span>{settings?.address}</span>
+                            </div>
+                        )}
+
                     </div>
-                    <div>
-                        <h3 className="text-mono-100 font-semibold">Beranda</h3>
-                        <ul className="mt-2 space-y-1 text-sm">
-                            <li>
-                                <a
-                                    href="/investments"
-                                    className="text-mono-100 hover:text-mono-300"
-                                >
-                                    Investment
-                                </a>
-                            </li>
-                            <li>
-                                <a
-                                    href="/crowdfunding"
-                                    className="text-mono-100 hover:text-mono-300"
-                                >
-                                    Crowdfunding
-                                </a>
-                            </li>
-                            <li>
-                                <a
-                                    href="/property-for-sale"
-                                    className="text-mono-100 hover:text-mono-300"
-                                >
-                                    Property for Sale
-                                </a>
-                            </li>
-                            <li>
-                                <a
-                                    href="/how-to-invest"
-                                    className="text-mono-100 hover:text-mono-300"
-                                >
-                                    How to Invest
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                    <div>
-                        <h3 className="text-base font-semibold">
-                            Hubungi Kami
+
+
+                    {/* EXPLORE */}
+                    <div className="lg:col-span-2">
+
+                        <h3 className="mb-6 text-[10px] font-semibold uppercase tracking-[0.18em] text-white/35">
+                            Explore
                         </h3>
-                        <ul className="mt-2 space-y-1 text-sm">
-                            <li className="flex items-center gap-2">
-                                <span className="text-slate-500">📞</span>
-                                <a
-                                    href={`https://wa.me/${settings?.whatsapp}`}
-                                    className="text-mono-100 hover:text-mono-300"
-                                >
-                                    +{settings?.whatsapp}
-                                </a>
-                            </li>
-                            <li className="flex items-center gap-2">
-                                <span className="text-slate-500">✉️</span>
-                                <a
-                                    href={`mailto:${settings?.email}`}
-                                    className="text-mono-100 hover:text-mono-300"
-                                >
-                                    {settings?.email}
-                                </a>
-                            </li>
-                        </ul>
-                        <div className="mt-4 flex items-center gap-3">
+
+                        <div className="flex flex-col gap-3">
+
                             <a
-                                href={settings?.facebook_url || "#"}
-                                className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-mono-700 text-mono-100 hover:bg-mono-100 hover:text-mono-900 transition"
-                                aria-label="Facebook"
+                                href="/investments"
+                                className="text-sm text-white/60 transition hover:text-white"
                             >
-                                <svg
-                                    className="h-4 w-4"
-                                    viewBox="0 0 24 24"
-                                    fill="currentColor"
-                                >
-                                    <path d="M22 12a10 10 0 10-11.5 9.9v-7h-2v-3h2v-2.3c0-2 1.2-3.1 3-3.1.9 0 1.8.2 1.8.2v2h-1c-1 0-1.3.6-1.3 1.2V12h2.2l-.3 3h-1.9v7A10 10 0 0022 12z" />
-                                </svg>
+                                Investment
                             </a>
+
                             <a
-                                href={settings?.instagram_url || "#"}
-                                className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-mono-700 text-mono-100 hover:bg-mono-100 hover:text-mono-900 transition"
-                                aria-label="Instagram"
+                                href="/crowdfunding"
+                                className="text-sm text-white/60 transition hover:text-white"
                             >
-                                <svg
-                                    className="h-4 w-4"
-                                    viewBox="0 0 24 24"
-                                    fill="currentColor"
-                                >
-                                    <path d="M7 2C4.24 2 2 4.24 2 7v10c0 2.76 2.24 5 5 5h10c2.76 0 5-2.24 5-5V7c0-2.76-2.24-5-5-5H7zm10 2c1.66 0 3 1.34 3 3v10c0 1.66-1.34 3-3 3H7c-1.66 0-3-1.34-3-3V7c0-1.66 1.34-3 3-3h10zm-5 3a5 5 0 100 10 5 5 0 000-10zm6-1a1 1 0 100 2 1 1 0 000-2z" />
-                                </svg>
+                                Crowdfunding
                             </a>
+
                             <a
-                                href={settings?.youtube_url || "#"}
-                                className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-mono-700 text-mono-100 hover:bg-mono-100 hover:text-mono-900 transition"
-                                aria-label="YouTube"
+                                href="/property-for-sale"
+                                className="text-sm text-white/60 transition hover:text-white"
                             >
-                                <svg
-                                    className="h-4 w-4"
-                                    viewBox="0 0 24 24"
-                                    fill="currentColor"
-                                >
-                                    <path d="M23.5 6.2a3 3 0 00-2.1-2.1C19.8 3.6 12 3.6 12 3.6s-7.8 0-9.4.5A3 3 0 00.6 6.2 31.6 31.6 0 000 12a31.6 31.6 0 00.6 5.8 3 3 0 002.1 2.1c1.6.5 9.4.5 9.4.5s7.8 0 9.4-.5a3 3 0 002.1-2.1c.4-1.9.6-3.8.6-5.8s-.2-3.9-.6-5.8zM9.7 15.5V8.5l6.2 3.5-6.2 3.5z" />
-                                </svg>
+                                Property for Sale
                             </a>
+
+                            <a
+                                href="/how-to-invest"
+                                className="text-sm text-white/60 transition hover:text-white"
+                            >
+                                How to Invest
+                            </a>
+
                         </div>
+
                     </div>
+
+
+                    {/* COMPANY */}
+                    <div className="lg:col-span-2">
+
+                        <h3 className="mb-6 text-[10px] font-semibold uppercase tracking-[0.18em] text-white/35">
+                            Company
+                        </h3>
+
+                        <div className="flex flex-col gap-3">
+
+                            <a
+                                href="/about"
+                                className="text-sm text-white/60 transition hover:text-white"
+                            >
+                                Tentang Kami
+                            </a>
+
+                            <a
+                                href="/partner"
+                                className="text-sm text-white/60 transition hover:text-white"
+                            >
+                                Partner
+                            </a>
+
+                            <a
+                                href="/faq"
+                                className="text-sm text-white/60 transition hover:text-white"
+                            >
+                                FAQ
+                            </a>
+
+                            <a
+                                href="/contact"
+                                className="text-sm text-white/60 transition hover:text-white"
+                            >
+                                Kontak
+                            </a>
+
+                        </div>
+
+                    </div>
+
+
+                    {/* CONTACT */}
+                    <div className="lg:col-span-3">
+
+                        <h3 className="mb-6 text-[10px] font-semibold uppercase tracking-[0.18em] text-white/35">
+                            Get in touch
+                        </h3>
+
+                        <div className="space-y-4">
+
+                            {settings?.whatsapp && (
+                                <a
+                                    href={`https://wa.me/${settings.whatsapp}`}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="block text-sm text-white/60 transition hover:text-white"
+                                >
+                                    +{settings.whatsapp}
+                                </a>
+                            )}
+
+                            {settings?.email && (
+                                <a
+                                    href={`mailto:${settings.email}`}
+                                    className="block break-all text-sm text-white/60 transition hover:text-white"
+                                >
+                                    {settings.email}
+                                </a>
+                            )}
+
+                        </div>
+
+
+                        {/* SOCIAL */}
+                        <div className="mt-7 flex gap-2">
+
+                            {settings?.facebook_url && (
+                                <a
+                                    href={settings.facebook_url}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    aria-label="Facebook"
+                                    className="flex h-9 w-9 items-center justify-center rounded-full border border-white/10 text-xs text-white/50 transition hover:border-white/40 hover:text-white"
+                                >
+                                    f
+                                </a>
+                            )}
+
+                            {settings?.instagram_url && (
+                                <a
+                                    href={settings.instagram_url}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    aria-label="Instagram"
+                                    className="flex h-9 w-9 items-center justify-center rounded-full border border-white/10 text-xs text-white/50 transition hover:border-white/40 hover:text-white"
+                                >
+                                    ◎
+                                </a>
+                            )}
+
+                            {settings?.youtube_url && (
+                                <a
+                                    href={settings.youtube_url}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    aria-label="YouTube"
+                                    className="flex h-9 w-9 items-center justify-center rounded-full border border-white/10 text-xs text-white/50 transition hover:border-white/40 hover:text-white"
+                                >
+                                    ▶
+                                </a>
+                            )}
+
+                        </div>
+
+                    </div>
+
                 </div>
-            </div>
-            <div className="border-t border-slate-200 bg-slate-50">
-                <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-4 flex flex-col sm:flex-row items-center justify-between gap-2 text-slate-600">
-                    <p className="text-[0.8rem]">
-                        © {new Date().getFullYear()} {settings?.site_name}. All
-                        rights reserved.
+
+
+                {/* ================================
+                    BOTTOM COPYRIGHT
+                ================================= */}
+                <div className="flex flex-col gap-4 border-t border-white/10 py-6 text-[11px] text-white/30 sm:flex-row sm:items-center sm:justify-between">
+
+                    <p>
+                        © {new Date().getFullYear()} {settings?.site_name}.
+                        All rights reserved.
                     </p>
+
+                    <div className="flex gap-6">
+
+                        <a
+                            href="/privacy-policy"
+                            className="transition hover:text-white/70"
+                        >
+                            Privacy Policy
+                        </a>
+
+                        <a
+                            href="/terms"
+                            className="transition hover:text-white/70"
+                        >
+                            Terms &amp; Conditions
+                        </a>
+
+                    </div>
+
                 </div>
             </div>
         </footer>
