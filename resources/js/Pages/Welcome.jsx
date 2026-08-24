@@ -33,7 +33,7 @@ export default function Welcome({
                     <Header />
 
                     <main className="flex-1 text-slate-50">
-                        <Hero landings={landings} settings={settings} />
+                        <Hero landings={landings} settings={settings} sliders={sliders} />
                         <OurVilla
                             villa={villa}
                             sliders={sliders}
