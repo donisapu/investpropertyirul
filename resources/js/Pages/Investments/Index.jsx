@@ -19,40 +19,171 @@ export default function Investments({ properties, settings, partners }) {
 
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
                 {/* Banner */}
-                <div className="mb-12 rounded-2xl overflow-hidden shadow-lg border border-slate-100 relative bg-[url('https://images.pexels.com/photos/101808/pexels-photo-101808.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2')] bg-cover bg-center">
-                    {/* Gradien Overlay untuk Membaca Teks */}
-                    <div className="absolute inset-0 bg-gradient-to-r from-emerald-50 via-emerald-100/90 to-white/60"></div>
+                <div className="group relative mb-12 overflow-hidden rounded-2xl border border-white/10 bg-[#0c0c0b] shadow-2xl">
 
-                    {/* Area Konten */}
-                    <div className="relative z-10 p-8 md:p-12 flex flex-col md:flex-row items-center justify-between gap-10">
-                        <div className="max-w-xl flex-1 flex flex-col items-start gap-4">
-                            <h2 className="text-3xl md:text-4xl font-extrabold text-slate-900 leading-tight">
+                    {/* ==================== BACKGROUND IMAGE ==================== */}
+                    <div
+                        className="absolute inset-0 bg-cover bg-center transition-transform duration-[1200ms] ease-out group-hover:scale-[1.035]"
+                        style={{
+                            backgroundImage:
+                                "url('https://images.pexels.com/photos/323780/pexels-photo-323780.jpeg?auto=compress&cs=tinysrgb&w=1600')",
+                        }}
+                    />
+
+                    {/* ==================== DARK OVERLAY ==================== */}
+                    <div className="absolute inset-0 bg-gradient-to-r from-[#080808] via-[#0a0a09]/95 to-[#0a0a09]/60" />
+
+                    {/* Additional Bottom Vignette */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#080808]/80 via-transparent to-transparent" />
+
+                    {/* ==================== GOLD AMBIENT LIGHT ==================== */}
+                    <div className="pointer-events-none absolute -right-32 -top-32 h-96 w-96 rounded-full bg-[#c9a45c]/10 blur-3xl" />
+
+                    <div className="pointer-events-none absolute -bottom-32 left-1/3 h-72 w-72 rounded-full bg-[#c9a45c]/5 blur-3xl" />
+
+
+                    {/* ==================== CONTENT ==================== */}
+                    <div className="relative z-10 flex min-h-[390px] items-center px-7 py-12 md:px-12 md:py-16 lg:px-16">
+
+                        <div className="max-w-2xl">
+
+                            {/* Eyebrow */}
+                            <div className="mb-5 flex items-center gap-3">
+
+                                <span className="h-px w-10 bg-[#c9a45c]/70" />
+
+                                <span className="text-[10px] font-semibold uppercase tracking-[0.32em] text-[#c9a45c]">
+                                    Property Investment
+                                </span>
+
+                            </div>
+
+
+                            {/* Heading */}
+                            <h2 className="font-serif text-3xl leading-[1.15] tracking-tight text-white md:text-4xl lg:text-5xl">
                                 Mulai Investasi Properti Bersama{" "}
-                                <span className="text-emerald-700">
+                                <span className="text-[#c9a45c]">
                                     {settings?.site_name}
                                 </span>
                             </h2>
-                            <p className="text-lg text-slate-700 max-w-md">
-                                Temukan peluang investasi properti premium
-                                dengan potensi imbal hasil yang menarik.
-                                Bergabunglah sekarang.
+
+
+                            {/* Description */}
+                            <p className="mt-6 max-w-xl text-sm leading-7 text-white/50 md:text-[15px]">
+                                Temukan peluang investasi properti premium dengan
+                                potensi imbal hasil yang menarik, didukung oleh aset
+                                properti nyata dan proses investasi yang transparan.
                             </p>
 
-                            {/* Tombol CTA Baru */}
-                            {/* <button className="mt-4 bg-emerald-600 text-white font-semibold px-8 py-3.5 rounded-xl shadow-lg hover:bg-emerald-700 transition duration-150 inline-flex items-center gap-2.5">
-                                <Building2 className="w-6 h-6" />
-                                Jelajahi Peluang Investasi
-                            </button> */}
+
+                            {/* ==================== STATS ==================== */}
+                            <div className="mt-8 flex flex-wrap items-center gap-x-8 gap-y-4">
+
+                                <div>
+                                    <div className="font-serif text-xl text-white">
+                                        Real Assets
+                                    </div>
+
+                                    <div className="mt-1 text-[9px] uppercase tracking-[0.2em] text-white/35">
+                                        Property Backed
+                                    </div>
+                                </div>
+
+
+                                <div className="hidden h-8 w-px bg-white/10 sm:block" />
+
+
+                                <div>
+                                    <div className="font-serif text-xl text-white">
+                                        Transparent
+                                    </div>
+
+                                    <div className="mt-1 text-[9px] uppercase tracking-[0.2em] text-white/35">
+                                        Investment Process
+                                    </div>
+                                </div>
+
+
+                                <div className="hidden h-8 w-px bg-white/10 sm:block" />
+
+
+                                <div>
+                                    <div className="font-serif text-xl text-[#c9a45c]">
+                                        Flexible
+                                    </div>
+
+                                    <div className="mt-1 text-[9px] uppercase tracking-[0.2em] text-white/35">
+                                        Opportunities
+                                    </div>
+                                </div>
+
+                            </div>
+
+
+                            {/* ==================== CTA ==================== */}
+                            <div className="mt-9 flex flex-wrap items-center gap-5">
+
+                                <a
+                                    href="#investment-projects"
+                                    className="inline-flex items-center gap-3 rounded-full bg-[#c9a45c] px-7 py-3.5 text-[10px] font-semibold uppercase tracking-[0.22em] text-[#11110f] transition duration-300 hover:bg-[#dfc27a]"
+                                >
+                                    Explore Investments
+
+                                    <span className="text-sm">
+                                        →
+                                    </span>
+                                </a>
+
+
+                                <a
+                                    href="#how-it-works"
+                                    className="inline-flex items-center gap-3 text-[10px] font-semibold uppercase tracking-[0.22em] text-white/55 transition duration-300 hover:text-[#c9a45c]"
+                                >
+                                    How It Works
+
+                                    <span className="text-sm">
+                                        →
+                                    </span>
+                                </a>
+
+                            </div>
+
                         </div>
 
-                        {/* Ikon Dekoratif Halus (Sekarang Sisi-Kanan) */}
-                        <div className="relative flex-none hidden md:block">
-                            <div className="w-56 h-44 bg-emerald-100/50 rounded-2xl flex items-center justify-center shadow-inner relative overflow-hidden group">
-                                <Building2 className="w-24 h-24 text-emerald-300 group-hover:scale-110 transition duration-300" />
-                                <div className="absolute -bottom-8 -right-8 w-24 h-24 bg-white/40 rounded-full blur-xl"></div>
+
+                        {/* ==================== DECORATIVE RIGHT SIDE ==================== */}
+                        <div className="pointer-events-none absolute right-8 top-1/2 hidden h-[270px] w-[230px] -translate-y-1/2 md:block lg:right-14">
+
+                            {/* Outer Frame */}
+                            <div className="absolute inset-0 rotate-3 border border-[#c9a45c]/15" />
+
+                            {/* Inner Frame */}
+                            <div className="absolute inset-5 -rotate-3 border border-[#c9a45c]/10" />
+
+
+                            {/* Large Number */}
+                            <div className="absolute right-7 top-1/2 -translate-y-1/2 text-right">
+
+                                <div className="font-serif text-[90px] leading-none text-[#c9a45c]/10">
+                                    01
+                                </div>
+
+                                <div className="mt-4 text-[9px] font-semibold uppercase tracking-[0.35em] text-white/25">
+                                    Invest
+                                </div>
+
                             </div>
+
+
+                            {/* Decorative Lines */}
+                            <div className="absolute bottom-8 left-8 h-px w-16 bg-[#c9a45c]/30" />
+
+                            <div className="absolute bottom-8 left-8 h-1.5 w-1.5 rotate-45 border border-[#c9a45c]/50" />
+
                         </div>
+
                     </div>
+
                 </div>
 
                 {/* Grid */}
