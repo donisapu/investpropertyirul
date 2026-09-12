@@ -70,7 +70,7 @@ export default function Footer({
     };
 
     return (
-        <footer className="bg-[#0f1715] text-slate-100 border-t border-white/10 relative overflow-hidden">
+        <footer className="bg-slate-50 text-slate-700 border-t border-slate-200 relative overflow-hidden">
             {/* Background Ambient Glow */}
             <div className="absolute top-0 right-1/4 w-96 h-96 bg-amber-500/5 rounded-full blur-3xl pointer-events-none" />
             <div className="absolute bottom-0 left-10 w-80 h-80 bg-emerald-500/5 rounded-full blur-3xl pointer-events-none" />
@@ -314,14 +314,14 @@ export default function Footer({
                                     className="flex items-center gap-2 px-3 py-2 rounded-xl bg-white/5 border border-white/10 hover:border-amber-500/50 hover:bg-white/10 transition group"
                                 >
                                     <img
-                                        src="/assets/img/komdigi-logo.png"
+                                        src="/assets/img/komdigi.svg"
                                         alt="KOMDIGI Registered"
                                         className="h-7 w-auto object-contain opacity-80 group-hover:opacity-100 transition"
                                     />
                                 </a>
 
                                 {/* ISO CERTIFICATION */}
-                                <div
+                                {/* <div
                                     title="Sertifikasi ISO/IEC 27001"
                                     className="flex items-center gap-2 px-3 py-2 rounded-xl bg-white/5 border border-white/10"
                                 >
@@ -330,7 +330,7 @@ export default function Footer({
                                         alt="ISO/IEC 27001"
                                         className="h-7 w-auto object-contain opacity-80"
                                     />
-                                </div>
+                                </div> */}
 
                                 {/* KAN LINK */}
                                 <a
@@ -341,7 +341,7 @@ export default function Footer({
                                     className="flex items-center gap-2 px-3 py-2 rounded-xl bg-white/5 border border-white/10 hover:border-amber-500/50 hover:bg-white/10 transition group"
                                 >
                                     <img
-                                        src="/assets/img/kan-logo.png"
+                                        src="/assets/img/kan.svg"
                                         alt="KAN Akreditasi"
                                         className="h-7 w-auto object-contain opacity-80 group-hover:opacity-100 transition"
                                     />
