@@ -1,6 +1,5 @@
 export default function Hero({ landings, settings, sliders }) {
-    // Utamakan gambar dari landings.image (dari panel/form landing page)
-    // Jika tidak ada, gunakan sliders[0] atau gambar fallback default
+    // Ambil gambar dari landings.hero_path
     const heroImage = landings?.hero_path
         ? `/storage/${landings.hero_path}`
         : sliders && sliders.length > 0
@@ -80,14 +79,14 @@ export default function Hero({ landings, settings, sliders }) {
                             grid
                             items-center
                             gap-12
-                            lg:grid-cols-[minmax(0,1fr)_500px]
+                            lg:grid-cols-12
                             xl:gap-16
                         "
                     >
                         {/* =================================================
-                            LEFT CONTENT
+                            LEFT CONTENT (7 COLS)
                         ================================================== */}
-                        <div className="relative z-10 max-w-3xl">
+                        <div className="relative z-10 max-w-3xl lg:col-span-7">
                             {/* Eyebrow */}
                             <div
                                 className="
@@ -452,99 +451,25 @@ export default function Hero({ landings, settings, sliders }) {
                         </div>
 
                         {/* =================================================
-                            RIGHT SINGLE IMAGE (UPDATABLE FROM LANDINGS)
+                            RIGHT CLEAN IMAGE (STYLE SEPERTI ACUAN)
                         ================================================== */}
                         <div
                             className="
                                 relative
+                                flex
                                 w-full
-                                lg:pt-6
+                                items-center
+                                justify-center
+                                lg:col-span-5
                             "
                         >
-                            {/* FLOATING TOP CARD */}
-                            <div
-                                className="
-                                    absolute
-                                    -left-6
-                                    top-0
-                                    z-30
-                                    hidden
-                                    w-[210px]
-                                    rounded-2xl
-                                    border
-                                    border-neutral-100
-                                    bg-white
-                                    p-4
-                                    shadow-[0_15px_50px_rgba(0,0,0,0.10)]
-                                    sm:block
-                                "
-                            >
-                                <div className="flex items-center gap-3">
-                                    <div
-                                        className="
-                                            h-10
-                                            w-10
-                                            overflow-hidden
-                                            rounded-xl
-                                            bg-neutral-100
-                                        "
-                                    >
-                                        <img
-                                            src={heroImage}
-                                            alt={heroTitle}
-                                            className="
-                                                h-full
-                                                w-full
-                                                object-cover
-                                            "
-                                        />
-                                    </div>
-
-                                    <div>
-                                        <p
-                                            className="
-                                                text-xs
-                                                font-semibold
-                                                text-neutral-900
-                                            "
-                                        >
-                                            {heroTitle}
-                                        </p>
-
-                                        <p
-                                            className="
-                                                mt-0.5
-                                                text-[9px]
-                                                text-neutral-400
-                                            "
-                                        >
-                                            Premium Property
-                                        </p>
-                                    </div>
-                                </div>
-
-                                <div className="mt-3 flex items-center gap-1">
-                                    <span className="text-[11px] text-neutral-800">
-                                        ★★★★★
-                                    </span>
-
-                                    <span className="text-[9px] text-neutral-400">
-                                        4.9 (120+)
-                                    </span>
-                                </div>
-                            </div>
-
-                            {/* MAIN HERO IMAGE */}
                             <div
                                 className="
                                     relative
-                                    h-[400px]
+                                    w-full
                                     overflow-hidden
-                                    rounded-[28px]
-                                    bg-neutral-100
-                                    shadow-[0_20px_60px_rgba(0,0,0,0.08)]
-                                    sm:h-[500px]
-                                    lg:h-[570px]
+                                    rounded-2xl
+                                    sm:rounded-3xl
                                 "
                             >
                                 <img
@@ -552,183 +477,14 @@ export default function Hero({ landings, settings, sliders }) {
                                     alt={heroTitle}
                                     draggable="false"
                                     className="
-                                        h-full
+                                        h-[380px]
                                         w-full
                                         object-cover
+                                        object-center
+                                        sm:h-[480px]
+                                        lg:h-[540px]
                                     "
                                 />
-
-                                {/* Image gradient */}
-                                <div
-                                    className="
-                                        absolute
-                                        inset-0
-                                        bg-gradient-to-t
-                                        from-black/45
-                                        via-transparent
-                                        to-transparent
-                                    "
-                                />
-
-                                {/* IMAGE TITLE */}
-                                <div
-                                    className="
-                                        absolute
-                                        bottom-0
-                                        left-0
-                                        right-0
-                                        z-20
-                                        p-6
-                                        sm:p-8
-                                    "
-                                >
-                                    <div className="max-w-[70%]">
-                                        <p
-                                            className="
-                                                text-[9px]
-                                                uppercase
-                                                tracking-[0.25em]
-                                                text-white/60
-                                            "
-                                        >
-                                            Villa Collection
-                                        </p>
-
-                                        <p
-                                            className="
-                                                mt-2
-                                                text-lg
-                                                font-medium
-                                                uppercase
-                                                tracking-[0.05em]
-                                                text-white
-                                                sm:text-xl
-                                            "
-                                        >
-                                            {heroTitle}
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-
-                            {/* FLOATING RIGHT STAT */}
-                            <div
-                                className="
-                                    absolute
-                                    -right-5
-                                    top-[38%]
-                                    z-30
-                                    hidden
-                                    rounded-2xl
-                                    border
-                                    border-neutral-100
-                                    bg-white
-                                    px-5
-                                    py-4
-                                    shadow-[0_15px_50px_rgba(0,0,0,0.10)]
-                                    sm:block
-                                "
-                            >
-                                <div className="flex items-center gap-3">
-                                    <div
-                                        className="
-                                            flex
-                                            h-9
-                                            w-9
-                                            items-center
-                                            justify-center
-                                            rounded-full
-                                            bg-neutral-100
-                                            text-sm
-                                            text-neutral-700
-                                        "
-                                    >
-                                        ◎
-                                    </div>
-
-                                    <div>
-                                        <p
-                                            className="
-                                                text-xl
-                                                font-semibold
-                                                tracking-tight
-                                                text-neutral-900
-                                            "
-                                        >
-                                            2.5K+
-                                        </p>
-
-                                        <p
-                                            className="
-                                                text-[9px]
-                                                uppercase
-                                                tracking-[0.1em]
-                                                text-neutral-400
-                                            "
-                                        >
-                                            Active Users
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-
-                            {/* BOTTOM FLOATING CARD */}
-                            <div
-                                className="
-                                    absolute
-                                    -bottom-5
-                                    -right-3
-                                    z-30
-                                    hidden
-                                    w-[190px]
-                                    rounded-2xl
-                                    border
-                                    border-neutral-100
-                                    bg-white
-                                    p-5
-                                    shadow-[0_15px_50px_rgba(0,0,0,0.10)]
-                                    sm:block
-                                "
-                            >
-                                <p
-                                    className="
-                                        text-xs
-                                        font-semibold
-                                        leading-5
-                                        text-neutral-900
-                                    "
-                                >
-                                    Your Dream Property
-                                    <br />
-                                    Starts Here
-                                </p>
-
-                                <div
-                                    className="
-                                        mt-4
-                                        flex
-                                        items-center
-                                        justify-between
-                                    "
-                                >
-                                    <span className="h-px w-8 bg-neutral-300" />
-
-                                    <span
-                                        className="
-                                            flex
-                                            h-9
-                                            w-9
-                                            items-center
-                                            justify-center
-                                            rounded-full
-                                            bg-neutral-950
-                                            text-sm
-                                            text-white
-                                        "
-                                    >
-                                        ↗
-                                    </span>
-                                </div>
                             </div>
                         </div>
                     </div>
