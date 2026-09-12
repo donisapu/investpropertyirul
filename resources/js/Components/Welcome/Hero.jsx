@@ -167,6 +167,10 @@ export default function Hero({ landings, settings, sliders }) {
                                     uppercase
                                     tracking-[0.18em]
                                     text-neutral-500
+                                    bg-gradient-to-r from-[#8B5A10] 
+                                    via-[#D4AF37] to-[#F3E5AB] 
+                                    bg-clip-text 
+                                    text-transparent
                                 "
                             >
                                 Discover your next destination
