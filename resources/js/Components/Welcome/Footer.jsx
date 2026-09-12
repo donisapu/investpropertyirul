@@ -70,7 +70,7 @@ export default function Footer({
     };
 
     return (
-        <footer className="bg-slate-50 text-slate-700 border-t border-slate-200 relative overflow-hidden">
+        <footer className="bg-slate-900 text-slate-200 border-t border-slate-800 relative overflow-hidden">
             {/* Background Ambient Glow */}
             <div className="absolute top-0 right-1/4 w-96 h-96 bg-amber-500/5 rounded-full blur-3xl pointer-events-none" />
             <div className="absolute bottom-0 left-10 w-80 h-80 bg-emerald-500/5 rounded-full blur-3xl pointer-events-none" />
