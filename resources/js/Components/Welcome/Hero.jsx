@@ -72,7 +72,18 @@ export default function Hero({ landings, settings, sliders }) {
                             "
                         >
                             {landings?.header}
-                        </h1> <h1 className="bg-gradient-to-r from-[#8B5A10] via-[#D4AF37] to-[#F3E5AB] bg-clip-text text-transparent font-semibold">
+                        </h1> <h1 className=" text-4xl
+                                font-semibold
+                                leading-[1.05]
+                                tracking-[-0.035em]
+                                text-neutral-950
+                                sm:text-5xl
+                                md:text-6xl
+                                xl:text-[68px] 
+                                bg-gradient-to-r from-[#8B5A10] 
+                                via-[#D4AF37] to-[#F3E5AB] 
+                                bg-clip-text 
+                                text-transparent">
                                   Impianmu
                               </h1>
                         {/* Accent line */}
