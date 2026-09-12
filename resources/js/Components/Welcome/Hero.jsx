@@ -48,7 +48,7 @@ export default function Hero({ landings, settings, sliders }) {
     }, [activeSlide, isPaused, totalSlides]);
 
     /*
-     * Ambil preview slide berikutnya
+     * Ambil index slide berikutnya
      */
     const getNextIndex = (offset) => {
         if (!totalSlides) return 0;
@@ -61,180 +61,56 @@ export default function Hero({ landings, settings, sliders }) {
             id="top"
             className="
                 relative
-                min-h-[760px]
                 overflow-hidden
-                bg-mono-950
-                text-white
-                md:h-[92vh]
-                md:min-h-[680px]
+                bg-white
+                text-neutral-900
             "
         >
             {/* =====================================================
-                BACKGROUND
+                SUBTLE BACKGROUND
             ====================================================== */}
-            <div className="absolute inset-0">
-
-                {/* Main hero image */}
+            <div className="pointer-events-none absolute inset-0">
                 <div
                     className="
                         absolute
-                        inset-0
-                        bg-cover
-                        bg-center
-                        scale-[1.02]
-                        transition-all
-                        duration-[2000ms]
-                    "
-                    style={{
-                        backgroundImage: `url(/storage/${landings.hero_path})`,
-                    }}
-                />
-
-                {/* Dark overlay */}
-                <div className="absolute inset-0 bg-black/45" />
-
-                {/* Cinematic gradient */}
-                <div
-                    className="
-                        absolute
-                        inset-0
-                        bg-gradient-to-r
-                        from-black/85
-                        via-black/55
-                        to-black/25
-                    "
-                />
-
-                {/* Bottom cinematic gradient */}
-                <div
-                    className="
-                        absolute
-                        inset-0
-                        bg-gradient-to-t
-                        from-black/90
-                        via-transparent
-                        to-black/30
-                    "
-                />
-
-                {/* Atmospheric light */}
-                <div
-                    className="
-                        absolute
-                        inset-0
-                        bg-[radial-gradient(circle_at_70%_40%,rgba(255,255,255,0.12),transparent_32%)]
-                    "
-                />
-
-                {/* Architectural frame */}
-                <div
-                    className="
-                        absolute
-                        inset-5
-                        border
-                        border-white/10
-                        md:inset-8
-                    "
-                />
-
-                {/* Decorative circle */}
-                <div
-                    className="
-                        absolute
-                        -right-[300px]
-                        -top-[280px]
-                        h-[700px]
-                        w-[700px]
+                        right-0
+                        top-0
+                        h-[500px]
+                        w-[500px]
+                        translate-x-1/3
+                        -translate-y-1/3
                         rounded-full
-                        border
-                        border-white/[0.06]
+                        bg-neutral-50
                     "
                 />
 
                 <div
                     className="
                         absolute
-                        -right-[240px]
-                        -top-[220px]
-                        h-[580px]
-                        w-[580px]
-                        rounded-full
-                        border
-                        border-white/[0.04]
+                        bottom-0
+                        left-0
+                        h-px
+                        w-full
+                        bg-neutral-200
                     "
                 />
-            </div>
-
-            {/* =====================================================
-                TOP RIGHT LABEL
-            ====================================================== */}
-            <div
-                className="
-                    absolute
-                    right-8
-                    top-8
-                    z-20
-                    hidden
-                    items-center
-                    gap-3
-                    text-[9px]
-                    font-medium
-                    uppercase
-                    tracking-[0.3em]
-                    text-white/40
-                    lg:flex
-                "
-            >
-                <span>Premium Property</span>
-
-                <span className="h-px w-8 bg-white/30" />
-
-                <span>Est. 2026</span>
-            </div>
-
-            {/* =====================================================
-                SIDE LABEL
-            ====================================================== */}
-            <div
-                className="
-                    absolute
-                    left-6
-                    top-1/2
-                    z-20
-                    hidden
-                    -translate-y-1/2
-                    -rotate-90
-                    items-center
-                    gap-4
-                    text-[9px]
-                    uppercase
-                    tracking-[0.35em]
-                    text-white/30
-                    lg:flex
-                "
-            >
-                Architecture
-
-                <span className="h-px w-10 bg-white/30" />
-
-                Development
             </div>
 
             {/* =====================================================
                 MAIN CONTENT
             ====================================================== */}
-            <div className="relative z-10 h-full">
-
+            <div className="relative z-10">
                 <div
                     className="
                         mx-auto
                         flex
-                        h-full
+                        min-h-[680px]
                         max-w-7xl
                         items-center
                         px-6
                         py-24
                         sm:px-8
+                        lg:min-h-[760px]
                         lg:px-12
                     "
                 >
@@ -243,32 +119,30 @@ export default function Hero({ landings, settings, sliders }) {
                             grid
                             w-full
                             items-center
-                            gap-12
-                            lg:grid-cols-[1fr_420px]
-                            xl:grid-cols-[1fr_500px]
+                            gap-14
+                            lg:grid-cols-[minmax(0,1fr)_460px]
+                            xl:grid-cols-[minmax(0,1fr)_520px]
                         "
                     >
-
                         {/* =================================================
                             LEFT CONTENT
                         ================================================== */}
-                        <div className="max-w-3xl">
-
-                            {/* Label */}
+                        <div className="max-w-2xl">
+                            {/* Small label */}
                             <div
                                 className="
-                                    mb-5
+                                    mb-6
                                     flex
                                     items-center
                                     gap-3
                                     text-[10px]
                                     font-semibold
                                     uppercase
-                                    tracking-[0.3em]
-                                    text-white/60
+                                    tracking-[0.28em]
+                                    text-neutral-500
                                 "
                             >
-                                <span className="h-px w-8 bg-white/40" />
+                                <span className="h-px w-8 bg-neutral-400" />
 
                                 <span>
                                     {landings?.subheader}
@@ -278,14 +152,13 @@ export default function Hero({ landings, settings, sliders }) {
                             {/* Heading */}
                             <h1
                                 className="
-                                    max-w-4xl
+                                    max-w-3xl
                                     text-4xl
                                     font-semibold
                                     uppercase
-                                    leading-[1.02]
-                                    tracking-[0.08em]
-                                    text-white
-                                    drop-shadow-2xl
+                                    leading-[1.04]
+                                    tracking-[0.045em]
+                                    text-neutral-950
                                     sm:text-5xl
                                     md:text-6xl
                                     xl:text-7xl
@@ -297,11 +170,11 @@ export default function Hero({ landings, settings, sliders }) {
                             {/* Description */}
                             <p
                                 className="
-                                    mt-6
+                                    mt-7
                                     max-w-xl
                                     text-sm
                                     leading-7
-                                    text-white/65
+                                    text-neutral-500
                                     sm:text-base
                                 "
                             >
@@ -311,62 +184,97 @@ export default function Hero({ landings, settings, sliders }) {
                             {/* =================================================
                                 INFORMATION STRIP
                             ================================================== */}
-                            <div className="mt-8 max-w-4xl">
-
-                                <div className="h-px w-full bg-white/20" />
+                            <div className="mt-10 max-w-3xl">
+                                <div className="h-px w-full bg-neutral-200" />
 
                                 <div
                                     className="
                                         grid
                                         grid-cols-2
                                         divide-x
-                                        divide-white/10
-                                        py-4
+                                        divide-neutral-200
+                                        py-5
                                         sm:grid-cols-4
                                     "
                                 >
                                     <div className="px-3 first:pl-0">
-                                        <span className="text-[9px] text-white/35">
+                                        <span className="text-[9px] text-neutral-400">
                                             01
                                         </span>
 
-                                        <p className="mt-1 text-[10px] uppercase tracking-[0.12em] text-white/75 sm:text-xs">
+                                        <p
+                                            className="
+                                                mt-1
+                                                text-[10px]
+                                                uppercase
+                                                tracking-[0.12em]
+                                                text-neutral-700
+                                                sm:text-xs
+                                            "
+                                        >
                                             Development
                                         </p>
                                     </div>
 
                                     <div className="px-3">
-                                        <span className="text-[9px] text-white/35">
+                                        <span className="text-[9px] text-neutral-400">
                                             02
                                         </span>
 
-                                        <p className="mt-1 text-[10px] uppercase tracking-[0.12em] text-white/75 sm:text-xs">
+                                        <p
+                                            className="
+                                                mt-1
+                                                text-[10px]
+                                                uppercase
+                                                tracking-[0.12em]
+                                                text-neutral-700
+                                                sm:text-xs
+                                            "
+                                        >
                                             Architecture
                                         </p>
                                     </div>
 
                                     <div className="px-3">
-                                        <span className="text-[9px] text-white/35">
+                                        <span className="text-[9px] text-neutral-400">
                                             03
                                         </span>
 
-                                        <p className="mt-1 text-[10px] uppercase tracking-[0.12em] text-white/75 sm:text-xs">
+                                        <p
+                                            className="
+                                                mt-1
+                                                text-[10px]
+                                                uppercase
+                                                tracking-[0.12em]
+                                                text-neutral-700
+                                                sm:text-xs
+                                            "
+                                        >
                                             Construction
                                         </p>
                                     </div>
 
                                     <div className="px-3">
-                                        <span className="text-[9px] text-white/35">
+                                        <span className="text-[9px] text-neutral-400">
                                             04
                                         </span>
 
-                                        <p className="mt-1 text-[10px] uppercase tracking-[0.12em] text-white/75 sm:text-xs">
+                                        <p
+                                            className="
+                                                mt-1
+                                                text-[10px]
+                                                uppercase
+                                                tracking-[0.12em]
+                                                text-neutral-700
+                                                sm:text-xs
+                                            "
+                                        >
                                             Real Estate Agency
                                         </p>
                                     </div>
                                 </div>
 
-                                <div className="h-px w-full bg-white/10" />
+                                <div className="h-px w-full bg-neutral-200" />
                             </div>
 
                             {/* =================================================
@@ -374,7 +282,7 @@ export default function Hero({ landings, settings, sliders }) {
                             ================================================== */}
                             <div
                                 className="
-                                    mt-7
+                                    mt-8
                                     flex
                                     flex-col
                                     items-start
@@ -393,21 +301,19 @@ export default function Hero({ landings, settings, sliders }) {
                                         items-center
                                         gap-4
                                         rounded-full
-                                        border
-                                        border-white/30
-                                        bg-white
+                                        bg-neutral-950
                                         px-6
                                         py-3
                                         text-xs
                                         font-semibold
                                         uppercase
                                         tracking-[0.16em]
-                                        text-mono-900
-                                        shadow-2xl
+                                        text-white
+                                        shadow-sm
                                         transition-all
                                         duration-300
-                                        hover:-translate-y-1
-                                        hover:bg-white/90
+                                        hover:-translate-y-0.5
+                                        hover:bg-neutral-800
                                     "
                                 >
                                     <span>Contact Us</span>
@@ -420,8 +326,8 @@ export default function Hero({ landings, settings, sliders }) {
                                             items-center
                                             justify-center
                                             rounded-full
-                                            bg-mono-900
-                                            text-white
+                                            bg-white
+                                            text-neutral-950
                                             transition-transform
                                             duration-300
                                             group-hover:translate-x-1
@@ -436,7 +342,7 @@ export default function Hero({ landings, settings, sliders }) {
                                         text-[10px]
                                         uppercase
                                         tracking-[0.2em]
-                                        text-white/35
+                                        text-neutral-400
                                     "
                                 >
                                     Discover your next destination
@@ -453,47 +359,68 @@ export default function Hero({ landings, settings, sliders }) {
                                     relative
                                     mx-auto
                                     w-full
-                                    max-w-[500px]
+                                    max-w-[520px]
                                     lg:mx-0
                                     lg:ml-auto
                                 "
                                 onMouseEnter={() => setIsPaused(true)}
                                 onMouseLeave={() => setIsPaused(false)}
                             >
-
-                                {/* Decorative number */}
+                                {/* Small heading */}
                                 <div
                                     className="
-                                        absolute
-                                        -left-10
-                                        top-4
-                                        z-20
-                                        hidden
-                                        text-[9px]
-                                        font-medium
-                                        uppercase
-                                        tracking-[0.3em]
-                                        text-white/40
-                                        lg:block
+                                        mb-4
+                                        flex
+                                        items-center
+                                        justify-between
                                     "
                                 >
-                                    Selected View
+                                    <div
+                                        className="
+                                            flex
+                                            items-center
+                                            gap-3
+                                            text-[9px]
+                                            font-medium
+                                            uppercase
+                                            tracking-[0.28em]
+                                            text-neutral-400
+                                        "
+                                    >
+                                        <span>Selected View</span>
+
+                                        <span className="h-px w-8 bg-neutral-300" />
+                                    </div>
+
+                                    <span
+                                        className="
+                                            text-[10px]
+                                            font-medium
+                                            tracking-[0.18em]
+                                            text-neutral-400
+                                        "
+                                    >
+                                        {String(activeSlide + 1).padStart(
+                                            2,
+                                            "0"
+                                        )}
+                                        {" / "}
+                                        {String(totalSlides).padStart(2, "0")}
+                                    </span>
                                 </div>
 
-                                {/* Main slider image */}
+                                {/* =================================================
+                                    MAIN IMAGE
+                                ================================================== */}
                                 <div
                                     className="
                                         relative
-                                        h-[300px]
+                                        h-[340px]
                                         overflow-hidden
-                                        rounded-2xl
-                                        border
-                                        border-white/20
-                                        bg-black/30
-                                        shadow-2xl
-                                        backdrop-blur-sm
-                                        sm:h-[360px]
-                                        lg:h-[430px]
+                                        rounded-xl
+                                        bg-neutral-100
+                                        sm:h-[420px]
+                                        lg:h-[500px]
                                     "
                                 >
                                     {heroSlides.map((slide, index) => (
@@ -508,7 +435,7 @@ export default function Hero({ landings, settings, sliders }) {
                                                 ${
                                                     activeSlide === index
                                                         ? "translate-x-0 opacity-100"
-                                                        : "translate-x-8 opacity-0"
+                                                        : "translate-x-6 opacity-0"
                                                 }
                                             `}
                                         >
@@ -520,24 +447,29 @@ export default function Hero({ landings, settings, sliders }) {
                                                     h-full
                                                     w-full
                                                     object-cover
+                                                    transition-transform
+                                                    duration-[5000ms]
                                                 "
                                             />
 
-                                            {/* Image overlay */}
+                                            {/* Very subtle image gradient */}
                                             <div
                                                 className="
                                                     absolute
-                                                    inset-0
+                                                    inset-x-0
+                                                    bottom-0
+                                                    h-32
                                                     bg-gradient-to-t
-                                                    from-black/70
-                                                    via-transparent
-                                                    to-black/10
+                                                    from-black/45
+                                                    to-transparent
                                                 "
                                             />
                                         </div>
                                     ))}
 
-                                    {/* Image information */}
+                                    {/* =================================================
+                                        IMAGE INFORMATION
+                                    ================================================== */}
                                     <div
                                         className="
                                             absolute
@@ -563,7 +495,7 @@ export default function Hero({ landings, settings, sliders }) {
                                                         text-[9px]
                                                         uppercase
                                                         tracking-[0.25em]
-                                                        text-white/50
+                                                        text-white/60
                                                     "
                                                 >
                                                     Villa Collection
@@ -579,51 +511,49 @@ export default function Hero({ landings, settings, sliders }) {
                                                         text-white
                                                     "
                                                 >
-                                                    {heroSlides[activeSlide]?.title}
+                                                    {
+                                                        heroSlides[
+                                                            activeSlide
+                                                        ]?.title
+                                                    }
                                                 </p>
-                                            </div>
-
-                                            <div
-                                                className="
-                                                    text-xs
-                                                    font-medium
-                                                    tracking-[0.2em]
-                                                    text-white/60
-                                                "
-                                            >
-                                                {String(
-                                                    activeSlide + 1
-                                                ).padStart(2, "0")}
-                                                {" / "}
-                                                {String(
-                                                    totalSlides
-                                                ).padStart(2, "0")}
                                             </div>
                                         </div>
                                     </div>
 
-                                    {/* Progress line */}
+                                    {/* Progress */}
                                     <div
                                         className="
                                             absolute
                                             bottom-0
                                             left-0
+                                            z-20
                                             h-0.5
                                             bg-white
                                             transition-all
                                             duration-300
                                         "
                                         style={{
-                                            width: `${((activeSlide + 1) / totalSlides) * 100}%`,
+                                            width: `${
+                                                ((activeSlide + 1) /
+                                                    totalSlides) *
+                                                100
+                                            }%`,
                                         }}
                                     />
                                 </div>
 
                                 {/* =================================================
-                                    PREVIEW CARDS
+                                    PREVIEW + NAVIGATION
                                 ================================================== */}
-                                <div className="mt-4 flex items-center gap-3">
-
+                                <div
+                                    className="
+                                        mt-4
+                                        flex
+                                        items-center
+                                        gap-3
+                                    "
+                                >
                                     {[1, 2].map((offset) => {
                                         const index =
                                             getNextIndex(offset);
@@ -643,13 +573,12 @@ export default function Hero({ landings, settings, sliders }) {
                                                     overflow-hidden
                                                     rounded-lg
                                                     border
-                                                    border-white/15
-                                                    bg-black/30
-                                                    shadow-lg
+                                                    border-neutral-200
+                                                    bg-neutral-100
                                                     transition-all
                                                     duration-300
-                                                    hover:-translate-y-1
-                                                    hover:border-white/40
+                                                    hover:-translate-y-0.5
+                                                    hover:border-neutral-400
                                                     sm:h-20
                                                     sm:w-28
                                                 "
@@ -670,16 +599,8 @@ export default function Hero({ landings, settings, sliders }) {
                                                         opacity-60
                                                         transition
                                                         duration-500
-                                                        group-hover:scale-110
+                                                        group-hover:scale-105
                                                         group-hover:opacity-100
-                                                    "
-                                                />
-
-                                                <div
-                                                    className="
-                                                        absolute
-                                                        inset-0
-                                                        bg-black/30
                                                     "
                                                 />
 
@@ -691,7 +612,8 @@ export default function Hero({ landings, settings, sliders }) {
                                                         text-[9px]
                                                         font-medium
                                                         tracking-[0.15em]
-                                                        text-white/70
+                                                        text-white
+                                                        drop-shadow
                                                     "
                                                 >
                                                     {String(
@@ -723,13 +645,13 @@ export default function Hero({ landings, settings, sliders }) {
                                                 justify-center
                                                 rounded-full
                                                 border
-                                                border-white/20
-                                                bg-black/20
-                                                text-white
-                                                backdrop-blur-md
+                                                border-neutral-200
+                                                bg-white
+                                                text-neutral-700
                                                 transition
-                                                hover:bg-white
-                                                hover:text-black
+                                                hover:border-neutral-900
+                                                hover:bg-neutral-950
+                                                hover:text-white
                                             "
                                         >
                                             ←
@@ -747,13 +669,13 @@ export default function Hero({ landings, settings, sliders }) {
                                                 justify-center
                                                 rounded-full
                                                 border
-                                                border-white/20
-                                                bg-black/20
-                                                text-white
-                                                backdrop-blur-md
+                                                border-neutral-200
+                                                bg-white
+                                                text-neutral-700
                                                 transition
-                                                hover:bg-white
-                                                hover:text-black
+                                                hover:border-neutral-900
+                                                hover:bg-neutral-950
+                                                hover:text-white
                                             "
                                         >
                                             →
@@ -771,7 +693,7 @@ export default function Hero({ landings, settings, sliders }) {
                                         text-[9px]
                                         uppercase
                                         tracking-[0.2em]
-                                        text-white/30
+                                        text-neutral-400
                                     "
                                 >
                                     <span>
@@ -789,7 +711,7 @@ export default function Hero({ landings, settings, sliders }) {
                     </div>
                 </div>
             </div>
-
         </section>
     );
 }
+
