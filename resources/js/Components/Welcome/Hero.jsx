@@ -1,16 +1,17 @@
 export default function Hero({ landings, settings, sliders }) {
-    // Ambil gambar pertama dari sliders, atau fallback ke landings.image
-    const heroImage =
-        sliders && sliders.length > 0
-            ? `/storage/${sliders[0].image_path}`
-            : landings?.image
-            ? `/storage/${landings.image}`
-            : "/storage/default-hero.jpg";
+    // Utamakan gambar dari landings.image (dari panel/form landing page)
+    // Jika tidak ada, gunakan sliders[0] atau gambar fallback default
+    const heroImage = landings?.image
+        ? `/storage/${landings.image}`
+        : sliders && sliders.length > 0
+        ? `/storage/${sliders[0].image_path}`
+        : "/storage/default-hero.jpg";
 
     const heroTitle =
-        sliders && sliders.length > 0 && sliders[0].title
+        landings?.title ||
+        (sliders && sliders.length > 0 && sliders[0].title
             ? sliders[0].title
-            : "Villa Collection";
+            : "Villa Collection");
 
     return (
         <section
@@ -451,7 +452,7 @@ export default function Hero({ landings, settings, sliders }) {
                         </div>
 
                         {/* =================================================
-                            RIGHT SINGLE IMAGE
+                            RIGHT SINGLE IMAGE (UPDATABLE FROM LANDINGS)
                         ================================================== */}
                         <div
                             className="
@@ -460,9 +461,7 @@ export default function Hero({ landings, settings, sliders }) {
                                 lg:pt-6
                             "
                         >
-                            {/* =================================================
-                                FLOATING TOP CARD
-                            ================================================== */}
+                            {/* FLOATING TOP CARD */}
                             <div
                                 className="
                                     absolute
@@ -492,7 +491,7 @@ export default function Hero({ landings, settings, sliders }) {
                                     >
                                         <img
                                             src={heroImage}
-                                            alt=""
+                                            alt={heroTitle}
                                             className="
                                                 h-full
                                                 w-full
@@ -535,9 +534,7 @@ export default function Hero({ landings, settings, sliders }) {
                                 </div>
                             </div>
 
-                            {/* =================================================
-                                MAIN IMAGE
-                            ================================================== */}
+                            {/* MAIN HERO IMAGE */}
                             <div
                                 className="
                                     relative
@@ -573,9 +570,7 @@ export default function Hero({ landings, settings, sliders }) {
                                     "
                                 />
 
-                                {/* =================================================
-                                    IMAGE TITLE
-                                ================================================== */}
+                                {/* IMAGE TITLE */}
                                 <div
                                     className="
                                         absolute
@@ -616,9 +611,7 @@ export default function Hero({ landings, settings, sliders }) {
                                 </div>
                             </div>
 
-                            {/* =================================================
-                                FLOATING RIGHT STAT
-                            ================================================== */}
+                            {/* FLOATING RIGHT STAT */}
                             <div
                                 className="
                                     absolute
@@ -679,9 +672,7 @@ export default function Hero({ landings, settings, sliders }) {
                                 </div>
                             </div>
 
-                            {/* =================================================
-                                BOTTOM FLOATING CARD
-                            ================================================== */}
+                            {/* BOTTOM FLOATING CARD */}
                             <div
                                 className="
                                     absolute
