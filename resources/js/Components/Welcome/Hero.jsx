@@ -451,7 +451,7 @@ export default function Hero({ landings, settings, sliders }) {
                         </div>
 
                         {/* =================================================
-                            RIGHT CLEAN IMAGE (STYLE SEPERTI ACUAN)
+                            RIGHT IMAGE (BORDERLESS / SEAMLESS LIKE REFERENCE)
                         ================================================== */}
                         <div
                             className="
@@ -463,29 +463,19 @@ export default function Hero({ landings, settings, sliders }) {
                                 lg:col-span-5
                             "
                         >
-                            <div
+                            <img
+                                src={heroImage}
+                                alt={heroTitle}
+                                draggable="false"
                                 className="
-                                    relative
+                                    h-auto
+                                    max-h-[550px]
                                     w-full
-                                    overflow-hidden
-                                    rounded-2xl
-                                    sm:rounded-3xl
+                                    object-contain
+                                    object-center
+                                    lg:scale-105
                                 "
-                            >
-                                <img
-                                    src={heroImage}
-                                    alt={heroTitle}
-                                    draggable="false"
-                                    className="
-                                        h-[380px]
-                                        w-full
-                                        object-cover
-                                        object-center
-                                        sm:h-[480px]
-                                        lg:h-[540px]
-                                    "
-                                />
-                            </div>
+                            />
                         </div>
                     </div>
                 </div>
