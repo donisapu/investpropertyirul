@@ -18,24 +18,24 @@ export default function Hero({ landings, settings, sliders }) {
             "
         >
             {/* =====================================================
-                CONTAINER DENGAN SPACE KIRI-KANAN (max-w-7xl & px)
+                CONTAINER UTAMA (PAS KIRI-KANAN)
             ====================================================== */}
             <div className="mx-auto max-w-7xl px-6 sm:px-8 lg:px-12">
                 <div
                     className="
                         grid
-                        min-h-[600px]
-                        items-center
+                        items-stretch
                         gap-8
+                        py-10
                         lg:grid-cols-12
-                        lg:min-h-[700px]
-                        xl:gap-12
+                        lg:gap-12
+                        lg:py-16
                     "
                 >
                     {/* =================================================
-                        KOLOM KIRI: TEKS (7 COLS)
+                        KOLOM KIRI: TEKS (6 COLS)
                     ================================================== */}
-                    <div className="relative z-10 py-10 lg:col-span-7 lg:py-16">
+                    <div className="relative z-10 flex flex-col justify-center lg:col-span-6">
                         {/* Eyebrow */}
                         <div
                             className="
@@ -261,17 +261,19 @@ export default function Hero({ landings, settings, sliders }) {
                     </div>
 
                     {/* =================================================
-                        KOLOM KANAN: GAMBAR DENGAN MASKING TRANSPARAN (5 COLS)
+                        KOLOM KANAN: GAMBAR TINGGI PAS SAMA TEKS KIRI (6 COLS)
                     ================================================== */}
                     <div
                         className="
                             relative
                             flex
-                            h-full
+                            min-h-[400px]
                             w-full
-                            items-end
-                            justify-end
-                            lg:col-span-5
+                            items-center
+                            justify-center
+                            overflow-hidden
+                            lg:col-span-6
+                            lg:min-h-full
                         "
                     >
                         <img
@@ -280,12 +282,11 @@ export default function Hero({ landings, settings, sliders }) {
                             draggable="false"
                             className="
                                 h-full
-                                max-h-[600px]
                                 w-full
-                                object-contain
-                                object-bottom-right
-                                [mask-image:linear-gradient(to_right,transparent_0%,black_20%)]
-                                max-lg:[mask-image:linear-gradient(to_bottom,transparent_0%,black_20%)]
+                                object-cover
+                                object-bottom
+                                [mask-image:linear-gradient(to_right,transparent_0%,black_18%)]
+                                max-lg:[mask-image:linear-gradient(to_bottom,transparent_0%,black_18%)]
                             "
                         />
                     </div>
