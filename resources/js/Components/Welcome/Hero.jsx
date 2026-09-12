@@ -72,8 +72,9 @@ export default function Hero({ landings, settings, sliders }) {
                             "
                         >
                             {landings?.header}
-                        </h1>
-
+                        </h1> <h1 className="bg-gradient-to-r from-[#8B5A10] via-[#D4AF37] to-[#F3E5AB] bg-clip-text text-transparent font-semibold">
+                                  Impianmu
+                              </h1>
                         {/* Accent line */}
                         <div className="mt-5 h-1 w-20 rounded-full bg-neutral-900" />
 
@@ -272,6 +273,7 @@ export default function Hero({ landings, settings, sliders }) {
                             items-center
                             justify-center
                             overflow-hidden
+                            rounded-r-3xl
                             lg:col-span-6
                             lg:min-h-full
                         "
@@ -283,6 +285,7 @@ export default function Hero({ landings, settings, sliders }) {
                             className="
                                 h-full
                                 w-full
+                                rounded-r-3xl
                                 object-cover
                                 object-bottom
                                 [mask-image:linear-gradient(to_right,transparent_0%,black_18%)]
