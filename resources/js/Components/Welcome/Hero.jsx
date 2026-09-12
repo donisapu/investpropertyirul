@@ -1,8 +1,8 @@
 export default function Hero({ landings, settings, sliders }) {
     // Utamakan gambar dari landings.image (dari panel/form landing page)
     // Jika tidak ada, gunakan sliders[0] atau gambar fallback default
-    const heroImage = landings?.image
-        ? `/storage/${landings.image}`
+    const heroImage = landings?.hero_path
+        ? `/storage/${landings.hero_path}`
         : sliders && sliders.length > 0
         ? `/storage/${sliders[0].image_path}`
         : "/storage/default-hero.jpg";
