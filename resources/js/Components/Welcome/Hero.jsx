@@ -714,7 +714,3 @@ export default function Hero({ landings, settings, sliders }) {
         </section>
     );
 }
-<<<<<<< HEAD
-
-=======
->>>>>>> 5a0c135b2a3d75d45ebc7d26298052743dda8295
