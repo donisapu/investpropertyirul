@@ -121,36 +121,43 @@ export default function Howto({ auth, landings }) {
 
     return (
         <section className="w-full">
-            {/* BANNER CARA BERINVESTASI */}
-            <div className="bg-slate-900 text-white py-14 px-4">
-                <div className="max-w-7xl mx-auto text-center">
-                    <h2 className="text-3xl md:text-5xl font-bold mb-4">
-                        Mulai{" "}
-                        <span className="bg-gradient-to-r from-[#8B5A10] via-[#D4AF37] to-[#F3E5AB] bg-clip-text text-transparent">
-                            Perjalanan Investasi
-                        </span>{" "}
-                        Properti Anda
-                    </h2>
-                    <p className="text-slate-300 max-w-2xl mx-auto mb-6 text-base md:text-lg">
-                        Kami membuat investasi properti menjadi mudah diakses, transparan, dan menguntungkan.
-                    </p>
-                    {!auth?.user && (
-                        <Link
-                            href={safeRoute("register", "/register")}
-                            className="inline-flex items-center px-6 py-3 bg-emerald-500 hover:bg-emerald-600 text-white font-bold rounded-full transition-colors"
-                        >
-                            Buat Akun Gratis
-                            <ArrowRight className="w-5 h-5 ml-2" />
-                        </Link>
-                    )}
+            {/* 1. CARA KERJA (LANGKAH DEMI LANGKAH) - DIPINDAHKAN KE ATAS */}
+            <div className="py-16 bg-white px-4 border-b border-slate-100">
+                <div className="max-w-7xl mx-auto">
+                    <div className="text-center mb-12">
+                        <h2 className="text-3xl font-bold text-slate-900 mb-2">
+                            Cara Kerja
+                        </h2>
+                        <p className="text-slate-600">
+                            Langkah mudah untuk mulai berinvestasi.
+                        </p>
+                    </div>
+
+                    <div className="grid md:grid-cols-4 gap-8">
+                        {steps.map((step, index) => (
+                            <div key={index} className="text-center group">
+                                <div className="w-16 h-16 bg-emerald-50 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-emerald-100 transition-colors">
+                                    {step.icon}
+                                </div>
+                                <h3 className="text-lg font-bold text-slate-900 mb-2">
+                                    {step.title}
+                                </h3>
+                                <p className="text-slate-600 text-xs leading-relaxed">
+                                    {step.description}
+                                </p>
+                            </div>
+                        ))}
+                    </div>
                 </div>
             </div>
 
-            {/* CARA BERINVESTASI (METODE) */}
+            {/* 2. CARA BERINVESTASI (METODE) */}
             <div className="py-16 bg-slate-50 px-4">
                 <div className="max-w-7xl mx-auto">
                     <div className="text-center mb-12">
-                        <h2 className="text-3xl font-bold text-slate-900 mb-3">Cara Berinvestasi</h2>
+                        <h2 className="text-3xl font-bold text-slate-900 mb-3">
+                            Cara Berinvestasi
+                        </h2>
                         <p className="text-slate-600 max-w-2xl mx-auto">
                             Pilih model investasi yang paling sesuai dengan profil risiko dan dana Anda.
                         </p>
@@ -165,7 +172,9 @@ export default function Howto({ auth, landings }) {
                                     className="bg-white rounded-2xl p-6 shadow-sm border border-slate-200 hover:shadow-lg transition-shadow flex flex-col justify-between"
                                 >
                                     <div>
-                                        <div className={`p-3 rounded-xl inline-block ${style.bg} mb-4`}>
+                                        <div
+                                            className={`p-3 rounded-xl inline-block ${style.bg} mb-4`}
+                                        >
                                             {method.icon}
                                         </div>
                                         <h3 className="text-2xl font-bold text-slate-900 mb-3">
@@ -175,12 +184,19 @@ export default function Howto({ auth, landings }) {
                                             {method.description}
                                         </p>
                                         <ul className="space-y-2 mb-6">
-                                            {method.features.map((feature, idx) => (
-                                                <li key={idx} className="flex items-center text-slate-700 text-sm">
-                                                    <CheckCircle2 className={`w-4 h-4 ${style.icon} mr-2 flex-shrink-0`} />
-                                                    {feature}
-                                                </li>
-                                            ))}
+                                            {method.features.map(
+                                                (feature, idx) => (
+                                                    <li
+                                                        key={idx}
+                                                        className="flex items-center text-slate-700 text-sm"
+                                                    >
+                                                        <CheckCircle2
+                                                            className={`w-4 h-4 ${style.icon} mr-2 flex-shrink-0`}
+                                                        />
+                                                        {feature}
+                                                    </li>
+                                                )
+                                            )}
                                         </ul>
                                     </div>
                                     <Link
@@ -196,25 +212,28 @@ export default function Howto({ auth, landings }) {
                 </div>
             </div>
 
-            {/* CARA KERJA (LANGKAH DEMI LANGKAH) */}
-            <div className="py-16 bg-white px-4 border-b border-slate-100">
-                <div className="max-w-7xl mx-auto">
-                    <div className="text-center mb-12">
-                        <h2 className="text-3xl font-bold text-slate-900 mb-2">Cara Kerja</h2>
-                        <p className="text-slate-600">Langkah mudah untuk mulai berinvestasi.</p>
-                    </div>
-
-                    <div className="grid md:grid-cols-4 gap-8">
-                        {steps.map((step, index) => (
-                            <div key={index} className="text-center group">
-                                <div className="w-16 h-16 bg-emerald-50 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-emerald-100 transition-colors">
-                                    {step.icon}
-                                </div>
-                                <h3 className="text-lg font-bold text-slate-900 mb-2">{step.title}</h3>
-                                <p className="text-slate-600 text-xs leading-relaxed">{step.description}</p>
-                            </div>
-                        ))}
-                    </div>
+            {/* 3. BANNER CARA BERINVESTASI (DIBUAT TERANG / SENADA DENGAN OUR VILLA) */}
+            <div className="bg-gradient-to-r from-amber-50 via-orange-50/40 to-yellow-50 text-slate-900 py-14 px-4 border-t border-b border-amber-200/50">
+                <div className="max-w-7xl mx-auto text-center">
+                    <h2 className="text-3xl md:text-5xl font-bold mb-4">
+                        Mulai{" "}
+                        <span className="bg-gradient-to-r from-amber-700 via-amber-600 to-yellow-700 bg-clip-text text-transparent">
+                            Perjalanan Investasi
+                        </span>{" "}
+                        Properti Anda
+                    </h2>
+                    <p className="text-slate-700 max-w-2xl mx-auto mb-6 text-base md:text-lg">
+                        Kami membuat investasi properti menjadi mudah diakses, transparan, dan menguntungkan.
+                    </p>
+                    {!auth?.user && (
+                        <Link
+                            href={safeRoute("register", "/register")}
+                            className="inline-flex items-center px-6 py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-full transition-colors shadow-md hover:shadow-lg"
+                        >
+                            Buat Akun Gratis
+                            <ArrowRight className="w-5 h-5 ml-2" />
+                        </Link>
+                    )}
                 </div>
             </div>
         </section>
