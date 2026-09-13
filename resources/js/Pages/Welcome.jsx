@@ -1,6 +1,7 @@
 import { Head } from "@inertiajs/react";
 import Header from "@/Components/Welcome/Header";
 import Hero from "@/Components/Welcome/Hero";
+import Howto from "@/Components/Welcome/Howto";
 import OurVilla from "@/Components/Welcome/OurVilla";
 import DeveloperProjects from "@/Components/Welcome/DeveloperProjects";
 import OurLocation from "@/Components/Welcome/OurLocation";
@@ -34,6 +35,7 @@ export default function Welcome({
 
                     <main className="flex-1 text-slate-50">
                         <Hero landings={landings} settings={settings} sliders={sliders} />
+                        <Howto auth={auth} landings={landings} />
                         <OurVilla
                             villa={villa}
                             sliders={sliders}
