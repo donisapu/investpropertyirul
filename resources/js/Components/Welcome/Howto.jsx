@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { Link } from "@inertiajs/react";
 import {
     Wallet,
@@ -12,7 +12,15 @@ import {
     FileText,
 } from "lucide-react";
 
-export default function OurVilla({ auth, landings }) {
+export default function Howto({ auth, landings }) {
+    // Helper fungsi aman untuk route Ziggy agar tidak bikin blank jika route belum terdefinisi
+    const safeRoute = (routeName, fallback = "#") => {
+        try {
+            return typeof route === "function" ? route(routeName) : fallback;
+        } catch (e) {
+            return fallback;
+        }
+    };
 
     // Data Langkah-langkah Cara Kerja Investasi
     const steps = [
@@ -79,7 +87,7 @@ export default function OurVilla({ auth, landings }) {
                 "Porsi kepemilikan langsung",
             ],
             colorKey: "emerald",
-            link: route("investments.index"),
+            link: safeRoute("investments.index", "/investments"),
         },
         {
             title: "Urun Dana (Crowdfunding)",
@@ -93,7 +101,7 @@ export default function OurVilla({ auth, landings }) {
                 "Jangka pendek-menengah",
             ],
             colorKey: "blue",
-            link: route("crowdfunding.index"),
+            link: safeRoute("crowdfunding.index", "/crowdfunding"),
         },
         {
             title: "Lelang & Cessie",
@@ -107,14 +115,14 @@ export default function OurVilla({ auth, landings }) {
                 "Jual beli aset cepat",
             ],
             colorKey: "amber",
-            link: route("property-for-sale.index"),
+            link: safeRoute("property-for-sale.index", "/properties"),
         },
     ];
 
     return (
         <section className="w-full">
             {/* BANNER CARA BERINVESTASI */}
-            <div className="bg-slate-200 text-white py-14 px-4">
+            <div className="bg-slate-900 text-white py-14 px-4">
                 <div className="max-w-7xl mx-auto text-center">
                     <h2 className="text-3xl md:text-5xl font-bold mb-4">
                         Mulai{" "}
@@ -126,9 +134,9 @@ export default function OurVilla({ auth, landings }) {
                     <p className="text-slate-300 max-w-2xl mx-auto mb-6 text-base md:text-lg">
                         Kami membuat investasi properti menjadi mudah diakses, transparan, dan menguntungkan.
                     </p>
-                    {auth && !auth.user && (
+                    {!auth?.user && (
                         <Link
-                            href={route("register")}
+                            href={safeRoute("register", "/register")}
                             className="inline-flex items-center px-6 py-3 bg-emerald-500 hover:bg-emerald-600 text-white font-bold rounded-full transition-colors"
                         >
                             Buat Akun Gratis
