@@ -8,6 +8,7 @@ import OurLocation from "@/Components/Welcome/OurLocation";
 import Footer from "@/Components/Welcome/Footer";
 
 export default function Welcome({
+    auth,
     villa,
     laravelVersion,
     phpVersion,
