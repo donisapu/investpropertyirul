@@ -121,7 +121,35 @@ export default function Howto({ auth, landings }) {
 
     return (
         <section className="w-full">
-            {/* 1. CARA KERJA (LANGKAH DEMI LANGKAH) - DIPINDAHKAN KE ATAS */}
+            {/* 1. BANNER MULAI PERJALANAN INVESTASI (DI ATAS, ABU-ABU GELAP + TOMBOL GOLD) */}
+            <div className="bg-gradient-to-b from-slate-950 via-slate-900 to-slate-900 text-white py-16 px-4 border-b border-slate-800 relative overflow-hidden">
+                {/* Visual Glow Effect */}
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[200px] bg-amber-500/10 blur-[100px] rounded-full pointer-events-none" />
+
+                <div className="max-w-7xl mx-auto text-center relative z-10">
+                    <h2 className="text-3xl md:text-5xl font-bold mb-4 tracking-tight">
+                        Mulai{" "}
+                        <span className="bg-gradient-to-r from-amber-200 via-yellow-400 to-amber-500 bg-clip-text text-transparent">
+                            Perjalanan Investasi
+                        </span>{" "}
+                        Properti Anda
+                    </h2>
+                    <p className="text-slate-300 max-w-2xl mx-auto mb-8 text-base md:text-lg leading-relaxed">
+                        Kami membuat investasi properti menjadi mudah diakses, transparan, dan menguntungkan.
+                    </p>
+                    {!auth?.user && (
+                        <Link
+                            href={safeRoute("register", "/register")}
+                            className="inline-flex items-center px-8 py-3.5 bg-gradient-to-r from-amber-400 via-amber-500 to-yellow-600 hover:from-amber-300 hover:via-amber-400 hover:to-yellow-500 text-slate-950 font-bold rounded-full transition-all duration-300 shadow-lg shadow-amber-500/20 hover:shadow-amber-500/40 transform hover:-translate-y-0.5"
+                        >
+                            Buat Akun Gratis
+                            <ArrowRight className="w-5 h-5 ml-2 text-slate-950 stroke-[2.5]" />
+                        </Link>
+                    )}
+                </div>
+            </div>
+
+            {/* 2. CARA KERJA (LANGKAH DEMI LANGKAH) */}
             <div className="py-16 bg-white px-4 border-b border-slate-100">
                 <div className="max-w-7xl mx-auto">
                     <div className="text-center mb-12">
@@ -151,7 +179,7 @@ export default function Howto({ auth, landings }) {
                 </div>
             </div>
 
-            {/* 2. CARA BERINVESTASI (METODE) */}
+            {/* 3. CARA BERINVESTASI (METODE) */}
             <div className="py-16 bg-slate-50 px-4">
                 <div className="max-w-7xl mx-auto">
                     <div className="text-center mb-12">
@@ -209,31 +237,6 @@ export default function Howto({ auth, landings }) {
                             );
                         })}
                     </div>
-                </div>
-            </div>
-
-            {/* 3. BANNER CARA BERINVESTASI (DIBUAT TERANG / SENADA DENGAN OUR VILLA) */}
-            <div className="bg-gradient-to-r from-amber-50 via-orange-50/40 to-yellow-50 text-slate-900 py-14 px-4 border-t border-b border-amber-200/50">
-                <div className="max-w-7xl mx-auto text-center">
-                    <h2 className="text-3xl md:text-5xl font-bold mb-4">
-                        Mulai{" "}
-                        <span className="bg-gradient-to-r from-amber-700 via-amber-600 to-yellow-700 bg-clip-text text-transparent">
-                            Perjalanan Investasi
-                        </span>{" "}
-                        Properti Anda
-                    </h2>
-                    <p className="text-slate-700 max-w-2xl mx-auto mb-6 text-base md:text-lg">
-                        Kami membuat investasi properti menjadi mudah diakses, transparan, dan menguntungkan.
-                    </p>
-                    {!auth?.user && (
-                        <Link
-                            href={safeRoute("register", "/register")}
-                            className="inline-flex items-center px-6 py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-full transition-colors shadow-md hover:shadow-lg"
-                        >
-                            Buat Akun Gratis
-                            <ArrowRight className="w-5 h-5 ml-2" />
-                        </Link>
-                    )}
                 </div>
             </div>
         </section>
