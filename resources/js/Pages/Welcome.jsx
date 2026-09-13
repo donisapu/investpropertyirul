@@ -4,6 +4,7 @@ import Hero from "@/Components/Welcome/Hero";
 import Howto from "@/Components/Welcome/Howto";
 import OurVilla from "@/Components/Welcome/OurVilla";
 import DeveloperProjects from "@/Components/Welcome/DeveloperProjects";
+import Calculator from "@/Components/Welcome/Calculator";
 import OurLocation from "@/Components/Welcome/OurLocation";
 import Footer from "@/Components/Welcome/Footer";
 
@@ -46,6 +47,7 @@ export default function Welcome({
                             project={projects}
                             landings={landings}
                         />
+                        <Calculator landings={landings} projects={projects}/>
                         <OurLocation
                             landings={landings}
                             landmarks={landmarks}
