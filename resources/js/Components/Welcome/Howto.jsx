@@ -122,7 +122,7 @@ export default function Howto({ auth, landings }) {
     return (
         <section className="w-full">
             {/* 1. BANNER MULAI PERJALANAN INVESTASI (DI ATAS, ABU-ABU GELAP + TOMBOL GOLD) */}
-            <div className="bg-gradient-to-b from-slate-950 via-slate-900 to-slate-900 text-white py-16 px-4 border-b border-slate-800 relative overflow-hidden">
+            <div className="bg-[#4A525D] text-white py-16 px-4 border-b border-slate-600/50 relative overflow-hidden">
                 {/* Visual Glow Effect */}
                 <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[200px] bg-amber-500/10 blur-[100px] rounded-full pointer-events-none" />
 
