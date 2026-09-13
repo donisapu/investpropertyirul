@@ -15,7 +15,7 @@ export default function DeveloperProjects({ project = [], landings }) {
     return (
         <section
             id="developer-projects"
-            className="relative isolate overflow-hidden bg-[#111111] text-white"
+            className="relative isolate overflow-hidden bg-[#F9F9FB] text-slate-900"
         >
             <div className="relative z-10 mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8 lg:py-20">
                 {/* =================================================
