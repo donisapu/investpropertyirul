@@ -37,7 +37,6 @@ export default function OurLocation({ landings, landmarks }) {
                 ABSTRACT MONOCHROME BACKGROUND
             ====================================================== */}
             <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
-
                 {/* Base atmospheric background */}
                 <div
                     className="
@@ -237,14 +236,12 @@ export default function OurLocation({ landings, landmarks }) {
                         className="text-black"
                     />
                 </svg>
-
             </div>
 
             {/* =====================================================
                 MAIN CONTENT
             ====================================================== */}
             <div className="relative z-10 mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8 lg:py-28">
-
                 {/* =================================================
                     HEADER
                 ================================================== */}
@@ -263,9 +260,7 @@ export default function OurLocation({ landings, landmarks }) {
                         "
                     >
                         <span className="h-px w-8 bg-mono-400" />
-
                         Our Location
-
                         <span className="h-px w-8 bg-mono-400" />
                     </span>
 
@@ -281,7 +276,6 @@ export default function OurLocation({ landings, landmarks }) {
                         "
                     >
                         We only choose
-
                         <span className="block text-mono-500">
                             hot spot tourism area.
                         </span>
@@ -561,30 +555,15 @@ export default function OurLocation({ landings, landmarks }) {
                                     sm:h-[450px]
                                     lg:h-[550px]
                                 "
-                                style={{
-                                    border: 0,
-                                }}
+                                style={{ border: 0 }}
                                 allowFullScreen=""
                                 loading="lazy"
                                 referrerPolicy="no-referrer-when-downgrade"
+                                title="Google Map Location"
                             />
                         ) : (
-                            <div
-                                className="
-                                    flex
-                                    h-[360px]
-                                    items-center
-                                    justify-center
-                                    rounded-2xl
-                                    bg-mono-200
-                                    text-sm
-                                    font-medium
-                                    text-mono-500
-                                    sm:h-[450px]
-                                    lg:h-[550px]
-                                "
-                            >
-                                Peta lokasi belum tersedia
+                            <div className="flex h-[360px] w-full items-center justify-center rounded-2xl bg-mono-100 text-mono-500 sm:h-[450px] lg:h-[550px]">
+                                Peta lokasi tidak tersedia
                             </div>
                         )}
                     </div>
