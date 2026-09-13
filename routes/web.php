@@ -112,6 +112,11 @@ Route::get('/how-to-invest', function () {
     return Inertia::render('HowToInvest', ['settings' => $settings]);
 })->name('how-to-invest');
 
+Route::get('/terms', function () {
+    $settings = WebsiteSetting::getSettings();
+    return Inertia::render('TermsAndConditions', ['settings' => $settings]);
+})->name('terms');
+
 Route::post('/xendit/webhook', [PaymentController::class, 'callback']);
 
 Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin'])->group(function () {

@@ -489,7 +489,7 @@ export default function Footer({
                         <a href="/privacy-policy" className="hover:text-slate-300 transition">
                             Privacy Policy
                         </a>
-                        <a href="/terms" className="hover:text-slate-300 transition">
+                        <a href="{route('terms')}" className="hover:text-slate-300 transition">
                             Terms &amp; Conditions
                         </a>
                     </div>
