@@ -59,3 +59,36 @@
 .animate-marquee:hover {
     animation-play-state: paused;
 }
+
+/*
+ * Slider periode pada Return Calculator.
+ * Mockup menggambar track datar tanpa knob sama sekali. Knob kecil tetap
+ * dipasang: tanpa penanda, pengguna tidak tahu di mana harus menggeser,
+ * dan kontrol jadi tidak terlihat interaktif.
+ */
+.calc-range::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 14px;
+    height: 14px;
+    border-radius: 9999px;
+    background: #c7a45c;
+    border: 2px solid #faf9f6;
+    box-shadow: 0 1px 4px rgba(36, 38, 32, 0.25);
+    cursor: pointer;
+    transition: transform 0.2s ease-out;
+}
+
+.calc-range::-webkit-slider-thumb:hover {
+    transform: scale(1.15);
+}
+
+.calc-range::-moz-range-thumb {
+    width: 14px;
+    height: 14px;
+    border-radius: 9999px;
+    background: #c7a45c;
+    border: 2px solid #faf9f6;
+    box-shadow: 0 1px 4px rgba(36, 38, 32, 0.25);
+    cursor: pointer;
+}
