@@ -1,314 +1,175 @@
+import { Link } from "@inertiajs/react";
+import { ArrowRight, ArrowUpRight } from "lucide-react";
+
+/*
+ * Hero — mengikuti mockup Figma (export Pencil).
+ *
+ * Susunan: narasi kiri + foto kanan, lalu strip "capabilities" berpagar
+ * garis atas-bawah, lalu strip statistik.
+ *
+ * Mockup hanya menyediakan frame desktop 1440px. Perilaku responsif di
+ * bawah itu diturunkan dari struktur yang sama: komposisi menumpuk di
+ * bawah lg, capabilities jadi 2 kolom, statistik jadi 3 kolom rapat.
+ */
+
+/* Layanan perusahaan — copy brand, bukan konten CMS. */
+const CAPABILITIES = [
+    "Development",
+    "Architecture",
+    "Construction",
+    "Real Estate Agency",
+];
+
 export default function Hero({ landings, settings, sliders }) {
-    // Ambil gambar dari landings.hero_path
     const heroImage = landings?.hero_path
         ? `/storage/${landings.hero_path}`
         : sliders && sliders.length > 0
         ? `/storage/${sliders[0].image_path}`
         : "/storage/default-hero.jpg";
 
+    /*
+     * Statistik dibaca dari database, tidak di-hardcode. Angka lama
+     * (250+/2.5K+/98%) adalah nilai dari mockup referensi dan tidak dapat
+     * dipertanggungjawabkan untuk produk finansial. Bila admin belum
+     * mengisinya, strip ini tidak dirender sama sekali.
+     */
+    const stats = [
+        { value: landings?.stat_1_value, label: landings?.stat_1_label },
+        { value: landings?.stat_2_value, label: landings?.stat_2_label },
+        { value: landings?.stat_3_value, label: landings?.stat_3_label },
+    ].filter((s) => s.value && s.label);
+
+    const whatsapp = settings?.whatsapp;
+
     return (
         <section
             id="top"
-            className="
-                relative
-                w-full
-                overflow-hidden
-                bg-white
-                text-neutral-900
-            "
+            className="w-full bg-cream text-ink"
         >
-            {/* =====================================================
-                CONTAINER UTAMA (PAS KIRI-KANAN)
-            ====================================================== */}
-            <div className="mx-auto max-w-7xl px-6 sm:px-8 lg:px-12">
-                <div
-                    className="
-                        grid
-                        items-stretch
-                        gap-8
-                        py-10
-                        lg:grid-cols-12
-                        lg:gap-12
-                        lg:py-16
-                    "
-                >
-                    {/* =================================================
-                        KOLOM KIRI: TEKS (6 COLS)
-                    ================================================== */}
-                    <div className="relative z-10 flex flex-col justify-center lg:col-span-6">
-                        {/* Eyebrow */}
-                        <div
-                            className="
-                                mb-6
-                                flex
-                                items-center
-                                gap-3
-                                text-[10px]
-                                font-semibold
-                                uppercase
-                                tracking-[0.28em]
-                                text-neutral-600
-                            "
-                        >
-                            <span className="h-px w-10 bg-neutral-400" />
+            <div className="mx-auto w-full max-w-[1440px] px-6 pb-9 pt-10 sm:px-10 lg:px-[72px] lg:pt-14">
+                {/* ============ KOMPOSISI: NARASI + FOTO ============ */}
+                <div className="flex flex-col items-center gap-8 lg:flex-row lg:gap-12">
+                    {/* ---- Narasi ---- */}
+                    <div className="flex w-full flex-1 flex-col items-start gap-5">
+                        <p className="text-[11px] font-bold uppercase leading-[17px] tracking-[1.5px] text-gold-ink">
+                            {landings?.subheader ||
+                                "Platform Developer & Investasi Properti"}
+                        </p>
 
-                            <span>
-                                {landings?.subheader ||
-                                    "Platform Developer & Investasi Properti"}
+                        <h1 className="w-full font-semibold tracking-[-0.02em] text-ink">
+                            <span className="block text-[clamp(2rem,5.5vw,3.25rem)] leading-[1.12]">
+                                {landings?.header}
                             </span>
-                        </div>
+                            {/*
+                             * Kilau emas pada kata kunci, sesuai mockup.
+                             * Stop warna digelapkan dari nilai mockup asli:
+                             * 4 dari 6 stop aslinya di bawah 3:1 terhadap
+                             * cream (yang paling terang hanya 1,40:1), jadi
+                             * bagian tengah kata praktis lenyap. Ramp ini
+                             * mempertahankan bentuk kilaunya, seluruh stop
+                             * >= 3,77:1.
+                             */}
+                            <span
+                                className="block bg-clip-text text-[clamp(2.1rem,5.7vw,3.375rem)] leading-[1.09] text-transparent"
+                                style={{
+                                    backgroundImage:
+                                        "linear-gradient(90deg,#6B4F21 4.685%,#8B6420 27.342%,#A8762F 44.562%,#8B6420 58.157%,#6B4F21 76.283%,#9C7030 95.315%)",
+                                }}
+                            >
+                                Impianmu
+                            </span>
+                        </h1>
 
-                        {/* Main Heading */}
-                        <h1
-                            className="
-                                text-4xl
-                                font-semibold
-                                leading-[1.05]
-                                tracking-[-0.035em]
-                                text-neutral-950
-                                sm:text-5xl
-                                md:text-6xl
-                                xl:text-[68px]
-                            "
-                        >
-                            {landings?.header}
-                        </h1> <h1 className=" text-4xl
-                                font-semibold
-                                leading-[1.05]
-                                tracking-[-0.035em]
-                                text-neutral-950
-                                sm:text-5xl
-                                md:text-6xl
-                                xl:text-[68px] 
-                                bg-gradient-to-r from-[#8B5A10] 
-                                via-[#D4AF37] to-[#F3E5AB] 
-                                bg-clip-text 
-                                text-transparent">
-                                  Impianmu
-                              </h1>
-                        {/* Accent line */}
-                        <div className="mt-5 h-1 w-20 rounded-full bg-neutral-900" />
-
-                        {/* Description */}
-                        <p
-                            className="
-                                mt-7
-                                max-w-xl
-                                text-sm
-                                leading-7
-                                text-neutral-600
-                                sm:text-base
-                            "
-                        >
+                        <p className="max-w-[46ch] text-[16px] leading-[25px] text-ink-soft">
                             {landings?.description}
                         </p>
 
-                        {/* CTA Button */}
-                        <div
-                            className="
-                                mt-8
-                                flex
-                                flex-col
-                                items-start
-                                gap-5
-                                sm:flex-row
-                                sm:items-center
-                            "
-                        >
-                            <a
-                                href={`https://wa.me/${settings?.whatsapp}`}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="
-                                    group
-                                    inline-flex
-                                    items-center
-                                    gap-4
-                                    rounded-full
-                                    bg-neutral-950
-                                    px-6
-                                    py-3.5
-                                    text-xs
-                                    font-semibold
-                                    uppercase
-                                    tracking-[0.14em]
-                                    text-white
-                                    shadow-md
-                                    transition-all
-                                    duration-300
-                                    hover:-translate-y-0.5
-                                    hover:bg-neutral-800
-                                "
-                            >
-                                <span>Contact Us</span>
-
-                                <span
-                                    className="
-                                        flex
-                                        h-7
-                                        w-7
-                                        items-center
-                                        justify-center
-                                        rounded-full
-                                        bg-white
-                                        text-neutral-950
-                                        transition-transform
-                                        duration-300
-                                        group-hover:translate-x-1
-                                    "
+                        {/* ---- Aksi ---- */}
+                        <div className="flex flex-wrap items-center gap-[18px] pt-1">
+                            {whatsapp && (
+                                <a
+                                    href={`https://wa.me/${whatsapp}`}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="group inline-flex items-center gap-[22px] rounded-[40px] bg-ink px-[23px] py-4 text-[13px] font-semibold leading-5 text-cream transition-colors hover:bg-ink-soft"
                                 >
-                                    →
-                                </span>
-                            </a>
+                                    Contact Us
+                                    <ArrowRight
+                                        className="h-4 w-4 transition-transform group-hover:translate-x-0.5"
+                                        aria-hidden="true"
+                                    />
+                                </a>
+                            )}
 
-                            <span
-                                className="
-                                    text-[10px]
-                                    uppercase
-                                    tracking-[0.18em]
-                                    text-neutral-500
-                                    bg-gradient-to-r from-[#8B5A10] 
-                                    via-[#D4AF37] to-[#F3E5AB] 
-                                    bg-clip-text 
-                                    text-transparent
-                                "
+                            <Link
+                                href="/investments"
+                                className="group inline-flex items-center gap-1.5 text-[13px] font-semibold leading-5 text-ink underline-offset-4 transition-colors hover:text-gold-ink hover:underline"
                             >
-                                Discover your next destination
-                            </span>
+                                Jelajahi Properti
+                                <ArrowUpRight
+                                    className="h-4 w-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+                                    aria-hidden="true"
+                                />
+                            </Link>
                         </div>
 
-                        {/* INFORMATION / STATISTICS CARD */}
-                        <div
-                            className="
-                                mt-12
-                                overflow-hidden
-                                rounded-2xl
-                                border
-                                border-neutral-200/80
-                                bg-white
-                                shadow-[0_10px_40px_rgba(0,0,0,0.04)]
-                            "
-                        >
-                            <div
-                                className="
-                                    grid
-                                    grid-cols-2
-                                    divide-x
-                                    divide-y
-                                    divide-neutral-200
-                                    sm:grid-cols-4
-                                    sm:divide-y-0
-                                "
-                            >
-                                <div className="px-5 py-5 sm:px-4">
-                                    <span className="text-[9px] font-medium tracking-[0.12em] text-neutral-400">
-                                        01
-                                    </span>
-
-                                    <p className="mt-2 text-[10px] font-medium uppercase tracking-[0.08em] text-neutral-800 sm:text-[11px]">
-                                        Development
-                                    </p>
-                                </div>
-
-                                <div className="px-5 py-5 sm:px-4">
-                                    <span className="text-[9px] font-medium tracking-[0.12em] text-neutral-400">
-                                        02
-                                    </span>
-
-                                    <p className="mt-2 text-[10px] font-medium uppercase tracking-[0.08em] text-neutral-800 sm:text-[11px]">
-                                        Architecture
-                                    </p>
-                                </div>
-
-                                <div className="px-5 py-5 sm:px-4">
-                                    <span className="text-[9px] font-medium tracking-[0.12em] text-neutral-400">
-                                        03
-                                    </span>
-
-                                    <p className="mt-2 text-[10px] font-medium uppercase tracking-[0.08em] text-neutral-800 sm:text-[11px]">
-                                        Construction
-                                    </p>
-                                </div>
-
-                                <div className="px-5 py-5 sm:px-4">
-                                    <span className="text-[9px] font-medium tracking-[0.12em] text-neutral-400">
-                                        04
-                                    </span>
-
-                                    <p className="mt-2 text-[10px] font-medium uppercase tracking-[0.08em] text-neutral-800 sm:text-[11px]">
-                                        Real Estate Agency
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-
-                        {/* DUMMY BUSINESS STATS */}
-                        <div className="mt-5 grid grid-cols-3 gap-4">
-                            <div>
-                                <p className="text-xl font-semibold tracking-tight text-neutral-950 sm:text-2xl">
-                                    250+
-                                </p>
-
-                                <p className="mt-1 text-[9px] uppercase tracking-[0.12em] text-neutral-500">
-                                    Properties
-                                </p>
-                            </div>
-
-                            <div>
-                                <p className="text-xl font-semibold tracking-tight text-neutral-950 sm:text-2xl">
-                                    2.5K+
-                                </p>
-
-                                <p className="mt-1 text-[9px] uppercase tracking-[0.12em] text-neutral-500">
-                                    Property Users
-                                </p>
-                            </div>
-
-                            <div>
-                                <p className="text-xl font-semibold tracking-tight text-neutral-950 sm:text-2xl">
-                                    98%
-                                </p>
-
-                                <p className="mt-1 text-[9px] uppercase tracking-[0.12em] text-neutral-500">
-                                    Satisfaction
-                                </p>
-                            </div>
-                        </div>
+                        <p className="text-[10px] uppercase leading-4 tracking-[1.5px] text-ink-soft">
+                            Discover your next destination
+                        </p>
                     </div>
 
-                    {/* =================================================
-                        KOLOM KANAN: GAMBAR TINGGI PAS SAMA TEKS KIRI (6 COLS)
-                    ================================================== */}
-                    <div
-                        className="
-                            relative
-                            flex
-                            min-h-[400px]
-                            w-full
-                            items-center
-                            justify-center
-                            overflow-hidden
-                            rounded-r-3xl
-                            lg:col-span-6
-                            lg:min-h-full
-                        "
-                    >
+                    {/* ---- Foto ---- */}
+                    <div className="w-full shrink-0 lg:w-[608px]">
                         <img
                             src={heroImage}
-                            alt={landings?.title || "Hero Image"}
+                            alt={
+                                landings?.header
+                                    ? `${landings.header} — ${
+                                          landings?.subheader ?? ""
+                                      }`.trim()
+                                    : "Properti unggulan"
+                            }
                             draggable="false"
-                            className="
-                                h-full
-                                w-full
-                                rounded-r-3xl
-                                object-cover
-                                object-bottom
-                                [mask-image:linear-gradient(to_right,transparent_0%,black_18%)]
-                                max-lg:[mask-image:linear-gradient(to_bottom,transparent_0%,black_18%)]
-                            "
+                            className="h-[280px] w-full rounded-2xl object-cover sm:h-[400px] lg:h-[558px]"
                         />
                     </div>
                 </div>
+
+                {/* ============ CAPABILITIES ============ */}
+                <ul className="mt-8 grid grid-cols-2 gap-x-6 gap-y-5 border-y border-gold-line py-[26px] lg:mt-8 lg:grid-cols-4 lg:gap-6">
+                    {CAPABILITIES.map((item, i) => (
+                        <li key={item} className="flex items-center gap-3">
+                            <span className="text-[11px] leading-[17px] text-gold-ink">
+                                {String(i + 1).padStart(2, "0")}
+                            </span>
+                            <span className="text-[12px] font-bold uppercase leading-[19px] text-ink">
+                                {item}
+                            </span>
+                        </li>
+                    ))}
+                </ul>
+
+                {/* ============ STATISTIK (hanya bila diisi admin) ============ */}
+                {stats.length > 0 && (
+                    <dl className="flex flex-wrap gap-x-12 gap-y-4 pb-3 pt-1">
+                        {stats.map((stat) => (
+                            <div
+                                key={stat.label}
+                                className="flex flex-1 basis-[8rem] items-center gap-3.5"
+                            >
+                                <dt className="sr-only">{stat.label}</dt>
+                                <dd className="flex items-center gap-3.5">
+                                    <span className="text-[clamp(1.5rem,3vw,1.875rem)] font-semibold leading-[1.5] text-ink">
+                                        {stat.value}
+                                    </span>
+                                    <span className="text-[10px] uppercase leading-4 tracking-[1px] text-ink-soft">
+                                        {stat.label}
+                                    </span>
+                                </dd>
+                            </div>
+                        ))}
+                    </dl>
+                )}
             </div>
         </section>
     );

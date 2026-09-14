@@ -1,121 +1,183 @@
-import { useState, useRef, useEffect, useCallback } from "react";
+import { useState, useCallback } from "react";
+import { ArrowLeft, ArrowRight } from "lucide-react";
 
-export default function OurVilla({ villa, sliders, landings }) {
-    const dummyImgs = [
-        "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?q=80&w=2070&auto=format&fit=crop",
-        "https://images.unsplash.com/photo-1658280024253-34cafdfbb002?q=80&w=2960&auto=format&fit=crop",
-        "https://images.unsplash.com/photo-1600585154526-990dced4db0d?q=80&w=1280&auto=format&fit=crop",
-    ];
+/*
+ * Our Villa — galeri desain villa, mengikuti mockup Figma.
+ *
+ * Susunan: judul + counter + panah dalam satu baris, satu gambar utama
+ * besar, lalu strip thumbnail di bawahnya. Mockup menampilkan 6 thumbnail
+ * sejajar; jumlah sebenarnya mengikuti isi slider dari admin.
+ *
+ * Latar dekoratif versi lama (gradien radial + lingkaran besar) dihapus
+ * sesuai mockup — ground kini polos.
+ */
+export default function OurVilla({ sliders, landings }) {
+    const images =
+        sliders?.map((slider) => ({
+            src: `/storage/${slider.image_path}`,
+            id: slider.id,
+        })) ?? [];
 
-    const activeImages =
-        sliders && sliders.length > 0
-            ? sliders.map((slider) => `/storage/${slider.image_path}`)
-            : dummyImgs;
+    const [active, setActive] = useState(0);
 
-    const [i, setI] = useState(0);
+    const go = useCallback(
+        (n) => setActive((n + images.length) % images.length),
+        [images.length]
+    );
 
-    const go = useCallback((n) => {
-        const len = activeImages.length;
-        setI((n + len) % len);
-    }, [activeImages.length]);
+    /*
+     * Tanpa slider tidak ada yang bisa ditampilkan. Versi lama jatuh ke tiga
+     * URL Unsplash, artinya halaman produksi bergantung pada CDN pihak
+     * ketiga untuk gambar utamanya. Lebih baik section ini tidak dirender.
+     */
+    if (images.length === 0) return null;
 
-    const prev = useCallback(() => go(i - 1), [go, i]);
-    const next = useCallback(() => go(i + 1), [go, i]);
+    const onKeyDown = (event) => {
+        if (event.key === "ArrowLeft") {
+            event.preventDefault();
+            go(active - 1);
+        } else if (event.key === "ArrowRight") {
+            event.preventDefault();
+            go(active + 1);
+        }
+    };
 
     return (
         <section
             id="our-villa"
-            className="relative isolate overflow-hidden bg-[#e5e5e3] text-mono-900"
+            aria-roledescription="carousel"
+            aria-label="Galeri desain villa"
+            onKeyDown={onKeyDown}
+            className="w-full bg-cream text-ink"
         >
-            {/* BACKGROUND ASLI PERTAHANKAN */}
-            <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
-                <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(255,255,255,0.95),transparent_42%),linear-gradient(180deg,#f2f2f0_0%,#e7e7e5_55%,#ddddda_100%)]" />
-                <div className="absolute -right-[180px] -top-[220px] h-[560px] w-[560px] rounded-full border-[60px] border-black/[0.055]" />
-                <div className="absolute right-[12%] top-[90px] h-[180px] w-[180px] rounded-full border border-black/[0.06]" />
-            </div>
-
-            {/* MAIN CONTENT */}
-            <div className="relative z-10 mx-auto max-w-6xl px-4 py-14 sm:px-6 sm:py-18 lg:px-8 lg:py-24">
-                
-                {/* LAYOUT BARU: HEADER + COUNTER & NAVIGASI DALAM SATU BARIS */}
-                <div className="flex flex-col items-center justify-between gap-4 sm:flex-row sm:items-end">
-                    <div className="text-center sm:text-left">
-                        <div className="mb-2 inline-flex items-center gap-3 text-[11px] font-semibold uppercase tracking-[0.28em] text-mono-500">
-                            <span className="h-px w-8 bg-mono-400" />
+            <div className="mx-auto flex w-full max-w-[1440px] flex-col gap-7 px-6 py-16 sm:px-10 lg:px-[72px] lg:py-20">
+                {/* ============ JUDUL + KONTROL ============ */}
+                <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:gap-10">
+                    <div className="flex flex-1 flex-col gap-2">
+                        <p className="text-[11px] uppercase leading-[17px] tracking-[1.5px] text-gold-ink">
+                            {landings?.slider_title ??
+                                "Our Villa Designs Development"}
+                        </p>
+                        <h2 className="text-[clamp(1.75rem,4vw,2.5rem)] font-semibold leading-tight text-ink">
                             Our Villa
-                        </div>
-                        <h2 className="text-3xl font-semibold uppercase leading-[1.1] tracking-tight text-mono-900 sm:text-4xl">
-                            {landings?.slider_title ?? "Villa Collection"}
                         </h2>
                     </div>
 
-                    {/* COUNTER & NAVIGATION BUTTONS (Ditaruh di kanan header) */}
-                    {activeImages.length > 1 && (
+                    {images.length > 1 && (
                         <div className="flex items-center gap-4">
-                            <span className="font-mono text-xs font-medium tracking-widest text-mono-500">
-                                <strong className="text-base font-bold text-mono-900">
-                                    {String(i + 1).padStart(2, "0")}
-                                </strong>
-                                / {String(activeImages.length).padStart(2, "0")}
-                            </span>
+                            <p
+                                aria-live="polite"
+                                className="w-20 text-[14px] leading-[22px] text-ink"
+                            >
+                                <span className="font-semibold">
+                                    {String(active + 1).padStart(2, "0")}
+                                </span>
+                                <span className="text-ink-soft">
+                                    {" "}
+                                    / {String(images.length).padStart(2, "0")}
+                                </span>
+                            </p>
+
                             <div className="flex gap-2">
                                 <button
                                     type="button"
-                                    onClick={prev}
-                                    aria-label="Previous image"
-                                    className="flex h-10 w-10 items-center justify-center rounded-full border border-black/10 bg-white/80 text-mono-900 shadow-sm transition-all hover:bg-mono-900 hover:text-white active:scale-95"
+                                    onClick={() => go(active - 1)}
+                                    aria-label="Desain sebelumnya"
+                                    className="flex h-11 w-11 items-center justify-center rounded-full border border-gold-line text-ink transition-colors hover:bg-ink hover:text-cream focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold-ink"
                                 >
-                                    &#8592;
+                                    <ArrowLeft
+                                        className="h-5 w-5"
+                                        aria-hidden="true"
+                                    />
                                 </button>
                                 <button
                                     type="button"
-                                    onClick={next}
-                                    aria-label="Next image"
-                                    className="flex h-10 w-10 items-center justify-center rounded-full border border-black/10 bg-white/80 text-mono-900 shadow-sm transition-all hover:bg-mono-900 hover:text-white active:scale-95"
+                                    onClick={() => go(active + 1)}
+                                    aria-label="Desain berikutnya"
+                                    className="flex h-11 w-11 items-center justify-center rounded-full border border-gold-line text-ink transition-colors hover:bg-ink hover:text-cream focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold-ink"
                                 >
-                                    &#8594;
+                                    <ArrowRight
+                                        className="h-5 w-5"
+                                        aria-hidden="true"
+                                    />
                                 </button>
                             </div>
                         </div>
                     )}
                 </div>
 
-                {/* MAIN CAROUSEL DISPLAY */}
-                <div className="mt-8">
-                    <div className="relative overflow-hidden rounded-2xl border border-black/10 bg-white/50 p-2 shadow-lg backdrop-blur-sm sm:rounded-3xl">
-                        <div className="relative aspect-[16/9] w-full overflow-hidden rounded-xl bg-mono-200 sm:rounded-2xl">
-                            <img
-                                src={activeImages[i]}
-                                alt={`Villa preview ${i + 1}`}
-                                className="h-full w-full object-cover transition-all duration-500 ease-in-out"
-                            />
-                        </div>
-                    </div>
+                {/* ============ GAMBAR UTAMA ============ */}
+                <div
+                    aria-live="polite"
+                    className="h-[240px] w-full overflow-hidden rounded-[14px] bg-cream-deep sm:h-[360px] lg:h-[490px]"
+                >
+                    <img
+                        src={images[active].src}
+                        alt={`Desain villa ${active + 1} dari ${images.length}`}
+                        className="h-full w-full object-cover"
+                    />
                 </div>
 
-                {/* THUMBNAILS PREVIEW BAR (Tambahan Tata Letak Baru di Bawah) */}
-                {activeImages.length > 1 && (
-                    <div className="mt-4 flex justify-center gap-3 overflow-x-auto py-2">
-                        {activeImages.map((src, idx) => (
-                            <button
-                                key={idx}
-                                onClick={() => go(idx)}
-                                className={`relative h-16 w-24 flex-shrink-0 overflow-hidden rounded-xl border-2 transition-all duration-300 ${
-                                    i === idx
-                                        ? "border-mono-900 opacity-100 scale-105 shadow-md"
-                                        : "border-transparent opacity-50 hover:opacity-80"
-                                }`}
-                            >
-                                <img
-                                    src={src}
-                                    alt={`Thumbnail ${idx + 1}`}
-                                    className="h-full w-full object-cover"
-                                />
-                            </button>
-                        ))}
-                    </div>
-                )}
+                {/* ============ STRIP THUMBNAIL ============ */}
+                {images.length > 1 && (
+                    <ul className="grid grid-cols-3 gap-3 sm:grid-cols-6 sm:gap-4">
+                        {images.map((image, index) => (
+                            <li key={image.id ?? index}>
+                                <button
+                                    type="button"
+                                    onClick={() => go(index)}
+                                    aria-label={`Tampilkan desain villa ${
+                                        index + 1
+                                    }`}
+                                    aria-current={
+                                        index === active ? "true" : undefined
+                                    }
+                                    className={`group/thumb relative block h-[72px] w-full overflow-hidden rounded-[14px] transition-[opacity,box-shadow] duration-500 ease-out focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[3px] focus-visible:outline-gold-ink sm:h-[96px] lg:h-[116px] ${
+                                        index === active
+                                            ? "opacity-100 shadow-[0_10px_28px_-16px_rgba(199,164,92,0.85)]"
+                                            : "opacity-55 hover:opacity-90"
+                                    }`}
+                                >
+                                    <img
+                                        src={image.src}
+                                        alt=""
+                                        className={`h-full w-full object-cover transition-transform duration-700 ease-out ${
+                                            index === active
+                                                ? "scale-[1.03]"
+                                                : "group-hover/thumb:scale-[1.03]"
+                                        }`}
+                                    />
 
+                                    {/*
+                                     * Penanda aktif: hairline emas di dalam
+                                     * radius, bukan ring tebal dengan celah.
+                                     * Dipisah sebagai lapisan sendiri supaya
+                                     * garisnya menempel pada tepi foto dan
+                                     * tidak menambah kotak di luar kartu.
+                                     */}
+                                    <span
+                                        aria-hidden="true"
+                                        className={`pointer-events-none absolute inset-0 rounded-[14px] ring-1 ring-inset transition-[box-shadow,--tw-ring-color] duration-500 ${
+                                            index === active
+                                                ? "ring-gold/80"
+                                                : "ring-ink/10 group-hover/thumb:ring-gold/40"
+                                        }`}
+                                    />
+
+                                    {/* Sapuan emas tipis di tepi bawah, hanya saat aktif */}
+                                    <span
+                                        aria-hidden="true"
+                                        className={`pointer-events-none absolute inset-x-0 bottom-0 h-[2px] origin-left bg-gold transition-transform duration-500 ease-out ${
+                                            index === active
+                                                ? "scale-x-100"
+                                                : "scale-x-0"
+                                        }`}
+                                    />
+                                </button>
+                            </li>
+                        ))}
+                    </ul>
+                )}
             </div>
         </section>
     );

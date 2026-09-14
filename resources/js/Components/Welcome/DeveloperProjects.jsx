@@ -1,91 +1,121 @@
 import { useState } from "react";
 import { route } from "ziggy-js";
 
+/*
+ * Featured Developer Projects — mengikuti mockup Figma.
+ *
+ * Susunan: eyebrow, lalu baris intro (judul kiri + paragraf kanan), lalu
+ * baris filter, lalu grid kartu. Kartu di mockup tidak memakai pembungkus
+ * putih berbingkai — hanya foto, judul, lokasi, dan panah.
+ *
+ * Daftar filter diturunkan dari nilai `type` proyek yang benar-benar ada,
+ * jadi tidak ada pill yang menghasilkan nol hasil.
+ */
 export default function DeveloperProjects({ project = [], landings }) {
-    const [selectedCategory, setSelectedCategory] = useState("All");
+    const [selected, setSelected] = useState("All");
 
-    const categories = ["All", ...new Set(project.map((item) => item.category_name || item.type).filter(Boolean))];
+    const typeOf = (item) => item.category_name || item.type;
+    const categories = ["All", ...new Set(project.map(typeOf).filter(Boolean))];
 
-    const filteredProjects = selectedCategory === "All" 
-        ? project 
-        : project.filter((item) => (item.category_name || item.type) === selectedCategory);
+    const filtered =
+        selected === "All"
+            ? project
+            : project.filter((item) => typeOf(item) === selected);
+
+    if (project.length === 0) return null;
 
     return (
         <section
             id="developer-projects"
-            className="relative isolate overflow-hidden bg-slate-50 text-slate-900"
+            aria-labelledby="projects-heading"
+            className="w-full bg-cream text-ink"
         >
-            <div className="relative z-10 mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8 lg:py-20">
-                {/* HEADER */}
-                <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
-                    <div>
-                        <span className="text-xs font-bold uppercase tracking-[0.25em] text-[#C8A45D]">
-                            Featured Projects
-                        </span>
-                        <h2 className="mt-2 text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl lg:text-5xl">
-                            Developer Projects
-                        </h2>
-                        {landings?.developer_project_desc && (
-                            <p className="mt-3 max-w-xl text-sm leading-6 text-slate-600">
-                                {landings.developer_project_desc}
-                            </p>
-                        )}
-                    </div>
+            <div className="mx-auto flex w-full max-w-[1440px] flex-col gap-[30px] px-6 py-16 sm:px-10 lg:px-[72px] lg:pb-20 lg:pt-16">
+                <p className="text-[11px] uppercase leading-[17px] tracking-[1.5px] text-gold-ink">
+                    Featured Projects
+                </p>
 
-                    {/* Filter Pills */}
-                    <div className="flex flex-wrap items-center gap-2">
-                        {categories.map((cat) => (
-                            <button
-                                key={cat}
-                                onClick={() => setSelectedCategory(cat)}
-                                className={`rounded-full px-5 py-2 text-xs font-semibold transition-all duration-300 ${
-                                    selectedCategory === cat
-                                        ? "bg-slate-900 text-white shadow-md"
-                                        : "border border-slate-200 bg-white text-slate-600 hover:border-slate-400 hover:text-slate-900"
-                                }`}
-                            >
-                                {cat}
-                            </button>
-                        ))}
-                    </div>
+                {/* ============ INTRO ============ */}
+                <div className="flex flex-col gap-4 lg:flex-row lg:gap-16">
+                    <h2
+                        id="projects-heading"
+                        className="text-[clamp(1.75rem,4vw,2.5rem)] font-semibold leading-[1.2] text-ink lg:w-[380px] lg:shrink-0"
+                    >
+                        Developer Projects
+                    </h2>
+                    {landings?.developer_project_desc && (
+                        <p className="max-w-[70ch] flex-1 text-[15px] leading-[23px] text-ink-soft">
+                            {landings.developer_project_desc}
+                        </p>
+                    )}
                 </div>
 
-                {/* PROJECT GRID */}
-                <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                    {filteredProjects.map((item) => (
-                        <a
-                            key={item.id}
-                            href={route("project.show", { slug: item.slug })}
-                            className="group relative flex flex-col overflow-hidden rounded-3xl border border-slate-200/80 bg-white p-3 shadow-sm transition-all duration-500 hover:-translate-y-1 hover:border-amber-400/50 hover:shadow-xl"
-                        >
-                            {/* IMAGE CONTAINER */}
-                            <div className="relative aspect-[4/4.5] w-full overflow-hidden rounded-2xl bg-slate-100">
-                                <img
-                                    src={`/storage/${item.banner_image}`}
-                                    alt={item.title}
-                                    className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
-                                />
-                            </div>
+                {/* ============ FILTER ============ */}
+                {categories.length > 2 && (
+                    <div
+                        role="group"
+                        aria-label="Saring proyek berdasarkan tipe"
+                        className="flex flex-wrap items-start gap-3"
+                    >
+                        {categories.map((category) => {
+                            const active = selected === category;
+                            return (
+                                <button
+                                    key={category}
+                                    type="button"
+                                    onClick={() => setSelected(category)}
+                                    aria-pressed={active}
+                                    className={`rounded-[30px] px-5 py-[11px] text-[12px] leading-[19px] transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold-ink ${
+                                        active
+                                            ? "bg-ink text-cream"
+                                            : "bg-cream-deep text-ink hover:bg-gold-line"
+                                    }`}
+                                >
+                                    {category}
+                                </button>
+                            );
+                        })}
+                    </div>
+                )}
 
-                            {/* CARD CONTENT */}
-                            <div className="flex items-center justify-between px-2 pt-4 pb-2">
-                                <div>
-                                    <h3 className="text-base font-bold text-slate-900 transition-colors duration-300 group-hover:text-amber-600">
-                                        {item.title}
-                                    </h3>
-                                    <p className="mt-1 text-xs font-medium text-slate-500">
-                                        {item.location || item.subtitle || "Development"}
-                                    </p>
+                {/* ============ DAFTAR PROYEK ============ */}
+                <ul
+                    aria-live="polite"
+                    className="grid grid-cols-1 gap-[22px] sm:grid-cols-2 lg:grid-cols-4"
+                >
+                    {filtered.map((item) => (
+                        <li key={item.id}>
+                            <a
+                                href={route("project.show", { slug: item.slug })}
+                                className="group flex h-full flex-col gap-3 rounded-[14px] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-gold-ink"
+                            >
+                                <div className="h-[200px] w-full overflow-hidden rounded-[14px] bg-cream-deep sm:h-[260px]">
+                                    <img
+                                        src={`/storage/${item.banner_image}`}
+                                        alt={item.title}
+                                        loading="lazy"
+                                        className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+                                    />
                                 </div>
 
-                                {/* Arrow Icon */}
-                                <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-slate-200 bg-slate-50 text-slate-700 transition-all duration-300 group-hover:border-slate-900 group-hover:bg-slate-900 group-hover:text-white">
-                                    →
+                                <h3 className="text-[19px] font-semibold leading-[29px] text-ink transition-colors group-hover:text-gold-ink">
+                                    {item.title}
+                                </h3>
+
+                                <p className="text-[13px] leading-5 text-ink-soft">
+                                    {item.location || item.subtitle || "Development"}
+                                </p>
+
+                                <span
+                                    aria-hidden="true"
+                                    className="mt-auto text-[22px] leading-[34px] text-ink transition-transform duration-300 group-hover:translate-x-1"
+                                >
+                                    &rarr;
                                 </span>
-                            </div>
-                        </a>
+                            </a>
+                        </li>
                     ))}
-                </div>
+                </ul>
             </div>
         </section>
     );

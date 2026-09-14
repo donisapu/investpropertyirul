@@ -1,16 +1,6 @@
 import React from "react";
 import { Link } from "@inertiajs/react";
-import {
-    Wallet,
-    Building2,
-    Gavel,
-    Users,
-    ArrowRight,
-    CheckCircle2,
-    TrendingUp,
-    Search,
-    FileText,
-} from "lucide-react";
+import { ArrowRight, Check } from "lucide-react";
 
 export default function Howto({ auth, landings }) {
     // Helper fungsi aman untuk route Ziggy agar tidak bikin blank jika route belum terdefinisi
@@ -25,59 +15,31 @@ export default function Howto({ auth, landings }) {
     // Data Langkah-langkah Cara Kerja Investasi
     const steps = [
         {
-            icon: <Search className="w-8 h-8 text-emerald-600" />,
             title: "1. Jelajahi Properti",
             description:
                 "Telusuri pilihan properti pilihan kami yang berpotensi tinggi. Filter berdasarkan lokasi, harga, dan jenis investasi.",
         },
         {
-            icon: <FileText className="w-8 h-8 text-emerald-600" />,
             title: "2. Tinjau Detail",
             description:
                 "Analisis laporan terperinci, proyeksi keuangan, dan dokumen hukum untuk setiap properti. Kami menjamin transparansi penuh.",
         },
         {
-            icon: <Wallet className="w-8 h-8 text-emerald-600" />,
             title: "3. Pilih Metode Anda",
             description:
                 "Tentukan apakah Anda ingin berinvestasi melalui ekuitas ter-tokenisasi, pinjaman fraksional, atau kepemilikan penuh.",
         },
         {
-            icon: <TrendingUp className="w-8 h-8 text-emerald-600" />,
             title: "4. Investasikan & Dapatkan Hasil",
             description:
                 "Selesaikan transaksi Anda dengan aman. Pantau performa portofolio Anda dan terima imbal hasil langsung ke dompet Anda.",
         },
     ];
 
-    const colorStyles = {
-        emerald: {
-            bg: "bg-emerald-50",
-            icon: "text-emerald-500",
-            border: "border-emerald-500",
-            text: "text-emerald-600",
-            hoverBg: "hover:bg-emerald-50",
-        },
-        blue: {
-            bg: "bg-blue-50",
-            icon: "text-blue-500",
-            border: "border-blue-500",
-            text: "text-blue-600",
-            hoverBg: "hover:bg-blue-50",
-        },
-        amber: {
-            bg: "bg-amber-50",
-            icon: "text-amber-500",
-            border: "border-amber-500",
-            text: "text-amber-600",
-            hoverBg: "hover:bg-amber-50",
-        },
-    };
 
     const methods = [
         {
             title: "Investasi Properti",
-            icon: <Building2 className="w-12 h-12 text-emerald-600 mb-4" />,
             description:
                 "Beli lot properti untuk kepemilikan ekuitas langsung. Dapatkan keuntungan dari kenaikan nilai modal dan potensi dividen sewa.",
             features: [
@@ -86,12 +48,10 @@ export default function Howto({ auth, landings }) {
                 "Jangka menengah-panjang",
                 "Porsi kepemilikan langsung",
             ],
-            colorKey: "emerald",
             link: safeRoute("investments.index", "/investments"),
         },
         {
             title: "Urun Dana (Crowdfunding)",
-            icon: <Users className="w-12 h-12 text-blue-600 mb-4" />,
             description:
                 "Berpartisipasi dalam pendanaan properti secara kolektif. Dapatkan imbal hasil pasti dalam jangka waktu tertentu.",
             features: [
@@ -100,12 +60,10 @@ export default function Howto({ auth, landings }) {
                 "Passive income",
                 "Jangka pendek-menengah",
             ],
-            colorKey: "blue",
             link: safeRoute("crowdfunding.index", "/crowdfunding"),
         },
         {
             title: "Lelang & Cessie",
-            icon: <Gavel className="w-12 h-12 text-amber-600 mb-4" />,
             description:
                 "Ajukan penawaran untuk properti di bawah harga pasar. Dapatkan hak kepemilikan penuh melalui proses lelang transparan.",
             features: [
@@ -114,128 +72,142 @@ export default function Howto({ auth, landings }) {
                 "Potensi imbal hasil tinggi",
                 "Jual beli aset cepat",
             ],
-            colorKey: "amber",
-            link: safeRoute("property-for-sale.index", "/properties"),
+            link: safeRoute("auctions.index", "/auctions"),
         },
     ];
 
     return (
         <section className="w-full">
-            {/* 1. BANNER MULAI PERJALANAN INVESTASI (DI ATAS, ABU-ABU GELAP + TOMBOL GOLD) */}
-            <div className="bg-[#4A525D] text-white py-16 px-4 border-b border-slate-600/50 relative overflow-hidden">
-                {/* Visual Glow Effect */}
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[200px] bg-amber-500/10 blur-[100px] rounded-full pointer-events-none" />
+            {/* 1. BANNER MULAI PERJALANAN INVESTASI (rata kiri, CTA kanan) */}
+            <div className="w-full bg-ink px-6 py-12 text-cream sm:px-10 lg:px-[72px]">
+                <div className="mx-auto flex max-w-[1440px] flex-col gap-6 lg:flex-row lg:items-center lg:gap-16">
+                    <div className="flex flex-1 flex-col gap-2.5">
+                        <h2 className="text-[clamp(1.5rem,3.2vw,2rem)] font-semibold leading-[1.25]">
+                            Mulai Perjalanan Investasi Properti Anda
+                        </h2>
+                        <p className="max-w-[65ch] text-[15px] leading-[23px] text-cream/70">
+                            Kami membuat investasi properti menjadi mudah
+                            diakses, transparan, dan menguntungkan.
+                        </p>
+                    </div>
 
-                <div className="max-w-7xl mx-auto text-center relative z-10">
-                    <h2 className="text-3xl md:text-5xl font-bold mb-4 tracking-tight">
-                        Mulai{" "}
-                        <span className="bg-gradient-to-r from-amber-200 via-yellow-400 to-amber-500 bg-clip-text text-transparent">
-                            Perjalanan Investasi
-                        </span>{" "}
-                        Properti Anda
-                    </h2>
-                    <p className="text-slate-300 max-w-2xl mx-auto mb-8 text-base md:text-lg leading-relaxed">
-                        Kami membuat investasi properti menjadi mudah diakses, transparan, dan menguntungkan.
-                    </p>
                     {!auth?.user && (
                         <Link
                             href={safeRoute("register", "/register")}
-                            className="inline-flex items-center px-8 py-3.5 bg-gradient-to-r from-amber-400 via-amber-500 to-yellow-600 hover:from-amber-300 hover:via-amber-400 hover:to-yellow-500 text-slate-950 font-bold rounded-full transition-all duration-300 shadow-lg shadow-amber-500/20 hover:shadow-amber-500/40 transform hover:-translate-y-0.5"
+                            className="group inline-flex w-fit shrink-0 items-center gap-[22px] rounded-[40px] bg-gold px-[23px] py-4 text-[13px] font-semibold leading-5 text-ink transition-colors hover:bg-gold/90"
                         >
                             Buat Akun Gratis
-                            <ArrowRight className="w-5 h-5 ml-2 text-slate-950 stroke-[2.5]" />
+                            <ArrowRight
+                                className="h-4 w-4 transition-transform group-hover:translate-x-0.5"
+                                aria-hidden="true"
+                            />
                         </Link>
                     )}
                 </div>
             </div>
 
-            {/* 2. CARA KERJA (LANGKAH DEMI LANGKAH) */}
-            <div className="py-16 bg-white px-4 border-b border-slate-100">
-                <div className="max-w-7xl mx-auto">
-                    <div className="text-center mb-12">
-                        <h2 className="text-3xl font-bold text-slate-900 mb-2">
+            {/* 2. CARA KERJA (judul kiri, subteks kanan, langkah bergaris atas) */}
+            <div className="w-full bg-cream px-6 py-16 sm:px-10 lg:px-[72px] lg:py-20">
+                <div className="mx-auto flex max-w-[1440px] flex-col gap-9">
+                    <div className="flex flex-col gap-3 lg:flex-row lg:items-end lg:gap-12">
+                        <h2 className="flex-1 text-[clamp(1.75rem,4vw,2.5rem)] font-semibold leading-[1.2] text-ink">
                             Cara Kerja
                         </h2>
-                        <p className="text-slate-600">
+                        <p className="flex-1 text-[16px] leading-[25px] text-ink-soft">
                             Langkah mudah untuk mulai berinvestasi.
                         </p>
                     </div>
 
-                    <div className="grid md:grid-cols-4 gap-8">
+                    {/*
+                     * Nomor urut menggantikan chip ikon bundar yang dipakai
+                     * versi lama. Garis tipis di atas tiap langkah memberi
+                     * struktur tanpa menambah kotak.
+                     */}
+                    <ol className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
                         {steps.map((step, index) => (
-                            <div key={index} className="text-center group">
-                                <div className="w-16 h-16 bg-emerald-50 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-emerald-100 transition-colors">
-                                    {step.icon}
+                            <li
+                                key={step.title}
+                                className="flex flex-col items-start gap-[18px] border-t border-gold-line pt-[22px]"
+                            >
+                                <span className="text-[13px] leading-5 text-gold-ink">
+                                    {String(index + 1).padStart(2, "0")}
+                                </span>
+                                <div className="flex flex-col gap-2">
+                                    <h3 className="text-[18px] font-semibold leading-7 text-ink">
+                                        {step.title}
+                                    </h3>
+                                    <p className="text-[14px] leading-[22px] text-ink-soft">
+                                        {step.description}
+                                    </p>
                                 </div>
-                                <h3 className="text-lg font-bold text-slate-900 mb-2">
-                                    {step.title}
-                                </h3>
-                                <p className="text-slate-600 text-xs leading-relaxed">
-                                    {step.description}
-                                </p>
-                            </div>
+                            </li>
                         ))}
-                    </div>
+                    </ol>
                 </div>
             </div>
 
-            {/* 3. CARA BERINVESTASI (METODE) */}
-            <div className="py-16 bg-slate-50 px-4">
-                <div className="max-w-7xl mx-auto">
-                    <div className="text-center mb-12">
-                        <h2 className="text-3xl font-bold text-slate-900 mb-3">
+            {/* 3. CARA BERINVESTASI — tabel perbandingan (sesuai mockup) */}
+            <div className="w-full bg-cream-deep px-6 py-16 sm:px-10 lg:px-[72px] lg:pb-20 lg:pt-16">
+                <div className="mx-auto flex w-full max-w-[1440px] flex-col gap-9">
+                    <div className="flex flex-col gap-2">
+                        <h2 className="text-[clamp(1.75rem,4vw,2.5rem)] font-semibold leading-[1.2] text-ink">
                             Cara Berinvestasi
                         </h2>
-                        <p className="text-slate-600 max-w-2xl mx-auto">
-                            Pilih model investasi yang paling sesuai dengan profil risiko dan dana Anda.
+                        <p className="max-w-[60ch] text-[16px] leading-[25px] text-ink-soft">
+                            Pilih model investasi yang paling sesuai dengan
+                            profil risiko dan dana Anda.
                         </p>
                     </div>
 
-                    <div className="grid md:grid-cols-3 gap-8">
-                        {methods.map((method, index) => {
-                            const style = colorStyles[method.colorKey];
-                            return (
-                                <div
-                                    key={index}
-                                    className="bg-white rounded-2xl p-6 shadow-sm border border-slate-200 hover:shadow-lg transition-shadow flex flex-col justify-between"
-                                >
-                                    <div>
-                                        <div
-                                            className={`p-3 rounded-xl inline-block ${style.bg} mb-4`}
+                    {/*
+                     * Tiga kartu dibaca menyamping sebagai perbandingan, jadi
+                     * deskripsi diberi tinggi minimum agar daftar benefit
+                     * sejajar antar kolom. Memakai min-h, bukan tinggi mati
+                     * seperti di mockup, supaya teks panjang tidak terpotong.
+                     */}
+                    <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+                        {methods.map((method) => (
+                            <div
+                                key={method.title}
+                                className="flex h-full flex-col gap-5 rounded-xl bg-cream p-7"
+                            >
+                                <h3 className="text-[23px] font-semibold leading-9 text-ink">
+                                    {method.title}
+                                </h3>
+
+                                <p className="text-[14px] leading-[22px] text-ink-soft lg:min-h-[110px]">
+                                    {method.description}
+                                </p>
+
+                                <ul className="flex flex-col gap-2.5">
+                                    {method.features.map((feature) => (
+                                        <li
+                                            key={feature}
+                                            className="flex items-center gap-2.5 text-[14px] leading-[22px] text-ink"
                                         >
-                                            {method.icon}
-                                        </div>
-                                        <h3 className="text-2xl font-bold text-slate-900 mb-3">
-                                            {method.title}
-                                        </h3>
-                                        <p className="text-slate-600 mb-6 text-sm leading-relaxed">
-                                            {method.description}
-                                        </p>
-                                        <ul className="space-y-2 mb-6">
-                                            {method.features.map(
-                                                (feature, idx) => (
-                                                    <li
-                                                        key={idx}
-                                                        className="flex items-center text-slate-700 text-sm"
-                                                    >
-                                                        <CheckCircle2
-                                                            className={`w-4 h-4 ${style.icon} mr-2 flex-shrink-0`}
-                                                        />
-                                                        {feature}
-                                                    </li>
-                                                )
-                                            )}
-                                        </ul>
-                                    </div>
+                                            <Check
+                                                className="h-4 w-4 shrink-0 text-gold-ink"
+                                                aria-hidden="true"
+                                            />
+                                            {feature}
+                                        </li>
+                                    ))}
+                                </ul>
+
+                                <div className="mt-auto border-t border-gold-line pt-5">
                                     <Link
                                         href={method.link}
-                                        className={`block w-full text-center py-2.5 rounded-xl font-semibold border-2 ${style.border} ${style.text} ${style.hoverBg} transition-colors text-sm`}
+                                        className="group inline-flex items-center gap-2 text-[13px] font-bold leading-5 text-ink transition-colors hover:text-gold-ink"
                                     >
                                         Lihat {method.title}
+                                        <ArrowRight
+                                            className="h-4 w-4 transition-transform group-hover:translate-x-0.5"
+                                            aria-hidden="true"
+                                        />
                                     </Link>
                                 </div>
-                            );
-                        })}
+                            </div>
+                        ))}
                     </div>
                 </div>
             </div>
