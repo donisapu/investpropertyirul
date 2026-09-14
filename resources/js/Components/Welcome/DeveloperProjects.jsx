@@ -65,7 +65,7 @@ export default function DeveloperProjects({ project = [], landings }) {
                                     type="button"
                                     onClick={() => setSelected(category)}
                                     aria-pressed={active}
-                                    className={`rounded-[30px] px-5 py-[11px] text-[12px] leading-[19px] transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold-ink ${
+                                    className={`inline-flex min-h-[44px] items-center rounded-[30px] px-5 py-[11px] text-[12px] leading-[19px] transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold-ink ${
                                         active
                                             ? "bg-ink text-cream"
                                             : "bg-cream-deep text-ink hover:bg-gold-line"

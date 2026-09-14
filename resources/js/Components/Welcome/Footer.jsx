@@ -51,7 +51,7 @@ const SOCIAL_ICONS = {
 };
 
 const LINK =
-    "text-[13px] leading-5 text-cream/75 transition-colors hover:text-cream focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold";
+    "inline-flex min-h-[44px] items-center text-[13px] leading-5 text-cream/75 transition-colors hover:text-cream focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold";
 const EYEBROW =
     "text-[11px] uppercase leading-[17px] tracking-[1.5px] text-gold";
 
@@ -129,7 +129,7 @@ export default function Footer({ settings }) {
                     {/* Explore */}
                     <nav
                         aria-label="Jelajahi"
-                        className="flex flex-1 flex-col items-start gap-[18px]"
+                        className="flex flex-1 flex-col items-start gap-1 sm:gap-[18px]"
                     >
                         <p className={EYEBROW}>Explore</p>
                         {EXPLORE.map((item) => (
@@ -142,7 +142,7 @@ export default function Footer({ settings }) {
                     {/* Membership */}
                     <nav
                         aria-label="Keanggotaan"
-                        className="flex flex-1 flex-col items-start gap-[18px]"
+                        className="flex flex-1 flex-col items-start gap-1 sm:gap-[18px]"
                     >
                         <p className={EYEBROW}>Membership</p>
                         <Link href={safeRoute("login", "/login")} className={LINK}>
@@ -154,7 +154,7 @@ export default function Footer({ settings }) {
                     </nav>
 
                     {/* Kontak */}
-                    <div className="flex flex-1 flex-col items-start gap-[18px]">
+                    <div className="flex flex-1 flex-col items-start gap-1 sm:gap-[18px]">
                         <p className={EYEBROW}>Get In Touch</p>
 
                         {settings?.address && (
@@ -216,13 +216,13 @@ export default function Footer({ settings }) {
                     <div className="flex gap-8">
                         <a
                             href="/privacy-policy"
-                            className="transition-colors hover:text-cream focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold"
+                            className="-my-3 inline-flex min-h-[44px] items-center py-3 transition-colors hover:text-cream focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold"
                         >
                             Privacy Policy
                         </a>
                         <a
                             href={safeRoute("terms", "/terms")}
-                            className="transition-colors hover:text-cream focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold"
+                            className="-my-3 inline-flex min-h-[44px] items-center py-3 transition-colors hover:text-cream focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold"
                         >
                             Terms &amp; Conditions
                         </a>

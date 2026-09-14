@@ -57,7 +57,7 @@ export default function Hero({ landings, settings, sliders }) {
                         </p>
 
                         <h1 className="w-full font-semibold tracking-[-0.02em] text-ink">
-                            <span className="block text-[clamp(2rem,5.5vw,3.25rem)] leading-[1.21]">
+                            <span className="block text-[clamp(2.25rem,5.5vw,3.25rem)] leading-[1.18]">
                                 {landings?.header}
                             </span>
                             {/*
@@ -70,7 +70,7 @@ export default function Hero({ landings, settings, sliders }) {
                              * >= 3,77:1.
                              */}
                             <span
-                                className="mt-3 block bg-clip-text text-[clamp(2.1rem,5.7vw,3.375rem)] leading-[1.15] text-transparent"
+                                className="mt-3 block bg-clip-text text-[clamp(2.375rem,5.7vw,3.375rem)] leading-[1.12] text-transparent"
                                 style={{
                                     backgroundImage:
                                         "linear-gradient(90deg,#6B4F21 4.685%,#8B6420 27.342%,#A8762F 44.562%,#8B6420 58.157%,#6B4F21 76.283%,#9C7030 95.315%)",
@@ -115,7 +115,7 @@ export default function Hero({ landings, settings, sliders }) {
                             </Link>
                         </div>
 
-                        <p className="text-[10px] uppercase leading-4 tracking-[1.5px] text-ink-soft">
+                        <p className="hidden text-[10px] uppercase leading-4 tracking-[1.5px] text-ink-soft sm:block">
                             Discover your next destination
                         </p>
                     </div>
@@ -132,7 +132,7 @@ export default function Hero({ landings, settings, sliders }) {
                                     : "Properti unggulan"
                             }
                             draggable="false"
-                            className="h-[280px] w-full rounded-3xl object-cover sm:h-[420px] lg:h-[600px]"
+                            className="h-[340px] w-full rounded-3xl object-cover sm:h-[420px] lg:h-[600px]"
                         />
                     </div>
                 </div>
@@ -151,20 +151,25 @@ export default function Hero({ landings, settings, sliders }) {
                     ))}
                 </ul>
 
-                {/* ============ STATISTIK (hanya bila diisi admin) ============ */}
+                {/*
+                 * ============ STATISTIK ============
+                 * Mobile memakai tiga kolom dengan nilai di atas label.
+                 * Susunan berdampingan seperti desktop akan menumpuk jadi tiga
+                 * baris dan memakan lebih dari 160px hanya untuk tiga angka.
+                 */}
                 {stats.length > 0 && (
-                    <dl className="flex flex-wrap gap-x-12 gap-y-4 pb-2 pt-4">
+                    <dl className="grid grid-cols-3 gap-x-4 gap-y-4 pb-2 pt-5 sm:flex sm:flex-wrap sm:gap-x-12">
                         {stats.map((stat) => (
                             <div
                                 key={stat.label}
-                                className="flex flex-1 basis-[8rem] items-center gap-3.5"
+                                className="flex flex-col gap-0.5 sm:flex-1 sm:basis-[8rem] sm:flex-row sm:items-center sm:gap-3.5"
                             >
                                 <dt className="sr-only">{stat.label}</dt>
-                                <dd className="flex items-center gap-3.5">
-                                    <span className="text-[clamp(1.625rem,3.2vw,2.125rem)] font-semibold leading-[1.35] text-ink">
+                                <dd className="flex flex-col gap-0.5 sm:flex-row sm:items-center sm:gap-3.5">
+                                    <span className="text-[clamp(1.625rem,3.2vw,2.125rem)] font-semibold leading-[1.2] text-ink">
                                         {stat.value}
                                     </span>
-                                    <span className="text-[11px] uppercase leading-4 tracking-[1.2px] text-ink-soft">
+                                    <span className="text-[10px] uppercase leading-[14px] tracking-[1px] text-ink-soft sm:text-[11px] sm:leading-4 sm:tracking-[1.2px]">
                                         {stat.label}
                                     </span>
                                 </dd>

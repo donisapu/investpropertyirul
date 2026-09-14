@@ -143,11 +143,15 @@ export default function Calculator({ landings, projects = [] }) {
               max="10"
               value={period}
               onChange={(e) => setPeriod(Number(e.target.value))}
-              className="calc-range h-[3px] w-full cursor-pointer appearance-none rounded-full focus:outline-none focus-visible:ring-1 focus-visible:ring-gold-ink"
+              className="calc-range h-11 w-full cursor-pointer appearance-none bg-transparent focus:outline-none focus-visible:ring-1 focus-visible:ring-gold-ink"
+              /* Track tetap setipis 3px, tetapi area sentuhnya 44px penuh. */
               style={{
-                background: `linear-gradient(to right, #C7A45C 0%, #C7A45C ${
+                backgroundImage: `linear-gradient(to right, #C7A45C 0%, #C7A45C ${
                   ((period - 1) / 9) * 100
                 }%, #DDDCD3 ${((period - 1) / 9) * 100}%, #DDDCD3 100%)`,
+                backgroundSize: "100% 3px",
+                backgroundPosition: "center",
+                backgroundRepeat: "no-repeat",
               }}
             />
           </div>
@@ -312,7 +316,7 @@ export default function Calculator({ landings, projects = [] }) {
       </div>
 
       {/* Footer Disclaimer */}
-      <p className="mt-8 text-[11px] leading-relaxed text-ink-soft">
+      <p className="mt-8 text-[12px] leading-relaxed text-ink-soft sm:text-[11px]">
         <strong className="text-ink-soft">Disclaimer:</strong> The calculator is intended solely for illustrative purposes, and the generated information should not be construed as legal or financial advice, nor as a guarantee of any kind.
       </p>
       </div>

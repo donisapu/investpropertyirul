@@ -96,7 +96,7 @@ export default function Header() {
         <header className="sticky top-0 z-50 border-b border-gold-line bg-cream">
             <div className="mx-auto flex w-full max-w-[1440px] items-center justify-between gap-6 px-6 py-4 sm:px-10 lg:px-[72px] lg:py-[25px]">
                 {/* ================= BRAND ================= */}
-                <Link href="/" className="flex shrink-0 items-center gap-2.5">
+                <Link href="/" className="flex min-h-[44px] shrink-0 items-center gap-2.5">
                     {logoSrc && (
                         <img
                             src={logoSrc}
@@ -192,7 +192,7 @@ export default function Header() {
                     onClick={() => setOpen(!open)}
                     aria-expanded={open}
                     aria-controls="menu-mobile"
-                    className="inline-flex items-center justify-center rounded-full p-2 text-ink transition-colors hover:bg-cream-deep focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold-ink lg:hidden"
+                    className="inline-flex min-h-[44px] min-w-[44px] items-center justify-center rounded-full p-2 text-ink transition-colors hover:bg-cream-deep focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold-ink lg:hidden"
                 >
                     <span className="sr-only">
                         {open ? "Tutup menu" : "Buka menu"}

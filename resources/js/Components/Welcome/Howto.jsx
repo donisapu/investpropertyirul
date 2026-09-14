@@ -197,7 +197,7 @@ export default function Howto({ auth, landings }) {
                                 <div className="mt-auto border-t border-gold-line pt-5">
                                     <Link
                                         href={method.link}
-                                        className="group inline-flex items-center gap-2 text-[13px] font-bold leading-5 text-ink transition-colors hover:text-gold-ink"
+                                        className="group inline-flex min-h-[44px] items-center gap-2 text-[13px] font-bold leading-5 text-ink transition-colors hover:text-gold-ink focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold-ink"
                                     >
                                         Lihat {method.title}
                                         <ArrowRight
