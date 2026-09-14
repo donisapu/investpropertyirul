@@ -28,16 +28,16 @@ export default function Hero({ landings, settings, sliders }) {
         : "/storage/default-hero.jpg";
 
     /*
-     * Statistik dibaca dari database, tidak di-hardcode. Angka lama
-     * (250+/2.5K+/98%) adalah nilai dari mockup referensi dan tidak dapat
-     * dipertanggungjawabkan untuk produk finansial. Bila admin belum
-     * mengisinya, strip ini tidak dirender sama sekali.
+     * Statistik hero di-hardcode atas permintaan klien.
+     *
+     * Angka-angka ini belum diverifikasi dan berasal dari mockup referensi.
+     * Ganti dengan angka yang dapat dibuktikan sebelum rilis publik.
      */
     const stats = [
-        { value: landings?.stat_1_value, label: landings?.stat_1_label },
-        { value: landings?.stat_2_value, label: landings?.stat_2_label },
-        { value: landings?.stat_3_value, label: landings?.stat_3_label },
-    ].filter((s) => s.value && s.label);
+        { value: "250+", label: "Properties" },
+        { value: "2.5K+", label: "Property Users" },
+        { value: "98%", label: "Satisfaction" },
+    ];
 
     const whatsapp = settings?.whatsapp;
 

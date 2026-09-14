@@ -93,54 +93,6 @@
                         <small class="text-danger error" id="error-subheader"></small>
                     </div>
 
-                    {{-- Statistik hero: hanya tampil di landing bila diisi.
-                         Kosongkan bila belum ada angka yang bisa dibuktikan. --}}
-                    <div class="col-12">
-                        <label class="form-label fw-medium mb-1">Hero Statistics</label>
-                        <small class="d-block text-muted mb-2">
-                            Opsional. Bila dikosongkan, strip statistik tidak ditampilkan
-                            di halaman depan. Isi hanya dengan angka yang dapat dibuktikan.
-                        </small>
-                        <div class="row g-2">
-                            <div class="col-md-2 col-4">
-                                <input type="text" name="stat_1_value" id="stat_1_value"
-                                    class="form-control" placeholder="mis. 250+"
-                                    value="{{ old('stat_1_value', $setting->stat_1_value) }}">
-                                <small class="text-danger error" id="error-stat_1_value"></small>
-                            </div>
-                            <div class="col-md-2 col-8">
-                                <input type="text" name="stat_1_label" id="stat_1_label"
-                                    class="form-control" placeholder="mis. Properties"
-                                    value="{{ old('stat_1_label', $setting->stat_1_label) }}">
-                                <small class="text-danger error" id="error-stat_1_label"></small>
-                            </div>
-                            <div class="col-md-2 col-4">
-                                <input type="text" name="stat_2_value" id="stat_2_value"
-                                    class="form-control" placeholder="mis. 250+"
-                                    value="{{ old('stat_2_value', $setting->stat_2_value) }}">
-                                <small class="text-danger error" id="error-stat_2_value"></small>
-                            </div>
-                            <div class="col-md-2 col-8">
-                                <input type="text" name="stat_2_label" id="stat_2_label"
-                                    class="form-control" placeholder="mis. Properties"
-                                    value="{{ old('stat_2_label', $setting->stat_2_label) }}">
-                                <small class="text-danger error" id="error-stat_2_label"></small>
-                            </div>
-                            <div class="col-md-2 col-4">
-                                <input type="text" name="stat_3_value" id="stat_3_value"
-                                    class="form-control" placeholder="mis. 250+"
-                                    value="{{ old('stat_3_value', $setting->stat_3_value) }}">
-                                <small class="text-danger error" id="error-stat_3_value"></small>
-                            </div>
-                            <div class="col-md-2 col-8">
-                                <input type="text" name="stat_3_label" id="stat_3_label"
-                                    class="form-control" placeholder="mis. Properties"
-                                    value="{{ old('stat_3_label', $setting->stat_3_label) }}">
-                                <small class="text-danger error" id="error-stat_3_label"></small>
-                            </div>
-                        </div>
-                    </div>
-
                     <div class="col-12">
                         <label class="form-label fw-medium">Description</label>
                         <textarea id="description" name="description" rows="3" class="form-control">{{ old('description', $setting->description) }}</textarea>
