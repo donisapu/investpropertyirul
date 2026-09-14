@@ -45,6 +45,12 @@ class LandingSettingController extends AdminController
             'location_desc' => 'nullable|string',
             'location'  => 'nullable|string',
             'slider_title' => 'nullable|string',
+            'stat_1_value' => 'nullable|string|max:20',
+            'stat_1_label' => 'nullable|string|max:40',
+            'stat_2_value' => 'nullable|string|max:20',
+            'stat_2_label' => 'nullable|string|max:40',
+            'stat_3_value' => 'nullable|string|max:20',
+            'stat_3_label' => 'nullable|string|max:40',
 
             'images' => 'nullable|array',
             'images.*' => 'image|mimes:jpg,jpeg,png,webp|max:5120',
