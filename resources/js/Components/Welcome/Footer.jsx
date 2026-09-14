@@ -1,495 +1,229 @@
-import { useState, useRef, useEffect } from "react";
-import { Head, Link } from "@inertiajs/react";
+import { Link } from "@inertiajs/react";
 
-export default function Footer({
-    settings,
-    laravelVersion,
-    phpVersion,
-    partners,
-    campaigns,
-}) {
-    const rowRef = useRef(null);
-    const [canScroll, setCanScroll] = useState(false);
-    const [atStart, setAtStart] = useState(true);
-    const [atEnd, setAtEnd] = useState(false);
+/*
+ * Footer — mengikuti mockup Figma.
+ *
+ * Empat kolom: brand (lebar tetap 320px) + tiga kolom tautan yang membagi
+ * sisa ruang, lalu baris legal di bawah garis pemisah.
+ *
+ * Blok campaign dan partner sudah dipindah ke Promo.jsx dan
+ * TrustedPartners.jsx sesuai mockup, yang memperlakukan keduanya sebagai
+ * seksi tersendiri.
+ */
 
-    const [currentIndex, setCurrentIndex] = useState(0);
-    const [selectedCampaign, setSelectedCampaign] = useState(null);
+/* Ziggy melempar bila nama route belum terdaftar; footer tidak boleh ikut
+ * menjatuhkan halaman hanya karena satu route hilang. */
+function safeRoute(name, fallback) {
+    try {
+        return route(name);
+    } catch {
+        return fallback;
+    }
+}
 
-    const formatDate = (dateString) => {
-        if (!dateString) return "-";
-        const date = new Date(dateString);
-        return new Intl.DateTimeFormat("id-ID", {
-            day: "numeric",
-            month: "long",
-            year: "numeric",
-        }).format(date);
-    };
+const EXPLORE = [
+    { label: "Investment", href: "/investments" },
+    { label: "Crowdfunding", href: "/crowdfunding" },
+    { label: "Property for Sale", href: "/property-for-sale" },
+    { label: "How to Invest", href: "/how-to-invest" },
+];
 
-    useEffect(() => {
-        if (!campaigns || campaigns.length <= 1) return;
+const CERTIFICATIONS = [
+    {
+        href: "https://pse.komdigi.go.id",
+        src: "/assets/img/komdigi.svg",
+        alt: "Terdaftar PSE Komdigi",
+    },
+    {
+        href: "https://kan.or.id",
+        src: "/assets/img/kan.svg",
+        alt: "Terakreditasi KAN",
+    },
+];
 
-        const timer = setInterval(() => {
-            setCurrentIndex((prev) =>
-                prev === campaigns.length - 1 ? 0 : prev + 1,
-            );
-        }, 5000);
+const SOCIAL_ICONS = {
+    facebook:
+        "M22 12a10 10 0 10-11.5 9.9v-7h-2v-3h2v-2.3c0-2 1.2-3.1 3-3.1.9 0 1.8.2 1.8.2v2h-1c-1 0-1.3.6-1.3 1.2V12h2.2l-.3 3h-1.9v7A10 10 0 0022 12z",
+    instagram:
+        "M7 2C4.24 2 2 4.24 2 7v10c0 2.76 2.24 5 5 5h10c2.76 0 5-2.24 5-5V7c0-2.76-2.24-5-5-5H7zm10 2c1.66 0 3 1.34 3 3v10c0 1.66-1.34 3-3 3H7c-1.66 0-3-1.34-3-3V7c0-1.66 1.34-3 3-3h10zm-5 3a5 5 0 100 10 5 5 0 000-10zm6-1a1 1 0 100 2 1 1 0 000-2z",
+    youtube:
+        "M23.5 6.2a3 3 0 00-2.1-2.1C19.8 3.6 12 3.6 12 3.6s-7.8 0-9.4.5A3 3 0 00.6 6.2 31.6 31.6 0 000 12a31.6 31.6 0 00.6 5.8 3 3 0 002.1 2.1c1.6.5 9.4.5 9.4.5s7.8 0 9.4-.5a3 3 0 002.1-2.1c.4-1.9.6-3.8.6-5.8s-.2-3.9-.6-5.8zM9.7 15.5V8.5l6.2 3.5-6.2 3.5z",
+};
 
-        return () => clearInterval(timer);
-    }, [campaigns]);
+const LINK =
+    "text-[13px] leading-5 text-cream/75 transition-colors hover:text-cream focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold";
+const EYEBROW =
+    "text-[11px] uppercase leading-[17px] tracking-[1.5px] text-gold";
 
-    if (!campaigns) return null;
+export default function Footer({ settings }) {
+    const logoSrc = settings?.logo
+        ? settings.logo.startsWith("http") || settings.logo.startsWith("/")
+            ? settings.logo
+            : `/storage/${settings.logo}`
+        : null;
 
-    const prevSlide = (e) => {
-        e.stopPropagation();
-        setCurrentIndex((prev) =>
-            prev === 0 ? campaigns.length - 1 : prev - 1,
-        );
-    };
+    const siteName = settings?.site_name || "Gain Properties";
 
-    const nextSlide = (e) => {
-        e.stopPropagation();
-        setCurrentIndex((prev) =>
-            prev === campaigns.length - 1 ? 0 : prev + 1,
-        );
-    };
+    /* wa.me menolak tanda "+", tapi nomor internasional lebih terbaca
+     * dengan awalan itu. Jadi tautannya polos, tampilannya berawalan. */
+    const waNumber = settings?.whatsapp?.replace(/[^\d]/g, "");
+    const waDisplay = waNumber ? `+${waNumber}` : null;
 
-    const getCtaUrl = (campaign) => {
-        const targetId = campaign.target_id || campaign.property_id;
-        const discount = parseFloat(campaign.discount_percent || 0);
-
-        if (campaign.type === "investment") {
-            return `/investments/purchase/${targetId}?discount=${discount}&campaign_id=${campaign.id}`;
-        }
-
-        if (campaign.type === "crowdfunding") {
-            return `/crowdfunding/purchase/${targetId}?discount=${discount}&campaign_id=${campaign.id}`;
-        }
-
-        return "#";
-    };
+    const socials = [
+        { url: settings?.facebook_url, label: "Facebook", d: SOCIAL_ICONS.facebook },
+        { url: settings?.instagram_url, label: "Instagram", d: SOCIAL_ICONS.instagram },
+        { url: settings?.youtube_url, label: "YouTube", d: SOCIAL_ICONS.youtube },
+    ].filter((item) => item.url);
 
     return (
-        <footer className="bg-slate-900 text-slate-200 border-t border-slate-800 relative overflow-hidden">
-            {/* Background Ambient Glow */}
-            <div className="absolute top-0 right-1/4 w-96 h-96 bg-amber-500/5 rounded-full blur-3xl pointer-events-none" />
-            <div className="absolute bottom-0 left-10 w-80 h-80 bg-emerald-500/5 rounded-full blur-3xl pointer-events-none" />
-
-            <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-16 pb-8">
-                {/* ================================
-                    BANNER CAMPAIGN / SLIDER
-                ================================= */}
-                {campaigns.length === 1 ? (
-                    <div
-                        onClick={() => setSelectedCampaign(campaigns[0])}
-                        className="block w-full overflow-hidden rounded-2xl shadow-xl hover:opacity-95 transition group cursor-pointer mb-16"
-                    >
-                        <div className="relative overflow-hidden">
-                            <img
-                                src={`/storage/${campaigns[0].banner_path}`}
-                                alt={campaigns[0].title}
-                                className="w-full h-auto object-contain group-hover:scale-[1.01] transition duration-500"
-                            />
-                            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent flex items-end p-6">
-                                <h3 className="text-white font-bold text-xl sm:text-2xl">
-                                    {campaigns[0].title}
-                                </h3>
-                            </div>
-                        </div>
-                    </div>
-                ) : (
-                    <div className="relative w-full overflow-hidden rounded-2xl shadow-xl group/main mb-16">
-                        <div
-                            className="flex transition-transform duration-700 ease-in-out"
-                            style={{
-                                transform: `translateX(-${currentIndex * 100}%)`,
-                            }}
-                        >
-                            {campaigns.map((campaign) => (
-                                <div
-                                    key={campaign.id}
-                                    onClick={() =>
-                                        setSelectedCampaign(campaign)
-                                    }
-                                    className="w-full flex-shrink-0 block relative group overflow-hidden cursor-pointer"
-                                >
-                                    <img
-                                        src={`/storage/${campaign.banner_path}`}
-                                        alt={campaign.title}
-                                        className="w-full h-auto object-cover aspect-[21/9] sm:aspect-[3/1] group-hover:scale-105 transition duration-500"
-                                    />
-                                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent flex items-end p-6 sm:p-10">
-                                        <div className="text-left">
-                                            <h3 className="text-white font-bold text-lg sm:text-2xl tracking-wide mb-1">
-                                                {campaign.title}
-                                            </h3>
-                                            {parseFloat(
-                                                campaign.discount_percent,
-                                            ) > 0 && (
-                                                <span className="inline-block bg-red-500 text-white text-xs px-2.5 py-0.5 rounded-full font-semibold animate-pulse">
-                                                    Diskon{" "}
-                                                    {parseFloat(
-                                                        campaign.discount_percent,
-                                                    )}
-                                                    %
-                                                </span>
-                                            )}
-                                        </div>
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
-
-                        {/* Navigation Arrows */}
-                        <button
-                            onClick={prevSlide}
-                            className="absolute top-1/2 left-4 -translate-y-1/2 bg-black/40 hover:bg-black/70 text-white p-2 rounded-full backdrop-blur-sm opacity-0 group-hover/main:opacity-100 transition-opacity duration-300 z-10"
-                        >
-                            <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-                                <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
-                            </svg>
-                        </button>
-                        <button
-                            onClick={nextSlide}
-                            className="absolute top-1/2 right-4 -translate-y-1/2 bg-black/40 hover:bg-black/70 text-white p-2 rounded-full backdrop-blur-sm opacity-0 group-hover/main:opacity-100 transition-opacity duration-300 z-10"
-                        >
-                            <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-                                <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
-                            </svg>
-                        </button>
-
-                        {/* Indicators */}
-                        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-10">
-                            {campaigns.map((_, index) => (
-                                <button
-                                    key={index}
-                                    onClick={(e) => {
-                                        e.stopPropagation();
-                                        setCurrentIndex(index);
-                                    }}
-                                    className={`h-2 rounded-full transition-all duration-300 ${
-                                        currentIndex === index
-                                            ? "w-6 bg-amber-400"
-                                            : "w-2 bg-white/60"
-                                    }`}
-                                />
-                            ))}
-                        </div>
-                    </div>
-                )}
-
-                {/* MODAL CAMPAIGN DETAIL */}
-                {selectedCampaign && (
-                    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-md p-4 animate-fade-in">
-                        <div className="bg-white rounded-2xl max-w-lg w-full overflow-hidden shadow-2xl transform transition-all relative">
-                            <button
-                                onClick={() => setSelectedCampaign(null)}
-                                className="absolute top-3 right-3 bg-black/50 hover:bg-black/70 text-white p-1.5 rounded-full z-10 transition"
-                            >
-                                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                                </svg>
-                            </button>
-
-                            <div className="relative">
-                                <img
-                                    src={`/storage/${selectedCampaign.banner_path}`}
-                                    alt={selectedCampaign.title}
-                                    className="w-full h-48 sm:h-56 object-cover"
-                                />
-                                {parseFloat(selectedCampaign.discount_percent) > 0 && (
-                                    <span className="absolute bottom-3 left-4 bg-red-500 text-white text-xs px-3 py-1 rounded-full font-bold shadow">
-                                        Hemat {parseFloat(selectedCampaign.discount_percent)}%
-                                    </span>
-                                )}
-                            </div>
-
-                            <div className="p-6">
-                                <h2 className="text-xl font-bold text-gray-900 mb-2">
-                                    {selectedCampaign.title}
-                                </h2>
-
-                                <div className="flex items-center gap-2 sm:gap-4 text-xs text-gray-500 mb-4 flex-wrap">
-                                    <span className="bg-gray-100 px-2.5 py-1 rounded-md font-medium text-gray-700 flex items-center gap-1.5">
-                                        <svg className="w-3.5 h-3.5 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 002-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                                        </svg>
-                                        {formatDate(selectedCampaign.start_date)} - {formatDate(selectedCampaign.end_date)}
-                                    </span>
-                                </div>
-
-                                <p className="text-gray-600 text-sm leading-relaxed mb-6 max-h-36 overflow-y-auto">
-                                    {selectedCampaign.description || "Tidak ada deskripsi untuk campaign ini."}
-                                </p>
-
-                                <div className="flex gap-3">
-                                    <button
-                                        onClick={() => setSelectedCampaign(null)}
-                                        className="w-1/3 py-2.5 px-4 text-sm font-semibold text-gray-600 bg-gray-100 hover:bg-gray-200 rounded-xl transition"
-                                    >
-                                        Tutup
-                                    </button>
-                                    <Link
-                                        href={getCtaUrl(selectedCampaign)}
-                                        className="w-2/3 py-2.5 px-4 text-sm font-semibold text-white bg-amber-500 hover:bg-amber-600 text-center rounded-xl transition shadow-lg shadow-amber-500/30 flex items-center justify-center gap-2"
-                                    >
-                                        <span>Beli Sekarang</span>
-                                        <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                                        </svg>
-                                    </Link>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                )}
-
-                {/* ================================
-                    PARTNER / TRUSTED PARTNERS
-                ================================= */}
-                <div className="border-b border-white/10 pb-12 mb-16">
-                    <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6">
-                        <div className="max-w-xl">
-                            <div className="mb-3 text-[11px] font-semibold uppercase tracking-[0.25em] text-[#C8A45D]">
-                                Trusted Partners
-                            </div>
-                            <h2 className="text-2xl sm:text-3xl font-semibold tracking-[-0.03em] text-white">
-                                Dibangun bersama partner terpercaya.
-                            </h2>
-                        </div>
-                        <p className="max-w-md text-sm leading-relaxed text-slate-400">
-                            Kami bekerja sama dengan berbagai entitas terkemuka untuk menghadirkan ekosistem properti yang aman dan terintegrasi.
-                        </p>
-                    </div>
-
-                    <div className="mt-8 flex flex-wrap items-center gap-8 lg:gap-12">
-                        {partners?.map((partner) => (
-                            <div key={partner.id} className="group flex h-12 items-center">
-                                <img
-                                    src={`/storage/${partner.image_url}`}
-                                    alt={partner.name}
-                                    className="max-h-10 w-auto max-w-[140px] object-contain grayscale opacity-40 transition duration-300 group-hover:grayscale-0 group-hover:opacity-100"
-                                />
-                            </div>
-                        ))}
-                    </div>
-                </div>
-
-                {/* ================================
-                    MAIN FOOTER CONTENT
-                ================================= */}
-                <div className="grid grid-cols-1 gap-12 pb-16 md:grid-cols-2 lg:grid-cols-12">
-                    {/* BRAND & REGISTRATIONS */}
-                    <div className="lg:col-span-4 space-y-6">
+        <footer className="w-full bg-ink text-cream/75">
+            <div className="mx-auto flex w-full max-w-[1440px] flex-col gap-12 px-6 pb-8 pt-16 sm:px-10 lg:px-[72px]">
+                {/* ================= KOLOM ================= */}
+                <div className="flex flex-col gap-10 lg:flex-row lg:gap-11">
+                    {/* Brand + sertifikasi */}
+                    <div className="flex flex-col gap-5 lg:w-[320px] lg:shrink-0">
                         <div className="flex items-center gap-3">
-                            <img
-                                src={
-                                    settings?.logo
-                                        ? settings.logo.startsWith("http") || settings.logo.startsWith("/")
-                                            ? settings.logo
-                                            : `/storage/${settings.logo}`
-                                        : "/assets/img/logo.png"
-                                }
-                                alt="logo"
-                                className="h-12 w-auto object-contain max-w-[180px]"
-                            />
+                            {logoSrc && (
+                                <img
+                                    src={logoSrc}
+                                    alt=""
+                                    className="h-12 w-auto max-w-[56px] shrink-0 object-contain"
+                                />
+                            )}
+                            <span className="text-[16px] font-bold leading-[25px] text-cream">
+                                {siteName}
+                            </span>
                         </div>
 
-                        <p className="text-sm leading-relaxed text-slate-400">
-                            {settings?.description || "Platform pengembangan dan investasi properti terpercaya di Indonesia."}
-                        </p>
-
-                        {/* --- LISENSI & REGISTRASI (KOMDIGI & KAN) --- */}
-                        <div className="pt-2">
-                            <p className="text-[10px] font-semibold uppercase tracking-widest text-slate-400 mb-3">
-                                Registered & Certified On
-                            </p>
-                            <div className="flex flex-wrap items-center gap-3">
-                                {/* KOMDIGI LINK */}
-                                <a
-                                    href="https://pse.komdigi.go.id"
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    title="Terdaftar di Komdigi / Kominfo PSE"
-                                    className="flex items-center gap-2 px-3 py-2 rounded-xl bg-white/5 border border-white/10 hover:border-amber-500/50 hover:bg-white/10 transition group"
-                                >
-                                    <img
-                                        src="/assets/img/komdigi.svg"
-                                        alt="KOMDIGI Registered"
-                                        className="h-7 w-auto object-contain opacity-80 group-hover:opacity-100 transition"
-                                    />
-                                </a>
-
-                                {/* ISO CERTIFICATION */}
-                                {/* <div
-                                    title="Sertifikasi ISO/IEC 27001"
-                                    className="flex items-center gap-2 px-3 py-2 rounded-xl bg-white/5 border border-white/10"
-                                >
-                                    <img
-                                        src="/assets/img/iso-27001-logo.png"
-                                        alt="ISO/IEC 27001"
-                                        className="h-7 w-auto object-contain opacity-80"
-                                    />
-                                </div> */}
-
-                                {/* KAN LINK */}
-                                <a
-                                    href="https://kan.or.id"
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    title="Komite Akreditasi Nasional"
-                                    className="flex items-center gap-2 px-3 py-2 rounded-xl bg-white/5 border border-white/10 hover:border-amber-500/50 hover:bg-white/10 transition group"
-                                >
-                                    <img
-                                        src="/assets/img/kan.svg"
-                                        alt="KAN Akreditasi"
-                                        className="h-7 w-auto object-contain opacity-80 group-hover:opacity-100 transition"
-                                    />
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-
-                    {/* EXPLORE */}
-                    <div className="lg:col-span-2 lg:pl-4">
-                        <h3 className="mb-5 text-[11px] font-semibold uppercase tracking-widest text-[#C8A45D]">
-                            Explore
-                        </h3>
-                        <ul className="space-y-3 text-sm text-slate-400">
-                            <li>
-                                <a href="/investments" className="hover:text-white transition">Investment</a>
-                            </li>
-                            <li>
-                                <a href="/crowdfunding" className="hover:text-white transition">Crowdfunding</a>
-                            </li>
-                            <li>
-                                <a href="/property-for-sale" className="hover:text-white transition">Property for Sale</a>
-                            </li>
-                            <li>
-                                <a href="/how-to-invest" className="hover:text-white transition">How to Invest</a>
-                            </li>
-                        </ul>
-                    </div>
-
-                    {/* MEMBERSHIP */}
-                    <div className="lg:col-span-2">
-                        <h3 className="mb-5 text-[11px] font-semibold uppercase tracking-widest text-[#C8A45D]">
-                            Membership
-                        </h3>
-                        <ul className="space-y-3 text-sm text-slate-400">
-                            <li>
-                                <a href="https://gainproperties.id/login" className="hover:text-white transition">Member Login</a>
-                            </li>
-                            <li>
-                                <a href="https://gainproperties.id/register" className="hover:text-white transition">Member Register</a>
-                            </li>
-                        </ul>
-                    </div>
-
-                    {/* CONTACT & SOCIALS */}
-                    <div className="lg:col-span-4 space-y-5">
-                        <h3 className="text-[11px] font-semibold uppercase tracking-widest text-[#C8A45D]">
-                            Get in touch
-                        </h3>
-
-                        {settings?.address && (
-                            <p className="text-xs leading-relaxed text-slate-400">
-                                {settings?.address}
+                        {settings?.description && (
+                            <p className="text-[13px] leading-5 text-cream/75">
+                                {settings.description}
                             </p>
                         )}
 
-                        <div className="space-y-3">
-                            {settings?.whatsapp && (
-                                <a
-                                    href={`https://wa.me/${settings.whatsapp}`}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="group flex items-center gap-3 text-xs text-slate-300 hover:text-white transition"
-                                >
-                                    <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-white/10 bg-white/5 group-hover:border-amber-500/50 group-hover:bg-amber-500/10 text-slate-300 group-hover:text-amber-400 transition">
-                                        <svg className="h-4 w-4" viewBox="0 0 24 24" fill="currentColor">
-                                            <path d="M20.52 3.48A11.82 11.82 0 0012.06 0C5.53 0 .22 5.31.22 11.84c0 2.09.55 4.13 1.59 5.93L.11 24l6.37-1.67a11.83 11.83 0 005.58 1.42h.01c6.53 0 11.84-5.31 11.84-11.84 0-3.16-1.23-6.13-3.39-8.43zM12.07 21.7h-.01a9.84 9.84 0 01-5.02-1.37l-.36-.21-3.78.99 1.01-3.68-.23-.38a9.84 9.84 0 01-1.51-5.21C2.17 6.4 6.6 1.97 12.07 1.97c2.65 0 5.14 1.03 7.01 2.9a9.85 9.85 0 012.91 7.02c0 5.47-4.45 9.81-9.92 9.81zm5.39-7.35c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.17-.17.2-.35.22-.65.07-.3-.15-1.27-.47-2.42-1.5-.9-.8-1.5-1.78-1.68-2.08-.17-.3-.02-.46.13-.61.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.07-.15-.67-1.61-.92-2.2-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.8.37-.27.3-1.04 1.02-1.04 2.49 0 1.47 1.07 2.89 1.22 3.09.15.2 2.1 3.2 5.08 4.49.71.31 1.26.49 1.69.63.71.23 1.35.2 1.86.12.57-.08 1.76-.72 2.01-1.41.25-.69.25-1.28.17-1.41-.07-.12-.27-.2-.57-.35z" />
-                                        </svg>
-                                    </span>
-                                    <span>+{settings.whatsapp}</span>
-                                </a>
-                            )}
-
-                            {settings?.email && (
-                                <a
-                                    href={`mailto:${settings.email}`}
-                                    className="group flex items-center gap-3 text-xs text-slate-300 hover:text-white transition"
-                                >
-                                    <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-white/10 bg-white/5 group-hover:border-amber-500/50 group-hover:bg-amber-500/10 text-slate-300 group-hover:text-amber-400 transition">
-                                        <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                            <rect x="3" y="5" width="18" height="14" rx="2" />
-                                            <path d="M3 7l9 6 9-6" />
-                                        </svg>
-                                    </span>
-                                    <span className="break-all">{settings.email}</span>
-                                </a>
-                            )}
+                        <div className="flex flex-col gap-3">
+                            <p className="text-[10px] uppercase leading-4 tracking-[1px] text-gold">
+                                Registered &amp; Certified On
+                            </p>
+                            <div className="flex flex-wrap items-center gap-3">
+                                {CERTIFICATIONS.map((cert) => (
+                                    <a
+                                        key={cert.alt}
+                                        href={cert.href}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="flex items-center rounded-xl border border-white/10 bg-cream px-3.5 py-2.5 transition-opacity hover:opacity-85 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold"
+                                    >
+                                        <img
+                                            src={cert.src}
+                                            alt={cert.alt}
+                                            loading="lazy"
+                                            className="h-[35px] w-auto max-w-[72px] object-contain"
+                                        />
+                                    </a>
+                                ))}
+                            </div>
                         </div>
+                    </div>
 
-                        {/* SOCIAL MEDIA ICONS */}
-                        <div className="pt-2 flex items-center gap-2.5">
-                            {settings?.facebook_url && (
-                                <a
-                                    href={settings.facebook_url}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    aria-label="Facebook"
-                                    className="flex h-9 w-9 items-center justify-center rounded-xl border border-white/10 bg-white/5 text-slate-400 hover:border-amber-500/50 hover:bg-amber-500/10 hover:text-amber-400 transition"
-                                >
-                                    <svg className="h-4 w-4" viewBox="0 0 24 24" fill="currentColor">
-                                        <path d="M22 12a10 10 0 10-11.5 9.9v-7h-2v-3h2v-2.3c0-2 1.2-3.1 3-3.1.9 0 1.8.2 1.8.2v2h-1c-1 0-1.3.6-1.3 1.2V12h2.2l-.3 3h-1.9v7A10 10 0 0022 12z" />
-                                    </svg>
-                                </a>
-                            )}
+                    {/* Explore */}
+                    <nav
+                        aria-label="Jelajahi"
+                        className="flex flex-1 flex-col items-start gap-[18px]"
+                    >
+                        <p className={EYEBROW}>Explore</p>
+                        {EXPLORE.map((item) => (
+                            <Link key={item.label} href={item.href} className={LINK}>
+                                {item.label}
+                            </Link>
+                        ))}
+                    </nav>
 
-                            {settings?.instagram_url && (
-                                <a
-                                    href={settings.instagram_url}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    aria-label="Instagram"
-                                    className="flex h-9 w-9 items-center justify-center rounded-xl border border-white/10 bg-white/5 text-slate-400 hover:border-amber-500/50 hover:bg-amber-500/10 hover:text-amber-400 transition"
-                                >
-                                    <svg className="h-4 w-4" viewBox="0 0 24 24" fill="currentColor">
-                                        <path d="M7 2C4.24 2 2 4.24 2 7v10c0 2.76 2.24 5 5 5h10c2.76 0 5-2.24 5-5V7c0-2.76-2.24-5-5-5H7zm10 2c1.66 0 3 1.34 3 3v10c0 1.66-1.34 3-3 3H7c-1.66 0-3-1.34-3-3V7c0-1.66 1.34-3 3-3h10zm-5 3a5 5 0 100 10 5 5 0 000-10zm6-1a1 1 0 100 2 1 1 0 000-2z" />
-                                    </svg>
-                                </a>
-                            )}
+                    {/* Membership */}
+                    <nav
+                        aria-label="Keanggotaan"
+                        className="flex flex-1 flex-col items-start gap-[18px]"
+                    >
+                        <p className={EYEBROW}>Membership</p>
+                        <Link href={safeRoute("login", "/login")} className={LINK}>
+                            Member Login
+                        </Link>
+                        <Link href={safeRoute("register", "/register")} className={LINK}>
+                            Member Register
+                        </Link>
+                    </nav>
 
-                            {settings?.youtube_url && (
-                                <a
-                                    href={settings.youtube_url}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    aria-label="YouTube"
-                                    className="flex h-9 w-9 items-center justify-center rounded-xl border border-white/10 bg-white/5 text-slate-400 hover:border-amber-500/50 hover:bg-amber-500/10 hover:text-amber-400 transition"
-                                >
-                                    <svg className="h-4 w-4" viewBox="0 0 24 24" fill="currentColor">
-                                        <path d="M23.5 6.2a3 3 0 00-2.1-2.1C19.8 3.6 12 3.6 12 3.6s-7.8 0-9.4.5A3 3 0 00.6 6.2 31.6 31.6 0 000 12a31.6 31.6 0 00.6 5.8 3 3 0 002.1 2.1c1.6.5 9.4.5 9.4.5s7.8 0 9.4-.5a3 3 0 002.1-2.1c.4-1.9.6-3.8.6-5.8s-.2-3.9-.6-5.8zM9.7 15.5V8.5l6.2 3.5-6.2 3.5z" />
-                                    </svg>
-                                </a>
-                            )}
-                        </div>
+                    {/* Kontak */}
+                    <div className="flex flex-1 flex-col items-start gap-[18px]">
+                        <p className={EYEBROW}>Get In Touch</p>
+
+                        {settings?.address && (
+                            <address className="text-[13px] not-italic leading-5 text-cream/75">
+                                {settings.address}
+                            </address>
+                        )}
+
+                        {settings?.whatsapp && (
+                            <a
+                                href={`https://wa.me/${waNumber}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className={LINK}
+                            >
+                                {waDisplay}
+                            </a>
+                        )}
+
+                        {settings?.email && (
+                            <a href={`mailto:${settings.email}`} className={LINK}>
+                                {settings.email}
+                            </a>
+                        )}
+
+                        {socials.length > 0 && (
+                            <ul className="flex items-center gap-2.5 pt-2">
+                                {socials.map((item) => (
+                                    <li key={item.label}>
+                                        <a
+                                            href={item.url}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            aria-label={item.label}
+                                            className="relative flex h-9 w-9 items-center justify-center rounded-xl border border-white/10 bg-white/5 text-cream/75 transition-colors before:absolute before:left-1/2 before:top-1/2 before:h-11 before:w-11 before:-translate-x-1/2 before:-translate-y-1/2 before:content-[''] hover:border-gold/50 hover:bg-gold/10 hover:text-gold focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold"
+                                        >
+                                            <svg
+                                                className="h-4 w-4"
+                                                viewBox="0 0 24 24"
+                                                fill="currentColor"
+                                                aria-hidden="true"
+                                            >
+                                                <path d={item.d} />
+                                            </svg>
+                                        </a>
+                                    </li>
+                                ))}
+                            </ul>
+                        )}
                     </div>
                 </div>
 
-                {/* ================================
-                    BOTTOM COPYRIGHT
-                ================================= */}
-                <div className="flex flex-col gap-4 border-t border-white/10 pt-6 text-[11px] text-slate-400 sm:flex-row sm:items-center sm:justify-between">
-                    <p>
-                        © {new Date().getFullYear()} {settings?.site_name || "GAIN Properties"}. All rights reserved.
+                {/* ================= LEGAL ================= */}
+                <div className="flex flex-col gap-4 border-t border-white/15 pt-6 text-[11px] leading-[17px] text-cream/75 sm:flex-row sm:items-center sm:justify-between">
+                    <p className="flex-1">
+                        &copy; {new Date().getFullYear()} {siteName}. All rights
+                        reserved.
                     </p>
-                    <div className="flex gap-6">
-                        <a href="/privacy-policy" className="hover:text-slate-300 transition">
+                    <div className="flex gap-8">
+                        <a
+                            href="/privacy-policy"
+                            className="transition-colors hover:text-cream focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold"
+                        >
                             Privacy Policy
                         </a>
-                        <a href={route('terms')} className="hover:text-slate-300 transition">
+                        <a
+                            href={safeRoute("terms", "/terms")}
+                            className="transition-colors hover:text-cream focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold"
+                        >
                             Terms &amp; Conditions
                         </a>
                     </div>
