@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
+import useReveal from "@/hooks/useReveal";
 
 export default function Calculator({ landings, projects = [] }) {
+  const reveal = useReveal();
   const [property, setProperty] = useState("");
   const [paymentType, setPaymentType] = useState("oneTime");
   const [investmentAmount, setInvestmentAmount] = useState(1000000);
@@ -39,7 +41,8 @@ export default function Calculator({ landings, projects = [] }) {
   return (
     <section
       aria-labelledby="calculator-heading"
-      className="w-full bg-cream-sink px-6 py-16 sm:px-10 lg:px-[72px] lg:py-20"
+      ref={reveal.ref}
+      className={`w-full bg-cream-sink px-6 py-16 sm:px-10 lg:px-[72px] lg:py-20 ${reveal.className}`}
     >
       <div className="mx-auto max-w-[1440px] font-sans text-ink">
       {/* Title with Gold Gradient Text */}

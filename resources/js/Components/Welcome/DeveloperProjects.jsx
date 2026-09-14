@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { route } from "ziggy-js";
+import useReveal from "@/hooks/useReveal";
 
 /*
  * Featured Developer Projects — mengikuti mockup Figma.
@@ -12,6 +13,8 @@ import { route } from "ziggy-js";
  * jadi tidak ada pill yang menghasilkan nol hasil.
  */
 export default function DeveloperProjects({ project = [], landings }) {
+    const reveal = useReveal();
+
     const [selected, setSelected] = useState("All");
 
     const typeOf = (item) => item.category_name || item.type;
@@ -26,9 +29,10 @@ export default function DeveloperProjects({ project = [], landings }) {
 
     return (
         <section
+            ref={reveal.ref}
             id="developer-projects"
             aria-labelledby="projects-heading"
-            className="w-full bg-cream text-ink"
+            className={`w-full bg-cream text-ink ${reveal.className}`}
         >
             <div className="mx-auto flex w-full max-w-[1440px] flex-col gap-[30px] px-6 py-16 sm:px-10 lg:px-[72px] lg:pb-20 lg:pt-16">
                 <p className="text-[11px] uppercase leading-[17px] tracking-[1.5px] text-gold-ink">

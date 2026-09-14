@@ -1,5 +1,6 @@
 import { useState, useCallback } from "react";
 import { ArrowLeft, ArrowRight } from "lucide-react";
+import useReveal from "@/hooks/useReveal";
 
 /*
  * Our Villa — galeri desain villa, mengikuti mockup Figma.
@@ -12,6 +13,8 @@ import { ArrowLeft, ArrowRight } from "lucide-react";
  * sesuai mockup — ground kini polos.
  */
 export default function OurVilla({ sliders, landings }) {
+    const reveal = useReveal();
+
     const images =
         sliders?.map((slider) => ({
             src: `/storage/${slider.image_path}`,
@@ -44,11 +47,12 @@ export default function OurVilla({ sliders, landings }) {
 
     return (
         <section
+            ref={reveal.ref}
             id="our-villa"
             aria-roledescription="carousel"
             aria-label="Galeri desain villa"
             onKeyDown={onKeyDown}
-            className="w-full bg-cream text-ink"
+            className={`w-full bg-cream text-ink ${reveal.className}`}
         >
             <div className="mx-auto flex w-full max-w-[1440px] flex-col gap-7 px-6 py-16 sm:px-10 lg:px-[72px] lg:py-20">
                 {/* ============ JUDUL + KONTROL ============ */}

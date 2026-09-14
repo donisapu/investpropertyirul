@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link } from "@inertiajs/react";
+import useReveal from "@/hooks/useReveal";
 
 /*
  * Promo / campaign — dipisahkan dari Footer.jsx.
@@ -10,6 +11,7 @@ import { Link } from "@inertiajs/react";
  * sehingga footer selalu tampil.
  */
 export default function Promo({ campaigns }) {
+    const reveal = useReveal();
     const [currentIndex, setCurrentIndex] = useState(0);
     const [selectedCampaign, setSelectedCampaign] = useState(null);
 
@@ -64,7 +66,8 @@ export default function Promo({ campaigns }) {
     return (
         <section
             aria-label="Promo berjalan"
-            className="w-full bg-cream text-ink"
+            ref={reveal.ref}
+            className={`w-full bg-cream text-ink ${reveal.className}`}
         >
             <div className="mx-auto max-w-[1440px] px-6 py-16 sm:px-10 lg:px-[72px] lg:py-20">
                 <p className="mb-7 text-[11px] uppercase leading-[17px] tracking-[1.5px] text-gold-ink">

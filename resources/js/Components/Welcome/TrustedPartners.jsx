@@ -1,3 +1,5 @@
+import useReveal from "@/hooks/useReveal";
+
 /*
  * Trusted Partners — seksi tersendiri, mengikuti mockup Figma.
  *
@@ -6,12 +8,15 @@
  * eyebrow, lalu judul kiri + paragraf kanan, lalu barisan logo di tengah.
  */
 export default function TrustedPartners({ partners }) {
+    const reveal = useReveal();
+
     if (!partners || partners.length === 0) return null;
 
     return (
         <section
+            ref={reveal.ref}
             aria-labelledby="partner-heading"
-            className="w-full bg-cream-deep text-ink"
+            className={`w-full bg-cream-deep text-ink ${reveal.className}`}
         >
             <div className="mx-auto flex w-full max-w-[1440px] flex-col gap-7 px-6 py-14 sm:px-10 lg:px-[72px] lg:py-[60px]">
                 <p className="text-[11px] uppercase leading-[17px] tracking-[1.5px] text-gold-ink">

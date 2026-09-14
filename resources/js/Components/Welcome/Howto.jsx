@@ -1,8 +1,15 @@
 import React from "react";
 import { Link } from "@inertiajs/react";
 import { ArrowRight, Check } from "lucide-react";
+import useReveal from "@/hooks/useReveal";
 
 export default function Howto({ auth, landings }) {
+    // Tiga blok terpisah: band, Cara Kerja, Cara Berinvestasi.
+    // Seksi ini terlalu tinggi untuk diungkap sebagai satu kesatuan.
+    const revealBand = useReveal();
+    const revealSteps = useReveal();
+    const revealMethods = useReveal();
+
     // Helper fungsi aman untuk route Ziggy agar tidak bikin blank jika route belum terdefinisi
     const safeRoute = (routeName, fallback = "#") => {
         try {
@@ -79,7 +86,7 @@ export default function Howto({ auth, landings }) {
     return (
         <section className="w-full">
             {/* 1. BANNER MULAI PERJALANAN INVESTASI (rata kiri, CTA kanan) */}
-            <div className="w-full bg-ink px-6 py-12 text-cream sm:px-10 lg:px-[72px]">
+            <div ref={revealBand.ref} className={`w-full bg-ink px-6 py-12 text-cream sm:px-10 lg:px-[72px] ${revealBand.className}`}>
                 <div className="mx-auto flex max-w-[1440px] flex-col gap-6 lg:flex-row lg:items-center lg:gap-16">
                     <div className="flex flex-1 flex-col gap-2.5">
                         <h2 className="text-[clamp(1.5rem,3.2vw,2rem)] font-semibold leading-[1.25]">
@@ -107,7 +114,7 @@ export default function Howto({ auth, landings }) {
             </div>
 
             {/* 2. CARA KERJA (judul kiri, subteks kanan, langkah bergaris atas) */}
-            <div className="w-full bg-cream px-6 py-16 sm:px-10 lg:px-[72px] lg:py-20">
+            <div ref={revealSteps.ref} className={`w-full bg-cream px-6 py-16 sm:px-10 lg:px-[72px] lg:py-20 ${revealSteps.className}`}>
                 <div className="mx-auto flex max-w-[1440px] flex-col gap-9">
                     <div className="flex flex-col gap-3 lg:flex-row lg:items-end lg:gap-12">
                         <h2 className="flex-1 text-[clamp(1.75rem,4vw,2.5rem)] font-semibold leading-[1.2] text-ink">
@@ -147,7 +154,7 @@ export default function Howto({ auth, landings }) {
             </div>
 
             {/* 3. CARA BERINVESTASI — tabel perbandingan (sesuai mockup) */}
-            <div className="w-full bg-cream-deep px-6 py-16 sm:px-10 lg:px-[72px] lg:pb-20 lg:pt-16">
+            <div ref={revealMethods.ref} className={`w-full bg-cream-deep px-6 py-16 sm:px-10 lg:px-[72px] lg:pb-20 lg:pt-16 ${revealMethods.className}`}>
                 <div className="mx-auto flex w-full max-w-[1440px] flex-col gap-9">
                     <div className="flex flex-col gap-2">
                         <h2 className="text-[clamp(1.75rem,4vw,2.5rem)] font-semibold leading-[1.2] text-ink">

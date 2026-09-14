@@ -51,12 +51,12 @@ export default function Hero({ landings, settings, sliders }) {
                 <div className="flex flex-col items-center gap-8 lg:flex-row lg:gap-12">
                     {/* ---- Narasi ---- */}
                     <div className="flex w-full flex-1 flex-col items-start gap-5">
-                        <p className="text-[11px] font-bold uppercase leading-[17px] tracking-[1.5px] text-gold-ink">
+                        <p className="hero-step hero-step-1 text-[11px] font-bold uppercase leading-[17px] tracking-[1.5px] text-gold-ink">
                             {landings?.subheader ||
                                 "Platform Developer & Investasi Properti"}
                         </p>
 
-                        <h1 className="w-full font-semibold tracking-[-0.02em] text-ink">
+                        <h1 className="hero-step hero-step-2 w-full font-semibold tracking-[-0.02em] text-ink">
                             <span className="block text-[clamp(2.25rem,5.5vw,3.25rem)] leading-[1.18]">
                                 {landings?.header}
                             </span>
@@ -80,12 +80,12 @@ export default function Hero({ landings, settings, sliders }) {
                             </span>
                         </h1>
 
-                        <p className="max-w-[58ch] text-[16px] leading-[25px] text-ink-soft">
+                        <p className="hero-step hero-step-3 max-w-[58ch] text-[16px] leading-[25px] text-ink-soft">
                             {landings?.description}
                         </p>
 
                         {/* ---- Aksi ---- */}
-                        <div className="flex flex-wrap items-center gap-[18px] pt-1">
+                        <div className="hero-step hero-step-4 flex flex-wrap items-center gap-[18px] pt-1">
                             {whatsapp && (
                                 <a
                                     href={`https://wa.me/${whatsapp}`}
@@ -95,7 +95,7 @@ export default function Hero({ landings, settings, sliders }) {
                                 >
                                     Contact Us
                                     <ArrowRight
-                                        className="h-4 w-4 transition-transform group-hover:translate-x-0.5"
+                                        className="h-4 w-4 transition-transform duration-300 ease-out-quart group-hover:translate-x-0.5"
                                         aria-hidden="true"
                                     />
                                 </a>
@@ -108,20 +108,20 @@ export default function Hero({ landings, settings, sliders }) {
                                 Jelajahi Properti
                                 <span
                                     aria-hidden="true"
-                                    className="flex h-[22px] w-[22px] items-center justify-center rounded-[6px] bg-ink text-cream transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+                                    className="flex h-[22px] w-[22px] items-center justify-center rounded-[6px] bg-ink text-cream transition-transform duration-300 ease-out-quart group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
                                 >
                                     <ArrowUpRight className="h-3.5 w-3.5" />
                                 </span>
                             </Link>
                         </div>
 
-                        <p className="hidden text-[10px] uppercase leading-4 tracking-[1.5px] text-ink-soft sm:block">
+                        <p className="hero-step hero-step-5 hidden text-[10px] uppercase leading-4 tracking-[1.5px] text-ink-soft sm:block">
                             Discover your next destination
                         </p>
                     </div>
 
                     {/* ---- Foto ---- */}
-                    <div className="w-full shrink-0 lg:w-[656px]">
+                    <div className="hero-step hero-step-3 w-full shrink-0 lg:w-[656px]">
                         <img
                             src={heroImage}
                             alt={
@@ -138,7 +138,7 @@ export default function Hero({ landings, settings, sliders }) {
                 </div>
 
                 {/* ============ CAPABILITIES ============ */}
-                <ul className="mt-8 grid grid-cols-2 gap-x-6 gap-y-5 border-y border-gold-line py-[26px] lg:mt-8 lg:grid-cols-4 lg:gap-6">
+                <ul className="hero-step hero-step-5 mt-8 grid grid-cols-2 gap-x-6 gap-y-5 border-y border-gold-line py-[26px] lg:mt-8 lg:grid-cols-4 lg:gap-6">
                     {CAPABILITIES.map((item, i) => (
                         <li key={item} className="flex items-center gap-3">
                             <span className="text-[11px] leading-[17px] text-gold-ink">
@@ -158,7 +158,7 @@ export default function Hero({ landings, settings, sliders }) {
                  * baris dan memakan lebih dari 160px hanya untuk tiga angka.
                  */}
                 {stats.length > 0 && (
-                    <dl className="grid grid-cols-3 gap-x-4 gap-y-4 pb-2 pt-5 sm:flex sm:flex-wrap sm:gap-x-12">
+                    <dl className="hero-step hero-step-6 grid grid-cols-3 gap-x-4 gap-y-4 pb-2 pt-5 sm:flex sm:flex-wrap sm:gap-x-12">
                         {stats.map((stat) => (
                             <div
                                 key={stat.label}

@@ -92,3 +92,118 @@
     box-shadow: 0 1px 4px rgba(36, 38, 32, 0.25);
     cursor: pointer;
 }
+
+/* ============================================================
+   MOTION
+   ============================================================
+   Kurva deselerasi eksponensial. Tidak memakai bounce atau
+   elastic: keduanya menarik perhatian ke animasinya sendiri,
+   bukan ke kontennya.
+*/
+:root {
+    --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
+    --ease-out-quint: cubic-bezier(0.22, 1, 0.36, 1);
+    --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/*
+ * Reveal saat seksi masuk viewport. Hanya transform dan opacity
+ * yang dianimasikan supaya tetap di GPU dan tidak memicu layout.
+ */
+.reveal {
+    opacity: 0;
+    transform: translate3d(0, 20px, 0);
+    transition:
+        opacity 0.75s var(--ease-out-quart),
+        transform 0.75s var(--ease-out-quart);
+    will-change: opacity, transform;
+}
+
+/*
+ * Setelah muncul, transform dihapus sepenuhnya (bukan translate3d(0,0,0)).
+ * Transform apa pun membuat containing block baru, sehingga elemen
+ * position:fixed di dalamnya - misalnya modal campaign - akan mengacu ke
+ * seksi ini, bukan ke viewport.
+ */
+.reveal-in {
+    opacity: 1;
+    transform: none;
+    will-change: auto;
+}
+
+/*
+ * Koreografi masuk pada hero. Bertahap 90ms agar mata mengikuti
+ * urutan baca: eyebrow -> judul -> paragraf -> aksi -> foto.
+ */
+@keyframes hero-rise {
+    from {
+        opacity: 0;
+        transform: translate3d(0, 22px, 0);
+    }
+    to {
+        opacity: 1;
+        transform: translate3d(0, 0, 0);
+    }
+}
+
+.hero-step {
+    opacity: 0;
+    animation: hero-rise 0.8s var(--ease-out-quart) forwards;
+}
+
+.hero-step-1 { animation-delay: 0.05s; }
+.hero-step-2 { animation-delay: 0.14s; }
+.hero-step-3 { animation-delay: 0.23s; }
+.hero-step-4 { animation-delay: 0.32s; }
+.hero-step-5 { animation-delay: 0.41s; }
+.hero-step-6 { animation-delay: 0.50s; }
+
+/*
+ * Hormati preferensi pengguna. Konten tetap tampil penuh, hanya
+ * gerakannya yang ditiadakan - bukan disembunyikan.
+ */
+@media (prefers-reduced-motion: reduce) {
+    .reveal,
+    .reveal-in {
+        opacity: 1;
+        transform: none;
+        transition: none;
+    }
+
+    .hero-step {
+        opacity: 1;
+        animation: none;
+    }
+
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}
+
+/*
+ * Modal campaign memakai kelas ini tetapi belum pernah didefinisikan,
+ * sehingga selama ini muncul mendadak tanpa transisi.
+ */
+@keyframes fade-in {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+.animate-fade-in {
+    animation: fade-in 0.25s var(--ease-out-quart) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .animate-fade-in {
+        animation: none;
+    }
+}

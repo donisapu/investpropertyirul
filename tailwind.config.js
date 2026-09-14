@@ -16,6 +16,12 @@ export default {
             screens: {
                 md900: "900px",
             },
+            transitionTimingFunction: {
+                // Kurva yang sama dengan --ease-* di app.css
+                "out-quart": "cubic-bezier(0.25, 1, 0.5, 1)",
+                "out-quint": "cubic-bezier(0.22, 1, 0.36, 1)",
+                "out-expo": "cubic-bezier(0.16, 1, 0.3, 1)",
+            },
             fontFamily: {
                 sans: ["Manrope", ...defaultTheme.fontFamily.sans],
             },

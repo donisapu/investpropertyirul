@@ -1,6 +1,9 @@
 import { ArrowRight, MapPin } from "lucide-react";
+import useReveal from "@/hooks/useReveal";
 
 export default function OurLocation({ landings, landmarks }) {
+    const reveal = useReveal();
+
     const extractMapUrl = (htmlString) => {
         if (!htmlString) return null;
 
@@ -32,8 +35,9 @@ export default function OurLocation({ landings, landmarks }) {
 
     return (
         <section
+            ref={reveal.ref}
             id="our-location"
-            className="w-full bg-cream py-16 text-ink lg:py-20"
+            className={`w-full bg-cream py-16 text-ink lg:py-20 ${reveal.className}`}
         >
             {/* =====================================================
                 MAIN CONTAINER
