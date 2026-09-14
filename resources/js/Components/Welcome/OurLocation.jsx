@@ -99,7 +99,7 @@ export default function OurLocation({ landings, landmarks }) {
                         <ul className="grid gap-6 sm:grid-cols-2 lg:grid-cols-5 lg:gap-5">
                             {landmarks.map((landmark, index) => (
                                 <li key={index} className="group flex flex-col gap-3">
-                                    <div className="h-[150px] w-full overflow-hidden rounded-[10px] bg-cream-deep sm:h-[136px]">
+                                    <div className="h-[180px] w-full overflow-hidden rounded-[10px] bg-cream-deep sm:aspect-[243/191] sm:h-auto">
                                         <img
                                             src={`/storage/${landmark.image_path}`}
                                             alt={landmark.name}
@@ -133,9 +133,9 @@ export default function OurLocation({ landings, landmarks }) {
                  * bukan kartu putih bersayap bayangan. Judul dan keterangan
                  * berada di atas gambar, gambar diberi garis rambut saja.
                  */}
-                <div className="mt-16 grid gap-10 lg:mt-20 lg:grid-cols-12 lg:gap-12">
+                <div className="mt-16 grid gap-8 lg:mt-20 lg:grid-cols-2">
                     {landings?.mapping_path && (
-                        <div className="flex flex-col gap-3 lg:col-span-5">
+                        <div className="flex flex-col gap-3">
                             <p className="text-[12px] uppercase leading-[19px] tracking-[1.5px] text-gold-ink">
                                 Master Plan
                             </p>
@@ -147,12 +147,12 @@ export default function OurLocation({ landings, landmarks }) {
                                 sekitar properti.
                             </p>
 
-                            <div className="mt-2 overflow-hidden rounded-[10px] border border-gold-line bg-cream-deep">
+                            <div className="mt-2 h-64 overflow-hidden rounded-[10px] border border-gold-line bg-cream-deep sm:h-80 lg:h-[308px]">
                                 <img
                                     src={`/storage/${landings.mapping_path}`}
                                     alt="Peta kawasan dan aksesibilitas di sekitar properti"
                                     loading="lazy"
-                                    className="h-64 w-full object-cover sm:h-80 lg:h-[340px]"
+                                    className="h-full w-full object-cover"
                                 />
                             </div>
                         </div>
@@ -160,9 +160,7 @@ export default function OurLocation({ landings, landmarks }) {
 
                     <div
                         className={`flex flex-col gap-3 ${
-                            landings?.mapping_path
-                                ? "lg:col-span-7"
-                                : "lg:col-span-12"
+                            landings?.mapping_path ? "" : "lg:col-span-2"
                         }`}
                     >
                         <p className="text-[12px] uppercase leading-[19px] tracking-[1.5px] text-gold-ink">
@@ -175,7 +173,7 @@ export default function OurLocation({ landings, landmarks }) {
                             Live Google Maps
                         </p>
 
-                        <div className="mt-2 h-64 w-full overflow-hidden rounded-[10px] border border-gold-line bg-cream-deep sm:h-80 lg:h-[340px]">
+                        <div className="mt-2 h-64 w-full overflow-hidden rounded-[10px] border border-gold-line bg-cream-deep sm:h-80 lg:h-[308px]">
                             {finalMapUrl ? (
                                 <iframe
                                     src={finalMapUrl}
