@@ -57,7 +57,7 @@ export default function Hero({ landings, settings, sliders }) {
                         </p>
 
                         <h1 className="w-full font-semibold tracking-[-0.02em] text-ink">
-                            <span className="block text-[clamp(2rem,5.5vw,3.25rem)] leading-[1.12]">
+                            <span className="block text-[clamp(2rem,5.5vw,3.25rem)] leading-[1.21]">
                                 {landings?.header}
                             </span>
                             {/*
@@ -70,7 +70,7 @@ export default function Hero({ landings, settings, sliders }) {
                              * >= 3,77:1.
                              */}
                             <span
-                                className="block bg-clip-text text-[clamp(2.1rem,5.7vw,3.375rem)] leading-[1.09] text-transparent"
+                                className="mt-3 block bg-clip-text text-[clamp(2.1rem,5.7vw,3.375rem)] leading-[1.15] text-transparent"
                                 style={{
                                     backgroundImage:
                                         "linear-gradient(90deg,#6B4F21 4.685%,#8B6420 27.342%,#A8762F 44.562%,#8B6420 58.157%,#6B4F21 76.283%,#9C7030 95.315%)",
@@ -80,7 +80,7 @@ export default function Hero({ landings, settings, sliders }) {
                             </span>
                         </h1>
 
-                        <p className="max-w-[46ch] text-[16px] leading-[25px] text-ink-soft">
+                        <p className="max-w-[58ch] text-[16px] leading-[25px] text-ink-soft">
                             {landings?.description}
                         </p>
 
@@ -91,7 +91,7 @@ export default function Hero({ landings, settings, sliders }) {
                                     href={`https://wa.me/${whatsapp}`}
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="group inline-flex items-center gap-[22px] rounded-[40px] bg-ink px-[23px] py-4 text-[13px] font-semibold leading-5 text-cream transition-colors hover:bg-ink-soft"
+                                    className="group inline-flex items-center gap-[22px] rounded-[40px] bg-ink px-[26px] py-4 text-[13px] font-semibold uppercase leading-5 tracking-[0.08em] text-cream transition-colors hover:bg-ink-soft"
                                 >
                                     Contact Us
                                     <ArrowRight
@@ -103,13 +103,15 @@ export default function Hero({ landings, settings, sliders }) {
 
                             <Link
                                 href="/investments"
-                                className="group inline-flex items-center gap-1.5 text-[13px] font-semibold leading-5 text-ink underline-offset-4 transition-colors hover:text-gold-ink hover:underline"
+                                className="group -my-3 inline-flex min-h-[44px] items-center gap-2 py-3 text-[13px] font-semibold leading-5 text-ink transition-colors hover:text-gold-ink focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold-ink"
                             >
                                 Jelajahi Properti
-                                <ArrowUpRight
-                                    className="h-4 w-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+                                <span
                                     aria-hidden="true"
-                                />
+                                    className="flex h-[22px] w-[22px] items-center justify-center rounded-[6px] bg-ink text-cream transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+                                >
+                                    <ArrowUpRight className="h-3.5 w-3.5" />
+                                </span>
                             </Link>
                         </div>
 
@@ -119,7 +121,7 @@ export default function Hero({ landings, settings, sliders }) {
                     </div>
 
                     {/* ---- Foto ---- */}
-                    <div className="w-full shrink-0 lg:w-[608px]">
+                    <div className="w-full shrink-0 lg:w-[656px]">
                         <img
                             src={heroImage}
                             alt={
@@ -130,7 +132,7 @@ export default function Hero({ landings, settings, sliders }) {
                                     : "Properti unggulan"
                             }
                             draggable="false"
-                            className="h-[280px] w-full rounded-2xl object-cover sm:h-[400px] lg:h-[558px]"
+                            className="h-[280px] w-full rounded-3xl object-cover sm:h-[420px] lg:h-[600px]"
                         />
                     </div>
                 </div>
@@ -151,7 +153,7 @@ export default function Hero({ landings, settings, sliders }) {
 
                 {/* ============ STATISTIK (hanya bila diisi admin) ============ */}
                 {stats.length > 0 && (
-                    <dl className="flex flex-wrap gap-x-12 gap-y-4 pb-3 pt-1">
+                    <dl className="flex flex-wrap gap-x-12 gap-y-4 pb-2 pt-4">
                         {stats.map((stat) => (
                             <div
                                 key={stat.label}
@@ -159,10 +161,10 @@ export default function Hero({ landings, settings, sliders }) {
                             >
                                 <dt className="sr-only">{stat.label}</dt>
                                 <dd className="flex items-center gap-3.5">
-                                    <span className="text-[clamp(1.5rem,3vw,1.875rem)] font-semibold leading-[1.5] text-ink">
+                                    <span className="text-[clamp(1.625rem,3.2vw,2.125rem)] font-semibold leading-[1.35] text-ink">
                                         {stat.value}
                                     </span>
-                                    <span className="text-[10px] uppercase leading-4 tracking-[1px] text-ink-soft">
+                                    <span className="text-[11px] uppercase leading-4 tracking-[1.2px] text-ink-soft">
                                         {stat.label}
                                     </span>
                                 </dd>
