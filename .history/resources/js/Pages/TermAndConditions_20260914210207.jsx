@@ -14,7 +14,7 @@ import {
     HelpCircle,
 } from "lucide-react";
 
-export default function TermAndConditions({ auth, settings }) {
+export default function TermsAndConditions({ auth, settings }) {
     const sections = [
         {
             id: "definisi",
