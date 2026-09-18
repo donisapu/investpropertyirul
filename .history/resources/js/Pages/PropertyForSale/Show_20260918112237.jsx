@@ -124,15 +124,15 @@ export default function Show({ property }) {
 
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
                 {/* Breadcrumbs */}
-                <div className="flex items-center text-sm text-ink-soft mb-6">
+                <div className="flex items-center text-sm text-slate-500 mb-6">
                     <Link
                         href="/property-for-sale"
-                        className="hover:text-gold-ink"
+                        className="hover:text-indigo-600"
                     >
                         Property for Sale
                     </Link>
                     <ChevronRight className="w-4 h-4 mx-2" />
-                    <span className="text-ink font-medium">
+                    <span className="text-slate-900 font-medium">
                         {property.name}
                     </span>
                 </div>
@@ -148,25 +148,25 @@ export default function Show({ property }) {
                                     <span
                                         className={`px-3 py-1.5 rounded-xl text-[10px] font-black uppercase tracking-widest ${
                                             property.sold
-                                                ? "bg-cream-sink text-ink-soft"
-                                                : "bg-cream-sink text-gold-ink"
+                                                ? "bg-slate-100 text-slate-500"
+                                                : "bg-blue-50 text-[#24608B]"
                                         }`}
                                     >
                                         {property.sold
                                             ? "Terjual"
                                             : "Properti Tersedia"}
                                     </span>
-                                    <span className="text-[10px] font-bold uppercase tracking-widest text-ink-soft">
+                                    <span className="text-[10px] font-bold uppercase tracking-widest text-slate-400">
                                         {property.type}
                                     </span>
                                 </div>
-                                <h1 className="text-3xl md:text-4xl font-black text-ink leading-tight mb-2">
+                                <h1 className="text-3xl md:text-4xl font-black text-slate-900 leading-tight mb-2">
                                     {property.name}
                                 </h1>
-                                <div className="flex items-center text-ink-soft text-sm font-medium">
+                                <div className="flex items-center text-slate-500 text-sm font-medium">
                                     <MapPin
                                         size={16}
-                                        className="mr-1.5 text-gold-ink"
+                                        className="mr-1.5 text-rose-500"
                                     />
                                     {property.loc}
                                 </div>
@@ -177,7 +177,7 @@ export default function Show({ property }) {
                                 const imageCount = property.images?.length || 0;
 
                                 return (
-                                    <div className="relative w-full rounded-[2rem] overflow-hidden bg-cream-sink group/gallery">
+                                    <div className="relative w-full rounded-[2rem] overflow-hidden bg-slate-100 group/gallery">
                                         {/* GRID DINAMIS */}
                                         <div
                                             className={`grid gap-2 ${imageCount > 1 ? "grid-cols-1 md:grid-cols-4" : "grid-cols-1"} h-[300px] md:h-[480px]`}
@@ -239,7 +239,7 @@ export default function Show({ property }) {
                                                                     {isLastVisible &&
                                                                     remainingCount >
                                                                         0 ? (
-                                                                        <div className="absolute inset-0 bg-ink/40 backdrop-blur-[2px] flex flex-col items-center justify-center text-cream transition-colors group-hover:bg-ink/50">
+                                                                        <div className="absolute inset-0 bg-slate-900/40 backdrop-blur-[2px] flex flex-col items-center justify-center text-white transition-colors group-hover:bg-slate-900/50">
                                                                             <span className="text-xl font-black mb-0.5">
                                                                                 +
                                                                                 {
@@ -269,11 +269,11 @@ export default function Show({ property }) {
                                                 onClick={(e) =>
                                                     e.stopPropagation()
                                                 }
-                                                className="absolute top-4 right-4 z-10 bg-cream/90 backdrop-blur-md hover:bg-cream text-ink border border-gold-line px-4 py-2.5 rounded-xl font-bold text-xs flex items-center gap-2 shadow-lg transition-all hover:scale-105 hover:-translate-y-0.5"
+                                                className="absolute top-4 right-4 z-10 bg-white/90 backdrop-blur-md hover:bg-white text-slate-800 border border-slate-200/50 px-4 py-2.5 rounded-xl font-bold text-xs flex items-center gap-2 shadow-lg transition-all hover:scale-105 hover:-translate-y-0.5"
                                             >
                                                 <ExternalLink
                                                     size={14}
-                                                    className="text-gold-ink"
+                                                    className="text-[#24608B]"
                                                 />{" "}
                                                 View Original Listing
                                             </a>
@@ -283,7 +283,7 @@ export default function Show({ property }) {
                                         {imageCount > 1 && (
                                             <button
                                                 onClick={() => openLightbox(0)}
-                                                className="absolute bottom-4 right-4 z-10 bg-ink/80 backdrop-blur-md hover:bg-ink text-cream px-4 py-2.5 rounded-xl font-bold text-xs flex items-center gap-2 transition-all opacity-0 group-hover/gallery:opacity-100 translate-y-2 group-hover/gallery:translate-y-0"
+                                                className="absolute bottom-4 right-4 z-10 bg-slate-900/80 backdrop-blur-md hover:bg-slate-900 text-white px-4 py-2.5 rounded-xl font-bold text-xs flex items-center gap-2 transition-all opacity-0 group-hover/gallery:opacity-100 translate-y-2 group-hover/gallery:translate-y-0"
                                             >
                                                 <ImageIcon size={14} /> Lihat{" "}
                                                 {imageCount} Foto
@@ -322,19 +322,19 @@ export default function Show({ property }) {
                                 return (
                                     <div
                                         key={idx}
-                                        className="group bg-cream p-5 rounded-3xl border border-gold-line shadow-sm flex items-center gap-4 transition-all hover:border-gold hover:shadow-[0_10px_25px_rgba(199,164,92,0.15)]"
+                                        className="group bg-white p-5 rounded-3xl border border-slate-100 shadow-sm flex items-center gap-4 transition-all hover:border-[#24608B] hover:shadow-[0_10px_25px_rgba(36,96,139,0.08)]"
                                     >
                                         {/* Ikon dengan background warna lembut */}
-                                        <div className="w-12 h-12 rounded-2xl bg-cream-sink flex items-center justify-center text-ink-soft group-hover:bg-gold group-hover:text-ink transition-all">
+                                        <div className="w-12 h-12 rounded-2xl bg-slate-50 flex items-center justify-center text-slate-400 group-hover:bg-[#24608B] group-hover:text-white transition-all">
                                             <Icon size={20} />
                                         </div>
 
                                         {/* Text */}
                                         <div className="flex flex-col">
-                                            <span className="text-[10px] font-black uppercase tracking-widest text-ink-soft">
+                                            <span className="text-[10px] font-black uppercase tracking-widest text-slate-400">
                                                 {item.label}
                                             </span>
-                                            <span className="text-sm font-black text-ink mt-0.5">
+                                            <span className="text-sm font-black text-slate-900 mt-0.5">
                                                 {item.value}
                                             </span>
                                         </div>
@@ -344,9 +344,9 @@ export default function Show({ property }) {
                         </div>
 
                         {/* Content Tabs */}
-                        <div className="bg-cream rounded-[2rem] shadow-[0_20px_50px_rgba(199,164,92,0.1)] border border-gold-line overflow-hidden transition-all duration-300">
+                        <div className="bg-white rounded-[2rem] shadow-[0_20px_50px_rgba(0,0,0,0.05)] border border-slate-100 overflow-hidden transition-all duration-300">
                             {/* Tab Navigation */}
-                            <div className="px-2 border-b border-gold-line">
+                            <div className="px-2 border-b border-slate-100">
                                 <nav className="flex gap-2 p-2">
                                     {["Details", "Documents"].map((tab) => (
                                         <button
@@ -356,8 +356,8 @@ export default function Show({ property }) {
                                             }
                                             className={`px-8 py-3.5 text-sm font-black rounded-2xl transition-all ${
                                                 activeTab === tab.toLowerCase()
-                                                    ? "bg-ink text-cream shadow-lg"
-                                                    : "text-ink-soft hover:text-ink hover:bg-cream-sink"
+                                                    ? "bg-[#24608B] text-white shadow-lg"
+                                                    : "text-slate-400 hover:text-slate-600 hover:bg-slate-50"
                                             }`}
                                         >
                                             {tab}
@@ -372,10 +372,10 @@ export default function Show({ property }) {
                                     <div className="space-y-10 animate-in fade-in duration-500">
                                         {/* About Section */}
                                         <div>
-                                            <h3 className="text-xl font-black text-ink mb-4 flex items-center gap-2">
+                                            <h3 className="text-xl font-black text-slate-900 mb-4 flex items-center gap-2">
                                                 Tentang Properti
                                             </h3>
-                                            <div className="prose prose-slate max-w-none text-ink-soft leading-relaxed text-sm md:text-base">
+                                            <div className="prose prose-slate max-w-none text-slate-500 leading-relaxed text-sm md:text-base">
                                                 <p className="whitespace-pre-line">
                                                     {property.detail}
                                                 </p>
@@ -409,12 +409,12 @@ export default function Show({ property }) {
                                             ].map((item, idx) => (
                                                 <div
                                                     key={idx}
-                                                    className="bg-cream-sink p-5 rounded-2xl border border-gold-line hover:border-gold transition-all"
+                                                    className="bg-slate-50 p-5 rounded-2xl border border-slate-100 hover:border-[#24608B] transition-all"
                                                 >
-                                                    <p className="text-[10px] font-black uppercase tracking-widest text-ink-soft mb-1">
+                                                    <p className="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-1">
                                                         {item.label}
                                                     </p>
-                                                    <p className="font-bold text-ink text-sm">
+                                                    <p className="font-bold text-slate-900 text-sm">
                                                         {item.value}
                                                     </p>
                                                 </div>
@@ -424,11 +424,11 @@ export default function Show({ property }) {
                                         {/* Location Map */}
                                         {property.map_url && (
                                             <div>
-                                                <h3 className="text-lg font-extrabold text-ink mb-3 flex items-center gap-2">
-                                                    <MapPin className="w-5 h-5 text-gold-ink" />
+                                                <h3 className="text-lg font-extrabold text-slate-900 mb-3 flex items-center gap-2">
+                                                    <MapPin className="w-5 h-5 text-emerald-600" />
                                                     Lokasi & Sekitar
                                                 </h3>
-                                                <div className="aspect-video w-full rounded-2xl overflow-hidden bg-cream-sink border border-gold-line shadow-inner">
+                                                <div className="aspect-video w-full rounded-2xl overflow-hidden bg-slate-100 border border-slate-100 shadow-inner">
                                                     {finalMapUrl ? (
                                                         <iframe
                                                             src={finalMapUrl}
@@ -442,7 +442,7 @@ export default function Show({ property }) {
                                                             referrerPolicy="no-referrer-when-downgrade"
                                                         ></iframe>
                                                     ) : (
-                                                        <div className="w-full h-full flex items-center justify-center text-ink-soft text-sm font-medium">
+                                                        <div className="w-full h-full flex items-center justify-center text-slate-400 text-sm font-medium">
                                                             Peta lokasi belum
                                                             tersedia
                                                         </div>
@@ -455,7 +455,7 @@ export default function Show({ property }) {
 
                                 {activeTab === "documents" && (
                                     <div className="animate-in fade-in duration-500">
-                                        <h3 className="text-xl font-black text-ink mb-6">
+                                        <h3 className="text-xl font-black text-slate-900 mb-6">
                                             Dokumen Pendukung
                                         </h3>
                                         {property.documents?.length > 0 ? (
@@ -466,10 +466,10 @@ export default function Show({ property }) {
                                                             key={idx}
                                                             href={doc.url}
                                                             target="_blank"
-                                                            className="group flex items-center justify-between p-5 bg-cream-sink rounded-2xl border border-gold-line hover:border-gold hover:shadow-lg transition-all"
+                                                            className="group flex items-center justify-between p-5 bg-slate-50 rounded-2xl border border-slate-100 hover:border-[#24608B] hover:shadow-lg transition-all"
                                                         >
                                                             <div className="flex items-center gap-4">
-                                                                <div className="w-12 h-12 bg-cream rounded-xl flex items-center justify-center text-gold-ink border border-gold-line">
+                                                                <div className="w-12 h-12 bg-white rounded-xl flex items-center justify-center text-[#24608B] border border-slate-100">
                                                                     <FileText
                                                                         size={
                                                                             20
@@ -477,18 +477,18 @@ export default function Show({ property }) {
                                                                     />
                                                                 </div>
                                                                 <div>
-                                                                    <p className="text-sm font-black text-ink group-hover:text-gold-ink">
+                                                                    <p className="text-sm font-black text-slate-900 group-hover:text-[#24608B]">
                                                                         {
                                                                             doc.name
                                                                         }
                                                                     </p>
-                                                                    <p className="text-[10px] font-bold text-ink-soft uppercase tracking-widest">
+                                                                    <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">
                                                                         PDF
                                                                         Document
                                                                     </p>
                                                                 </div>
                                                             </div>
-                                                            <div className="w-10 h-10 rounded-full bg-cream border border-gold-line flex items-center justify-center text-ink-soft group-hover:bg-gold group-hover:text-ink transition-all">
+                                                            <div className="w-10 h-10 rounded-full bg-white border border-slate-100 flex items-center justify-center text-slate-400 group-hover:bg-[#24608B] group-hover:text-white transition-all">
                                                                 <Download
                                                                     size={16}
                                                                 />
@@ -498,7 +498,7 @@ export default function Show({ property }) {
                                                 )}
                                             </div>
                                         ) : (
-                                            <p className="text-ink-soft italic">
+                                            <p className="text-slate-400 italic">
                                                 No documents available.
                                             </p>
                                         )}
@@ -511,11 +511,11 @@ export default function Show({ property }) {
                     {/* Right Column */}
                     <div className="lg:col-span-1 space-y-6">
                         {/* Price Card */}
-                        <div className="bg-cream rounded-[2rem] p-8 shadow-[0_20px_50px_rgba(199,164,92,0.1)] border border-gold-line sticky top-24">
+                        <div className="bg-white rounded-[2rem] p-8 shadow-[0_20px_50px_rgba(0,0,0,0.05)] border border-slate-100 sticky top-24">
                             {/* 1. Header Harga */}
                             <div className="mb-8">
                                 {/* Judul Section */}
-                                <h3 className="text-lg font-bold text-ink mb-5">
+                                <h3 className="text-lg font-bold text-slate-950 mb-5">
                                     Perbandingan Harga
                                 </h3>
 
@@ -523,7 +523,7 @@ export default function Show({ property }) {
                                 <div className="space-y-3 mb-6">
                                     {/* Row Listing */}
                                     <div className="flex justify-between items-center text-sm">
-                                        <span className="text-ink-soft font-medium">
+                                        <span className="text-slate-500 font-medium">
                                             Listing:
                                         </span>
                                         {/* Harga Properti (Listing) - Pakai warna hijau buat indikator positif */}
@@ -534,11 +534,11 @@ export default function Show({ property }) {
 
                                     {/* Row Harga Pasar */}
                                     <div className="flex justify-between items-center text-sm">
-                                        <span className="text-ink-soft font-medium">
+                                        <span className="text-slate-500 font-medium">
                                             Harga Pasar:
                                         </span>
                                         {/* Harga Pasar - Warna default */}
-                                        <span className="font-bold text-ink tabular-nums">
+                                        <span className="font-bold text-slate-900 tabular-nums">
                                             {formatCurrency(hargaPasar)}
                                         </span>
                                     </div>
@@ -547,7 +547,7 @@ export default function Show({ property }) {
                                 {/* Section Progress Bar & Analisis */}
                                 <div className="space-y-2">
                                     {/* Progress Bar Container */}
-                                    <div className="w-full h-2.5 bg-cream-sink rounded-full overflow-hidden">
+                                    <div className="w-full h-2.5 bg-slate-100 rounded-full overflow-hidden">
                                         <div
                                             className={`h-full rounded-full ${isDiBawahPasar ? "bg-green-600" : "bg-red-600"}`}
                                             style={{
@@ -565,11 +565,11 @@ export default function Show({ property }) {
                                     </p>
                                 </div>
                                 <div className="flex flex-wrap gap-2 mt-4">
-                                    <span className="px-3 py-1.5 bg-cream-sink border border-gold-line rounded-lg text-[10px] font-bold text-ink">
+                                    <span className="px-3 py-1.5 bg-slate-50 border border-slate-100 rounded-lg text-[10px] font-bold text-slate-600">
                                         {property.financials.ownership}
                                     </span>
                                     {property.financials.lease_term && (
-                                        <span className="px-3 py-1.5 bg-cream-sink border border-gold-line rounded-lg text-[10px] font-bold text-ink">
+                                        <span className="px-3 py-1.5 bg-slate-50 border border-slate-100 rounded-lg text-[10px] font-bold text-slate-600">
                                             {property.financials.lease_term}{" "}
                                             Years
                                         </span>
@@ -582,18 +582,18 @@ export default function Show({ property }) {
                                 <a
                                     href={`https://wa.me/${settings?.whatsapp || "62818580891"}`}
                                     target="_blank"
-                                    className="w-full bg-ink hover:bg-gold-ink text-cream font-black py-4 rounded-2xl transition-all flex items-center justify-center gap-2 shadow-lg hover:shadow-gold/20"
+                                    className="w-full bg-slate-900 hover:bg-[#24608B] text-white font-black py-4 rounded-2xl transition-all flex items-center justify-center gap-2 shadow-lg hover:shadow-blue-900/20"
                                 >
                                     <Phone size={18} /> Contact Agent
                                 </a>
-                                <button className="w-full bg-cream border-2 border-gold-line hover:border-gold hover:text-gold-ink text-ink font-bold py-4 rounded-2xl transition-all flex items-center justify-center gap-2">
+                                <button className="w-full bg-white border-2 border-slate-100 hover:border-[#24608B] hover:text-[#24608B] text-slate-700 font-bold py-4 rounded-2xl transition-all flex items-center justify-center gap-2">
                                     <Mail size={18} /> Request Info
                                 </button>
                             </div>
 
                             {/* 3. Property Highlights (Sleek List) */}
-                            <div className="pt-8 border-t border-gold-line border-dashed">
-                                <h4 className="text-xs font-black uppercase tracking-widest text-ink-soft mb-5">
+                            <div className="pt-8 border-t border-slate-100 border-dashed">
+                                <h4 className="text-xs font-black uppercase tracking-widest text-slate-400 mb-5">
                                     Highlights
                                 </h4>
                                 <ul className="space-y-4">
@@ -604,11 +604,11 @@ export default function Show({ property }) {
                                     ].map((text, i) => (
                                         <li
                                             key={i}
-                                            className="flex items-start gap-3 text-sm font-medium text-ink-soft"
+                                            className="flex items-start gap-3 text-sm font-medium text-slate-600"
                                         >
                                             <CheckCircle
                                                 size={16}
-                                                className="text-gold-ink shrink-0 mt-0.5"
+                                                className="text-emerald-500 shrink-0 mt-0.5"
                                             />
                                             {text}
                                         </li>
@@ -617,7 +617,7 @@ export default function Show({ property }) {
                             </div>
 
                             {/* 4. Trust Badge (Opsional, buat bikin makin Pro) */}
-                            <div className="mt-8 flex items-center justify-center gap-2 text-[10px] font-bold text-ink-soft">
+                            <div className="mt-8 flex items-center justify-center gap-2 text-[10px] font-bold text-slate-400">
                                 <ShieldCheck size={14} /> Terverifikasi Aman
                             </div>
                         </div>

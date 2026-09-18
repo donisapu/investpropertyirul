@@ -148,11 +148,11 @@ export default function Show({ property }) {
                 <div className="mb-8">
                     <Link
                         href={route("investments.show", property.id)}
-                        className="inline-flex items-center gap-2 text-xs font-bold text-ink-soft uppercase tracking-widest hover:text-gold-ink transition-colors mb-3"
+                        className="inline-flex items-center gap-2 text-xs font-bold text-slate-400 uppercase tracking-widest hover:text-rose-600 transition-colors mb-3"
                     >
                         <ArrowLeft className="w-4 h-4" /> Kembali ke Properti
                     </Link>
-                    <h1 className="text-3xl font-black text-ink tracking-tight">
+                    <h1 className="text-3xl font-black text-slate-900 tracking-tight">
                         Ajukan Penjualan Lot
                     </h1>
                 </div>
@@ -162,8 +162,8 @@ export default function Show({ property }) {
                     {/* ================= KOLOM KIRI: KONFIGURASI PENJUALAN (Span 3) ================= */}
                     <div className="lg:col-span-3 space-y-6">
                         {/* Info Ringkas Properti */}
-                        <div className="bg-cream rounded-3xl p-5 border border-gold-line shadow-[0_2px_10px_-3px_rgba(199,164,92,0.08)] flex items-center gap-5">
-                            <div className="w-20 h-24 rounded-2xl overflow-hidden bg-cream-sink flex-none">
+                        <div className="bg-white rounded-3xl p-5 border border-slate-100 shadow-[0_2px_10px_-3px_rgba(6,81,237,0.03)] flex items-center gap-5">
+                            <div className="w-20 h-24 rounded-2xl overflow-hidden bg-slate-100 flex-none">
                                 <img
                                     src={
                                         property.main_image ||
@@ -174,38 +174,38 @@ export default function Show({ property }) {
                                 />
                             </div>
                             <div className="min-w-0 flex-1">
-                                <h2 className="text-base font-extrabold text-ink truncate mb-1">
+                                <h2 className="text-base font-extrabold text-slate-900 truncate mb-1">
                                     {property.name}
                                 </h2>
-                                <p className="text-xs font-medium text-ink-soft flex items-center gap-1 mb-2">
-                                    <span className="w-1.5 h-1.5 rounded-full bg-gold"></span>
+                                <p className="text-xs font-medium text-slate-500 flex items-center gap-1 mb-2">
+                                    <span className="w-1.5 h-1.5 rounded-full bg-slate-400"></span>
                                     {property.location || property.loc}
                                 </p>
                             </div>
                         </div>
 
                         {/* Info Kepemilikan Token (Dompet User) */}
-                        <div className="bg-ink rounded-3xl p-6 text-cream shadow-md relative overflow-hidden">
+                        <div className="bg-gradient-to-br from-slate-900 to-slate-800 rounded-3xl p-6 text-white shadow-md relative overflow-hidden">
                             {/* Watermark Dekoratif Ikon Koin di Background */}
-                            <Coins className="absolute -right-6 -bottom-6 w-32 h-32 text-cream/5 pointer-events-none" />
+                            <Coins className="absolute -right-6 -bottom-6 w-32 h-32 text-white/5 pointer-events-none" />
 
                             <div className="flex justify-between items-center relative z-10">
                                 <div>
-                                    <span className="text-[10px] font-bold text-cream/60 uppercase tracking-widest block mb-1">
+                                    <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest block mb-1">
                                         Total Aset di Properti Ini
                                     </span>
                                     <div className="text-3xl font-black tracking-tight">
                                         {tokenHeld.toLocaleString()}{" "}
-                                        <span className="text-sm font-medium text-cream/60">
+                                        <span className="text-sm font-medium text-slate-400">
                                             Lot
                                         </span>
                                     </div>
                                 </div>
                                 <div className="text-right">
-                                    <span className="text-[10px] font-bold text-cream/60 uppercase tracking-widest block mb-1">
+                                    <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest block mb-1">
                                         Estimasi Nilai
                                     </span>
-                                    <div className="text-lg font-bold text-gold">
+                                    <div className="text-lg font-bold text-emerald-400">
                                         IDR{" "}
                                         {(
                                             tokenHeld * tokenPrice
@@ -216,20 +216,20 @@ export default function Show({ property }) {
                         </div>
 
                         {/* Input Jumlah Penjualan */}
-                        <div className="bg-cream rounded-3xl p-6 md:p-8 border border-gold-line shadow-[0_2px_10px_-3px_rgba(199,164,92,0.08)]">
-                            <h3 className="text-xs font-bold text-ink-soft uppercase tracking-widest block mb-4">
+                        <div className="bg-white rounded-3xl p-6 md:p-8 border border-slate-100 shadow-[0_2px_10px_-3px_rgba(6,81,237,0.03)]">
+                            <h3 className="text-xs font-bold text-slate-400 uppercase tracking-widest block mb-4">
                                 Tentukan Jumlah Lot Yang Ingin Dijual
                             </h3>
 
-                            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6 p-4 rounded-2xl bg-cream-sink/70 border border-gold-line">
+                            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6 p-4 rounded-2xl bg-slate-50/70 border border-slate-100">
                                 <div>
-                                    <div className="text-sm font-bold text-ink mb-0.5">
+                                    <div className="text-sm font-bold text-slate-900 mb-0.5">
                                         Jumlah Lot Dijual
                                     </div>
-                                    <div className="text-xs font-medium text-ink-soft">
+                                    <div className="text-xs font-medium text-slate-500">
                                         Nilai Jual: IDR{" "}
                                         {tokenPrice.toLocaleString()}{" "}
-                                        <span className="text-[10px] text-ink-soft">
+                                        <span className="text-[10px] text-slate-400">
                                             / lot
                                         </span>
                                     </div>
@@ -237,11 +237,11 @@ export default function Show({ property }) {
 
                                 {/* Counter Widget & Button MAX Terintegrasi */}
                                 <div className="flex items-center gap-3">
-                                    <div className="flex items-center bg-cream border border-gold-line rounded-xl overflow-hidden shadow-sm p-1">
+                                    <div className="flex items-center bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm p-1">
                                         <button
                                             type="button"
                                             onClick={handleDecrement}
-                                            className="w-9 h-9 flex items-center justify-center text-ink hover:bg-cream-sink rounded-lg font-bold transition-colors"
+                                            className="w-9 h-9 flex items-center justify-center text-slate-600 hover:bg-slate-100 rounded-lg font-bold transition-colors"
                                         >
                                             <Minus className="w-3.5 h-3.5" />
                                         </button>
@@ -249,7 +249,7 @@ export default function Show({ property }) {
                                             type="number"
                                             min="1"
                                             max={tokenHeld}
-                                            className="w-16 text-center font-extrabold text-ink focus:outline-none text-sm"
+                                            className="w-16 text-center font-extrabold text-slate-900 focus:outline-none text-sm"
                                             value={quantity}
                                             onChange={handleInputChange}
                                             onBlur={handleBlur}
@@ -257,7 +257,7 @@ export default function Show({ property }) {
                                         <button
                                             type="button"
                                             onClick={handleIncrement}
-                                            className="w-9 h-9 flex items-center justify-center text-ink hover:bg-cream-sink rounded-lg font-bold transition-colors"
+                                            className="w-9 h-9 flex items-center justify-center text-slate-600 hover:bg-slate-100 rounded-lg font-bold transition-colors"
                                         >
                                             <Plus className="w-3.5 h-3.5" />
                                         </button>
@@ -266,7 +266,7 @@ export default function Show({ property }) {
                                     <button
                                         type="button"
                                         onClick={() => setQuantity(tokenHeld)}
-                                        className="bg-ink text-cream px-4 py-3 rounded-xl text-xs font-bold hover:bg-ink-soft transition-colors shadow-sm"
+                                        className="bg-slate-900 text-white px-4 py-3 rounded-xl text-xs font-bold hover:bg-slate-800 transition-colors shadow-sm"
                                     >
                                         JUAL SEMUA
                                     </button>
@@ -278,58 +278,58 @@ export default function Show({ property }) {
                     {/* ================= KOLOM KANAN: RINGKASAN PENCAIRAN DANA (Span 2) ================= */}
                     <div className="lg:col-span-2">
                         {/* Sticky Order Summary Card */}
-                        <div className="bg-cream rounded-3xl p-6 md:p-8 shadow-[0_8px_30px_rgba(199,164,92,0.08)] border border-gold-line sticky top-24">
-                            <h5 className="text-lg font-extrabold text-ink mb-6 pb-4 border-b border-gold-line">
+                        <div className="bg-white rounded-3xl p-6 md:p-8 shadow-[0_8px_30px_rgb(0,0,0,0.03)] border border-slate-100 sticky top-24">
+                            <h5 className="text-lg font-extrabold text-slate-900 mb-6 pb-4 border-b border-slate-100">
                                 Ringkasan Pencairan
                             </h5>
 
                             {/* Breakdown Rincian Nota */}
                             <div className="space-y-4 text-sm font-medium">
-                                <div className="flex justify-between items-center text-ink-soft">
+                                <div className="flex justify-between items-center text-slate-500">
                                     <span>Kuantitas Penjualan</span>
-                                    <span className="text-ink font-semibold">
+                                    <span className="text-slate-900 font-semibold">
                                         {quantity} Lot
                                     </span>
                                 </div>
-                                <div className="flex justify-between items-center text-ink-soft">
+                                <div className="flex justify-between items-center text-slate-500">
                                     <span>Harga Per Lot</span>
-                                    <span className="text-ink font-semibold">
+                                    <span className="text-slate-900 font-semibold">
                                         IDR {tokenPrice.toLocaleString()}
                                     </span>
                                 </div>
-                                <div className="flex justify-between items-center text-ink-soft">
+                                <div className="flex justify-between items-center text-slate-500">
                                     <span className="flex items-center gap-1">
                                         Biaya Layanan platform{" "}
-                                        <Info className="w-3.5 h-3.5 text-ink-soft/50" />
+                                        <Info className="w-3.5 h-3.5 text-slate-300" />
                                     </span>
-                                    <span className="text-xs font-extrabold text-gold-ink bg-cream-sink px-2 py-0.5 rounded">
+                                    <span className="text-xs font-extrabold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded">
                                         GRATIS
                                     </span>
                                 </div>
                             </div>
 
-                            <div className="my-5 border-t border-dashed border-gold-line"></div>
+                            <div className="my-5 border-t border-dashed border-slate-200"></div>
 
                             {/* Total Uang Cair yang Diterima User */}
                             <div className="flex justify-between items-center mb-6">
-                                <span className="text-sm font-bold text-ink">
+                                <span className="text-sm font-bold text-slate-800">
                                     Total Dana Diterima
                                 </span>
-                                <span className="text-2xl font-black text-ink tracking-tight">
+                                <span className="text-2xl font-black text-slate-950 tracking-tight">
                                     IDR {totalPayment.toLocaleString()}
                                 </span>
                             </div>
 
                             {/* Checkbox Persetujuan Likuidasi */}
-                            <div className="flex gap-3 bg-cream-sink rounded-2xl p-4 border border-gold-line mb-5">
+                            <div className="flex gap-3 bg-slate-50 rounded-2xl p-4 border border-slate-100 mb-5">
                                 <input
                                     type="checkbox"
-                                    className="mt-1 w-4 h-4 accent-gold rounded flex-none cursor-pointer"
+                                    className="mt-1 w-4 h-4 accent-emerald-600 rounded flex-none cursor-pointer"
                                     id="agree"
                                 />
                                 <label
                                     htmlFor="agree"
-                                    className="text-[11px] leading-relaxed text-ink-soft font-medium cursor-pointer"
+                                    className="text-[11px] leading-relaxed text-slate-500 font-medium cursor-pointer"
                                 >
                                     Saya menyetujui penjualan lot ini secara
                                     sadar dan memahami bahwa dana pencairan akan
@@ -369,9 +369,9 @@ export default function Show({ property }) {
                                         },
                                     )
                                 }
-                                className="w-full py-4 rounded-xl font-bold text-cream text-sm bg-ink hover:bg-ink-soft transition-all flex items-center justify-center gap-2 shadow-md shadow-ink/10 hover:-translate-y-0.5"
+                                className="w-full py-4 rounded-xl font-bold text-white text-sm bg-slate-900 hover:bg-slate-800 transition-all flex items-center justify-center gap-2 shadow-md shadow-slate-900/10 hover:-translate-y-0.5"
                             >
-                                <CheckCircle2 className="w-4 h-4 text-gold" />
+                                <CheckCircle2 className="w-4 h-4 text-emerald-400" />
                                 Konfirmasi & Cairkan Dana
                             </button>
                         </div>

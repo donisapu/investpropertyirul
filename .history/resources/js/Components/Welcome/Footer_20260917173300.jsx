@@ -215,7 +215,7 @@ export default function Footer({ settings }) {
                     </p>
                     <div className="flex gap-8">
                         <a
-                            href="/privacy"
+                            href="/privacy-policy"
                             className="-my-3 inline-flex min-h-[44px] items-center py-3 transition-colors hover:text-cream focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold"
                         >
                             Privacy Policy

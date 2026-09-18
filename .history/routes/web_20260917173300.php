@@ -117,11 +117,6 @@ Route::get('/terms', function () {
     return Inertia::render('TermsAndConditions', ['settings' => $settings]);
 })->name('terms');
 
-Route::get('/privacy', function () {
-    $settings = WebsiteSetting::getSettings();
-    return Inertia::render('PrivacyPolicy', ['settings' => $settings]);
-})->name('privacy');
-
 Route::post('/xendit/webhook', [PaymentController::class, 'callback']);
 
 Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin'])->group(function () {
