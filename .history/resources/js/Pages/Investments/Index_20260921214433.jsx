@@ -205,9 +205,42 @@ export default function Investments({ properties, settings, partners }) {
                             "
                         >
 
+                            {/* Outer Frame */}
+                            <div className="absolute inset-0 rotate-3 border border-[#d1ad62]/20" />
+
+                            {/* Inner Frame */}
+                            <div className="absolute inset-5 -rotate-3 border border-[#d1ad62]/10" />
 
 
-                           
+                            {/* Number */}
+                            <div className="absolute right-7 top-1/2 -translate-y-1/2 text-right">
+
+                                <div
+                                    className="
+                                        text-[90px]
+                                        font-semibold
+                                        leading-none
+                                        tracking-[0.04em]
+                                        text-[#d1ad62]/15
+                                    "
+                                >
+                                    01
+                                </div>
+
+                                <div
+                                    className="
+                                        mt-4
+                                        text-[9px]
+                                        font-medium
+                                        uppercase
+                                        tracking-[0.35em]
+                                        text-[#e4ded3]/30
+                                    "
+                                >
+                                    Investment
+                                </div>
+
+                            </div>
 
 
                             {/* Decorative Accent */}

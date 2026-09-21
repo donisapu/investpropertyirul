@@ -40,7 +40,7 @@ export default function Investments({ properties, settings, partners }) {
                     />
 
                     {/* Warm Overlay */}
-                    <div className="absolute inset-0 bg-gradient-to-r from-[#171512]/95 via-[#1c1a16]/65 to-[#211f1b]/55" />
+                    <div className="absolute inset-0 bg-gradient-to-r from-[#ffffff]/10 via-[#ffffff]/25 to-[#ffffff]/15" />
 
                     {/* Soft Warm Light */}
                     <div className="pointer-events-none absolute -right-32 -top-32 h-96 w-96 rounded-full bg-[#c9a45c]/10 blur-3xl" />
@@ -80,7 +80,7 @@ export default function Investments({ properties, settings, partners }) {
                                     uppercase
                                     leading-[1.02]
                                     tracking-[0.08em]
-                                    text-[#f5f1e8]
+                                    text-[#d5b66f]
                                     drop-shadow-2xl
                                     sm:text-3xl
                                     md:text-4xl
@@ -115,7 +115,7 @@ export default function Investments({ properties, settings, partners }) {
                                     max-w-xl
                                     text-sm
                                     leading-7
-                                    text-[#c9c2b6]
+                                    text-[#000000]
                                     sm:text-base
                                 "
                             >
@@ -205,9 +205,42 @@ export default function Investments({ properties, settings, partners }) {
                             "
                         >
 
+                            {/* Outer Frame */}
+                            <div className="absolute inset-0 rotate-3 border border-[#d1ad62]/20" />
+
+                            {/* Inner Frame */}
+                            <div className="absolute inset-5 -rotate-3 border border-[#d1ad62]/10" />
 
 
-                           
+                            {/* Number */}
+                            <div className="absolute right-7 top-1/2 -translate-y-1/2 text-right">
+
+                                <div
+                                    className="
+                                        text-[90px]
+                                        font-semibold
+                                        leading-none
+                                        tracking-[0.04em]
+                                        text-[#d1ad62]/15
+                                    "
+                                >
+                                    01
+                                </div>
+
+                                <div
+                                    className="
+                                        mt-4
+                                        text-[9px]
+                                        font-medium
+                                        uppercase
+                                        tracking-[0.35em]
+                                        text-[#e4ded3]/30
+                                    "
+                                >
+                                    Investment
+                                </div>
+
+                            </div>
 
 
                             {/* Decorative Accent */}

@@ -205,9 +205,27 @@ export default function Investments({ properties, settings, partners }) {
                             "
                         >
 
+                            {/* Outer Frame */}
+                            <div className="absolute inset-0 rotate-3 border border-[#d1ad62]/20" />
+
+                            {/* Inner Frame */}
+                            <div className="absolute inset-5 -rotate-3 border border-[#d1ad62]/10" />
 
 
-                           
+                                <div
+                                    className="
+                                        mt-4
+                                        text-[9px]
+                                        font-medium
+                                        uppercase
+                                        tracking-[0.35em]
+                                        text-[#e4ded3]/30
+                                    "
+                                >
+                                    Investment
+                                </div>
+
+                            </div>
 
 
                             {/* Decorative Accent */}

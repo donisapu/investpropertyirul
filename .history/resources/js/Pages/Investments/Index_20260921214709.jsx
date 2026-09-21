@@ -205,6 +205,11 @@ export default function Investments({ properties, settings, partners }) {
                             "
                         >
 
+                            {/* Outer Frame */}
+                            <div className="absolute inset-0 rotate-3 border border-[#d1ad62]/20" />
+
+                            {/* Inner Frame */}
+                            <div className="absolute inset-5 -rotate-3 border border-[#d1ad62]/10" />
 
 
                            
