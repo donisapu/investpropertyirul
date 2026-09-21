@@ -88,8 +88,8 @@ export default function Show({ property }) {
             <Head title={`Crowdfunding - ${property.name}`} />
 
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-                <div className="flex items-center text-sm text-ink-soft mb-6">
-                    <h1 className="text-3xl font-bold text-ink">
+                <div className="flex items-center text-sm text-slate-500 mb-6">
+                    <h1 className="text-3xl font-bold text-slate-900">
                         Crowdfunding Investment
                     </h1>
                 </div>
@@ -119,7 +119,7 @@ export default function Show({ property }) {
                             </div>
                         )}
 
-                        <div className="bg-cream rounded-[2rem] border border-gold-line shadow-[0_20px_50px_rgba(199,164,92,0.1)] overflow-hidden">
+                        <div className="bg-white rounded-[2rem] border border-slate-100 shadow-[0_20px_50px_rgba(0,0,0,0.06)] overflow-hidden">
                             {/* Header Gambar */}
                             <div className="h-64 w-full relative">
                                 <img
@@ -130,11 +130,11 @@ export default function Show({ property }) {
                                     alt={property.name}
                                     className="w-full h-full object-cover"
                                 />
-                                <div className="absolute inset-0 bg-gradient-to-t from-ink/90 via-ink/20 to-transparent p-8 flex flex-col justify-end">
-                                    <h2 className="text-cream text-2xl font-black tracking-tight">
+                                <div className="absolute inset-0 bg-gradient-to-t from-slate-900/90 via-slate-900/20 to-transparent p-8 flex flex-col justify-end">
+                                    <h2 className="text-white text-2xl font-black tracking-tight">
                                         {property.name}
                                     </h2>
-                                    <p className="text-cream/70 text-sm font-medium flex items-center gap-1.5">
+                                    <p className="text-blue-200 text-sm font-medium flex items-center gap-1.5">
                                         <MapPin size={14} /> {property.loc}
                                     </p>
                                 </div>
@@ -143,12 +143,12 @@ export default function Show({ property }) {
                             {/* Form Input Nominal */}
                             <div className="p-8">
                                 <div className="mb-6">
-                                    <h3 className="text-lg font-black text-ink mb-1">
+                                    <h3 className="text-lg font-black text-slate-900 mb-1">
                                         Nominal Partisipasi
                                     </h3>
-                                    <p className="text-sm text-ink-soft">
+                                    <p className="text-sm text-slate-500">
                                         Minimal investasi proyek ini adalah{" "}
-                                        <span className="font-bold text-ink">
+                                        <span className="font-bold text-slate-800">
                                             {formatCurrency(minAmount)}
                                         </span>
                                     </p>
@@ -156,7 +156,7 @@ export default function Show({ property }) {
 
                                 {/* Input Nominal */}
                                 <div className="relative group">
-                                    <div className="absolute left-6 top-1/2 -translate-y-1/2 text-ink-soft font-bold group-focus-within:text-gold-ink transition-colors">
+                                    <div className="absolute left-6 top-1/2 -translate-y-1/2 text-slate-400 font-bold group-focus-within:text-[#24608B] transition-colors">
                                         IDR
                                     </div>
                                     <input
@@ -168,7 +168,7 @@ export default function Show({ property }) {
                                                 Number(e.target.value),
                                             )
                                         }
-                                        className="w-full pl-16 pr-6 py-6 bg-cream-sink border-2 border-gold-line rounded-3xl text-3xl font-black text-ink placeholder-ink-soft/50 outline-none transition-all focus:border-gold focus:bg-cream focus:ring-4 focus:ring-gold/10"
+                                        className="w-full pl-16 pr-6 py-6 bg-slate-50 border-2 border-slate-100 rounded-3xl text-3xl font-black text-slate-900 placeholder-slate-300 outline-none transition-all focus:border-[#24608B] focus:bg-white focus:ring-4 focus:ring-blue-500/10"
                                         placeholder="1.000.000"
                                     />
 
@@ -182,7 +182,7 @@ export default function Show({ property }) {
                                                     onClick={() =>
                                                         setInvestAmount(amt)
                                                     }
-                                                    className="text-[10px] font-bold bg-cream border border-gold-line px-3 py-1.5 rounded-lg hover:border-gold hover:text-gold-ink transition-colors"
+                                                    className="text-[10px] font-bold bg-white border border-slate-200 px-3 py-1.5 rounded-lg hover:border-[#24608B] hover:text-[#24608B] transition-colors"
                                                 >
                                                     + {formatCurrency(amt)}
                                                 </button>
@@ -193,28 +193,28 @@ export default function Show({ property }) {
 
                                 {/* Proyeksi ROI */}
                                 <div className="mt-8 grid grid-cols-2 gap-4">
-                                    <div className="bg-cream-sink p-4 rounded-2xl border border-gold-line">
-                                        <div className="text-[10px] font-bold text-ink-soft uppercase tracking-widest mb-1">
+                                    <div className="bg-slate-50 p-4 rounded-2xl border border-slate-100">
+                                        <div className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">
                                             Estimasi Imbal Hasil ({property.roi}
                                             )
                                         </div>
-                                        <div className="text-lg font-black text-gold-ink">
+                                        <div className="text-lg font-black text-emerald-600">
                                             {formatCurrency(
                                                 investAmount *
                                                     (parseFloat(property.roi) /
                                                         100),
                                             )}
                                         </div>
-                                        <div className="text-[10px] text-ink-soft">
+                                        <div className="text-[10px] text-slate-400">
                                             / Tenor ({property.tenor})
                                         </div>
                                     </div>
-                                    <div className="bg-cream-sink p-4 rounded-2xl border border-gold-line">
-                                        <div className="text-[10px] font-bold text-ink-soft uppercase tracking-widest mb-1">
+                                    <div className="bg-slate-50 p-4 rounded-2xl border border-slate-100">
+                                        <div className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">
                                             Status Proyek
                                         </div>
-                                        <div className="text-lg font-black text-ink flex items-center gap-1.5">
-                                            <span className="w-2 h-2 rounded-full bg-gold animate-pulse"></span>{" "}
+                                        <div className="text-lg font-black text-slate-900 flex items-center gap-1.5">
+                                            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>{" "}
                                             {property.status}
                                         </div>
                                     </div>
@@ -225,25 +225,25 @@ export default function Show({ property }) {
 
                     {/* Kolom Kanan (Order Summary) */}
                     <div className="space-y-6">
-                        <div className="bg-cream rounded-[2rem] p-8 shadow-[0_20px_50px_rgba(199,164,92,0.1)] border border-gold-line sticky top-24">
-                            <div className="flex items-center gap-3 mb-8 pb-3 border-b border-gold-line">
-                                <div className="w-10 h-10 bg-cream-sink rounded-xl flex items-center justify-center text-gold-ink">
+                        <div className="bg-white rounded-[2rem] p-8 shadow-[0_20px_50px_rgba(0,0,0,0.06)] border border-slate-100 sticky top-24">
+                            <div className="flex items-center gap-3 mb-8 pb-3 border-b border-slate-100">
+                                <div className="w-10 h-10 bg-emerald-50 rounded-xl flex items-center justify-center text-emerald-600">
                                     <ShieldCheck size={20} />
                                 </div>
-                                <h5 className="text-xl font-extrabold text-ink tracking-tight">
+                                <h5 className="text-xl font-extrabold text-slate-900 tracking-tight">
                                     Order Summary
                                 </h5>
                             </div>
 
                             {/* Rincian Tagihan */}
                             <div className="space-y-3 mb-8">
-                                <div className="p-4 bg-cream-sink border border-gold-line rounded-xl space-y-2">
+                                <div className="p-4 bg-slate-50 border border-slate-100 rounded-xl space-y-2">
                                     <div className="flex justify-between items-center">
-                                        <span className="text-[10px] uppercase tracking-widest font-bold text-ink-soft">
+                                        <span className="text-[10px] uppercase tracking-widest font-bold text-slate-400">
                                             Nominal Investasi
                                         </span>
                                         <span
-                                            className={`font-extrabold text-sm ${hasDiscount ? "line-through text-ink-soft" : "text-ink"}`}
+                                            className={`font-extrabold text-sm ${hasDiscount ? "line-through text-slate-400" : "text-slate-900"}`}
                                         >
                                             {formatCurrency(originalAmount)}
                                         </span>
@@ -263,21 +263,21 @@ export default function Show({ property }) {
                                     )}
                                 </div>
 
-                                <div className="flex justify-between items-center px-4 py-3 bg-cream-sink border border-gold-line rounded-xl">
-                                    <span className="flex items-center gap-1.5 text-xs font-medium text-ink-soft">
-                                        <Info className="w-3.5 h-3.5 text-ink-soft" />{" "}
+                                <div className="flex justify-between items-center px-4 py-3 bg-slate-50 border border-slate-100 rounded-xl">
+                                    <span className="flex items-center gap-1.5 text-xs font-medium text-slate-500">
+                                        <Info className="w-3.5 h-3.5 text-slate-400" />{" "}
                                         Payment Processing Fee
                                     </span>
-                                    <span className="text-xs font-extrabold text-gold-ink flex items-center gap-1">
+                                    <span className="text-xs font-extrabold text-emerald-600 flex items-center gap-1">
                                         <Check size={12} /> FREE
                                     </span>
                                 </div>
                             </div>
 
                             {/* Total Pembayaran */}
-                            <div className="mb-8 text-center bg-cream-sink p-6 rounded-2xl border border-gold-line relative overflow-hidden group">
+                            <div className="mb-8 text-center bg-blue-50/50 p-6 rounded-2xl border border-blue-100 relative overflow-hidden group">
                                 <div className="relative z-10">
-                                    <span className="text-[10px] uppercase tracking-widest font-bold text-gold-ink block mb-1">
+                                    <span className="text-[10px] uppercase tracking-widest font-bold text-[#24608B] block mb-1">
                                         Total Pembayaran
                                     </span>
                                     {hasDiscount && (
@@ -285,25 +285,25 @@ export default function Show({ property }) {
                                             Hemat {formatCurrency(totalSavings)}
                                         </span>
                                     )}
-                                    <span className="text-4xl font-black text-gold-ink tracking-tighter">
+                                    <span className="text-4xl font-black text-[#24608B] tracking-tighter">
                                         {formatCurrency(investAmount)}
                                     </span>
                                 </div>
                             </div>
 
                             {/* Agreement Checkbox */}
-                            <div className="flex gap-3 mb-8 p-4 bg-cream-sink rounded-xl border border-gold-line">
+                            <div className="flex gap-3 mb-8 p-4 bg-slate-50 rounded-xl border border-slate-100">
                                 <input
                                     type="checkbox"
-                                    className="mt-1 w-5 h-5 accent-gold rounded cursor-pointer"
+                                    className="mt-1 w-5 h-5 accent-emerald-600 rounded cursor-pointer"
                                     id="agree"
                                 />
                                 <label
                                     htmlFor="agree"
-                                    className="text-[11px] leading-relaxed text-ink-soft cursor-pointer"
+                                    className="text-[11px] leading-relaxed text-slate-600 cursor-pointer"
                                 >
                                     Saya menyetujui{" "}
-                                    <span className="font-bold text-gold-ink underline hover:text-gold">
+                                    <span className="font-bold text-emerald-600 underline hover:text-emerald-700">
                                         Surat Perjanjian Crowdfunding Properti
                                     </span>{" "}
                                     serta memahami potensi risiko investasi ini.
@@ -318,8 +318,8 @@ export default function Show({ property }) {
                                 }
                                 className={`w-full group flex items-center justify-center gap-2.5 text-white font-black py-4.5 rounded-2xl transition-all shadow-lg ${
                                     processing || investAmount < minAmount
-                                        ? "bg-cream-sink cursor-not-allowed"
-                                        : "bg-ink hover:bg-gold-ink hover:shadow-gold/20 hover:-translate-y-0.5"
+                                        ? "bg-slate-300 cursor-not-allowed"
+                                        : "bg-slate-900 hover:bg-[#24608B] hover:shadow-blue-900/20 hover:-translate-y-0.5"
                                 }`}
                             >
                                 {processing ? (
