@@ -26,9 +26,8 @@ const NAV_LINKS = [
 const ACCOUNT_LINKS = [
     { label: "Dashboard", routeName: "user.dashboard" },
     { label: "My Portfolio", routeName: "user.portfolio" },
-    { label: "My Bids", routeName: "user.bid" },
     { label: "Transactions", routeName: "user.transaction" },
-    { label: "Account Setting", routeName: "user.profile" },
+    { label: "Account Setting", routeName: "user.profile.edit" },
 ];
 
 /* Ziggy melempar bila nama route belum terdaftar; jatuh ke "#" agar
@@ -177,12 +176,12 @@ export default function Header() {
                             )}
                         </div>
                     ) : (
-                        <Link
+                        <a
                             href={safeRoute("login")}
                             className="rounded-[40px] bg-ink px-[23px] py-4 text-[13px] font-semibold leading-5 text-cream transition-colors hover:bg-ink-soft"
                         >
                             My Account
-                        </Link>
+                        </a>
                     )}
                 </div>
 

@@ -26,6 +26,7 @@ use App\Http\Controllers\PublicCampaignController;
 use App\Http\Controllers\PublicProjectController;
 use App\Http\Controllers\PublicPropertyController;
 use App\Http\Controllers\User\BidController;
+use App\Http\Controllers\User\AccountController;
 use App\Http\Controllers\User\DashboardController as UserDashboardController;
 use App\Http\Controllers\User\PaymentController;
 use App\Http\Controllers\User\PortfolioController;
@@ -68,7 +69,7 @@ Route::get('/', function () {
     $landmark = Landmark::all();
     $sliders  = SliderImage::all();
     $project = DeveloperProject::take(4)->get();
-    $campaign = Campaign::where('status','active')->get();
+    $campaign = Campaign::where('status', 'active')->get();
     return Inertia::render('Welcome', [
         'settings' => $settings,
         'partners' => $partners,
@@ -262,8 +263,12 @@ Route::prefix('user')->name('user.')->middleware(['auth', 'role:user', 'verified
     Route::get('/email-verification', [RegisteredUserController::class, 'email'])->name('email.verification');
     Route::get('/email-verify', [RegisteredUserController::class, 'email_verify'])->name('email.verify');
     Route::get('/complete-profile', [RegisteredUserController::class, 'profile'])->name('complete.profile');
-    Route::post('/update-profile', [RegisteredUserController::class, 'profile_update'])->name('update.profile');
-    Route::get('/user-profile', [ProfileController::class, 'index'])->name('profile');
+    Route::post('/update-profile', [RegisteredUserController::class, 'profile_update'])->name('profile.update');
+    Route::get('/user-profile', [ProfileController::class, 'edit'])->name('profile');
+
+    Route::get('/settings', [AccountController::class, 'index'])->name('profile.edit');
+    Route::put('/settings/profile', [AccountController::class, 'updateProfile'])->name('profile.update');
+    Route::put('/settings/password', [AccountController::class, 'updatePassword'])->name('password.update');
 
     // Dashboard
     Route::get('/dashboard', [UserDashboardController::class, 'index'])->name('dashboard');

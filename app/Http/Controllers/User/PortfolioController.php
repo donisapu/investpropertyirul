@@ -7,6 +7,7 @@ use App\Models\CrowdfundingPortfolio;
 use App\Models\InvestmentPortfolio;
 use App\Models\Wallet;
 use App\Models\WebsiteSetting;
+use Inertia\Inertia;
 
 class PortfolioController extends Controller
 {
@@ -42,6 +43,12 @@ class PortfolioController extends Controller
             ],
         ];
         $settings = WebsiteSetting::getSettings();
-        return view('user.portfolio', ['title' => 'My Portfolio'], compact('settings', 'crowdfundings', 'investments','wallet'));
+
+        return Inertia::render('User/Portfolio', [
+            'settings' => $settings,
+            'crowdfundings' => $crowdfundings,
+            'investments' => $investments,
+            'wallet' => $wallet,
+        ]);
     }
 }

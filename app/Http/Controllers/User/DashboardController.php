@@ -5,6 +5,7 @@ namespace App\Http\Controllers\User;
 use App\Http\Controllers\Controller;
 use App\Models\Wallet;
 use App\Models\WebsiteSetting;
+use Inertia\Inertia;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
@@ -13,28 +14,77 @@ class DashboardController extends Controller
     public function index()
     {
         $userId = Auth::id();
-        $totalInvestedProperti = DB::table('investment_transactions')
+
+        // =========================
+        // PROPERTY INVESTMENT
+        // =========================
+
+        $totalBuy = DB::table('investment_transactions')
             ->where('user_id', $userId)
             ->where('type', 'BUY')
-            ->sum('amount') -
-            DB::table('investment_transactions')
+            ->where('status', 'APPROVED')
+            ->sum('amount');
+
+        $totalSell = DB::table('investment_transactions')
             ->where('user_id', $userId)
             ->where('type', 'SELL')
             ->where('status', 'APPROVED')
             ->sum('amount');
 
+        $totalInvestedProperti = $totalBuy - $totalSell;
+
+
+        // =========================
+        // CROWDFUNDING
+        // =========================
+
         $totalInvestedCrowdfund = DB::table('crowdfunding_transactions')
             ->where('user_id', $userId)
             ->sum('amount');
 
-        $totalInvested = $totalInvestedProperti;
-        $wallet = Wallet::where('user_id', Auth::user()->id)->first();
-        $availableBalance = $wallet->balance;
-        $totalReturn = 30000;
+
+        // =========================
+        // TOTAL INVESTED
+        // =========================
+
+        $totalInvested = $totalInvestedProperti + $totalInvestedCrowdfund;
+
+
+        // =========================
+        // WALLET
+        // =========================
+
+        $wallet = Wallet::where('user_id', $userId)->first();
+
+        $availableBalance = $wallet?->balance ?? 0;
+
+
+        // =========================
+        // ASSET VALUE
+        // =========================
+
+        $totalReturn = 0;
+
         $totalAssetValue = $totalInvested + $availableBalance;
+
+
+        // =========================
+        // ACTIVE INVESTMENTS
+        // =========================
+
         $activeInvestments = DB::table('investment_portfolios as ip')
-            ->join('property_investments as pinv', 'ip.investment_id', '=', 'pinv.id')
-            ->join('properties as p', 'pinv.property_id', '=', 'p.id')
+            ->join(
+                'property_investments as pinv',
+                'ip.investment_id',
+                '=',
+                'pinv.id'
+            )
+            ->join(
+                'properties as p',
+                'pinv.property_id',
+                '=',
+                'p.id'
+            )
             ->select(
                 'p.property_name',
                 'ip.total_lot',
@@ -43,27 +93,52 @@ class DashboardController extends Controller
             )
             ->where('ip.user_id', $userId)
             ->where('ip.total_lot', '>', 0)
+            ->orderByDesc('ip.updated_at')
             ->limit(2)
             ->get();
-        $recentTransactions = DB::table('investment_transactions as it')
-            ->select('amount', 'type', 'transacted_at as date', DB::raw("'Investment' as label"))
-            ->where('user_id', $userId)
-            ->union(
-                DB::table('crowdfunding_transactions as ct')
-                    ->select('amount', DB::raw("'OUT' as type"), 'transacted_at as date', DB::raw("'Crowdfunding' as label"))
-                    ->where('user_id', $userId)
+
+
+        // =========================
+        // RECENT TRANSACTIONS
+        // =========================
+
+        $investmentTransactions = DB::table('investment_transactions')
+            ->select(
+                'id',
+                'amount',
+                'type',
+                'transacted_at as date',
+                DB::raw("'Investment' as label")
             )
-            ->orderBy('date', 'desc')
+            ->where('user_id', $userId);
+
+        $crowdfundingTransactions = DB::table('crowdfunding_transactions')
+            ->select(
+                'id',
+                'amount',
+                DB::raw("'OUT' as type"),
+                'transacted_at as date',
+                DB::raw("'Crowdfunding' as label")
+            )
+            ->where('user_id', $userId);
+
+        $recentTransactions = $investmentTransactions
+            ->unionAll($crowdfundingTransactions);
+
+        $recentTransactions = DB::query()
+            ->fromSub($recentTransactions, 'transactions')
+            ->orderByDesc('date')
             ->limit(3)
             ->get();
-        $settings = WebsiteSetting::getSettings();
-        return view('user.dashboard', compact(
-            'totalAssetValue',
-            'totalInvested',
-            'totalReturn',
-            'availableBalance',
-            'activeInvestments',
-            'recentTransactions'
-        ));
+
+
+        return Inertia::render('User/Dashboard', [
+            'totalAssetValue' => $totalAssetValue,
+            'totalInvested' => $totalInvested,
+            'totalReturn' => $totalReturn,
+            'availableBalance' => $availableBalance,
+            'activeInvestments' => $activeInvestments,
+            'recentTransactions' => $recentTransactions,
+        ]);
     }
 }

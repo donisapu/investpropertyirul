@@ -6,19 +6,6 @@ import Promo from "@/Components/Welcome/Promo";
 import TrustedPartners from "@/Components/Welcome/TrustedPartners";
 import Footer from "@/Components/Welcome/Footer";
 
-/*
- * Layout publik — satu-satunya kerangka untuk seluruh halaman publik,
- * termasuk Home.
- *
- * Sebelumnya file ini memuat header (640 baris) dan footer (641 baris)
- * sendiri, menduplikasi komponen di Components/Welcome/. Akibatnya Home
- * dan 14 halaman lain memakai dua sistem yang berbeda, dan setiap
- * penambahan menu harus dikerjakan dua kali. Keduanya kini diimpor.
- *
- * Promo dan Trusted Partners tetap muncul di setiap halaman seperti
- * perilaku sebelumnya, hanya saja kini berdiri sebagai seksi tersendiri,
- * bukan tertanam di dalam <footer>.
- */
 export default function PublicLayout({ children }) {
     const { settings, partners, campaigns } = usePage().props;
 

@@ -37,17 +37,6 @@
                 </div>
             </div>
 
-            {{-- Chart Placeholder --}}
-            {{-- <div class="mt-10 rounded-2xl border border-slate-100 bg-white p-6 shadow-sm">
-            <div class="flex items-center justify-between mb-4">
-                <h3 class="text-lg font-bold">Portfolio Performance</h3>
-                <span class="text-xs text-slate-400">Last 6 months</span>
-            </div>
-            <div class="h-48 flex items-center justify-center text-slate-400 text-sm">
-                Chart Placeholder (pakai Chart.js nanti, jangan males)
-            </div>
-        </div> --}}
-
             {{-- Active Investments Snapshot --}}
             <div class="mt-12">
                 <div class="flex items-center justify-between mb-4">
@@ -73,81 +62,57 @@
                         </div>
                     @empty
                         <div class="col-span-2 text-center py-6 bg-slate-50 rounded-xl border border-dashed">
-                            <p class="text-slate-500 text-sm">Belum ada aset di portfolio lu, bre.</p>
+                            <p class="text-slate-500 text-sm">Belum ada investasi aktif.</p>
                         </div>
                     @endforelse
                 </div>
             </div>
 
-            {{-- My Bids Snapshot --}}
-            <div class="mt-12">
-                <div class="flex items-center justify-between mb-4">
-                    <h3 class="text-xl font-bold">My Active Bids</h3>
-                    <a href="{{ route('user.bid') }}" class="text-sm font-semibold text-emerald-600 hover:underline">
-                        View All
-                    </a>
-                </div>
+        {{-- Recent Transactions --}}
+        <div class="mt-12">
+            <div class="flex items-center justify-between mb-4">
+                <h3 class="text-xl font-bold">Recent Transactions</h3>
+                <a href="{{ route('user.transaction') }}" class="text-sm font-semibold text-emerald-600 hover:underline">
+                    View All
+                </a>
+            </div>
 
-                <div class="grid gap-6 md:grid-cols-2">
-                    @for ($i = 0; $i < 2; $i++)
-                        <div class="rounded-2xl bg-white border border-slate-100 p-6 shadow-sm">
-                            <h4 class="font-bold text-slate-900">Auction: Apartment BSD Tower A</h4>
-                            <p class="text-xs text-slate-500 mt-1">Your Bid: IDR 250,000</p>
-
-                            <div class="mt-4 flex justify-between text-sm">
-                                <span class="text-slate-500">Status</span>
-                                <span class="font-bold text-amber-600">Outbid</span>
-                            </div>
+            <div class="rounded-2xl border border-slate-100 bg-white shadow-sm overflow-hidden">
+                <div class="divide-y">
+                    @foreach ($recentTransactions as $trx)
+                        <div class="p-4 flex justify-between text-sm">
+                            <span>{{ $trx->label }} ({{ $trx->type }})</span>
+                            <span class="font-bold {{ $trx->type == 'SELL' ? 'text-emerald-600' : 'text-slate-900' }}">
+                                {{ $trx->type == 'SELL' ? '+' : '-' }} IDR {{ number_format($trx->amount) }}
+                            </span>
                         </div>
-                    @endfor
+                    @endforeach
                 </div>
             </div>
+        </div>
 
-            {{-- Recent Transactions --}}
-            <div class="mt-12">
-                <div class="flex items-center justify-between mb-4">
-                    <h3 class="text-xl font-bold">Recent Transactions</h3>
-                    <a href="{{ route('user.transaction') }}" class="text-sm font-semibold text-emerald-600 hover:underline">
-                        View All
-                    </a>
-                </div>
+        {{-- Quick Actions --}}
+        <div class="mt-12 grid gap-4 sm:grid-cols-2 md:grid-cols-4">
+            <a href="{{ route('investments.index') }}"
+                class="text-center bg-emerald-800 text-white py-3 rounded-xl font-bold text-sm hover:bg-emerald-700 transition">
+                Explore Properties
+            </a>
 
-                <div class="rounded-2xl border border-slate-100 bg-white shadow-sm overflow-hidden">
-                    <div class="divide-y">
-                        @foreach ($recentTransactions as $trx)
-                            <div class="p-4 flex justify-between text-sm">
-                                <span>{{ $trx->label }} ({{ $trx->type }})</span>
-                                <span class="font-bold {{ $trx->type == 'SELL' ? 'text-emerald-600' : 'text-slate-900' }}">
-                                    {{ $trx->type == 'SELL' ? '+' : '-' }} IDR {{ number_format($trx->amount) }}
-                                </span>
-                            </div>
-                        @endforeach
-                    </div>
-                </div>
-            </div>
+            <a href="/crowdfunding"
+                class="text-center bg-white border border-emerald-200 text-emerald-700 py-3 rounded-xl font-bold text-sm hover:bg-emerald-50 transition">
+                Join Crowdfunding
+            </a>
 
-            {{-- Quick Actions --}}
-            <div class="mt-12 grid gap-4 sm:grid-cols-2 md:grid-cols-4">
-                <a href="{{ route('investments.index') }}"
-                    class="text-center bg-emerald-800 text-white py-3 rounded-xl font-bold text-sm hover:bg-emerald-700 transition">
-                    Explore Properties
-                </a>
+            <a href="/my-bids"
+                class="text-center bg-white border border-slate-200 text-slate-700 py-3 rounded-xl font-bold text-sm hover:bg-slate-50 transition">
+                View My Bids
+            </a>
 
-                <a href="/crowdfunding"
-                    class="text-center bg-white border border-emerald-200 text-emerald-700 py-3 rounded-xl font-bold text-sm hover:bg-emerald-50 transition">
-                    Join Crowdfunding
-                </a>
-
-                <a href="/my-bids"
-                    class="text-center bg-white border border-slate-200 text-slate-700 py-3 rounded-xl font-bold text-sm hover:bg-slate-50 transition">
-                    View My Bids
-                </a>
-
-                <a href="#deposit"
-                    class="text-center bg-white border border-slate-200 text-slate-700 py-3 rounded-xl font-bold text-sm hover:bg-slate-50 transition">
-                    Deposit Funds
-                </a>
-            </div>
+            <a href="#deposit"
+                class="text-center bg-white border border-slate-200 text-slate-700 py-3 rounded-xl font-bold text-sm hover:bg-slate-50 transition">
+                Deposit Funds
+            </a>
+        </div>
         </div>
     </section>
 @endsection
