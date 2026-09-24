@@ -11,6 +11,7 @@
                         <th>Property Location</th>
                         <th>Start Date</th>
                         <th>Finish Date</th>
+                        <th>Type</th>
                         <th>Status</th>
                         <th>Action</th>
                     </tr>
@@ -47,6 +48,10 @@
                     {
                         data: 'date_finish',
                         name: 'date_finish'
+                    },
+                    {
+                        data: 'type',
+                        name: 'type'
                     },
                     {
                         data: 'status',

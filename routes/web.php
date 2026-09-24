@@ -263,7 +263,7 @@ Route::prefix('user')->name('user.')->middleware(['auth', 'role:user', 'verified
     Route::get('/email-verification', [RegisteredUserController::class, 'email'])->name('email.verification');
     Route::get('/email-verify', [RegisteredUserController::class, 'email_verify'])->name('email.verify');
     Route::get('/complete-profile', [RegisteredUserController::class, 'profile'])->name('complete.profile');
-    Route::post('/update-profile', [RegisteredUserController::class, 'profile_update'])->name('profile.update');
+    Route::post('/update-profile', [RegisteredUserController::class, 'profile_update'])->name('update.profile');
     Route::get('/user-profile', [ProfileController::class, 'edit'])->name('profile');
 
     Route::get('/settings', [AccountController::class, 'index'])->name('profile.edit');

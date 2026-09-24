@@ -49,15 +49,29 @@
                     </div>
                 </div>
                 <div class="mb-3">
-                    <label for="" class="form-label">Status</label>
-                    <select name="status" class="form-control" id="" @required(true)>
-                        <option value="draft" @if ($btn == 'edit' && $data->status == 'draft') selected @endif>Draft</option>
-                        <option value="upcoming" @if ($btn == 'edit' && $data->status == 'upcoming') selected @endif>Upcoming</option>
-                        <option value="active" @if ($btn == 'edit' && $data->status == 'active') selected @endif>Active</option>
-                        <option value="closed" @if ($btn == 'edit' && $data->status == 'closed') selected @endif>Closed</option>
-                        <option value="suspended" @if ($btn == 'edit' && $data->status == 'suspended') selected @endif>Suspended</option>
-                    </select>
+                    <div class="row">
+                        <div class="col-6">
+                            <label for="" class="form-label">Type</label>
+                            <select name="type" class="form-control" id="" @required(true)>
+                                <option value="Lelang" @if ($btn == 'edit' && $data->type == 'Lelang') selected @endif>Lelang</option>
+                                <option value="Cessie" @if ($btn == 'edit' && $data->type == 'Cessie') selected @endif>Cessie</option>
+                            </select>
+                        </div>
+                        <div class="col-6">
+                            <label for="" class="form-label">Status</label>
+                            <select name="status" class="form-control" id="" @required(true)>
+                                <option value="draft" @if ($btn == 'edit' && $data->status == 'draft') selected @endif>Draft</option>
+                                <option value="upcoming" @if ($btn == 'edit' && $data->status == 'upcoming') selected @endif>Upcoming
+                                </option>
+                                <option value="active" @if ($btn == 'edit' && $data->status == 'active') selected @endif>Active</option>
+                                <option value="closed" @if ($btn == 'edit' && $data->status == 'closed') selected @endif>Closed</option>
+                                <option value="suspended" @if ($btn == 'edit' && $data->status == 'suspended') selected @endif>Suspended
+                                </option>
+                            </select>
+                        </div>
+                    </div>
                 </div>
+
             </div>
         </div>
         <div class="mt-3">

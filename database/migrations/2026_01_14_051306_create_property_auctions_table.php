@@ -19,6 +19,7 @@ return new class extends Migration
             $table->decimal('market_value', 16, 2);
             $table->date('date_start');
             $table->date('date_finish');
+            $table->enum('type', ['Lelang', 'Cessie'])->default('Lelang');
             $table->enum('status', ['draft', 'upcoming', 'active', 'closed', 'suspended'])->default('draft');
             $table->timestamps();
         });

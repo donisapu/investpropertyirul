@@ -17,7 +17,7 @@ class PropertyAuctionController extends AdminController
 
     public function data()
     {
-        $query = PropertyAuction::with('property')->select('id', 'property_id', 'open_bid', 'date_start', 'date_finish', 'status');
+        $query = PropertyAuction::with('property')->select('id', 'property_id', 'open_bid', 'date_start','type', 'date_finish', 'status');
 
         return $this->dataTable($query, 'pages.property_auction.action');
     }
@@ -57,6 +57,7 @@ class PropertyAuctionController extends AdminController
                 'date_start',
                 'date_finish',
                 'status',
+                'type',
                 'market_value',
             ]));
         });
@@ -113,6 +114,7 @@ class PropertyAuctionController extends AdminController
                 'date_start',
                 'date_finish',
                 'status',
+                'type',
                 'market_value',
             ]));
         });

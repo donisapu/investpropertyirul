@@ -16,9 +16,9 @@ class PublicPropertyConsignmentController extends Controller
      */
     public function index(Request $request)
     {
-        $search = $request->input('search');
+        $search   = $request->input('search');
         $location = $request->input('location');
-        $type = $request->input('type');
+        $type     = $request->input('type');
         $minPrice = $request->input('min_price');
         $maxPrice = $request->input('max_price');
         $category = $request->input('listing_category');
@@ -39,74 +39,82 @@ class PublicPropertyConsignmentController extends Controller
         };
 
         $consignments = collect();
-        $auctions = collect();
+        $auctions     = collect();
 
         if (empty($category) || $category === 'sale') {
-            $consignmentQuery = PropertyConsignment::with(['property.images'])->where('status', 'active');
-            $consignmentQuery->whereHas('property', $propertyFilter);
+            $consignmentQuery = PropertyConsignment::with(['property.images'])
+                ->where('status', 'active')
+                ->whereHas('property', $propertyFilter);
 
             if ($minPrice) $consignmentQuery->where('property_value', '>=', $minPrice);
             if ($maxPrice) $consignmentQuery->where('property_value', '<=', $maxPrice);
 
-            $consignments = $consignmentQuery->get()->map(function ($item) {
+            $consignments = $consignmentQuery->get()->filter(fn($item) => $item->property !== null)->map(function ($item) {
+                $firstImage = $item->property?->images?->first();
+
                 return [
-                    'id' => $item->property_id,
-                    'listing_id' => $item->id,
+                    'id'               => $item->property_id,
+                    'listing_id'       => $item->id,
                     'listing_category' => 'sale',
-                    'name' => $item->property->property_name,
-                    'loc' => $item->property->property_location,
-                    'price' => $item->property_value,
-                    'ownership' => $item->ownership,
-                    'type' => $item->property->property_type,
-                    'status' => $item->status,
-                    'specs' => [
-                        'bedroom' => $item->property->bedroom,
-                        'bathroom' => $item->property->bathroom,
-                        'area' => $item->property->building_area . 'sqm',
+                    'name'             => $item->property?->property_name ?? '-',
+                    'loc'              => $item->property?->property_location ?? '-',
+                    'price'            => $item->property_value,
+                    'ownership'        => $item->ownership,
+                    'type'             => $item->property?->property_type,
+                    'status'           => $item->status,
+                    'specs'            => [
+                        'bedroom'  => $item->property?->bedroom ?? 0,
+                        'bathroom' => $item->property?->bathroom ?? 0,
+                        'area'     => ($item->property?->building_area ?? 0) . 'sqm',
                     ],
-                    'image' => $item->property->images->first() ? Storage::url($item->property->images->first()->image_url) : null,
+                    'image'            => $firstImage ? Storage::url($firstImage->image_url) : null,
                 ];
             });
         }
 
         if (empty($category) || $category === 'auction') {
-            $auctionQuery = PropertyAuction::with(['property.images'])->whereIn('status', ['upcoming', 'active']);
-            $auctionQuery->whereHas('property', $propertyFilter);
+            $auctionQuery = PropertyAuction::with(['property.images'])
+                ->whereIn('status', ['upcoming', 'active'])
+                ->whereHas('property', $propertyFilter);
 
             if ($minPrice) $auctionQuery->where('open_bid', '>=', $minPrice);
             if ($maxPrice) $auctionQuery->where('open_bid', '<=', $maxPrice);
 
-            $auctions = $auctionQuery->get()->map(function ($item) {
+            $auctions = $auctionQuery->get()->filter(fn($item) => $item->property !== null)->map(function ($item) {
+                $firstImage = $item->property?->images?->first();
+
                 return [
-                    'id' => $item->property_id,
-                    'listing_id' => $item->id,
+                    'id'               => $item->property_id,
+                    'listing_id'       => $item->id,
                     'listing_category' => 'auction',
-                    'name' => $item->property->property_name,
-                    'loc' => $item->property->property_location,
-                    'price' => $item->open_bid,
-                    'ownership' => 'Auction / Lelang',
-                    'type' => $item->property->property_type,
-                    'status' => $item->status,
-                    'specs' => [
-                        'bedroom' => $item->property->bedroom,
-                        'bathroom' => $item->property->bathroom,
-                        'area' => $item->property->building_area . 'sqm',
+                    'name'             => $item->property?->property_name ?? '-',
+                    'loc'              => $item->property?->property_location ?? '-',
+                    'price'            => $item->open_bid,
+                    'ownership'        => $item->type ? "Auction / {$item->type}" : 'Auction / Lelang',
+                    'type'             => $item->property?->property_type,
+                    'status'           => $item->status,
+                    'specs'            => [
+                        'bedroom'  => $item->property?->bedroom ?? 0,
+                        'bathroom' => $item->property?->bathroom ?? 0,
+                        'area'     => ($item->property?->building_area ?? 0) . 'sqm',
                     ],
-                    'image' => $item->property->images->first() ? Storage::url($item->property->images->first()->image_url) : null,
+                    'image'            => $firstImage ? Storage::url($firstImage->image_url) : null,
+                    'cek'              => $item->type,
                 ];
             });
         }
 
-        $mergedProperties = $consignments->merge($auctions);
+        $mergedProperties = $consignments->concat($auctions);
 
         if (!$search && !$location && !$type && !$minPrice && !$maxPrice && !$category) {
             $mergedProperties = $mergedProperties->shuffle();
         }
 
-        $page = $request->input('page', 1);
+        $page    = (int) $request->input('page', 1);
         $perPage = 9;
+
         $paginatedData = new \Illuminate\Pagination\LengthAwarePaginator(
-            $mergedProperties->forPage($page, $perPage),
+            $mergedProperties->forPage($page, $perPage)->values(),
             $mergedProperties->count(),
             $perPage,
             $page,
@@ -117,7 +125,7 @@ class PublicPropertyConsignmentController extends Controller
 
         return Inertia::render('PropertyForSale/Index', [
             'properties' => $paginatedData,
-            'settings' => $settings
+            'settings'   => $settings,
         ]);
     }
 

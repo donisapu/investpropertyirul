@@ -424,9 +424,11 @@ export default function PropertyForSale({ properties, settings }) {
                                             ) : (
                                                 <Tag size={12} />
                                             )}
-                                            {isAuction
+                                            {prop.cek === "Lelang"
                                                 ? "Lelang Terbuka"
-                                                : "Jual Langsung"}
+                                                : prop.cek === "Cessie"
+                                                  ? "Cessie"
+                                                  : "Jual Langsung"}
                                         </div>
 
                                         {/* Harga (Dipindah ke dalam gambar biar ala Airbnb) */}
