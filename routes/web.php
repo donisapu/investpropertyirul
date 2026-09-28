@@ -15,7 +15,9 @@ use App\Http\Controllers\Admin\PropertyFinancialsController;
 use App\Http\Controllers\Admin\PropertyInvestmentController;
 use App\Http\Controllers\Admin\SellRequestController;
 use App\Http\Controllers\Admin\VillaController;
+use App\Http\Controllers\Admin\AdminWithdrawalController as AdminWithdrawalController;
 use App\Http\Controllers\Admin\WebsiteSettingController;
+use App\Http\Controllers\Admin\XenditDashboardController;
 use App\Http\Controllers\PublicInvestmentController;
 use App\Http\Controllers\PublicPropertyConsignmentController;
 use App\Http\Controllers\PublicCrowdfundingController;
@@ -31,6 +33,7 @@ use App\Http\Controllers\User\DashboardController as UserDashboardController;
 use App\Http\Controllers\User\PaymentController;
 use App\Http\Controllers\User\PortfolioController;
 use App\Http\Controllers\User\TransactionController;
+use App\Http\Controllers\User\WithdrawalController;
 use App\Models\Campaign;
 use App\Models\DeveloperProject;
 use App\Models\LandingPage;
@@ -128,6 +131,7 @@ Route::post('/xendit/webhook', [PaymentController::class, 'callback']);
 Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin'])->group(function () {
     // Dashboard
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/xendit-dashboard', [XenditDashboardController::class, 'index'])->name('xendit-dashboard');
 
     // Property
     Route::get('properties', [PropertiesController::class, 'index'])->name('properties');
@@ -256,6 +260,12 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin'])->grou
     // Profile
     Route::get('profile', [AdminProfileController::class, 'index'])->name('profile');
     Route::post('profile.update/{id}', [AdminProfileController::class, 'update'])->name('profile.update');
+
+    // Withdrawals
+    Route::get('user-withdrawals', [AdminWithdrawalController::class, 'index'])->name('user-withdrawals');
+    Route::get('/user-withdrawals/data', [AdminWithdrawalController::class, 'getData'])->name('user-withdrawals.data');
+    Route::post('/user-withdrawals/{withdrawal}/approve', [AdminWithdrawalController::class, 'approve'])->name('user-withdrawals.approve');
+    Route::post('/user-withdrawals/{withdrawal}/reject', [AdminWithdrawalController::class, 'reject'])->name('user-withdrawals.reject');
 });
 
 Route::prefix('user')->name('user.')->middleware(['auth', 'role:user', 'verified'])->group(function () {
@@ -282,6 +292,11 @@ Route::prefix('user')->name('user.')->middleware(['auth', 'role:user', 'verified
 
     // Sell
     Route::post('sell/investment/id/{id}', [PaymentController::class, 'sellInvestment'])->name('sell.investment');
+
+    // Withdrawals
+    Route::get('/wallet', [WithdrawalController::class, 'index'])->name('wallet');
+    Route::post('/bank-accounts', [WithdrawalController::class, 'storeBankAccount'])->name('bank-accounts.store');
+    Route::post('/withdrawals', [WithdrawalController::class, 'store'])->name('withdrawals.store');
 });
 
 

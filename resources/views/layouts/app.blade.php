@@ -96,6 +96,12 @@
                             <div data-i18n="Analytics">Dashboard</div>
                         </a>
                     </li>
+                    <li class="menu-item {{ request()->routeIs('admin.xendit-dashboard') ? 'active' : '' }}">
+                        <a href="{{ route('admin.xendit-dashboard') }}" class="menu-link">
+                            <i class="menu-icon tf-icons bx bx-home-circle"></i>
+                            <div data-i18n="Analytics">Xendit Dashboard</div>
+                        </a>
+                    </li>
 
                     <li class="menu-header small text-uppercase">
                         <span class="menu-header-text">Property</span>
@@ -104,6 +110,16 @@
                         <a href="{{ route('admin.properties') }}" class="menu-link">
                             <i class="menu-icon tf-icons bx bx-building-house"></i>
                             <div data-i18n="Analytics">Properties</div>
+                        </a>
+                    </li>
+
+                    <li class="menu-header small text-uppercase">
+                        <span class="menu-header-text">Transactions</span>
+                    </li>
+                    <li class="menu-item {{ request()->routeIs('admin.withdrawals') ? 'active' : '' }}">
+                        <a href="{{ route('admin.user-withdrawals') }}" class="menu-link">
+                            <i class="menu-icon tf-icons bx bx-money"></i>
+                            <div data-i18n="Analytics">Withdrawals</div>
                         </a>
                     </li>
 

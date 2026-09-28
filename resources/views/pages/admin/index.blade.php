@@ -10,8 +10,6 @@
                             <p class="mb-4">
                                 Semoga hari Anda menyenangkan dan produktif. Tetap semangat dalam mengelola properti dan investasi Anda!
                             </p>
-
-
                         </div>
                     </div>
                     <div class="col-sm-5 text-center text-sm-left">
