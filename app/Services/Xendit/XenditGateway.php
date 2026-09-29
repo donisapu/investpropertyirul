@@ -146,6 +146,25 @@ class XenditGateway
     }
 
     /**
+     * GET /v2/payouts?reference_id=... Payouts created with this reference id,
+     * newest first. Used to reconcile when we never stored the payout id.
+     *
+     * @return list<array>
+     */
+    public function findPayoutsByReference(string $referenceId): array
+    {
+        $referenceId = $this->requireString('referenceId', $referenceId, 255);
+
+        $body = $this->send('GET', '/v2/payouts', ['query' => Query::build(['reference_id' => $referenceId, 'limit' => 10])]);
+
+        if (! isset($body['data']) || ! is_array($body['data'])) {
+            throw $this->unknownOutcome('GET', '/v2/payouts', 200, 'Xendit payouts response has no "data" list.');
+        }
+
+        return array_values(array_filter($body['data'], fn ($p) => is_array($p) && is_string($p['id'] ?? null) && is_string($p['status'] ?? null)));
+    }
+
+    /**
      * GET /balance. Returns the balance of the given account type in IDR.
      */
     public function getBalance(string $accountType = self::BALANCE_CASH): int|float

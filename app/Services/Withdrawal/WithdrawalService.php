@@ -9,7 +9,9 @@ use App\Models\WalletTransaction;
 use App\Models\Withdrawal;
 use App\Models\WithdrawalSetting;
 use App\Notifications\WithdrawalApproved;
+use App\Notifications\WithdrawalFailed;
 use App\Notifications\WithdrawalRejected;
+use App\Notifications\WithdrawalSucceeded;
 use App\Services\Xendit\BankChannelCatalog;
 use App\Services\Xendit\Exceptions\XenditRejectedException;
 use App\Services\Xendit\Exceptions\XenditUnknownOutcomeException;
@@ -44,6 +46,15 @@ class WithdrawalService
      * Not a clear refusal of the money move, so never refund on it.
      */
     private const AMBIGUOUS_ERRORS = ['DUPLICATE_ERROR'];
+
+    /** Xendit payout statuses that are final, mapped to our Withdrawal status. */
+    private const FINAL_PAYOUT_STATUSES = [
+        'SUCCEEDED' => Withdrawal::STATUS_SUCCEEDED,
+        'FAILED' => Withdrawal::STATUS_FAILED,
+        'CANCELLED' => Withdrawal::STATUS_FAILED,
+        'COMPLIANCE_REJECTED' => Withdrawal::STATUS_FAILED,
+        'REVERSED' => Withdrawal::STATUS_REVERSED,
+    ];
 
     public function __construct(
         private readonly BankChannelCatalog $banks,
@@ -260,6 +271,105 @@ class WithdrawalService
 
             return $locked;
         });
+    }
+
+    /**
+     * Apply a Payout result from Xendit (webhook or a manual status check).
+     * Idempotent and safe for out-of-order events:
+     *   processing -> succeeded | failed (refund) | reversed (refund)
+     *   succeeded  -> reversed (refund)            (a late "failed" is ignored)
+     *   final      -> unchanged                    (replays, stale events)
+     * Non-final statuses (ACCEPTED, REQUESTED, ...) only update payout_status.
+     *
+     * @param  array  $payout  Xendit payout object: id, status, failure_code, reference_id
+     * @return string PayoutResult::APPLIED when the Withdrawal changed state, else IGNORED
+     */
+    public function applyPayoutResult(Withdrawal $withdrawal, array $payout): string
+    {
+        $payoutStatus = strtoupper((string) ($payout['status'] ?? ''));
+        $payoutId = is_string($payout['id'] ?? null) ? $payout['id'] : null;
+        $failureCode = is_string($payout['failure_code'] ?? null) ? $payout['failure_code'] : null;
+        $target = self::FINAL_PAYOUT_STATUSES[$payoutStatus] ?? null;
+
+        [$changed, $fresh] = DB::transaction(function () use ($withdrawal, $payoutStatus, $payoutId, $failureCode, $target) {
+            $locked = Withdrawal::query()->whereKey($withdrawal->id)->lockForUpdate()->firstOrFail();
+
+            if ($locked->xendit_id !== null && $payoutId !== null && $locked->xendit_id !== $payoutId) {
+                Log::warning('Payout result for a different payout id ignored', [
+                    'withdrawal_id' => $locked->id, 'stored' => $locked->xendit_id, 'received' => $payoutId,
+                ]);
+
+                return [false, $locked];
+            }
+
+            $locked->xendit_id ??= $payoutId;
+
+            $allowed = match ($target) {
+                Withdrawal::STATUS_SUCCEEDED, Withdrawal::STATUS_FAILED => $locked->status === Withdrawal::STATUS_PROCESSING,
+                Withdrawal::STATUS_REVERSED => in_array($locked->status, [Withdrawal::STATUS_PROCESSING, Withdrawal::STATUS_SUCCEEDED], true),
+                default => false,
+            };
+
+            if (! $allowed) {
+                // Keep the latest non-final Xendit status for admins; never touch final ones.
+                if ($target === null && $locked->status === Withdrawal::STATUS_PROCESSING && $payoutStatus !== '') {
+                    $locked->payout_status = $payoutStatus;
+                }
+                $locked->save();
+
+                return [false, $locked];
+            }
+
+            if ($target === Withdrawal::STATUS_SUCCEEDED) {
+                $locked->forceFill([
+                    'status' => Withdrawal::STATUS_SUCCEEDED,
+                    'payout_status' => $payoutStatus,
+                    'failure_code' => null,
+                    'processed_at' => now(),
+                ])->save();
+
+                return [true, $locked];
+            }
+
+            $locked->save();
+
+            return [true, $this->markFailed($locked, $target, $failureCode, null, $payoutStatus)];
+        });
+
+        if ($changed) {
+            $this->notify($fresh, $fresh->status === Withdrawal::STATUS_SUCCEEDED
+                ? new WithdrawalSucceeded($fresh)
+                : new WithdrawalFailed($fresh));
+        }
+
+        return $changed ? PayoutResult::APPLIED : PayoutResult::IGNORED;
+    }
+
+    /**
+     * D2: ask Xendit for the current Payout status and apply it like a webhook.
+     * Uses the stored payout id, or finds the Payout by reference id when the
+     * first send had an unknown result.
+     *
+     * @throws WithdrawalActionRejected when there is nothing to check
+     * @throws \App\Services\Xendit\Exceptions\XenditException when Xendit cannot be read
+     */
+    public function checkPayoutStatus(Withdrawal $withdrawal): string
+    {
+        if (! in_array($withdrawal->status, [Withdrawal::STATUS_PROCESSING, Withdrawal::STATUS_SUCCEEDED], true)) {
+            throw new WithdrawalActionRejected('Status hanya bisa dicek untuk penarikan yang diproses atau berhasil.');
+        }
+
+        if ($withdrawal->xendit_id !== null) {
+            return $this->applyPayoutResult($withdrawal, $this->gateway->getPayout($withdrawal->xendit_id));
+        }
+
+        $payouts = $this->gateway->findPayoutsByReference($withdrawal->external_id);
+
+        if ($payouts === []) {
+            return PayoutResult::NOT_FOUND;
+        }
+
+        return $this->applyPayoutResult($withdrawal, $payouts[0]);
     }
 
     private function sendPayout(Withdrawal $withdrawal): PayoutAttempt

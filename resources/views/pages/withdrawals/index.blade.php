@@ -85,7 +85,7 @@
         </div>
     </div>
 
-    @foreach (['success' => 'success', 'warning' => 'warning', 'error' => 'danger'] as $key => $class)
+    @foreach (['success' => 'success', 'info' => 'info', 'warning' => 'warning', 'error' => 'danger'] as $key => $class)
         @if (session($key))
             <div class="alert alert-{{ $class }} alert-dismissible" role="{{ $key === 'error' ? 'alert' : 'status' }}">
                 {{ session($key) }}
@@ -303,10 +303,18 @@
                         @endif
                     </div>
 
-                    @if ($w->status === 'pending' || $detail['can_resend'])
+                    @if ($w->status === 'pending' || $detail['can_resend'] || $detail['can_check'])
                         <div class="wd-actions d-flex flex-wrap align-items-center gap-2 p-3 px-4">
-                            <span id="wd-action-note" class="wd-muted me-auto">
-                                {{ $w->status === 'pending' ? 'Approve langsung mengirim uang lewat Xendit.' : 'Aman dikirim ulang: kunci idempotensi sama, Xendit tidak membayar dua kali.' }}
+                            <span id="wd-action-note" class="wd-muted me-auto {{ $detail['stuck'] ? 'text-warning' : '' }}">
+                                @if ($w->status === 'pending')
+                                    Approve langsung mengirim uang lewat Xendit.
+                                @elseif ($detail['stuck'])
+                                    Diproses lebih dari 24 jam. Cek status ke Xendit.
+                                @elseif ($detail['can_resend'])
+                                    Hasil kirim belum pasti. Cek status dulu; kirim ulang aman (Xendit tidak membayar dua kali).
+                                @else
+                                    Status akhir datang lewat webhook. Bisa dicek manual ke Xendit.
+                                @endif
                             </span>
                             @if ($w->status === 'pending')
                                 <button type="button" id="wd-reject-toggle" class="btn btn-sm btn-outline-danger bg-white" aria-controls="wd-reject-form"
@@ -323,12 +331,21 @@
                                     <button class="btn btn-sm btn-primary">Approve &amp; kirim {{ $rupiah($w->amount) }}</button>
                                 </form>
                             @else
+                                @if ($detail['can_check'])
+                                    <form method="POST" action="{{ route('admin.user-withdrawals.check-status', $w) }}" data-guard>
+                                        @csrf
+                                        <input type="hidden" name="tab" value="{{ $tab }}">
+                                        <button class="btn btn-sm btn-outline-primary bg-white">Cek status ke Xendit</button>
+                                    </form>
+                                @endif
+                                @if ($detail['can_resend'])
                                 <form method="POST" action="{{ route('admin.user-withdrawals.resend', $w) }}" data-guard
                                     data-confirm="Kirim ulang payout {{ $w->external_id }} ke Xendit?">
                                     @csrf
                                     <input type="hidden" name="tab" value="{{ $tab }}">
                                     <button class="btn btn-sm btn-primary">Kirim ulang ke Xendit</button>
                                 </form>
+                                @endif
                             @endif
                         </div>
                     @endif

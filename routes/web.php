@@ -128,6 +128,15 @@ Route::get('/privacy', function () {
 })->name('privacy');
 
 Route::post('/xendit/webhook', [PaymentController::class, 'callback']);
+// Payout results from Xendit. Token-checked in the controller; no session, CSRF or Inertia.
+Route::post('/xendit/webhook/payout', \App\Http\Controllers\Webhook\XenditPayoutWebhookController::class)
+    ->withoutMiddleware([
+        \App\Http\Middleware\VerifyCsrfToken::class,
+        \App\Http\Middleware\HandleInertiaRequests::class,
+        \Illuminate\Session\Middleware\StartSession::class,
+        \Illuminate\View\Middleware\ShareErrorsFromSession::class,
+    ])
+    ->name('xendit.webhook.payout');
 
 Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin'])->group(function () {
     // Dashboard
@@ -267,6 +276,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin'])->grou
     Route::post('/user-withdrawals/{withdrawal}/approve', [AdminWithdrawalController::class, 'approve'])->name('user-withdrawals.approve');
     Route::post('/user-withdrawals/{withdrawal}/reject', [AdminWithdrawalController::class, 'reject'])->name('user-withdrawals.reject');
     Route::post('/user-withdrawals/{withdrawal}/resend', [AdminWithdrawalController::class, 'resend'])->name('user-withdrawals.resend');
+    Route::post('/user-withdrawals/{withdrawal}/check-status', [AdminWithdrawalController::class, 'checkStatus'])->name('user-withdrawals.check-status');
     Route::get('/withdrawal-settings', [WithdrawalSettingController::class, 'edit'])->name('withdrawal-settings.edit');
     Route::put('/withdrawal-settings', [WithdrawalSettingController::class, 'update'])->name('withdrawal-settings.update');
 });

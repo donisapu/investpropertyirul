@@ -7,9 +7,11 @@ use App\Models\Withdrawal;
 use App\Services\Withdrawal\AccountNameMatch;
 use App\Services\Withdrawal\PayoutAttempt;
 use App\Services\Withdrawal\PayoutFailure;
+use App\Services\Withdrawal\PayoutResult;
 use App\Services\Withdrawal\WithdrawalActionRejected;
 use App\Services\Withdrawal\WithdrawalService;
 use App\Services\Xendit\BankChannelCatalog;
+use App\Services\Xendit\Exceptions\XenditException;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
@@ -98,6 +100,26 @@ class AdminWithdrawalController extends AdminController
         return $this->afterAttempt($request, $attempt);
     }
 
+    /** D2: pull the current Payout status from Xendit and apply it like a webhook. */
+    public function checkStatus(Request $request, Withdrawal $withdrawal, WithdrawalService $service)
+    {
+        try {
+            $result = $service->checkPayoutStatus($withdrawal);
+        } catch (WithdrawalActionRejected $e) {
+            return $this->backTo($request, $withdrawal)->with('error', $e->getMessage());
+        } catch (XenditException $e) {
+            return $this->backTo($request, $withdrawal)->with('warning', 'Tidak bisa membaca status dari Xendit sekarang. Coba lagi sebentar lagi.');
+        }
+
+        $fresh = $withdrawal->fresh();
+
+        return $this->backTo($request, $withdrawal)->with(...match ($result) {
+            PayoutResult::APPLIED => ['success', 'Status diperbarui dari Xendit: '.$fresh->status.' ('.$fresh->payout_status.').'],
+            PayoutResult::NOT_FOUND => ['warning', 'Xendit belum punya payout untuk penarikan ini. Aman untuk "Kirim ulang ke Xendit".'],
+            default => ['info', 'Belum ada perubahan. Status Xendit: '.($fresh->payout_status ?? '-').'.'],
+        });
+    }
+
     public function reject(Request $request, Withdrawal $withdrawal, WithdrawalService $service)
     {
         $data = $request->validate([
@@ -184,6 +206,8 @@ class AdminWithdrawalController extends AdminController
             'bank_limits' => $limits,
             'failure_text' => PayoutFailure::message($w->failure_code),
             'can_resend' => $w->status === Withdrawal::STATUS_PROCESSING && $w->xendit_id === null,
+            'can_check' => in_array($w->status, [Withdrawal::STATUS_PROCESSING, Withdrawal::STATUS_SUCCEEDED], true),
+            'stuck' => $w->status === Withdrawal::STATUS_PROCESSING && ($w->approved_at ?? $w->updated_at)?->lt(now()->subDay()),
             'steps' => $this->steps($w),
         ];
     }
