@@ -1,7 +1,6 @@
 <?php
 
 use App\Models\User;
-use App\Providers\RouteServiceProvider;
 
 test('login screen can be rendered', function () {
     $response = $this->get('/login');
@@ -18,7 +17,7 @@ test('users can authenticate using the login screen', function () {
     ]);
 
     $this->assertAuthenticated();
-    $response->assertRedirect(RouteServiceProvider::HOME);
+    $response->assertRedirect(route('user.dashboard'));
 });
 
 test('users can not authenticate with invalid password', function () {
@@ -39,4 +38,17 @@ test('users can logout', function () {
 
     $this->assertGuest();
     $response->assertRedirect('/');
+});
+
+test('users can log in with remember me', function () {
+    $user = User::factory()->create(['remember_token' => null]);
+
+    $this->post('/login', [
+        'email' => $user->email,
+        'password' => 'password',
+        'remember' => 'on',
+    ]);
+
+    $this->assertAuthenticated();
+    expect($user->fresh()->remember_token)->not->toBeNull();
 });

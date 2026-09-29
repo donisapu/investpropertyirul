@@ -2,9 +2,13 @@
 
 use Illuminate\Support\Facades\DB;
 
-it('runs the suite on an in-memory sqlite database, never the dev database', function () {
-    expect(DB::connection()->getDriverName())->toBe('sqlite')
-        ->and(DB::connection()->getDatabaseName())->toBe(':memory:');
+it('runs the suite on a test database, never the dev database', function () {
+    // phpunit.xml: in-memory sqlite. phpunit.pgsql.xml: invest_test.
+    $database = DB::connection()->getDatabaseName();
+
+    DB::connection()->getDriverName() === 'sqlite'
+        ? expect($database)->toBe(':memory:')
+        : expect($database)->toEndWith('_test');
 });
 
 it('refuses to boot tests against a non-test database', function (array $connection) {
