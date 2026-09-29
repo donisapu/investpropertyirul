@@ -51,7 +51,7 @@ it('gives the Wallet page the Xendit bank list without e-wallets', function () {
         ->assertOk()
         ->assertInertia(fn (Assert $page) => $page
             ->has('banks', 3)
-            ->where('banks.0', ['code' => 'ID_BCA', 'name' => 'Bank Central Asia (BCA)'])
+            ->where('banks.0', ['code' => 'ID_BCA', 'name' => 'Bank Central Asia (BCA)', 'min' => 1, 'max' => 999999999999])
             ->where('banks.1.code', 'ID_PERMATA'));
 });
 
@@ -119,7 +119,7 @@ it('rejects the same account twice', function () {
 it('lets the owner delete an account and keeps it on old withdrawals', function () {
     $user = investor();
     $account = bankAccountFor($user);
-    $done = withdrawalFor($account, 'completed');
+    $done = withdrawalFor($account, 'succeeded');
 
     $this->actingAs($user)->delete(route('user.bank-accounts.destroy', $account->id))
         ->assertSessionHasNoErrors();
@@ -139,7 +139,7 @@ it('blocks deleting an account an open withdrawal still uses', function (string 
         ->assertSessionHasErrors('bank_account');
 
     expect($user->bankAccounts()->count())->toBe(1);
-})->with(['pending']); // 'processing' joins the withdrawals status enum in XW-06
+})->with(Withdrawal::OPEN_STATUSES);
 
 it('does not let a user delete someone else\'s account', function () {
     $owner = investor();

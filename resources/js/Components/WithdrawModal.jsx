@@ -24,9 +24,16 @@ export default function WithdrawModal({
     });
 
     // Form 2: Submit Withdraw
+    // One key per attempt: a double click or retry is recognised by the server
+    // and does not create a second Withdrawal.
+    const newRequestKey = () =>
+        window.crypto?.randomUUID?.() ??
+        `${Date.now()}-${Math.random().toString(36).slice(2)}`;
+
     const withdrawForm = useForm({
         user_bank_account_id: bankAccounts.length > 0 ? bankAccounts[0].id : "",
         amount: "",
+        request_key: newRequestKey(),
     });
 
     // Keep the selected account valid when accounts are added or deleted.
@@ -92,8 +99,10 @@ export default function WithdrawModal({
         }
 
         withdrawForm.post(route("user.withdrawals.store"), {
+            preserveScroll: true,
             onSuccess: () => {
-                withdrawForm.reset();
+                withdrawForm.reset("amount");
+                withdrawForm.setData("request_key", newRequestKey());
                 onClose();
             },
         });

@@ -4,14 +4,13 @@ namespace App\Http\Controllers\User;
 
 use Inertia\Inertia;
 use App\Http\Controllers\Controller;
-use App\Models\UserBankAccount;
 use App\Models\Wallet;
-use App\Models\Withdrawal;
 use App\Models\WithdrawalSetting;
+use App\Services\Withdrawal\WithdrawalRequestRejected;
+use App\Services\Withdrawal\WithdrawalService;
 use App\Services\Xendit\BankChannelCatalog;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 
 class WithdrawalController extends Controller
@@ -30,6 +29,8 @@ class WithdrawalController extends Controller
             'banks' => array_map(fn (array $bank) => [
                 'code' => $bank['code'],
                 'name' => $bank['name'],
+                'min' => $bank['min'],
+                'max' => $bank['max'],
             ], $banks->all()),
         ]);
     }
@@ -94,11 +95,11 @@ class WithdrawalController extends Controller
     }
 
     // Submit Request Withdraw
-    public function store(Request $request)
+    public function store(Request $request, WithdrawalService $withdrawals)
     {
         $settings = WithdrawalSetting::current();
 
-        $request->validate([
+        $data = $request->validate([
             'user_bank_account_id' => [
                 'required',
                 'integer',
@@ -107,59 +108,24 @@ class WithdrawalController extends Controller
                     ->whereNull('deleted_at'),
             ],
             'amount' => $settings->amountRules(),
+            'request_key' => ['nullable', 'string', 'max:64', 'regex:/^[A-Za-z0-9_-]+$/'],
         ], [
             'amount.integer' => 'Nominal harus berupa angka bulat (Rupiah).',
             'amount.min' => 'Nominal minimal Rp '.number_format($settings->min_amount, 0, ',', '.').'.',
             'amount.max' => 'Nominal maksimal Rp '.number_format((int) $settings->max_amount, 0, ',', '.').'.',
         ]);
 
-        $amount = (int) $request->amount;
-
-        $user = $request->user();
-
-        // Pastikan rekening ini milik user yang sedang login
-        $bankAccount = UserBankAccount::where('id', $request->user_bank_account_id)
-            ->where('user_id', $user->id)
-            ->firstOrFail();
-
-        $adminFee = $settings->admin_fee;
-        $totalDeduction = $settings->totalDeduction($amount);
-
-        // Cek Saldo User
-        $wallet = Wallet::where('user_id', auth()->id())->first();
-        $availableBalance = $wallet?->balance ?? 0;
-        if ($availableBalance < $totalDeduction) {
-            return back()->withErrors([
-                'amount' => 'Saldo wallet tidak mencukupi untuk penarikan dan biaya admin.'
-            ]);
-        }
-
-        DB::beginTransaction();
         try {
-            // 1. Potong Saldo Wallet User
-            $wallet->balance -= $totalDeduction;
-            $wallet->save();
-
-            // 2. Simpan Transaksi Status Pending
-            $externalId = 'WD-' . time() . '-' . Str::random(5);
-
-            Withdrawal::create([
-                'user_id' => $user->id,
-                'user_bank_account_id' => $bankAccount->id,
-                'external_id' => $externalId,
-                'amount' => $amount,
-                'fee' => $adminFee,
-                'status' => 'pending',
-            ]);
-
-            DB::commit();
-
-            return back()->with('success', 'Permintaan penarikan berhasil dibuat!');
-        } catch (\Exception $e) {
-            DB::rollBack();
-            return back()->withErrors([
-                'general' => 'Terjadi kesalahan sistem, silakan coba lagi.'
-            ]);
+            $withdrawals->request(
+                $request->user(),
+                (int) $data['user_bank_account_id'],
+                (int) $data['amount'],
+                $data['request_key'] ?? null,
+            );
+        } catch (WithdrawalRequestRejected $e) {
+            return back()->withErrors([$e->field => $e->getMessage()])->withInput();
         }
+
+        return redirect()->route('user.wallet')->with('success', 'Permintaan penarikan berhasil dibuat!');
     }
 }

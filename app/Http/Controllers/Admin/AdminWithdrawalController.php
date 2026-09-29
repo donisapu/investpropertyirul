@@ -56,10 +56,12 @@ class AdminWithdrawalController extends AdminController
                 $badges = [
                     'pending' => '<span class="badge badge-warning">Pending</span>',
                     'processing' => '<span class="badge badge-info">Processing (Xendit)</span>',
-                    'completed' => '<span class="badge badge-success">Completed</span>',
-                    'failed' => '<span class="badge badge-danger">Failed / Rejected</span>',
+                    'succeeded' => '<span class="badge badge-success">Succeeded</span>',
+                    'failed' => '<span class="badge badge-danger">Failed</span>',
+                    'rejected' => '<span class="badge badge-danger">Rejected</span>',
+                    'reversed' => '<span class="badge badge-secondary">Reversed</span>',
                 ];
-                return $badges[$row->status] ?? $row->status;
+                return $badges[$row->status] ?? e($row->status);
             })
             ->addColumn('action', function ($row) {
                 if ($row->status !== 'pending') {
