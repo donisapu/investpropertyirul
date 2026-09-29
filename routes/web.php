@@ -144,6 +144,10 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin'])->grou
     Route::get('/xendit-dashboard', [XenditDashboardController::class, 'index'])->name('xendit-dashboard');
     Route::get('/xendit-transactions', [\App\Http\Controllers\Admin\XenditTransactionController::class, 'index'])->name('xendit-transactions');
     Route::get('/xendit-transactions/export', [\App\Http\Controllers\Admin\XenditTransactionController::class, 'export'])->name('xendit-transactions.export');
+    Route::get('/company-cashouts', [\App\Http\Controllers\Admin\CompanyCashoutController::class, 'index'])->name('company-cashouts.index');
+    Route::get('/company-cashouts/create', [\App\Http\Controllers\Admin\CompanyCashoutController::class, 'create'])->name('company-cashouts.create');
+    Route::post('/company-cashouts', [\App\Http\Controllers\Admin\CompanyCashoutController::class, 'store'])->middleware('throttle:10,1')->name('company-cashouts.store');
+    Route::post('/company-cashouts/{cashout}/check-status', [\App\Http\Controllers\Admin\CompanyCashoutController::class, 'checkStatus'])->name('company-cashouts.check-status');
     Route::post('/xendit-transactions/sync', [\App\Http\Controllers\Admin\XenditTransactionController::class, 'sync'])->middleware('throttle:6,1')->name('xendit-transactions.sync');
 
     // Property

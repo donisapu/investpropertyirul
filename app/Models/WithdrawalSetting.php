@@ -18,7 +18,10 @@ class WithdrawalSetting extends Model
     /** Hard ceiling for any configured amount (IDR), to catch typos. */
     public const MAX_CONFIGURABLE_AMOUNT = 1_000_000_000_000;
 
-    protected $fillable = ['admin_fee', 'min_amount', 'max_amount', 'updated_by'];
+    protected $fillable = [
+        'admin_fee', 'min_amount', 'max_amount', 'updated_by',
+        'company_bank_code', 'company_account_number', 'company_account_holder',
+    ];
 
     protected $casts = [
         'admin_fee' => 'integer',
@@ -62,6 +65,20 @@ class WithdrawalSetting extends Model
         }
 
         return $rules;
+    }
+
+    /** The saved Company Bank Account, or null when not fully set. */
+    public function companyAccount(): ?array
+    {
+        if (! $this->company_bank_code || ! $this->company_account_number || ! $this->company_account_holder) {
+            return null;
+        }
+
+        return [
+            'bank_code' => $this->company_bank_code,
+            'account_number' => $this->company_account_number,
+            'account_holder' => $this->company_account_holder,
+        ];
     }
 
     /**

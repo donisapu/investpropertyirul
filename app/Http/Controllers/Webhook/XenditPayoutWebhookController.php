@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\Webhook;
 
 use App\Http\Controllers\Controller;
+use App\Models\CompanyCashout;
 use App\Models\Withdrawal;
 use App\Models\XenditWebhookEvent;
+use App\Services\Cashout\CashoutService;
 use App\Services\Withdrawal\PayoutResult;
 use App\Services\Withdrawal\WithdrawalService;
 use App\Services\Xendit\TransactionMirror;
@@ -77,18 +79,18 @@ class XenditPayoutWebhookController extends Controller
 
     private function apply(WithdrawalService $withdrawals, string $referenceId, array $payout): string
     {
-        $withdrawal = Withdrawal::query()->where('external_id', $referenceId)->first();
-
-        if (! $withdrawal) {
-            // XW-10: Company Cash-out payouts will be routed here by their own reference prefix.
+        if (str_starts_with($referenceId, CompanyCashout::REFERENCE_PREFIX)
+            && ($cashout = CompanyCashout::query()->where('external_id', $referenceId)->first())) {
+            $result = app(CashoutService::class)->applyPayoutResult($cashout, $payout);
+        } elseif ($withdrawal = Withdrawal::query()->where('external_id', $referenceId)->first()) {
+            $result = $withdrawals->applyPayoutResult($withdrawal, $payout);
+        } else {
             Log::warning('Xendit payout webhook for unknown reference', ['reference_id' => $referenceId]);
 
             return XenditWebhookEvent::RESULT_UNKNOWN_REFERENCE;
         }
 
-        return $withdrawals->applyPayoutResult($withdrawal, $payout) === PayoutResult::APPLIED
-            ? XenditWebhookEvent::RESULT_APPLIED
-            : XenditWebhookEvent::RESULT_IGNORED;
+        return $result === PayoutResult::APPLIED ? XenditWebhookEvent::RESULT_APPLIED : XenditWebhookEvent::RESULT_IGNORED;
     }
 
     /** Xendit sends a webhook-id header; fall back to a stable fingerprint of the event. */

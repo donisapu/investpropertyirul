@@ -2,6 +2,7 @@
 
 namespace App\Services\Xendit;
 
+use App\Models\CompanyCashout;
 use App\Models\Payment;
 use App\Models\Withdrawal;
 use App\Models\XenditTransaction;
@@ -223,6 +224,9 @@ class TransactionMirror
             }
             if ($id = Withdrawal::where('external_id', $referenceId)->value('id')) {
                 return [Withdrawal::class, $id];
+            }
+            if ($id = CompanyCashout::where('external_id', $referenceId)->value('id')) {
+                return [CompanyCashout::class, $id];
             }
         }
 

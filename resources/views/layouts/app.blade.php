@@ -108,6 +108,12 @@
                             <div data-i18n="Analytics">Xendit Transactions</div>
                         </a>
                     </li>
+                    <li class="menu-item {{ request()->routeIs('admin.company-cashouts*') ? 'active' : '' }}">
+                        <a href="{{ route('admin.company-cashouts.create') }}" class="menu-link">
+                            <i class="menu-icon tf-icons bx bx-building"></i>
+                            <div data-i18n="Analytics">Company Cash-out</div>
+                        </a>
+                    </li>
 
                     <li class="menu-header small text-uppercase">
                         <span class="menu-header-text">Property</span>

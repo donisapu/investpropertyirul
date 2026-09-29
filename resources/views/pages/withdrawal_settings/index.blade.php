@@ -58,6 +58,42 @@
                     </div>
                 </div>
 
+                <hr class="my-4">
+                <h6 class="fw-bold mb-1">Rekening perusahaan (Company Cash-out)</h6>
+                <p class="text-muted mb-3">Satu-satunya tujuan Company Cash-out. Tidak bisa diubah dari halaman Cash-out.</p>
+                <div class="row g-4">
+                    <div class="col-md-4">
+                        <label for="company_bank_code" class="form-label fw-medium">Bank</label>
+                        <select id="company_bank_code" name="company_bank_code" class="form-select @error('company_bank_code') is-invalid @enderror">
+                            <option value="">— Belum diatur —</option>
+                            @foreach ($banks as $bank)
+                                <option value="{{ $bank['code'] }}" @selected(old('company_bank_code', $setting->company_bank_code) === $bank['code'])>{{ $bank['name'] }}</option>
+                            @endforeach
+                        </select>
+                        @error('company_bank_code')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
+                    <div class="col-md-4">
+                        <label for="company_account_number" class="form-label fw-medium">Nomor rekening</label>
+                        <input type="text" inputmode="numeric" id="company_account_number" name="company_account_number" maxlength="24"
+                            class="form-control @error('company_account_number') is-invalid @enderror"
+                            value="{{ old('company_account_number', $setting->company_account_number) }}">
+                        @error('company_account_number')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
+                    <div class="col-md-4">
+                        <label for="company_account_holder" class="form-label fw-medium">Nama pemilik rekening</label>
+                        <input type="text" id="company_account_holder" name="company_account_holder" maxlength="100"
+                            class="form-control @error('company_account_holder') is-invalid @enderror"
+                            value="{{ old('company_account_holder', $setting->company_account_holder) }}" placeholder="Sesuai buku tabungan">
+                        @error('company_account_holder')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
+                </div>
+
                 @if ($setting->exists && $setting->updated_at)
                     <p class="text-muted small mt-4 mb-0">
                         Last updated {{ $setting->updated_at->format('d M Y H:i') }}

@@ -34,7 +34,8 @@ class XenditOverview
         return [
             'balances' => $balances,
             'reserve' => $reserve,
-            'max_cashout' => $balances['cash'] === null ? null : max(0, (int) floor($balances['cash']) - $reserve['total']),
+            // Same limit the server enforces on submit (also minus Cash-outs still in flight).
+            'max_cashout' => $balances['cash'] === null ? null : app(\App\Services\Cashout\CashoutService::class)->maxCashout($balances['cash']),
             'flows' => [
                 'today' => $this->flows(now()->startOfDay()),
                 'days14' => $this->flows(now()->subDays(13)->startOfDay()),

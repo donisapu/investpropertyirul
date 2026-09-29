@@ -146,7 +146,7 @@
 
                     <div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mt-4 pt-3 border-top">
                         <span class="xd-note fw-semibold">Cash-out diblokir otomatis jika melebihi batas ini.</span>
-                        <a href="{{ route('admin.xendit-transactions', ['tab' => 'in', 'settlement' => 'SETTLED']) }}" class="btn btn-sm btn-primary">
+                        <a href="{{ route('admin.company-cashouts.create') }}" class="btn btn-sm btn-primary">
                             Company Cash-out <i class="bx bx-right-arrow-alt"></i>
                         </a>
                     </div>
@@ -175,7 +175,7 @@
                         </span>
                         <span class="xd-go">Cek status</span>
                     </a>
-                    <a class="xd-action" href="{{ route('admin.xendit-transactions', ['tab' => 'in', 'settlement' => 'SETTLED']) }}">
+                    <a class="xd-action" href="{{ route('admin.company-cashouts.create') }}">
                         <span class="xd-big">{{ $actions['cashout_ready_count'] }}</span>
                         <span class="flex-grow-1">
                             <span class="d-block fw-bold" style="font-size:.8125rem;color:#435971">Transaksi siap dicairkan</span>
