@@ -116,7 +116,7 @@
                     <li class="menu-header small text-uppercase">
                         <span class="menu-header-text">Transactions</span>
                     </li>
-                    <li class="menu-item {{ request()->routeIs('admin.withdrawals') ? 'active' : '' }}">
+                    <li class="menu-item {{ request()->routeIs('admin.user-withdrawals*') ? 'active' : '' }}">
                         <a href="{{ route('admin.user-withdrawals') }}" class="menu-link">
                             <i class="menu-icon tf-icons bx bx-money"></i>
                             <div data-i18n="Analytics">Withdrawals</div>

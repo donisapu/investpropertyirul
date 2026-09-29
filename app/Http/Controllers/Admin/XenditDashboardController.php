@@ -14,7 +14,7 @@ class XenditDashboardController extends Controller
 
     public function __construct()
     {
-        Configuration::setXenditKey(config('xendit.secret_key', env('XENDIT_SECRET_KEY')));
+        Configuration::setXenditKey(config('xendit.secret_key'));
         $this->balanceApi = new BalanceApi();
         $this->invoiceApi = new InvoiceApi();
     }
