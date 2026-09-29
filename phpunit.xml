@@ -21,12 +21,23 @@
         <env name="APP_ENV" value="testing"/>
         <env name="BCRYPT_ROUNDS" value="4"/>
         <env name="CACHE_DRIVER" value="array"/>
-        <!-- <env name="DB_CONNECTION" value="sqlite"/> -->
-        <!-- <env name="DB_DATABASE" value=":memory:"/> -->
+        <!-- Tests must never touch the dev database. Set as both env and server vars so they win over
+             .env and exported shell vars; tests/CreatesApplication.php still refuses to boot on anything
+             that is not sqlite :memory: or a *_test database (e.g. a cached config). -->
+        <env name="DB_CONNECTION" value="sqlite" force="true"/>
+        <env name="DB_DATABASE" value=":memory:" force="true"/>
+        <env name="DATABASE_URL" value="" force="true"/>
+        <server name="DB_CONNECTION" value="sqlite" force="true"/>
+        <server name="DB_DATABASE" value=":memory:" force="true"/>
+        <server name="DATABASE_URL" value="" force="true"/>
         <env name="MAIL_MAILER" value="array"/>
         <env name="PULSE_ENABLED" value="false"/>
         <env name="QUEUE_CONNECTION" value="sync"/>
         <env name="SESSION_DRIVER" value="array"/>
         <env name="TELESCOPE_ENABLED" value="false"/>
+        <!-- Xendit is faked with Http::fake in tests; these values are never real credentials. -->
+        <env name="XENDIT_SECRET_KEY" value="xnd_development_testing_key" force="true"/>
+        <env name="XENDIT_CALLBACK_TOKEN" value="testing-callback-token" force="true"/>
+        <env name="XENDIT_BASE_URL" value="https://api.xendit.co" force="true"/>
     </php>
 </phpunit>
