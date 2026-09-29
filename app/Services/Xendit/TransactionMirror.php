@@ -138,13 +138,16 @@ class TransactionMirror
         $since = isset($state['max_updated']) ? Carbon::parse($state['max_updated'])->subMinutes(self::OVERLAP_MINUTES) : null;
         // A run that stopped at the page cap resumes from its cursor with the same window.
         $cursor = $state['cursor'] ?? null;
+        // Xendit returns no rows for updated[gte] alone, so always send an upper bound too.
+        $until = now()->addMinutes(self::OVERLAP_MINUTES);
         if ($cursor && isset($state['cursor_since'])) {
             $since = Carbon::parse($state['cursor_since']);
+            $until = isset($state['cursor_until']) ? Carbon::parse($state['cursor_until']) : $until;
         }
 
         $filters = ['limit' => self::PAGE_SIZE];
         if ($since) {
-            $filters['updated'] = ['gte' => $since];
+            $filters['updated'] = ['gte' => $since, 'lte' => $until];
         }
 
         $counts = ['created' => 0, 'updated' => 0, 'unchanged' => 0];
@@ -180,6 +183,7 @@ class TransactionMirror
             'max_updated' => $complete ? $maxUpdated?->toIso8601String() : ($state['max_updated'] ?? null),
             'cursor' => $complete ? null : $cursor,
             'cursor_since' => $complete ? null : $since?->toIso8601String(),
+            'cursor_until' => $complete || ! $since ? null : $until->toIso8601String(),
             'finished_at' => now()->toIso8601String(),
             'last_result' => $counts + ['pages' => $pages, 'complete' => $complete],
         ]);

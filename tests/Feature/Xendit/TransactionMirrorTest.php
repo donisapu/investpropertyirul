@@ -130,9 +130,33 @@ it('syncs with cursor paging and then only asks for recent updates', function ()
 
         return Http::response(['has_more' => false, 'data' => []]);
     });
+    $this->travelTo('2026-09-29T12:00:00Z');
     mirror()->sync();
 
-    expect(urldecode($calls[0]))->toContain('updated[gte]=2026-09-29T08:50:00.000Z');
+    // Xendit returns nothing for updated[gte] without updated[lte].
+    expect(urldecode($calls[0]))->toContain('updated[gte]=2026-09-29T08:50:00.000Z')
+        ->toContain('updated[lte]=2026-09-29T12:10:00.000Z');
+});
+
+it('keeps the same updated window when it resumes from a cursor', function () {
+    mirror()->upsert(txn(['id' => 'txn_seen', 'updated' => '2026-09-29T09:00:00Z']));
+    cache()->forever(TransactionMirror::STATE_KEY, ['max_updated' => '2026-09-29T09:00:00Z']);
+
+    $urls = [];
+    Http::fake(function (Request $r) use (&$urls) {
+        $urls[] = urldecode($r->url());
+
+        return Http::response(['has_more' => true, 'data' => [txn(['id' => 'txn_'.count($urls)])]]);
+    });
+
+    $this->travelTo('2026-09-29T12:00:00Z');
+    mirror()->sync(1);
+    $this->travelTo('2026-09-29T13:00:00Z');
+    mirror()->sync(1);
+
+    expect($urls[1])->toContain('after_id=txn_1')
+        ->toContain('updated[gte]=2026-09-29T08:50:00.000Z')
+        ->toContain('updated[lte]=2026-09-29T12:10:00.000Z');
 });
 
 it('resumes from its cursor when a run hits the page cap', function () {
