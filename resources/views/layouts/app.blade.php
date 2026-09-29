@@ -102,6 +102,12 @@
                             <div data-i18n="Analytics">Xendit Dashboard</div>
                         </a>
                     </li>
+                    <li class="menu-item {{ request()->routeIs('admin.xendit-transactions*') ? 'active' : '' }}">
+                        <a href="{{ route('admin.xendit-transactions') }}" class="menu-link">
+                            <i class="menu-icon tf-icons bx bx-transfer"></i>
+                            <div data-i18n="Analytics">Xendit Transactions</div>
+                        </a>
+                    </li>
 
                     <li class="menu-header small text-uppercase">
                         <span class="menu-header-text">Property</span>

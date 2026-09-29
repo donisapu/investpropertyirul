@@ -11,6 +11,7 @@ use App\Models\Payment;
 use App\Models\PropertyCrowdfunding;
 use App\Models\PropertyInvestment;
 use App\Services\XenditService;
+use App\Services\Xendit\TransactionMirror;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -130,6 +131,12 @@ class PaymentController extends Controller
             ]);
 
             return response()->json(['message' => 'Ignored: unknown external_id'], 200);
+        }
+
+        // Mirror the invoice's Xendit transaction after replying (XW-08).
+        if (is_string($data['id'] ?? null) && $data['id'] !== '') {
+            $invoiceId = $data['id'];
+            dispatch(fn () => app(TransactionMirror::class)->refreshProduct($invoiceId))->afterResponse();
         }
 
         if ($payment->status === 'PAID') {

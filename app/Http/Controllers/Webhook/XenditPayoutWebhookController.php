@@ -7,6 +7,7 @@ use App\Models\Withdrawal;
 use App\Models\XenditWebhookEvent;
 use App\Services\Withdrawal\PayoutResult;
 use App\Services\Withdrawal\WithdrawalService;
+use App\Services\Xendit\TransactionMirror;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -65,6 +66,11 @@ class XenditPayoutWebhookController extends Controller
         }
 
         $record->forceFill(['result' => $result, 'error' => null, 'processed_at' => now()])->save();
+
+        if ($payoutId !== null) {
+            // Mirror the payout's Xendit transaction after replying, so the webhook stays fast.
+            dispatch(fn () => app(TransactionMirror::class)->refreshProduct($payoutId))->afterResponse();
+        }
 
         return response()->json(['message' => 'OK', 'result' => $result], 200);
     }

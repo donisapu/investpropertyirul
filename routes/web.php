@@ -142,6 +142,9 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin'])->grou
     // Dashboard
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/xendit-dashboard', [XenditDashboardController::class, 'index'])->name('xendit-dashboard');
+    Route::get('/xendit-transactions', [\App\Http\Controllers\Admin\XenditTransactionController::class, 'index'])->name('xendit-transactions');
+    Route::get('/xendit-transactions/export', [\App\Http\Controllers\Admin\XenditTransactionController::class, 'export'])->name('xendit-transactions.export');
+    Route::post('/xendit-transactions/sync', [\App\Http\Controllers\Admin\XenditTransactionController::class, 'sync'])->middleware('throttle:6,1')->name('xendit-transactions.sync');
 
     // Property
     Route::get('properties', [PropertiesController::class, 'index'])->name('properties');

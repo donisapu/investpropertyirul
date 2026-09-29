@@ -256,7 +256,7 @@ it('lists the queue by status tab, search and date, with the detail pane', funct
         ->assertSee('Siti Rahma')->assertSee('Rudi Hartono')
         ->assertDontSee('disb-done');
 
-    $this->actingAs($this->admin)->get(route('admin.user-withdrawals', ['tab' => 'pending', 'q' => 'Rudi']))
+    $this->actingAs($this->admin)->get(route('admin.user-withdrawals', ['tab' => 'pending', 'q' => 'rudi hart']))
         ->assertOk()->assertSee('Rudi Hartono')->assertSee('Nama berbeda')->assertSee('CV Maju Jaya')
         ->assertDontSee($siti->external_id);
 

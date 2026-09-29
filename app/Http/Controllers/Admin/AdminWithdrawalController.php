@@ -165,10 +165,12 @@ class AdminWithdrawalController extends AdminController
     {
         return Withdrawal::query()
             ->when($filters['q'] ?? null, function (Builder $q, string $term) {
-                $like = '%'.str_replace(['\\', '%', '_'], ['\\\\', '\%', '\_'], $term).'%';
+                $like = '%'.$term.'%';
+                // Case-insensitive search on every driver (Postgres LIKE is case-sensitive).
+                $op = $q->getConnection()->getDriverName() === 'pgsql' ? 'ilike' : 'like';
                 $q->where(fn (Builder $w) => $w
-                    ->where('external_id', 'like', $like)
-                    ->orWhereHas('user', fn (Builder $u) => $u->where('name', 'like', $like)->orWhere('email', 'like', $like)));
+                    ->where('external_id', $op, $like)
+                    ->orWhereHas('user', fn (Builder $u) => $u->where('name', $op, $like)->orWhere('email', $op, $like)));
             })
             ->when($filters['from'] ?? null, fn (Builder $q, string $from) => $q->where('created_at', '>=', Carbon::parse($from)->startOfDay()))
             ->when($filters['to'] ?? null, fn (Builder $q, string $to) => $q->where('created_at', '<=', Carbon::parse($to)->endOfDay()));
