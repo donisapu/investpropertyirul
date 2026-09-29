@@ -2,29 +2,24 @@
 
 namespace App\Http\Controllers\User;
 
-use Inertia\Inertia;
 use App\Http\Controllers\Controller;
-use App\Models\Wallet;
 use App\Models\WithdrawalSetting;
+use App\Services\Wallet\WalletOverview;
 use App\Services\Withdrawal\WithdrawalRequestRejected;
 use App\Services\Withdrawal\WithdrawalService;
 use App\Services\Xendit\BankChannelCatalog;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
+use Inertia\Inertia;
 
 class WithdrawalController extends Controller
 {
     // Halaman Utama Wallet
-    public function index(Request $request, BankChannelCatalog $banks)
+    public function index(Request $request, BankChannelCatalog $banks, WalletOverview $overview)
     {
-        $user = $request->user();
-        $wallet = Wallet::where('user_id', auth()->id())->first();
-        $availableBalance = $wallet?->balance ?? 0;
         return Inertia::render('User/Wallet', [
-            'balance' => $availableBalance,
-            'bankAccounts' => $user->bankAccounts,
-            'withdrawals' => $user->withdrawals()->with('bankAccount')->latest()->get(),
+            ...$overview->for($request->user()),
             'withdrawalSettings' => WithdrawalSetting::current()->toFrontend(),
             'banks' => array_map(fn (array $bank) => [
                 'code' => $bank['code'],

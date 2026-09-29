@@ -42,7 +42,10 @@ class HandleInertiaRequests extends Middleware
             ],
             'partners' => \App\Models\Partner::all(),
             'campaigns' => \App\Models\Campaign::where('status', 'active')->get(),
-            'settings'  => \App\Models\WebsiteSetting::getSettings(),
+            'settings' => \App\Models\WebsiteSetting::getSettings(),
+            'flash' => fn () => [
+                'success' => $request->session()->get('success'),
+            ],
             'ziggy' => function () use ($request) {
                 return array_merge((new \Tighten\Ziggy\Ziggy)->toArray(), [
                     'location' => $request->url(),

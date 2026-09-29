@@ -333,7 +333,7 @@ export default function Portfolio({
 
                         <div className="mt-8">
                             <Link
-                                href={route('user.wallet')}
+                                href={`${route('user.wallet')}#tarik`}
                                 className="flex items-center justify-center gap-2 w-full bg-ink hover:bg-ink-soft text-cream py-3.5 rounded-2xl font-black text-sm transition-all shadow-md"
                             >
                                 Penarikan Dana <ArrowRight size={16} />

@@ -56,6 +56,21 @@ export default {
                 ink: {
                     DEFAULT: "#242620", // blok kontras, teks utama (14,53:1)
                     soft: "#686A61",    // teks sekunder (5,22:1 di cream)
+                    faint: "#8C8E84",   // HANYA teks besar / dekoratif (3,3:1)
+                },
+                paper: "#FDFDFB",       // kartu di atas cream
+                /*
+                 * Status Wallet (mockup tmp/dashboard.pen). fg di atas bg
+                 * masing-masing >= 4,5:1 untuk badge 10-12px.
+                 */
+                status: {
+                    info: "#35577A",
+                    "info-bg": "#E2E9F0",
+                    success: "#2F6B4F",
+                    "success-bg": "#E3EDE5",
+                    danger: "#9B3B2E",
+                    "danger-bg": "#F4E1DC",
+                    warn: "#8A5A12",
                 },
                 gold: {
                     DEFAULT: "#C7A45C", // aksen di ground gelap & teks besar
