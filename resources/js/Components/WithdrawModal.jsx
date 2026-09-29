@@ -1,13 +1,6 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "@inertiajs/react";
-
-const LIST_BANK = [
-    { code: "BCA", name: "Bank Central Asia (BCA)" },
-    { code: "MANDIRI", name: "Bank Mandiri" },
-    { code: "BRI", name: "Bank Rakyat Indonesia (BRI)" },
-    { code: "BNI", name: "Bank Negara Indonesia (BNI)" },
-    { code: "CIMB", name: "CIMB Niaga" },
-];
+import BankSelect from "@/Components/BankSelect";
 
 const formatRupiah = (value) => `Rp ${Number(value || 0).toLocaleString("id-ID")}`;
 
@@ -16,6 +9,8 @@ export default function WithdrawModal({
     onClose,
     currentBalance,
     bankAccounts = [],
+    // IDR bank channels from the backend Xendit catalog: [{ code, name }].
+    banks = [],
     // Fee and limits come from the backend (admin Withdrawal Settings); the server validates the same values.
     settings,
 }) {
@@ -23,7 +18,7 @@ export default function WithdrawModal({
 
     // Form 1: Tambah Rekening
     const bankForm = useForm({
-        bank_code: "BCA",
+        bank_code: "",
         account_number: "",
         account_holder_name: "",
     });
@@ -33,6 +28,22 @@ export default function WithdrawModal({
         user_bank_account_id: bankAccounts.length > 0 ? bankAccounts[0].id : "",
         amount: "",
     });
+
+    // Keep the selected account valid when accounts are added or deleted.
+    const selectedAccountId = withdrawForm.data.user_bank_account_id;
+    useEffect(() => {
+        const stillExists = bankAccounts.some(
+            (acc) => String(acc.id) === String(selectedAccountId),
+        );
+        if (!stillExists) {
+            withdrawForm.setData(
+                "user_bank_account_id",
+                bankAccounts.length > 0 ? bankAccounts[0].id : "",
+            );
+        }
+        if (bankAccounts.length === 0) setShowAddBank(true);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [bankAccounts]);
 
     if (!isOpen) return null;
 
@@ -45,7 +56,12 @@ export default function WithdrawModal({
     // Handle Tambah Rekening Bank
     const handleAddBank = (e) => {
         e.preventDefault();
+        if (!bankForm.data.bank_code) {
+            bankForm.setError("bank_code", "Pilih bank dari daftar.");
+            return;
+        }
         bankForm.post(route("user.bank-accounts.store"), {
+            preserveScroll: true,
             onSuccess: () => {
                 bankForm.reset();
                 setShowAddBank(false);
@@ -101,23 +117,14 @@ export default function WithdrawModal({
                             <label className="block text-sm font-medium text-gray-700 mb-1">
                                 Bank
                             </label>
-                            <select
+                            <BankSelect
+                                banks={banks}
                                 value={bankForm.data.bank_code}
-                                onChange={(e) =>
-                                    bankForm.setData(
-                                        "bank_code",
-                                        e.target.value,
-                                    )
+                                onChange={(code) =>
+                                    bankForm.setData("bank_code", code)
                                 }
-                                className="w-full border rounded-lg p-2.5 border-gray-300"
-                                required
-                            >
-                                {LIST_BANK.map((b) => (
-                                    <option key={b.code} value={b.code}>
-                                        {b.name}
-                                    </option>
-                                ))}
-                            </select>
+                                error={bankForm.errors.bank_code}
+                            />
                         </div>
 
                         <div>
@@ -125,7 +132,10 @@ export default function WithdrawModal({
                                 Nomor Rekening
                             </label>
                             <input
-                                type="number"
+                                type="text"
+                                inputMode="numeric"
+                                pattern="[0-9]*"
+                                maxLength={20}
                                 value={bankForm.data.account_number}
                                 onChange={(e) =>
                                     bankForm.setData(
@@ -158,9 +168,15 @@ export default function WithdrawModal({
                                     )
                                 }
                                 placeholder="Sesuai buku tabungan / KTP"
+                                maxLength={100}
                                 className="w-full border rounded-lg p-2.5 border-gray-300"
                                 required
                             />
+                            {bankForm.errors.account_holder_name && (
+                                <p className="text-red-500 text-xs mt-1">
+                                    {bankForm.errors.account_holder_name}
+                                </p>
+                            )}
                         </div>
 
                         <div className="flex justify-end gap-2 pt-2">
@@ -221,11 +237,16 @@ export default function WithdrawModal({
                             >
                                 {bankAccounts.map((acc) => (
                                     <option key={acc.id} value={acc.id}>
-                                        {acc.bank_code} - {acc.account_number}{" "}
+                                        {acc.bank_name || acc.bank_code} - {acc.account_number}{" "}
                                         a.n {acc.account_holder_name}
                                     </option>
                                 ))}
                             </select>
+                            {withdrawForm.errors.user_bank_account_id && (
+                                <p className="text-red-500 text-xs mt-1">
+                                    {withdrawForm.errors.user_bank_account_id}
+                                </p>
+                            )}
                         </div>
 
                         {/* Nominal Withdraw */}

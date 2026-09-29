@@ -299,6 +299,7 @@ Route::prefix('user')->name('user.')->middleware(['auth', 'role:user', 'verified
     // Withdrawals
     Route::get('/wallet', [WithdrawalController::class, 'index'])->name('wallet');
     Route::post('/bank-accounts', [WithdrawalController::class, 'storeBankAccount'])->name('bank-accounts.store');
+    Route::delete('/bank-accounts/{bankAccount}', [WithdrawalController::class, 'destroyBankAccount'])->whereNumber('bankAccount')->name('bank-accounts.destroy');
     Route::post('/withdrawals', [WithdrawalController::class, 'store'])->name('withdrawals.store');
 });
 

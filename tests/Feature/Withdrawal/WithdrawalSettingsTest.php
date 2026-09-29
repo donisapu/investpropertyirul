@@ -29,7 +29,7 @@ function investorWithBalance(int $balance): array
     Wallet::updateOrCreate(['user_id' => $user->id], ['balance' => $balance]);
     $account = UserBankAccount::forceCreate([
         'user_id' => $user->id,
-        'bank_code' => 'BCA',
+        'bank_code' => 'ID_BCA',
         'account_number' => '1234567890',
         'account_holder_name' => 'Investor',
     ]);
@@ -42,7 +42,10 @@ function setWithdrawalRules(int $fee, int $min, ?int $max = null): void
     WithdrawalSetting::current()->fill(['admin_fee' => $fee, 'min_amount' => $min, 'max_amount' => $max])->save();
 }
 
-beforeEach(fn () => $this->withoutVite());
+beforeEach(function () {
+    $this->withoutVite();
+    fakeBankChannels();
+});
 
 it('ships with defaults 5000 fee / 50000 min / no max', function () {
     expect(WithdrawalSetting::count())->toBe(1)

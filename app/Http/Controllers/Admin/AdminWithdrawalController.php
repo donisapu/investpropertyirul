@@ -38,9 +38,10 @@ class AdminWithdrawalController extends AdminController
             ->addIndexColumn()
             ->addColumn('bank_detail', function ($row) {
                 if (!$row->bankAccount) return '<span class="text-muted">-</span>';
-                return "<strong>{$row->bankAccount->bank_code}</strong><br>" .
-                    "{$row->bankAccount->account_number}<br>" .
-                    "<small class='text-muted'>a.n {$row->bankAccount->account_holder_name}</small>";
+                // User-entered values: escape, this column is rendered as raw HTML.
+                return '<strong>' . e($row->bankAccount->bank_name) . '</strong><br>' .
+                    e($row->bankAccount->account_number) . '<br>' .
+                    "<small class='text-muted'>a.n " . e($row->bankAccount->account_holder_name) . '</small>';
             })
             ->addColumn('formatted_amount', function ($row) {
                 return 'Rp ' . number_format($row->amount, 0, ',', '.');
@@ -110,7 +111,9 @@ class AdminWithdrawalController extends AdminController
         }
 
         try {
-            $channelCode = 'ID_' . strtoupper($bankAccount->bank_code);
+            // bank_code is a Xendit channel code (ID_BCA); older rows stored BCA.
+            $bankCode = strtoupper($bankAccount->bank_code);
+            $channelCode = str_starts_with($bankCode, 'ID_') ? $bankCode : 'ID_' . $bankCode;
 
             $createPayoutRequest = new CreatePayoutRequest([
                 'reference_id' => $withdrawal->external_id,

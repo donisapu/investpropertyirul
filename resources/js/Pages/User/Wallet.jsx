@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { Head } from "@inertiajs/react";
-import { Wallet, ArrowUpRight, History } from "lucide-react";
+import { Head, router, usePage } from "@inertiajs/react";
+import { Wallet, ArrowUpRight, History, Landmark, Trash2 } from "lucide-react";
 import PublicLayout from "@/Layouts/PublicLayout";
 import WithdrawModal from "@/Components/WithdrawModal";
 
@@ -36,8 +36,26 @@ export default function Index({
     bankAccounts = [],
     withdrawals = [],
     withdrawalSettings,
+    banks = [],
 }) {
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [deletingId, setDeletingId] = useState(null);
+    const { errors = {} } = usePage().props;
+
+    const deleteBankAccount = (account) => {
+        if (
+            !window.confirm(
+                `Hapus rekening ${account.bank_name} ${account.account_number}?`,
+            )
+        )
+            return;
+
+        setDeletingId(account.id);
+        router.delete(route("user.bank-accounts.destroy", account.id), {
+            preserveScroll: true,
+            onFinish: () => setDeletingId(null),
+        });
+    };
 
     return (
         <PublicLayout>
@@ -92,6 +110,65 @@ export default function Index({
                         >
                             <ArrowUpRight size={16} /> Withdraw
                         </button>
+                    </div>
+                </div>
+
+                {/* Saved Bank Accounts */}
+                <div className="mb-12">
+                    <div className="mb-6">
+                        <h3 className="text-xl font-black text-ink">
+                            Bank Accounts
+                        </h3>
+                        <p className="text-xs font-bold text-ink-soft uppercase tracking-widest">
+                            Rekening Tersimpan
+                        </p>
+                    </div>
+
+                    {errors.bank_account && (
+                        <div className="mb-4 p-3 rounded-xl bg-red-100 text-red-700 text-sm">
+                            {errors.bank_account}
+                        </div>
+                    )}
+
+                    <div className="bg-cream rounded-[2rem] border border-gold-line shadow-[0_4px_20px_rgba(0,0,0,0.03)] overflow-hidden p-2">
+                        {bankAccounts.length > 0 ? (
+                            <ul className="divide-y divide-gold-line/60">
+                                {bankAccounts.map((acc) => (
+                                    <li
+                                        key={acc.id}
+                                        className="flex items-center justify-between gap-4 p-4"
+                                    >
+                                        <div className="flex items-center gap-3 min-w-0">
+                                            <div className="w-10 h-10 shrink-0 rounded-xl bg-cream-deep flex items-center justify-center text-gold-ink">
+                                                <Landmark size={18} />
+                                            </div>
+                                            <div className="min-w-0">
+                                                <p className="font-black text-ink truncate">
+                                                    {acc.bank_name}
+                                                </p>
+                                                <p className="text-xs text-ink-soft truncate">
+                                                    {acc.account_number} · a.n{" "}
+                                                    {acc.account_holder_name}
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <button
+                                            type="button"
+                                            onClick={() => deleteBankAccount(acc)}
+                                            disabled={deletingId === acc.id}
+                                            aria-label={`Hapus rekening ${acc.bank_name} ${acc.account_number}`}
+                                            className="shrink-0 p-2 rounded-xl text-red-600 hover:bg-red-50 disabled:opacity-50"
+                                        >
+                                            <Trash2 size={18} />
+                                        </button>
+                                    </li>
+                                ))}
+                            </ul>
+                        ) : (
+                            <p className="p-6 text-sm text-ink-soft">
+                                Belum ada rekening. Tambahkan saat melakukan Withdraw.
+                            </p>
+                        )}
                     </div>
                 </div>
 
@@ -182,6 +259,7 @@ export default function Index({
                 onClose={() => setIsModalOpen(false)}
                 currentBalance={balance}
                 bankAccounts={bankAccounts}
+                banks={banks}
                 settings={withdrawalSettings}
             />
         </PublicLayout>

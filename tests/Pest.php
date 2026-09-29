@@ -42,7 +42,19 @@ expect()->extend('toBeOne', function () {
 |
 */
 
-function something()
+/**
+ * Fake Xendit GET /payouts_channels with the given IDR bank channels.
+ */
+function fakeBankChannels(?array $channels = null): void
 {
-    // ..
+    $channels ??= [
+        ['channel_code' => 'ID_BCA', 'channel_category' => 'BANK', 'currency' => 'IDR', 'channel_name' => 'Bank Central Asia (BCA)',
+            'amount_limits' => ['minimum' => 1, 'maximum' => 999999999999, 'minimum_increment' => 1]],
+        ['channel_code' => 'ID_BSI', 'channel_category' => 'BANK', 'currency' => 'IDR', 'channel_name' => 'Bank Syariah Indonesia (BSI)',
+            'amount_limits' => ['minimum' => 10000, 'maximum' => 1999999999999, 'minimum_increment' => 1]],
+        ['channel_code' => 'ID_PERMATA', 'channel_category' => 'BANK', 'currency' => 'IDR', 'channel_name' => 'Bank Permata',
+            'amount_limits' => ['minimum' => 1, 'maximum' => 999999999999, 'minimum_increment' => 1]],
+    ];
+
+    \Illuminate\Support\Facades\Http::fake(['api.xendit.co/payouts_channels*' => \Illuminate\Support\Facades\Http::response($channels)]);
 }
