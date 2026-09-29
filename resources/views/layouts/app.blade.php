@@ -122,6 +122,12 @@
                             <div data-i18n="Analytics">Withdrawals</div>
                         </a>
                     </li>
+                    <li class="menu-item {{ request()->routeIs('admin.withdrawal-settings*') ? 'active' : '' }}">
+                        <a href="{{ route('admin.withdrawal-settings.edit') }}" class="menu-link">
+                            <i class="menu-icon tf-icons bx bx-cog"></i>
+                            <div data-i18n="Analytics">Withdrawal Settings</div>
+                        </a>
+                    </li>
 
                     <li class="menu-header small text-uppercase">
                         <span class="menu-header-text">Products</span>

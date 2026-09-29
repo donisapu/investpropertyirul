@@ -35,6 +35,7 @@ export default function Index({
     balance = 0,
     bankAccounts = [],
     withdrawals = [],
+    withdrawalSettings,
 }) {
     const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -181,6 +182,7 @@ export default function Index({
                 onClose={() => setIsModalOpen(false)}
                 currentBalance={balance}
                 bankAccounts={bankAccounts}
+                settings={withdrawalSettings}
             />
         </PublicLayout>
     );

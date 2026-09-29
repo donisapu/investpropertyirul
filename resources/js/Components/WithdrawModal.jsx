@@ -9,11 +9,15 @@ const LIST_BANK = [
     { code: "CIMB", name: "CIMB Niaga" },
 ];
 
+const formatRupiah = (value) => `Rp ${Number(value || 0).toLocaleString("id-ID")}`;
+
 export default function WithdrawModal({
     isOpen,
     onClose,
     currentBalance,
     bankAccounts = [],
+    // Fee and limits come from the backend (admin Withdrawal Settings); the server validates the same values.
+    settings,
 }) {
     const [showAddBank, setShowAddBank] = useState(bankAccounts.length === 0);
 
@@ -32,7 +36,9 @@ export default function WithdrawModal({
 
     if (!isOpen) return null;
 
-    const adminFee = 5000;
+    const adminFee = settings?.admin_fee ?? 0;
+    const minAmount = settings?.min_amount ?? 1;
+    const maxAmount = settings?.max_amount ?? null;
     const numAmount = Number(withdrawForm.data.amount) || 0;
     const totalDeduction = numAmount > 0 ? numAmount + adminFee : 0;
 
@@ -50,6 +56,16 @@ export default function WithdrawModal({
     // Handle Submit Withdraw
     const handleWithdrawSubmit = (e) => {
         e.preventDefault();
+
+        if (!Number.isInteger(numAmount) || numAmount < minAmount) {
+            withdrawForm.setError("amount", `Nominal minimal ${formatRupiah(minAmount)}.`);
+            return;
+        }
+
+        if (maxAmount !== null && numAmount > maxAmount) {
+            withdrawForm.setError("amount", `Nominal maksimal ${formatRupiah(maxAmount)}.`);
+            return;
+        }
 
         if (totalDeduction > currentBalance) {
             withdrawForm.setError(
@@ -226,11 +242,17 @@ export default function WithdrawModal({
                                         e.target.value,
                                     )
                                 }
-                                placeholder="Min. 50.000"
-                                min="50000"
+                                placeholder={`Min. ${formatRupiah(minAmount)}`}
+                                min={minAmount}
+                                max={maxAmount ?? undefined}
+                                step="1"
                                 className="w-full border rounded-lg p-2.5 border-gray-300"
                                 required
                             />
+                            <p className="text-gray-500 text-xs mt-1">
+                                Min. {formatRupiah(minAmount)}
+                                {maxAmount !== null && ` · Maks. ${formatRupiah(maxAmount)}`}
+                            </p>
                             {withdrawForm.errors.amount && (
                                 <p className="text-red-500 text-xs mt-1">
                                     {withdrawForm.errors.amount}
@@ -242,22 +264,16 @@ export default function WithdrawModal({
                         <div className="bg-gray-50 p-3 rounded-lg text-sm space-y-1.5 border border-gray-200">
                             <div className="flex justify-between text-gray-600">
                                 <span>Nominal Penarikan:</span>
-                                <span>
-                                    Rp {numAmount.toLocaleString("id-ID")}
-                                </span>
+                                <span>{formatRupiah(numAmount)}</span>
                             </div>
                             <div className="flex justify-between text-gray-600">
                                 <span>Biaya Transaksi (Fee):</span>
-                                <span>
-                                    Rp {adminFee.toLocaleString("id-ID")}
-                                </span>
+                                <span>{formatRupiah(adminFee)}</span>
                             </div>
                             <hr className="my-1 border-gray-200" />
                             <div className="flex justify-between font-bold text-gray-800">
                                 <span>Total Saldo Dipotong:</span>
-                                <span>
-                                    Rp {totalDeduction.toLocaleString("id-ID")}
-                                </span>
+                                <span>{formatRupiah(totalDeduction)}</span>
                             </div>
                         </div>
 

@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Models\UserBankAccount;
 use App\Models\Wallet;
 use App\Models\Withdrawal;
+use App\Models\WithdrawalSetting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
@@ -23,6 +24,7 @@ class WithdrawalController extends Controller
             'balance' => $availableBalance,
             'bankAccounts' => $user->bankAccounts,
             'withdrawals' => $user->withdrawals()->with('bankAccount')->latest()->get(),
+            'withdrawalSettings' => WithdrawalSetting::current()->toFrontend(),
         ]);
     }
 
@@ -47,10 +49,18 @@ class WithdrawalController extends Controller
     // Submit Request Withdraw
     public function store(Request $request)
     {
+        $settings = WithdrawalSetting::current();
+
         $request->validate([
             'user_bank_account_id' => 'required|exists:user_bank_accounts,id',
-            'amount' => 'required|numeric|min:50000',
+            'amount' => $settings->amountRules(),
+        ], [
+            'amount.integer' => 'Nominal harus berupa angka bulat (Rupiah).',
+            'amount.min' => 'Nominal minimal Rp '.number_format($settings->min_amount, 0, ',', '.').'.',
+            'amount.max' => 'Nominal maksimal Rp '.number_format((int) $settings->max_amount, 0, ',', '.').'.',
         ]);
+
+        $amount = (int) $request->amount;
 
         $user = $request->user();
 
@@ -59,8 +69,8 @@ class WithdrawalController extends Controller
             ->where('user_id', $user->id)
             ->firstOrFail();
 
-        $adminFee = 5000; // Fixed fee Rp 5.000
-        $totalDeduction = $request->amount + $adminFee;
+        $adminFee = $settings->admin_fee;
+        $totalDeduction = $settings->totalDeduction($amount);
 
         // Cek Saldo User
         $wallet = Wallet::where('user_id', auth()->id())->first();
@@ -84,7 +94,7 @@ class WithdrawalController extends Controller
                 'user_id' => $user->id,
                 'user_bank_account_id' => $bankAccount->id,
                 'external_id' => $externalId,
-                'amount' => $request->amount,
+                'amount' => $amount,
                 'fee' => $adminFee,
                 'status' => 'pending',
             ]);

@@ -16,6 +16,7 @@ use App\Http\Controllers\Admin\PropertyInvestmentController;
 use App\Http\Controllers\Admin\SellRequestController;
 use App\Http\Controllers\Admin\VillaController;
 use App\Http\Controllers\Admin\AdminWithdrawalController as AdminWithdrawalController;
+use App\Http\Controllers\Admin\WithdrawalSettingController;
 use App\Http\Controllers\Admin\WebsiteSettingController;
 use App\Http\Controllers\Admin\XenditDashboardController;
 use App\Http\Controllers\PublicInvestmentController;
@@ -266,6 +267,8 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin'])->grou
     Route::get('/user-withdrawals/data', [AdminWithdrawalController::class, 'getData'])->name('user-withdrawals.data');
     Route::post('/user-withdrawals/{withdrawal}/approve', [AdminWithdrawalController::class, 'approve'])->name('user-withdrawals.approve');
     Route::post('/user-withdrawals/{withdrawal}/reject', [AdminWithdrawalController::class, 'reject'])->name('user-withdrawals.reject');
+    Route::get('/withdrawal-settings', [WithdrawalSettingController::class, 'edit'])->name('withdrawal-settings.edit');
+    Route::put('/withdrawal-settings', [WithdrawalSettingController::class, 'update'])->name('withdrawal-settings.update');
 });
 
 Route::prefix('user')->name('user.')->middleware(['auth', 'role:user', 'verified'])->group(function () {
