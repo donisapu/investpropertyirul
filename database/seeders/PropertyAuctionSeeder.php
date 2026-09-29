@@ -26,7 +26,7 @@ class PropertyAuctionSeeder extends Seeder
 
             PropertyAuction::factory()->create([
                 'property_id' => $property->id,
-                'status' => 'running', // Ensure we have running auctions to display
+                'status' => 'active', // Ensure we have running auctions to display
                 'type' => collect(['auction', 'cessie'])->random(),
             ]);
         }

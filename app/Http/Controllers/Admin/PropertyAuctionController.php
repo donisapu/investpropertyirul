@@ -8,6 +8,7 @@ use App\Models\PropertyImage;
 use App\Traits\AdminDataTable;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\Rule;
 
 class PropertyAuctionController extends AdminController
 {
@@ -17,7 +18,7 @@ class PropertyAuctionController extends AdminController
 
     public function data()
     {
-        $query = PropertyAuction::with('property')->select('id', 'property_id', 'open_bid', 'date_start','type', 'date_finish', 'status');
+        $query = PropertyAuction::with('property')->select('id', 'property_id', 'open_bid', 'date_start', 'type', 'date_finish', 'status');
 
         return $this->dataTable($query, 'pages.property_auction.action');
     }
@@ -49,6 +50,11 @@ class PropertyAuctionController extends AdminController
      */
     public function store(Request $request)
     {
+        $request->validate([
+            'type' => ['required', Rule::in(array_keys(PropertyAuction::TYPES))],
+            'status' => ['required', Rule::in(PropertyAuction::STATUSES)],
+        ]);
+
         DB::transaction(function () use ($request) {
             $auction = PropertyAuction::create($request->only([
                 'property_id',
@@ -82,7 +88,7 @@ class PropertyAuctionController extends AdminController
             'data' => $data,
             'img' => PropertyImage::where('property_id', $data->property_id)->get(),
             'doc' => PropertyDocument::where('property_id', $data->property_id)->get(),
-            'bids' => $bids
+            'bids' => $bids,
         ]);
     }
 
@@ -104,6 +110,11 @@ class PropertyAuctionController extends AdminController
      */
     public function update(Request $request, $id)
     {
+        $request->validate([
+            'type' => ['required', Rule::in(array_keys(PropertyAuction::TYPES))],
+            'status' => ['required', Rule::in(PropertyAuction::STATUSES)],
+        ]);
+
         DB::transaction(function () use ($request, $id) {
             $property = PropertyAuction::findOrFail($id);
 
@@ -142,7 +153,7 @@ class PropertyAuctionController extends AdminController
 
         return response()->json([
             'status' => 'success',
-            'data' => $bids
+            'data' => $bids,
         ]);
     }
 }

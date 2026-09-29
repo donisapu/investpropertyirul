@@ -50,7 +50,7 @@
                         name: 'date_finish'
                     },
                     {
-                        data: 'type',
+                        data: 'type_label',
                         name: 'type'
                     },
                     {

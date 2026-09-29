@@ -53,8 +53,9 @@
                         <div class="col-6">
                             <label for="" class="form-label">Type</label>
                             <select name="type" class="form-control" id="" @required(true)>
-                                <option value="Lelang" @if ($btn == 'edit' && $data->type == 'Lelang') selected @endif>Lelang</option>
-                                <option value="Cessie" @if ($btn == 'edit' && $data->type == 'Cessie') selected @endif>Cessie</option>
+                                @foreach (\App\Models\PropertyAuction::TYPES as $value => $label)
+                                    <option value="{{ $value }}" @selected(old('type', $btn == 'edit' ? $data->type : \App\Models\PropertyAuction::TYPE_AUCTION) === $value)>{{ $label }}</option>
+                                @endforeach
                             </select>
                         </div>
                         <div class="col-6">
