@@ -16,7 +16,7 @@ class WithdrawalSettingController extends AdminController
     public function edit(BankChannelCatalog $banks)
     {
         return $this->view('index', [
-            'title' => 'Withdrawal Settings',
+            'title' => 'Withdrawal & Cash-out Settings',
             'setting' => WithdrawalSetting::current()->load('updatedBy'),
             'banks' => $banks->all(),
         ]);

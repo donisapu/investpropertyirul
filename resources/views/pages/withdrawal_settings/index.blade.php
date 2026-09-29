@@ -10,7 +10,7 @@
 
     <div class="card shadow-sm border-0">
         <div class="card-header bg-white fw-semibold">
-            Withdrawal Settings
+            Withdrawal &amp; Cash-out Settings
         </div>
 
         <form action="{{ route('admin.withdrawal-settings.update') }}" method="POST">

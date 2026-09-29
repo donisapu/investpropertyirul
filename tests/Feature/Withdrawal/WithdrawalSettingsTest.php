@@ -58,7 +58,7 @@ it('lets an admin view and update the settings', function () {
 
     $this->actingAs($admin)->get(route('admin.withdrawal-settings.edit'))
         ->assertOk()
-        ->assertSee('Withdrawal Settings')
+        ->assertSee('Withdrawal &amp; Cash-out Settings', false)
         ->assertSee('value="5000"', false);
 
     $this->actingAs($admin)->put(route('admin.withdrawal-settings.update'), [
