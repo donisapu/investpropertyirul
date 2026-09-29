@@ -200,16 +200,9 @@ class WalletOverview
         return $names;
     }
 
-    /** "Bank Negara Indonesia (BNI)" -> "BNI", "Bank Mandiri" -> "Mandiri". */
     private function shortBankName(string $code): string
     {
-        $name = $this->banks->nameFor($code) ?? preg_replace('/^ID_/', '', $code);
-
-        if (preg_match('/\(([^)]+)\)\s*$/', $name, $m)) {
-            return $m[1];
-        }
-
-        return preg_replace('/^Bank\s+/i', '', $name);
+        return $this->banks->shortNameFor($code);
     }
 
     private function bankBadge(string $code): string

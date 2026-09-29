@@ -2,182 +2,222 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Models\Wallet;
 use App\Models\Withdrawal;
+use App\Services\Withdrawal\AccountNameMatch;
+use App\Services\Withdrawal\PayoutAttempt;
+use App\Services\Withdrawal\PayoutFailure;
+use App\Services\Withdrawal\WithdrawalActionRejected;
+use App\Services\Withdrawal\WithdrawalService;
+use App\Services\Xendit\BankChannelCatalog;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use Yajra\DataTables\Facades\DataTables;
-use App\Traits\AdminDataTable;
+use Illuminate\Support\Carbon;
 
-// --- SESUAIKAN DENGAN SDK v7.0.0 (PAUSE/PAYOUT) ---
-use Xendit\Configuration;
-use Xendit\Payout\PayoutApi;
-use Xendit\Payout\CreatePayoutRequest;
-
+/**
+ * Admin Withdrawals queue (mockup "Admin · Withdrawals"): status tabs, search,
+ * date filter, and a detail pane to approve or reject.
+ */
 class AdminWithdrawalController extends AdminController
 {
-
     protected string $viewPath = 'withdrawals';
-    protected PayoutApi $payoutApi;
 
-    use AdminDataTable;
+    /** Tab => statuses shown in it. */
+    private const TABS = [
+        'pending' => [Withdrawal::STATUS_PENDING],
+        'processing' => [Withdrawal::STATUS_PROCESSING],
+        'done' => [Withdrawal::STATUS_SUCCEEDED],
+        'failed' => [Withdrawal::STATUS_FAILED, Withdrawal::STATUS_REJECTED, Withdrawal::STATUS_REVERSED],
+        'all' => Withdrawal::STATUSES,
+    ];
 
-    public function __construct()
+    public function index(Request $request, BankChannelCatalog $banks)
     {
-        // 1. Set API Key di Configuration SDK v7.0.0
-        Configuration::setXenditKey(config('xendit.secret_key'));
+        $filters = $request->validate([
+            'tab' => ['nullable', 'in:'.implode(',', array_keys(self::TABS))],
+            'q' => ['nullable', 'string', 'max:100'],
+            'from' => ['nullable', 'date_format:Y-m-d'],
+            'to' => ['nullable', 'date_format:Y-m-d', 'after_or_equal:from'],
+            'sort' => ['nullable', 'in:oldest,newest'],
+            'id' => ['nullable', 'integer'],
+        ]);
 
-        // 2. Inisialisasi PayoutApi
-        $this->payoutApi = new PayoutApi();
-    }
+        $tab = $filters['tab'] ?? 'pending';
+        // Oldest first while waiting (fair queue), newest first everywhere else.
+        $sort = $filters['sort'] ?? ($tab === 'pending' ? 'oldest' : 'newest');
 
-    public function getData()
-    {
-        $withdrawals = Withdrawal::with(['user', 'bankAccount'])->latest();
+        $queue = $this->filtered($filters)
+            ->whereIn('status', self::TABS[$tab])
+            ->with(['user:id,name,email', 'bankAccount'])
+            ->orderBy('created_at', $sort === 'oldest' ? 'asc' : 'desc')
+            ->orderBy('id', $sort === 'oldest' ? 'asc' : 'desc')
+            ->paginate(20)
+            ->withQueryString();
 
-        return DataTables::of($withdrawals)
-            ->addIndexColumn()
-            ->addColumn('bank_detail', function ($row) {
-                if (!$row->bankAccount) return '<span class="text-muted">-</span>';
-                // User-entered values: escape, this column is rendered as raw HTML.
-                return '<strong>' . e($row->bankAccount->bank_name) . '</strong><br>' .
-                    e($row->bankAccount->account_number) . '<br>' .
-                    "<small class='text-muted'>a.n " . e($row->bankAccount->account_holder_name) . '</small>';
-            })
-            ->addColumn('formatted_amount', function ($row) {
-                return 'Rp ' . number_format($row->amount, 0, ',', '.');
-            })
-            ->addColumn('formatted_fee', function ($row) {
-                return 'Rp ' . number_format($row->fee, 0, ',', '.');
-            })
-            ->addColumn('total_deduction', function ($row) {
-                return '<strong>Rp ' . number_format($row->amount + $row->fee, 0, ',', '.') . '</strong>';
-            })
-            ->addColumn('status_badge', function ($row) {
-                $badges = [
-                    'pending' => '<span class="badge badge-warning">Pending</span>',
-                    'processing' => '<span class="badge badge-info">Processing (Xendit)</span>',
-                    'succeeded' => '<span class="badge badge-success">Succeeded</span>',
-                    'failed' => '<span class="badge badge-danger">Failed</span>',
-                    'rejected' => '<span class="badge badge-danger">Rejected</span>',
-                    'reversed' => '<span class="badge badge-secondary">Reversed</span>',
-                ];
-                return $badges[$row->status] ?? e($row->status);
-            })
-            ->addColumn('action', function ($row) {
-                if ($row->status !== 'pending') {
-                    return '<span class="text-muted">-</span>';
-                }
+        $selected = isset($filters['id'])
+            ? Withdrawal::with(['user', 'bankAccount', 'approvedBy:id,name'])->find($filters['id'])
+            : $queue->first()?->load(['user', 'approvedBy:id,name']);
 
-                $approveUrl = route('admin.user-withdrawals.approve', $row->id);
-                $rejectUrl = route('admin.user-withdrawals.reject', $row->id);
-
-                return '
-                    <form action="' . $approveUrl . '" method="POST" class="d-inline" onsubmit="return confirm(\'Approve dan proses transfer via Xendit?\')">
-                        ' . csrf_field() . '
-                        <button type="submit" class="btn btn-sm btn-success" title="Approve">
-                            <i class="bx bx-check"></i>
-                        </button>
-                    </form>
-                    <button type="button" class="btn btn-sm btn-danger" onclick="openRejectModal(\'' . $rejectUrl . '\')" title="Decline">
-                        <i class="bx bx-x"></i>
-                    </button>
-                ';
-            })
-            ->rawColumns(['bank_detail', 'total_deduction', 'status_badge', 'action'])
-            ->make(true);
-    }
-
-    public function index()
-    {
-        $withdrawals = Withdrawal::with('user', 'bankAccount')
-            ->orderBy('created_at', 'desc')
-            ->get();
+        $tabCounts = $this->filtered($filters)
+            ->selectRaw('status, count(*) as total')
+            ->groupBy('status')
+            ->pluck('total', 'status');
 
         return $this->view('index', [
-            'title' => 'User Withdrawals',
-            'withdrawals' => $withdrawals,
+            'title' => 'Withdrawals',
+            'queue' => $queue,
+            'selected' => $selected,
+            'detail' => $selected ? $this->detail($selected, $banks) : null,
+            'tab' => $tab,
+            'sort' => $sort,
+            'filters' => $filters,
+            'tabs' => collect(self::TABS)->map(fn (array $statuses) => (int) $tabCounts->only($statuses)->sum()),
+            'stats' => $this->stats(),
         ]);
     }
 
-    // APPROVE WITHDRAWAL BY ADMIN
-    public function approve(Withdrawal $withdrawal)
+    public function approve(Request $request, Withdrawal $withdrawal, WithdrawalService $service)
     {
-        if ($withdrawal->status !== 'pending') {
-            return back()->withErrors(['message' => 'Transaksi ini sudah diproses sebelumnya.']);
-        }
-
-        $bankAccount = $withdrawal->bankAccount;
-
-        if (!$bankAccount) {
-            return back()->withErrors(['message' => 'Data rekening bank user tidak ditemukan.']);
-        }
-
         try {
-            // bank_code is a Xendit channel code (ID_BCA); older rows stored BCA.
-            $bankCode = strtoupper($bankAccount->bank_code);
-            $channelCode = str_starts_with($bankCode, 'ID_') ? $bankCode : 'ID_' . $bankCode;
-
-            $createPayoutRequest = new CreatePayoutRequest([
-                'reference_id' => $withdrawal->external_id,
-                'channel_code' => $channelCode,
-                'channel_properties' => [
-                    'account_number' => $bankAccount->account_number,
-                    'account_holder_name' => $bankAccount->account_holder_name,
-                ],
-                'amount' => (float) $withdrawal->amount,
-                'currency' => 'IDR',
-                'description' => 'Pencairan Saldo Property Crowdfunding',
-            ]);
-
-            $result = $this->payoutApi->createPayout(
-                $withdrawal->external_id,
-                null,
-                $createPayoutRequest
-            );
-
-            $withdrawal->update([
-                'status' => 'processing',
-                'xendit_id' => $result->getId(),
-            ]);
-
-            return back()->with('success', 'Withdrawal disetujui dan sedang diproses Xendit!');
-        } catch (\Exception $e) {
-            return back()->withErrors([
-                'message' => 'Gagal menghubungi Xendit: ' . $e->getMessage()
-            ]);
+            $attempt = $service->approve($withdrawal, $request->user());
+        } catch (WithdrawalActionRejected $e) {
+            return $this->backTo($request, $withdrawal)->with('error', $e->getMessage());
         }
+
+        return $this->afterAttempt($request, $attempt);
     }
 
-    // REJECT WITHDRAWAL BY ADMIN
-    public function reject(Request $request, Withdrawal $withdrawal)
+    public function resend(Request $request, Withdrawal $withdrawal, WithdrawalService $service)
     {
-        $request->validate([
-            'failure_reason' => 'required|string|max:255',
+        try {
+            $attempt = $service->resendPayout($withdrawal);
+        } catch (WithdrawalActionRejected $e) {
+            return $this->backTo($request, $withdrawal)->with('error', $e->getMessage());
+        }
+
+        return $this->afterAttempt($request, $attempt);
+    }
+
+    public function reject(Request $request, Withdrawal $withdrawal, WithdrawalService $service)
+    {
+        $data = $request->validate([
+            'failure_reason' => ['required', 'string', 'min:5', 'max:255'],
+        ], [
+            'failure_reason.required' => 'Alasan penolakan wajib diisi.',
+            'failure_reason.min' => 'Tulis alasan yang jelas untuk user (minimal 5 karakter).',
         ]);
 
-        if ($withdrawal->status !== 'pending') {
-            return back()->withErrors(['message' => 'Transaksi ini sudah diproses sebelumnya.']);
-        }
-
-        DB::beginTransaction();
         try {
-            $withdrawal->update([
-                'status' => 'failed',
-                'failure_reason' => $request->failure_reason,
-            ]);
-
-            // Rollback saldo + fee ke user
-            $user = $withdrawal->user;
-            $refundAmount = $withdrawal->amount + $withdrawal->fee;
-            $user->balance += $refundAmount;
-            $user->save();
-
-            DB::commit();
-
-            return back()->with('success', 'Withdrawal ditolak dan saldo berhasil dikembalikan ke user.');
-        } catch (\Exception $e) {
-            DB::rollBack();
-            return back()->withErrors(['message' => 'Gagal menolak transaksi.']);
+            $service->reject($withdrawal, $request->user(), $data['failure_reason']);
+        } catch (WithdrawalActionRejected $e) {
+            return $this->backTo($request, $withdrawal)->with('error', $e->getMessage());
         }
+
+        return $this->backTo($request, $withdrawal)
+            ->with('success', 'Penarikan ditolak. Saldo '.$this->rupiah($withdrawal->totalDeduction()).' dikembalikan ke wallet user.');
+    }
+
+    private function afterAttempt(Request $request, PayoutAttempt $attempt)
+    {
+        $flash = match ($attempt->outcome) {
+            PayoutAttempt::SENT => ['success', 'Disetujui. Payout '.$this->rupiah($attempt->withdrawal->amount).' dikirim ke Xendit.'],
+            PayoutAttempt::UNKNOWN => ['warning', $attempt->message],
+            default => ['error', $attempt->message],
+        };
+
+        return $this->backTo($request, $attempt->withdrawal)->with(...$flash);
+    }
+
+    /** Back to the queue with the same filters, keeping this Withdrawal open. */
+    private function backTo(Request $request, Withdrawal $withdrawal)
+    {
+        $query = array_filter([
+            ...$request->only(['tab', 'q', 'from', 'to', 'sort']),
+            'id' => $withdrawal->id,
+        ], fn ($v) => $v !== null && $v !== '');
+
+        return redirect()->route('admin.user-withdrawals', $query);
+    }
+
+    private function filtered(array $filters): Builder
+    {
+        return Withdrawal::query()
+            ->when($filters['q'] ?? null, function (Builder $q, string $term) {
+                $like = '%'.str_replace(['\\', '%', '_'], ['\\\\', '\%', '\_'], $term).'%';
+                $q->where(fn (Builder $w) => $w
+                    ->where('external_id', 'like', $like)
+                    ->orWhereHas('user', fn (Builder $u) => $u->where('name', 'like', $like)->orWhere('email', 'like', $like)));
+            })
+            ->when($filters['from'] ?? null, fn (Builder $q, string $from) => $q->where('created_at', '>=', Carbon::parse($from)->startOfDay()))
+            ->when($filters['to'] ?? null, fn (Builder $q, string $to) => $q->where('created_at', '<=', Carbon::parse($to)->endOfDay()));
+    }
+
+    private function stats(): array
+    {
+        $sum = fn (Builder $q) => [(int) (clone $q)->count(), (int) (clone $q)->sum('amount')];
+
+        return [
+            'pending' => $sum(Withdrawal::where('status', Withdrawal::STATUS_PENDING)),
+            'processing' => $sum(Withdrawal::where('status', Withdrawal::STATUS_PROCESSING)),
+            'succeeded_month' => $sum(Withdrawal::where('status', Withdrawal::STATUS_SUCCEEDED)
+                ->where(fn (Builder $q) => $q->where('processed_at', '>=', now()->startOfMonth())
+                    ->orWhere(fn (Builder $q) => $q->whereNull('processed_at')->where('updated_at', '>=', now()->startOfMonth())))),
+        ];
+    }
+
+    private function detail(Withdrawal $w, BankChannelCatalog $banks): array
+    {
+        $account = $w->bankAccount;
+        $history = Withdrawal::where('user_id', $w->user_id)->whereKeyNot($w->id);
+        $limits = $account && $banks->has($account->bank_code) ? $banks->limitsFor($account->bank_code) : null;
+        // Banks report technical limits (min Rp 1, max Rp 999 M); only show ones an admin can act on.
+        if ($limits) {
+            $limits['max'] = $limits['max'] !== null && $limits['max'] <= 10_000_000_000 ? $limits['max'] : null;
+            $limits = ($limits['min'] > 1000 || $limits['max'] !== null) ? $limits : null;
+        }
+
+        return [
+            'name_matches' => AccountNameMatch::matches($w->user?->name, $account?->account_holder_name),
+            'wallet_balance' => (int) floor((float) Wallet::where('user_id', $w->user_id)->value('balance')),
+            'previous_succeeded' => (clone $history)->where('status', Withdrawal::STATUS_SUCCEEDED)->count(),
+            'previous_failed' => (clone $history)->whereIn('status', [Withdrawal::STATUS_FAILED, Withdrawal::STATUS_REVERSED])->count(),
+            'bank_limits' => $limits,
+            'failure_text' => PayoutFailure::message($w->failure_code),
+            'can_resend' => $w->status === Withdrawal::STATUS_PROCESSING && $w->xendit_id === null,
+            'steps' => $this->steps($w),
+        ];
+    }
+
+    /** Timeline: Diajukan -> Approve admin -> Dikirim ke Xendit -> Masuk rekening. */
+    private function steps(Withdrawal $w): array
+    {
+        $at = fn (?Carbon $t) => $t?->timezone(config('app.timezone'))->translatedFormat('j M H.i');
+        $final = in_array($w->status, [Withdrawal::STATUS_FAILED, Withdrawal::STATUS_REJECTED, Withdrawal::STATUS_REVERSED], true);
+
+        return [
+            ['label' => 'Diajukan', 'state' => 'done', 'note' => $at($w->created_at)],
+            match (true) {
+                $w->status === Withdrawal::STATUS_PENDING => ['label' => 'Approve admin', 'state' => 'current', 'note' => 'Menunggu kamu'],
+                $w->status === Withdrawal::STATUS_REJECTED => ['label' => 'Ditolak admin', 'state' => 'failed', 'note' => $at($w->processed_at)],
+                default => ['label' => 'Approve admin', 'state' => 'done', 'note' => trim(($w->approvedBy?->name ?? '').' '.$at($w->approved_at))],
+            },
+            match (true) {
+                in_array($w->status, [Withdrawal::STATUS_PENDING, Withdrawal::STATUS_REJECTED], true) => ['label' => 'Dikirim ke Xendit', 'state' => 'todo', 'note' => null],
+                $w->xendit_id === null && $w->status === Withdrawal::STATUS_PROCESSING => ['label' => 'Dikirim ke Xendit', 'state' => 'current', 'note' => 'Hasil belum pasti'],
+                $w->xendit_id === null => ['label' => 'Dikirim ke Xendit', 'state' => 'failed', 'note' => 'Ditolak Xendit'],
+                default => ['label' => 'Dikirim ke Xendit', 'state' => 'done', 'note' => $w->payout_status],
+            },
+            match (true) {
+                $w->status === Withdrawal::STATUS_SUCCEEDED => ['label' => 'Masuk rekening', 'state' => 'done', 'note' => $at($w->processed_at)],
+                $final && $w->status !== Withdrawal::STATUS_REJECTED && $w->xendit_id !== null => ['label' => $w->status === Withdrawal::STATUS_REVERSED ? 'Dibatalkan bank' : 'Gagal', 'state' => 'failed', 'note' => $at($w->processed_at)],
+                $w->status === Withdrawal::STATUS_PROCESSING && $w->xendit_id !== null => ['label' => 'Masuk rekening', 'state' => 'current', 'note' => 'Menunggu webhook'],
+                default => ['label' => 'Masuk rekening', 'state' => 'todo', 'note' => null],
+            },
+        ];
+    }
+
+    private function rupiah(int|float $value): string
+    {
+        return 'Rp '.number_format($value, 0, ',', '.');
     }
 }

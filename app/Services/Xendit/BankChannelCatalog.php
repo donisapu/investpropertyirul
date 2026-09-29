@@ -83,6 +83,14 @@ class BankChannelCatalog
         return $this->find($code)['name'] ?? null;
     }
 
+    /** Short label for lists: "Bank Negara Indonesia (BNI)" -> "BNI"; otherwise the full name. */
+    public function shortNameFor(?string $code): string
+    {
+        $name = $this->nameFor($code) ?? preg_replace('/^ID_/', '', (string) $code);
+
+        return preg_match('/\(([^)]+)\)\s*$/', $name, $m) ? $m[1] : $name;
+    }
+
     /**
      * Per-bank amount limits for a Payout (used by the Withdrawal request).
      *

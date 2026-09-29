@@ -19,7 +19,7 @@ class UserBankAccount extends Model
         'account_holder_name',
     ];
 
-    protected $appends = ['bank_name'];
+    protected $appends = ['bank_name', 'bank_short_name'];
 
     public function user()
     {
@@ -35,6 +35,12 @@ class UserBankAccount extends Model
     public function hasOpenWithdrawal(): bool
     {
         return $this->withdrawals()->whereIn('status', Withdrawal::OPEN_STATUSES)->exists();
+    }
+
+    /** "BNI", "Bank Mandiri": short label for lists. */
+    public function getBankShortNameAttribute(): string
+    {
+        return app(BankChannelCatalog::class)->shortNameFor($this->bank_code);
     }
 
     /** Human bank name from the Xendit catalog; falls back to the stored code. */

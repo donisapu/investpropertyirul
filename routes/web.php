@@ -264,9 +264,9 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin'])->grou
 
     // Withdrawals
     Route::get('user-withdrawals', [AdminWithdrawalController::class, 'index'])->name('user-withdrawals');
-    Route::get('/user-withdrawals/data', [AdminWithdrawalController::class, 'getData'])->name('user-withdrawals.data');
     Route::post('/user-withdrawals/{withdrawal}/approve', [AdminWithdrawalController::class, 'approve'])->name('user-withdrawals.approve');
     Route::post('/user-withdrawals/{withdrawal}/reject', [AdminWithdrawalController::class, 'reject'])->name('user-withdrawals.reject');
+    Route::post('/user-withdrawals/{withdrawal}/resend', [AdminWithdrawalController::class, 'resend'])->name('user-withdrawals.resend');
     Route::get('/withdrawal-settings', [WithdrawalSettingController::class, 'edit'])->name('withdrawal-settings.edit');
     Route::put('/withdrawal-settings', [WithdrawalSettingController::class, 'update'])->name('withdrawal-settings.update');
 });

@@ -81,3 +81,65 @@ it('lets only one of two truly concurrent submits pass', function () {
         DB::beginTransaction(); // hand RefreshDatabase back the transaction it expects
     }
 })->group('concurrency');
+
+it('sends only one payout when two admins approve at the same moment', function () {
+    if (DB::connection()->getDriverName() !== 'pgsql' || ! function_exists('pcntl_fork')) {
+        $this->markTestSkipped('Needs Postgres (row locks) and pcntl.');
+    }
+
+    DB::rollBack();
+    \Illuminate\Support\Facades\Notification::fake();
+    // Slow Xendit: both admins are inside approve() at the same time.
+    \Illuminate\Support\Facades\Http::fake(function () {
+        usleep(300000);
+
+        return \Illuminate\Support\Facades\Http::response(['id' => 'disb-race-'.getmypid(), 'status' => 'ACCEPTED']);
+    });
+
+    $admin = User::forceCreate(['name' => 'Admin race', 'email' => uniqid('adm').'@example.com', 'password' => 'x', 'email_verified_at' => now()]);
+    $user = User::forceCreate(['name' => 'Race user', 'email' => uniqid('ru').'@example.com', 'password' => 'x', 'email_verified_at' => now()]);
+    $account = UserBankAccount::forceCreate(['user_id' => $user->id, 'bank_code' => 'ID_BCA', 'account_number' => '1234567890', 'account_holder_name' => 'Race user']);
+    $withdrawal = Withdrawal::forceCreate([
+        'user_id' => $user->id, 'user_bank_account_id' => $account->id, 'external_id' => 'WD-RACE-'.uniqid(),
+        'amount' => 60000, 'fee' => 5000, 'status' => 'pending',
+    ]);
+
+    try {
+        DB::disconnect();
+        $pids = [];
+        foreach ([1, 2] as $i) {
+            $pid = pcntl_fork();
+            if ($pid === 0) {
+                DB::reconnect();
+                try {
+                    $attempt = app(WithdrawalService::class)->approve($withdrawal, $admin);
+                    exit($attempt->outcome === 'sent' ? 0 : 1);
+                } catch (\App\Services\Withdrawal\WithdrawalActionRejected) {
+                    exit(3);
+                } catch (Throwable) {
+                    exit(1);
+                }
+            }
+            $pids[] = $pid;
+        }
+
+        $codes = [];
+        foreach ($pids as $pid) {
+            pcntl_waitpid($pid, $status);
+            $codes[] = pcntl_wexitstatus($status);
+        }
+        sort($codes);
+        DB::reconnect();
+
+        $fresh = $withdrawal->fresh();
+        expect($codes)->toBe([0, 3])
+            ->and($fresh->status)->toBe('processing')
+            ->and($fresh->xendit_id)->toStartWith('disb-race-');
+    } finally {
+        Withdrawal::whereKey($withdrawal->id)->delete();
+        UserBankAccount::withTrashed()->whereKey($account->id)->forceDelete();
+        Wallet::whereIn('user_id', [$user->id, $admin->id])->delete();
+        User::whereIn('id', [$user->id, $admin->id])->delete();
+        DB::beginTransaction();
+    }
+})->group('concurrency');
