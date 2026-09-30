@@ -92,7 +92,7 @@ export default function Howto({ auth, landings }) {
                         <h2 className="text-[clamp(1.5rem,3.2vw,2rem)] font-semibold leading-[1.25]">
                             Mulai Perjalanan Investasi Properti Anda
                         </h2>
-                        <p className="max-w-[65ch] text-[15px] leading-[23px] text-cream/70">
+                        <p className="max-w-[65ch] text-[16px] leading-[25px] text-cream/70">
                             Kami membuat investasi properti menjadi mudah
                             diakses, transparan, dan menguntungkan.
                         </p>
@@ -101,7 +101,7 @@ export default function Howto({ auth, landings }) {
                     {!auth?.user && (
                         <Link
                             href={safeRoute("register", "/register")}
-                            className="group inline-flex w-fit shrink-0 items-center gap-[22px] rounded-[40px] bg-gold px-[23px] py-4 text-[13px] font-semibold leading-5 text-ink transition-colors hover:bg-gold/90"
+                            className="group inline-flex w-fit shrink-0 items-center gap-[22px] rounded-[40px] bg-gold px-[23px] py-4 text-[14px] font-semibold leading-5 text-ink transition-colors hover:bg-gold/90"
                         >
                             Buat Akun Gratis
                             <ArrowRight
@@ -136,14 +136,14 @@ export default function Howto({ auth, landings }) {
                                 key={step.title}
                                 className="flex flex-col items-start gap-[18px] border-t border-gold-line pt-[22px]"
                             >
-                                <span className="text-[13px] leading-5 text-gold-ink">
+                                <span className="text-[14px] font-semibold leading-5 tabular-nums text-gold-ink">
                                     {String(index + 1).padStart(2, "0")}
                                 </span>
                                 <div className="flex flex-col gap-2">
-                                    <h3 className="text-[18px] font-semibold leading-7 text-ink">
+                                    <h3 className="text-[20px] font-semibold leading-7 text-ink">
                                         {step.title}
                                     </h3>
-                                    <p className="text-[14px] leading-[22px] text-ink-soft">
+                                    <p className="text-[16px] leading-[25px] text-ink-soft">
                                         {step.description}
                                     </p>
                                 </div>
@@ -178,11 +178,11 @@ export default function Howto({ auth, landings }) {
                                 key={method.title}
                                 className="flex h-full flex-col gap-5 rounded-xl bg-cream p-7"
                             >
-                                <h3 className="text-[23px] font-semibold leading-9 text-ink">
+                                <h3 className="text-[24px] font-semibold leading-9 text-ink">
                                     {method.title}
                                 </h3>
 
-                                <p className="text-[14px] leading-[22px] text-ink-soft lg:min-h-[110px]">
+                                <p className="text-[16px] leading-[25px] text-ink-soft lg:min-h-[125px]">
                                     {method.description}
                                 </p>
 
@@ -190,7 +190,7 @@ export default function Howto({ auth, landings }) {
                                     {method.features.map((feature) => (
                                         <li
                                             key={feature}
-                                            className="flex items-center gap-2.5 text-[14px] leading-[22px] text-ink"
+                                            className="flex items-center gap-2.5 text-[15px] leading-6 text-ink"
                                         >
                                             <Check
                                                 className="h-4 w-4 shrink-0 text-gold-ink"
@@ -204,7 +204,7 @@ export default function Howto({ auth, landings }) {
                                 <div className="mt-auto border-t border-gold-line pt-5">
                                     <Link
                                         href={method.link}
-                                        className="group inline-flex min-h-[44px] items-center gap-2 text-[13px] font-bold leading-5 text-ink transition-colors hover:text-gold-ink focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold-ink"
+                                        className="group inline-flex min-h-[44px] items-center gap-2 text-[15px] font-bold leading-5 text-ink transition-colors hover:text-gold-ink focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold-ink"
                                     >
                                         Lihat {method.title}
                                         <ArrowRight
