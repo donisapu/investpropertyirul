@@ -424,9 +424,9 @@ export default function PropertyForSale({ properties, settings }) {
                                             ) : (
                                                 <Tag size={12} />
                                             )}
-                                            {prop.cek === "Lelang"
+                                            {prop.cek === "auction"
                                                 ? "Lelang Terbuka"
-                                                : prop.cek === "Cessie"
+                                                : prop.cek === "cessie"
                                                   ? "Cessie"
                                                   : "Jual Langsung"}
                                         </div>

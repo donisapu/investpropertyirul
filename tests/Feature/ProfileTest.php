@@ -1,85 +1,62 @@
 <?php
 
+use App\Models\Role;
 use App\Models\User;
+use Inertia\Testing\AssertableInertia as Assert;
 
-test('profile page is displayed', function () {
-    $user = User::factory()->create();
+// The Breeze /profile page and "delete account" were dropped; the investor
+// edits name and phone on /user/settings (User\AccountController).
 
-    $response = $this
-        ->actingAs($user)
-        ->get('/profile');
+beforeEach(function () {
+    $this->withoutVite();
+    $this->user = User::factory()->create(['phone' => '0812']);
+    $this->user->roles()->attach(Role::firstOrCreate(['name' => 'user']));
+});
 
-    $response->assertOk();
+test('settings page is displayed', function () {
+    $this->actingAs($this->user)
+        ->get('/user/settings')
+        ->assertOk()
+        ->assertInertia(fn (Assert $page) => $page->component('Account/Setting'));
 });
 
 test('profile information can be updated', function () {
-    $user = User::factory()->create();
-
-    $response = $this
-        ->actingAs($user)
-        ->patch('/profile', [
+    $this->actingAs($this->user)
+        ->from('/user/settings')
+        ->put('/user/settings/profile', [
             'name' => 'Test User',
-            'email' => 'test@example.com',
-        ]);
-
-    $response
+            'phone' => '081234567890',
+        ])
         ->assertSessionHasNoErrors()
-        ->assertRedirect('/profile');
+        ->assertRedirect('/user/settings');
 
-    $user->refresh();
+    $this->user->refresh();
 
-    $this->assertSame('Test User', $user->name);
-    $this->assertSame('test@example.com', $user->email);
-    $this->assertNull($user->email_verified_at);
+    expect($this->user->name)->toBe('Test User')
+        ->and($this->user->phone)->toBe('081234567890');
 });
 
-test('email verification status is unchanged when the email address is unchanged', function () {
-    $user = User::factory()->create();
+test('the email address and its verification can not be changed from the profile form', function () {
+    $email = $this->user->email;
 
-    $response = $this
-        ->actingAs($user)
-        ->patch('/profile', [
+    $this->actingAs($this->user)
+        ->from('/user/settings')
+        ->put('/user/settings/profile', [
             'name' => 'Test User',
-            'email' => $user->email,
-        ]);
+            'email' => 'other@example.com',
+        ])
+        ->assertSessionHasNoErrors();
 
-    $response
-        ->assertSessionHasNoErrors()
-        ->assertRedirect('/profile');
+    $this->user->refresh();
 
-    $this->assertNotNull($user->refresh()->email_verified_at);
+    expect($this->user->email)->toBe($email)
+        ->and($this->user->email_verified_at)->not->toBeNull();
 });
 
-test('user can delete their account', function () {
-    $user = User::factory()->create();
-
-    $response = $this
-        ->actingAs($user)
-        ->delete('/profile', [
-            'password' => 'password',
-        ]);
-
-    $response
-        ->assertSessionHasNoErrors()
-        ->assertRedirect('/');
-
-    $this->assertGuest();
-    $this->assertNull($user->fresh());
-});
-
-test('correct password must be provided to delete account', function () {
-    $user = User::factory()->create();
-
-    $response = $this
-        ->actingAs($user)
-        ->from('/profile')
-        ->delete('/profile', [
-            'password' => 'wrong-password',
-        ]);
-
-    $response
-        ->assertSessionHasErrorsIn('userDeletion', 'password')
-        ->assertRedirect('/profile');
-
-    $this->assertNotNull($user->fresh());
+test('name is required', function () {
+    $this->actingAs($this->user)
+        ->from('/user/settings')
+        ->put('/user/settings/profile', ['name' => ''])
+        ->assertSessionHasErrors('name')
+        ->assertRedirect('/user/settings');
 });

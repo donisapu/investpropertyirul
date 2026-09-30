@@ -90,7 +90,7 @@ class PublicPropertyConsignmentController extends Controller
                     'name'             => $item->property?->property_name ?? '-',
                     'loc'              => $item->property?->property_location ?? '-',
                     'price'            => $item->open_bid,
-                    'ownership'        => $item->type ? "Auction / {$item->type}" : 'Auction / Lelang',
+                    'ownership'        => 'Auction / '.$item->type_label,
                     'type'             => $item->property?->property_type,
                     'status'           => $item->status,
                     'specs'            => [

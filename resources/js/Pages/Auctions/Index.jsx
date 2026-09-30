@@ -95,7 +95,7 @@ export default function Auctions({ auctions }) {
                                         <div className={`backdrop-blur-sm px-2 py-1 rounded text-xs font-semibold text-white uppercase self-start ${
                                             auction.type === 'cessie' ? 'bg-yellow-500/90' : 'bg-red-600/90'
                                         }`}>
-                                            {auction.type}
+                                            {auction.type_label ?? auction.type}
                                         </div>
                                     </div>
                                 </div>

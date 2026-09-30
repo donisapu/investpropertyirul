@@ -13,6 +13,8 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule): void
     {
         $schedule->command('profit:distribute')->monthlyOn(1, '00:00')->runInBackground();
+        // Xendit Transactions mirror (XW-08); webhooks keep it fresher in between.
+        $schedule->command('xendit:sync-transactions')->everyTenMinutes()->withoutOverlapping(15);
     }
 
     /**

@@ -16,6 +16,7 @@ use App\Http\Controllers\Admin\PropertyInvestmentController;
 use App\Http\Controllers\Admin\SellRequestController;
 use App\Http\Controllers\Admin\VillaController;
 use App\Http\Controllers\Admin\AdminWithdrawalController as AdminWithdrawalController;
+use App\Http\Controllers\Admin\WithdrawalSettingController;
 use App\Http\Controllers\Admin\WebsiteSettingController;
 use App\Http\Controllers\Admin\XenditDashboardController;
 use App\Http\Controllers\PublicInvestmentController;
@@ -127,11 +128,27 @@ Route::get('/privacy', function () {
 })->name('privacy');
 
 Route::post('/xendit/webhook', [PaymentController::class, 'callback']);
+// Payout results from Xendit. Token-checked in the controller; no session, CSRF or Inertia.
+Route::post('/xendit/webhook/payout', \App\Http\Controllers\Webhook\XenditPayoutWebhookController::class)
+    ->withoutMiddleware([
+        \App\Http\Middleware\VerifyCsrfToken::class,
+        \App\Http\Middleware\HandleInertiaRequests::class,
+        \Illuminate\Session\Middleware\StartSession::class,
+        \Illuminate\View\Middleware\ShareErrorsFromSession::class,
+    ])
+    ->name('xendit.webhook.payout');
 
 Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin'])->group(function () {
     // Dashboard
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/xendit-dashboard', [XenditDashboardController::class, 'index'])->name('xendit-dashboard');
+    Route::get('/xendit-transactions', [\App\Http\Controllers\Admin\XenditTransactionController::class, 'index'])->name('xendit-transactions');
+    Route::get('/xendit-transactions/export', [\App\Http\Controllers\Admin\XenditTransactionController::class, 'export'])->name('xendit-transactions.export');
+    Route::get('/company-cashouts', [\App\Http\Controllers\Admin\CompanyCashoutController::class, 'index'])->name('company-cashouts.index');
+    Route::get('/company-cashouts/create', [\App\Http\Controllers\Admin\CompanyCashoutController::class, 'create'])->name('company-cashouts.create');
+    Route::post('/company-cashouts', [\App\Http\Controllers\Admin\CompanyCashoutController::class, 'store'])->middleware('throttle:10,1')->name('company-cashouts.store');
+    Route::post('/company-cashouts/{cashout}/check-status', [\App\Http\Controllers\Admin\CompanyCashoutController::class, 'checkStatus'])->name('company-cashouts.check-status');
+    Route::post('/xendit-transactions/sync', [\App\Http\Controllers\Admin\XenditTransactionController::class, 'sync'])->middleware('throttle:6,1')->name('xendit-transactions.sync');
 
     // Property
     Route::get('properties', [PropertiesController::class, 'index'])->name('properties');
@@ -263,9 +280,12 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin'])->grou
 
     // Withdrawals
     Route::get('user-withdrawals', [AdminWithdrawalController::class, 'index'])->name('user-withdrawals');
-    Route::get('/user-withdrawals/data', [AdminWithdrawalController::class, 'getData'])->name('user-withdrawals.data');
     Route::post('/user-withdrawals/{withdrawal}/approve', [AdminWithdrawalController::class, 'approve'])->name('user-withdrawals.approve');
     Route::post('/user-withdrawals/{withdrawal}/reject', [AdminWithdrawalController::class, 'reject'])->name('user-withdrawals.reject');
+    Route::post('/user-withdrawals/{withdrawal}/resend', [AdminWithdrawalController::class, 'resend'])->name('user-withdrawals.resend');
+    Route::post('/user-withdrawals/{withdrawal}/check-status', [AdminWithdrawalController::class, 'checkStatus'])->name('user-withdrawals.check-status');
+    Route::get('/withdrawal-settings', [WithdrawalSettingController::class, 'edit'])->name('withdrawal-settings.edit');
+    Route::put('/withdrawal-settings', [WithdrawalSettingController::class, 'update'])->name('withdrawal-settings.update');
 });
 
 Route::prefix('user')->name('user.')->middleware(['auth', 'role:user', 'verified'])->group(function () {
@@ -296,6 +316,7 @@ Route::prefix('user')->name('user.')->middleware(['auth', 'role:user', 'verified
     // Withdrawals
     Route::get('/wallet', [WithdrawalController::class, 'index'])->name('wallet');
     Route::post('/bank-accounts', [WithdrawalController::class, 'storeBankAccount'])->name('bank-accounts.store');
+    Route::delete('/bank-accounts/{bankAccount}', [WithdrawalController::class, 'destroyBankAccount'])->whereNumber('bankAccount')->name('bank-accounts.destroy');
     Route::post('/withdrawals', [WithdrawalController::class, 'store'])->name('withdrawals.store');
 });
 

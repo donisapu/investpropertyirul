@@ -88,155 +88,81 @@
 
                 <div class="menu-inner-shadow"></div>
 
+                @php
+                    // Admin sidebar, same order and icons as the mockup "Admin Sidebar" (tmp/dashboard.pen).
+                    // `active` takes route name patterns, so create / edit / detail pages keep their menu lit.
+                    $adminMenu = [
+                        ['label' => 'Dashboard', 'icon' => 'bx-home-circle', 'route' => 'admin.dashboard', 'active' => ['admin.dashboard']],
+                        ['label' => 'Xendit Dashboard', 'icon' => 'bx-tachometer', 'route' => 'admin.xendit-dashboard', 'active' => ['admin.xendit-dashboard']],
+                        ['header' => 'Property'],
+                        ['label' => 'Properties', 'icon' => 'bx-building-house', 'route' => 'admin.properties', 'active' => ['admin.properties*']],
+                        ['header' => 'Transactions'],
+                        ['label' => 'Withdrawals', 'icon' => 'bx-wallet', 'route' => 'admin.user-withdrawals', 'active' => ['admin.user-withdrawals*']],
+                        ['label' => 'Xendit Transactions', 'icon' => 'bx-transfer', 'route' => 'admin.xendit-transactions', 'active' => ['admin.xendit-transactions*']],
+                        ['label' => 'Company Cash-out', 'icon' => 'bx-landmark', 'route' => 'admin.company-cashouts.create', 'active' => ['admin.company-cashouts*']],
+                        ['header' => 'Products'],
+                        ['label' => 'Investment', 'icon' => 'bx-chart-trend', 'children' => [
+                            ['label' => 'Property Investment', 'route' => 'admin.investment-properties', 'active' => ['admin.investment-properties*']],
+                            ['label' => 'Financials', 'route' => 'admin.financials', 'active' => ['admin.financials*']],
+                            ['label' => 'Sell Requests', 'route' => 'admin.sell-request', 'active' => ['admin.sell-request*']],
+                        ]],
+                        ['label' => 'Crowdfunding', 'icon' => 'bx-community', 'children' => [
+                            ['label' => 'Property Crowdfunding', 'route' => 'admin.crowdfunding-properties', 'active' => ['admin.crowdfunding-properties*']],
+                            ['label' => 'Financials', 'route' => 'admin.cw_financials', 'active' => ['admin.cw_financials*']],
+                        ]],
+                        ['label' => 'Property For Sale', 'icon' => 'bx-key', 'route' => 'admin.consignment-properties', 'active' => ['admin.consignment-properties*']],
+                        ['label' => 'Auctions', 'icon' => 'bx-gavel', 'route' => 'admin.auction-properties', 'active' => ['admin.auction-properties*', 'admin.admin.auction-properties*']],
+                        ['header' => 'Settings'],
+                        ['label' => 'Website Setting', 'icon' => 'bx-home-circle', 'children' => [
+                            ['label' => 'Website', 'route' => 'admin.website-settings.edit', 'active' => ['admin.website-settings*']],
+                            ['label' => 'Landing Page', 'route' => 'admin.landing-settings', 'active' => ['admin.landing-settings*']],
+                            ['label' => 'Withdrawal & Cash-out', 'route' => 'admin.withdrawal-settings.edit', 'active' => ['admin.withdrawal-settings*']],
+                        ]],
+                        ['label' => 'Developer', 'icon' => 'bx-home-circle', 'children' => [
+                            ['label' => 'Site Setting', 'route' => 'admin.developers', 'active' => ['admin.developers*']],
+                            ['label' => 'Project', 'route' => 'admin.projects', 'active' => ['admin.projects*']],
+                        ]],
+                        ['label' => 'Campaign', 'icon' => 'bx-home-circle', 'route' => 'admin.campaigns', 'active' => ['admin.campaigns*']],
+                    ];
+                    $menuActive = fn (array $item) => isset($item['children'])
+                        ? collect($item['children'])->contains(fn ($child) => request()->routeIs(...$child['active']))
+                        : request()->routeIs(...$item['active']);
+                @endphp
+
                 <ul class="menu-inner py-1">
-                    <!-- Dashboard -->
-                    <li class="menu-item {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
-                        <a href="{{ route('admin.dashboard') }}" class="menu-link">
-                            <i class="menu-icon tf-icons bx bx-home-circle"></i>
-                            <div data-i18n="Analytics">Dashboard</div>
-                        </a>
-                    </li>
-                    <li class="menu-item {{ request()->routeIs('admin.xendit-dashboard') ? 'active' : '' }}">
-                        <a href="{{ route('admin.xendit-dashboard') }}" class="menu-link">
-                            <i class="menu-icon tf-icons bx bx-home-circle"></i>
-                            <div data-i18n="Analytics">Xendit Dashboard</div>
-                        </a>
-                    </li>
-
-                    <li class="menu-header small text-uppercase">
-                        <span class="menu-header-text">Property</span>
-                    </li>
-                    <li class="menu-item {{ request()->routeIs('admin.properties') ? 'active' : '' }}">
-                        <a href="{{ route('admin.properties') }}" class="menu-link">
-                            <i class="menu-icon tf-icons bx bx-building-house"></i>
-                            <div data-i18n="Analytics">Properties</div>
-                        </a>
-                    </li>
-
-                    <li class="menu-header small text-uppercase">
-                        <span class="menu-header-text">Transactions</span>
-                    </li>
-                    <li class="menu-item {{ request()->routeIs('admin.withdrawals') ? 'active' : '' }}">
-                        <a href="{{ route('admin.user-withdrawals') }}" class="menu-link">
-                            <i class="menu-icon tf-icons bx bx-money"></i>
-                            <div data-i18n="Analytics">Withdrawals</div>
-                        </a>
-                    </li>
-
-                    <li class="menu-header small text-uppercase">
-                        <span class="menu-header-text">Products</span>
-                    </li>
-
-                    <li class="menu-item">
-                        <a href="javascript:void(0);" class="menu-link menu-toggle">
-                            <i class="menu-icon tf-icons bx bx-chart-trend"></i>
-                            <div data-i18n="Layouts">Investment</div>
-                        </a>
-
-                        <ul class="menu-sub">
-                            <li
-                                class="menu-item {{ request()->routeIs('admin.investment-properties') ? 'active' : '' }}">
-                                <a href="{{ route('admin.investment-properties') }}" class="menu-link">
-                                    <div data-i18n="Without menu">Property Investment</div>
+                    @foreach ($adminMenu as $item)
+                        @if (isset($item['header']))
+                            <li class="menu-header small text-uppercase">
+                                <span class="menu-header-text">{{ $item['header'] }}</span>
+                            </li>
+                        @elseif (isset($item['children']))
+                            @php $open = $menuActive($item); @endphp
+                            <li class="menu-item {{ $open ? 'active open' : '' }}">
+                                <a href="javascript:void(0);" class="menu-link menu-toggle">
+                                    <i class="menu-icon tf-icons bx {{ $item['icon'] }}"></i>
+                                    <div>{{ $item['label'] }}</div>
+                                </a>
+                                <ul class="menu-sub">
+                                    @foreach ($item['children'] as $child)
+                                        @php $childActive = $menuActive($child); @endphp
+                                        <li class="menu-item {{ $childActive ? 'active' : '' }}">
+                                            <a href="{{ route($child['route']) }}" class="menu-link" @if ($childActive) aria-current="page" @endif>
+                                                <div>{{ $child['label'] }}</div>
+                                            </a>
+                                        </li>
+                                    @endforeach
+                                </ul>
+                            </li>
+                        @else
+                            @php $isActive = $menuActive($item); @endphp
+                            <li class="menu-item {{ $isActive ? 'active' : '' }}">
+                                <a href="{{ route($item['route']) }}" class="menu-link" @if ($isActive) aria-current="page" @endif>
+                                    <i class="menu-icon tf-icons bx {{ $item['icon'] }}"></i>
+                                    <div>{{ $item['label'] }}</div>
                                 </a>
                             </li>
-                            <li class="menu-item {{ request()->routeIs('admin.financials') ? 'active' : '' }}">
-                                <a href="{{ route('admin.financials') }}" class="menu-link">
-                                    <div data-i18n="Without menu">Financials</div>
-                                </a>
-                            </li>
-                            <li class="menu-item {{ request()->routeIs('admin.sell-request') ? 'active' : '' }}">
-                                <a href="{{ route('admin.sell-request') }}" class="menu-link">
-                                    <div data-i18n="Without navbar">Sell Requests</div>
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
-
-                    <li class="menu-item">
-                        <a href="javascript:void(0);" class="menu-link menu-toggle">
-                            <i class="menu-icon tf-icons bx bx-community"></i>
-                            <div data-i18n="Layouts">Crowdfunding</div>
-                        </a>
-
-                        <ul class="menu-sub">
-                            <li
-                                class="menu-item {{ request()->routeIs('admin.crowdfunding-properties') ? 'active' : '' }}">
-                                <a href="{{ route('admin.crowdfunding-properties') }}" class="menu-link">
-                                    <div data-i18n="Analytics">Property Crowdfunding</div>
-                                </a>
-                            </li>
-                            <li class="menu-item {{ request()->routeIs('admin.cw_financials') ? 'active' : '' }}">
-                                <a href="{{ route('admin.cw_financials') }}" class="menu-link">
-                                    <div data-i18n="Without menu">Financials</div>
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
-
-                    <li class="menu-item {{ request()->routeIs('admin.consignment-properties') ? 'active' : '' }}">
-                        <a href="{{ route('admin.consignment-properties') }}" class="menu-link">
-                            <i class="menu-icon tf-icons bx bx-key"></i>
-                            <div data-i18n="Analytics">Property For Sale</div>
-                        </a>
-                    </li>
-
-                    <li class="menu-item {{ request()->routeIs('admin.auction-properties') ? 'active' : '' }}">
-                        <a href="{{ route('admin.auction-properties') }}" class="menu-link">
-                            <i class="menu-icon tf-icons bx bx-gavel"></i>
-                            <div data-i18n="Analytics">Auctions</div>
-                        </a>
-                    </li>
-                    <li class="menu-header small text-uppercase">
-                        <span class="menu-header-text">Settings</span>
-                    </li>
-                    <li class="menu-item {{ request()->routeIs('admin.website-settings.edit') ? 'active' : '' }}">
-                        <a href="javascript:void(0);" class="menu-link menu-toggle">
-                            <i class="menu-icon tf-icons bx bx-home-circle"></i>
-                            <div data-i18n="Layouts">Website Setting</div>
-                        </a>
-
-                        <ul class="menu-sub">
-                            <li
-                                class="menu-item {{ request()->routeIs('admin.website-settings.edit') ? 'active' : '' }}">
-                                <a href="{{ route('admin.website-settings.edit') }}" class="menu-link">
-                                    <div data-i18n="Analytics">Website</div>
-                                </a>
-                            </li>
-                            <li class="menu-item {{ request()->routeIs('admin.landing-settings') ? 'active' : '' }}">
-                                <a href="{{ route('admin.landing-settings') }}" class="menu-link">
-                                    <div data-i18n="Analytics">Landing Page</div>
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="menu-item {{ request()->routeIs('admin.developers') ? 'active' : '' }}">
-                        <a href="javascript:void(0);" class="menu-link menu-toggle">
-                            <i class="menu-icon tf-icons bx bx-home-circle"></i>
-                            <div data-i18n="Layouts">Developer</div>
-                        </a>
-
-                        <ul class="menu-sub">
-                            <li class="menu-item {{ request()->routeIs('admin.developers') ? 'active' : '' }}">
-                                <a href="{{ route('admin.developers') }}" class="menu-link">
-                                    <div data-i18n="Analytics">Site Setting</div>
-                                </a>
-                            </li>
-                            <li class="menu-item {{ request()->routeIs('admin.projects') ? 'active' : '' }}">
-                                <a href="{{ route('admin.projects') }}" class="menu-link">
-                                    <div data-i18n="Without menu">Project</div>
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="menu-item {{ request()->routeIs('admin.campaigns') ? 'active' : '' }}">
-                        <a href="{{ route('admin.campaigns') }}" class="menu-link">
-                            <i class="menu-icon tf-icons bx bx-home-circle"></i>
-                            <div data-i18n="Analytics">Campaign</div>
-                        </a>
-                    </li>
-                    <!-- Forms & Tables -->
-
+                        @endif
+                    @endforeach
                 </ul>
             </aside>
             <!-- / Menu -->

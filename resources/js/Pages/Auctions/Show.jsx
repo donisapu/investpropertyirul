@@ -251,9 +251,9 @@ export default function Show({ auction }) {
                                 <div className="flex flex-col gap-2 items-end">
                                     <span
                                         className={`px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide ${
-                                            auction.status === "running"
+                                            auction.status === "active"
                                                 ? "bg-emerald-100 text-emerald-700"
-                                                : auction.status === "finished"
+                                                : auction.status === "closed"
                                                   ? "bg-slate-100 text-slate-700"
                                                   : "bg-amber-100 text-amber-700"
                                         }`}
@@ -267,7 +267,7 @@ export default function Show({ auction }) {
                                                 : "bg-red-100 text-red-800"
                                         }`}
                                     >
-                                        {auction.type}
+                                        {auction.type_label ?? auction.type}
                                     </span>
                                 </div>
                             </div>
@@ -529,10 +529,10 @@ export default function Show({ auction }) {
                         {/* <div className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden sticky top-24">
                             <div className="p-6 bg-slate-900 text-white">
                                 <h3 className="font-bold text-lg mb-1 capitalize">
-                                    {auction.type} Details
+                                    {auction.type_label ?? auction.type} Details
                                 </h3>
                                 <p className="text-slate-300 text-sm">
-                                    Participate in this property {auction.type}
+                                    Participate in this property {auction.type_label ?? auction.type}
                                 </p>
                             </div>
 

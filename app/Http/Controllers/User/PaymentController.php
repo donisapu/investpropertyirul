@@ -11,6 +11,7 @@ use App\Models\Payment;
 use App\Models\PropertyCrowdfunding;
 use App\Models\PropertyInvestment;
 use App\Services\XenditService;
+use App\Services\Xendit\TransactionMirror;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -105,18 +106,37 @@ class PaymentController extends Controller
 
     public function callback(Request $request)
     {
-        if ($request->header('x-callback-token') !== config('xendit.callback_token')) {
+        $expectedToken = (string) config('xendit.callback_token');
+        $givenToken = (string) $request->header('x-callback-token');
+
+        // An empty configured token must never match an empty/missing header.
+        if ($expectedToken === '' || ! hash_equals($expectedToken, $givenToken)) {
             return response()->json(['message' => 'Unauthorized'], 403);
         }
 
         $data = $request->all();
-        $payment = Payment::where('external_id', $data['external_id'])->first();
+        $externalId = $data['external_id'] ?? null;
+        $payment = is_string($externalId) && $externalId !== ''
+            ? Payment::where('external_id', $externalId)->first()
+            : null;
 
-        if (!$payment) {
-            if (str_contains($data['external_id'], 'test') || (isset($data['id']) && str_contains($data['id'], 'test'))) {
-                return response()->json(['status' => 'success', 'message' => 'Test Received'], 200);
-            }
-            return response()->json(['message' => 'Payment not found'], 404);
+        // Acknowledge unknown invoices (dashboard "Test and save", other apps on the same
+        // Xendit account) with 200: a non-2xx makes Xendit retry up to 6 times for nothing.
+        if (! $payment) {
+            Log::warning('Xendit invoice webhook for unknown external_id', [
+                'external_id' => $externalId,
+                'invoice_id' => $data['id'] ?? null,
+                'status' => $data['status'] ?? null,
+                'webhook_id' => $request->header('webhook-id'),
+            ]);
+
+            return response()->json(['message' => 'Ignored: unknown external_id'], 200);
+        }
+
+        // Mirror the invoice's Xendit transaction after replying (XW-08).
+        if (is_string($data['id'] ?? null) && $data['id'] !== '') {
+            $invoiceId = $data['id'];
+            dispatch(fn () => app(TransactionMirror::class)->refreshProduct($invoiceId))->afterResponse();
         }
 
         if ($payment->status === 'PAID') {

@@ -2,7 +2,6 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Admin\XenditCallbackController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -13,7 +12,6 @@ use App\Http\Controllers\Admin\XenditCallbackController;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
-Route::post('/xendit/callback/invoice', [XenditCallbackController::class, 'handleInvoice']);
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });

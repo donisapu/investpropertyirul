@@ -11,6 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
+        // create_property_auctions_table now creates "type" itself; only add it on
+        // databases migrated before that change, so a fresh migrate does not fail.
+        if (Schema::hasColumn('property_auctions', 'type')) {
+            return;
+        }
+
         Schema::table('property_auctions', function (Blueprint $table) {
             $table->enum('type', ['auction', 'cessie'])->default('auction')->after('status');
         });

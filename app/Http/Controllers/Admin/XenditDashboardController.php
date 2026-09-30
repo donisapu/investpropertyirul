@@ -2,63 +2,21 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
-use Xendit\Configuration;
-use Xendit\BalanceAndTransaction\BalanceApi;
-use Xendit\Invoice\InvoiceApi;
+use App\Services\Xendit\XenditOverview;
 
-class XenditDashboardController extends Controller
+/**
+ * Admin Xendit Dashboard (mockup "Admin · Xendit Dashboard"). Always renders:
+ * when Xendit is down the balances fall back to the last known values.
+ */
+class XenditDashboardController extends AdminController
 {
-    protected BalanceApi $balanceApi;
-    protected InvoiceApi $invoiceApi;
+    protected string $viewPath = 'xendit_dashboard';
 
-    public function __construct()
+    public function index(XenditOverview $overview)
     {
-        Configuration::setXenditKey(config('xendit.secret_key', env('XENDIT_SECRET_KEY')));
-        $this->balanceApi = new BalanceApi();
-        $this->invoiceApi = new InvoiceApi();
-    }
-
-    public function index()
-    {
-        $balance = null;
-        $invoices = [];
-        $xenditError = null;
-
-        try {
-            $balance = $this->balanceApi->getBalance(
-                'CASH',
-                'IDR',
-                null,
-                null
-            );
-
-            $invoices = $this->invoiceApi->getInvoices(
-                null,
-                null,
-                null,
-                10,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null
-            );
-        } catch (\Throwable $e) {
-            $xenditError = $e->getMessage();
-        }
-
-        return view('pages.admin.xendit', [
-            'balance' => $balance?->getBalance(),
-            'invoices' => $invoices,
-            'xenditError' => $xenditError,
+        return $this->view('index', [
             'title' => 'Xendit Dashboard',
+            ...$overview->build(),
         ]);
     }
 }

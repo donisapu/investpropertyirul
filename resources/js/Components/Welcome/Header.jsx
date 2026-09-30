@@ -118,7 +118,7 @@ export default function Header() {
                             key={item.label}
                             href={hrefOf(item)}
                             aria-current={isActive(item) ? "page" : undefined}
-                            className={`text-[12px] font-semibold leading-[18px] transition-colors hover:text-gold-ink ${
+                            className={`text-[14px] font-semibold leading-5 transition-colors hover:text-gold-ink ${
                                 isActive(item) ? "text-gold-ink" : "text-ink"
                             }`}
                         >
@@ -136,7 +136,7 @@ export default function Header() {
                                 onClick={() => setAccountOpen(!accountOpen)}
                                 aria-expanded={accountOpen}
                                 aria-haspopup="menu"
-                                className="flex items-center gap-2 rounded-[40px] bg-ink px-[23px] py-4 text-[13px] font-semibold leading-5 text-cream transition-colors hover:bg-ink-soft"
+                                className="flex items-center gap-2 rounded-[40px] bg-ink px-[23px] py-4 text-[14px] font-semibold leading-5 text-cream transition-colors hover:bg-ink-soft"
                             >
                                 My Account
                                 <ChevronDown
@@ -178,7 +178,7 @@ export default function Header() {
                     ) : (
                         <a
                             href={safeRoute("login")}
-                            className="rounded-[40px] bg-ink px-[23px] py-4 text-[13px] font-semibold leading-5 text-cream transition-colors hover:bg-ink-soft"
+                            className="rounded-[40px] bg-ink px-[23px] py-4 text-[14px] font-semibold leading-5 text-cream transition-colors hover:bg-ink-soft"
                         >
                             My Account
                         </a>
@@ -253,7 +253,7 @@ export default function Header() {
                         <Link
                             href={safeRoute("login")}
                             onClick={() => setOpen(false)}
-                            className="mt-5 inline-flex rounded-[40px] bg-ink px-[23px] py-3.5 text-[13px] font-semibold leading-5 text-cream"
+                            className="mt-5 inline-flex rounded-[40px] bg-ink px-[23px] py-3.5 text-[14px] font-semibold leading-5 text-cream"
                         >
                             My Account
                         </Link>

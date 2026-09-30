@@ -30,14 +30,17 @@ class InvestmentTest extends TestCase
 
         $investment = PropertyInvestment::create([
             'property_id' => $property->id,
-            'property_value' => 100000,
-            'price_perlot' => 100,
+            'asset_price' => 100000,
+            'total_investment_value' => 100000,
+            'rental_yield' => 6,
+            'appreciation_rate' => 4,
+            'price_per_lot' => 100,
             'total_lot' => 1000,
             'sold_lot' => 200,
             'min_lot_size' => 1,
             'max_lot_size' => 10,
-            'estimated_roi' => 10,
-            'roi_period' => 12,
+            'projected_roi' => 10,
+            'roi_period_months' => 12,
             'status' => 'Open',
         ]);
 
@@ -73,14 +76,17 @@ class InvestmentTest extends TestCase
 
         $investment = PropertyInvestment::create([
             'property_id' => $property->id,
-            'property_value' => 100000,
-            'price_perlot' => 100,
+            'asset_price' => 100000,
+            'total_investment_value' => 100000,
+            'rental_yield' => 6,
+            'appreciation_rate' => 4,
+            'price_per_lot' => 100,
             'total_lot' => 1000,
             'sold_lot' => 500,
             'min_lot_size' => 1,
             'max_lot_size' => 10,
-            'estimated_roi' => 10,
-            'roi_period' => 12,
+            'projected_roi' => 10,
+            'roi_period_months' => 12,
             'status' => 'Open',
         ]);
 
