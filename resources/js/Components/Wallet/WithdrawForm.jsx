@@ -1,4 +1,4 @@
-import { forwardRef, useEffect, useMemo, useState } from "react";
+import { forwardRef, useEffect, useMemo, useRef, useState } from "react";
 import { router, useForm } from "@inertiajs/react";
 import { Info, Plus, Trash2 } from "lucide-react";
 import BankBadge from "@/Components/Wallet/BankBadge";
@@ -25,6 +25,9 @@ const WithdrawForm = forwardRef(function WithdrawForm(
     });
     const [showAllAccounts, setShowAllAccounts] = useState(!collapseAccounts);
     const [deletingId, setDeletingId] = useState(null);
+    // Delete asks inline, inside the account card itself (no browser dialog).
+    const [confirmingId, setConfirmingId] = useState(null);
+    const trashRefs = useRef({});
 
     // The same form moves between the desktop panel and the mobile sheet.
     useEffect(() => setShowAllAccounts(!collapseAccounts), [collapseAccounts]);
@@ -82,12 +85,20 @@ const WithdrawForm = forwardRef(function WithdrawForm(
         });
     };
 
+    const cancelDelete = (acc) => {
+        setConfirmingId(null);
+        // Back to where the person was: the trash button of that card.
+        requestAnimationFrame(() => trashRefs.current[acc.id]?.focus());
+    };
+
     const deleteAccount = (acc) => {
-        if (!window.confirm(`Hapus rekening ${acc.bank_name} •••• ${acc.last4}?`)) return;
         setDeletingId(acc.id);
         router.delete(route("user.bank-accounts.destroy", acc.id), {
             preserveScroll: true,
-            onFinish: () => setDeletingId(null),
+            onFinish: () => {
+                setDeletingId(null);
+                setConfirmingId(null);
+            },
         });
     };
 
@@ -178,6 +189,17 @@ const WithdrawForm = forwardRef(function WithdrawForm(
                 <div className="flex flex-col gap-2.5">
                     {visibleAccounts.map((acc) => {
                         const selected = acc === account;
+                        if (confirmingId === acc.id) {
+                            return (
+                                <DeleteConfirm
+                                    key={acc.id}
+                                    account={acc}
+                                    deleting={deletingId === acc.id}
+                                    onCancel={() => cancelDelete(acc)}
+                                    onConfirm={() => deleteAccount(acc)}
+                                />
+                            );
+                        }
                         return (
                             <div
                                 key={acc.id}
@@ -222,7 +244,8 @@ const WithdrawForm = forwardRef(function WithdrawForm(
                                 </label>
                                 <button
                                     type="button"
-                                    onClick={() => deleteAccount(acc)}
+                                    ref={(el) => (trashRefs.current[acc.id] = el)}
+                                    onClick={() => setConfirmingId(acc.id)}
                                     disabled={deletingId === acc.id}
                                     aria-label={`Hapus rekening ${acc.bank_name} •••• ${acc.last4}`}
                                     className="shrink-0 rounded-lg p-1.5 text-ink-soft opacity-100 transition hover:bg-status-danger-bg hover:text-status-danger focus-visible:opacity-100 disabled:opacity-40 sm:opacity-0 sm:group-hover:opacity-100"
@@ -291,6 +314,68 @@ const WithdrawForm = forwardRef(function WithdrawForm(
         </form>
     );
 });
+
+/**
+ * The account card turned into its own question. An account an open Withdrawal
+ * still uses is explained instead of offered for deletion.
+ */
+function DeleteConfirm({ account, deleting, onCancel, onConfirm }) {
+    const cancelRef = useRef(null);
+    useEffect(() => cancelRef.current?.focus(), []);
+
+    const title = `${account.bank_name} •••• ${account.last4}`;
+    const blocked = account.in_use;
+
+    return (
+        <div
+            role="group"
+            aria-labelledby={`delete-${account.id}-title`}
+            aria-describedby={`delete-${account.id}-desc`}
+            onKeyDown={(e) => {
+                if (e.key === "Escape" && !deleting) {
+                    e.stopPropagation();
+                    onCancel();
+                }
+            }}
+            className={`flex flex-wrap items-center gap-x-3 gap-y-3 rounded-[14px] border p-3.5 ${
+                blocked ? "border-gold-edge bg-cream-deep" : "border-status-danger/40 bg-status-danger-bg"
+            }`}
+        >
+            <BankBadge code={account.bank_badge} />
+            <div className="min-w-0 flex-1 basis-40">
+                <p id={`delete-${account.id}-title`} className="truncate text-[13px] font-bold text-ink">
+                    {blocked ? `${title} sedang dipakai` : `Hapus ${title}?`}
+                </p>
+                <p id={`delete-${account.id}-desc`} className="text-[11px] font-medium leading-snug text-ink-soft">
+                    {blocked
+                        ? "Ada penarikan yang masih diproses ke rekening ini. Bisa dihapus setelah selesai."
+                        : `a.n ${account.holder} · riwayat penarikan tetap tersimpan`}
+                </p>
+            </div>
+            <div className="ml-auto flex shrink-0 gap-2">
+                <button
+                    ref={cancelRef}
+                    type="button"
+                    onClick={onCancel}
+                    disabled={deleting}
+                    className="h-9 rounded-[10px] px-3.5 text-xs font-bold text-ink transition-colors hover:bg-ink/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink disabled:opacity-40"
+                >
+                    {blocked ? "Oke" : "Batal"}
+                </button>
+                {!blocked && (
+                    <button
+                        type="button"
+                        onClick={onConfirm}
+                        disabled={deleting}
+                        className="h-9 rounded-[10px] bg-status-danger px-3.5 text-xs font-extrabold text-cream transition-[background-color,transform] hover:bg-status-danger/90 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-status-danger focus-visible:ring-offset-2 disabled:opacity-60"
+                    >
+                        {deleting ? "Menghapus…" : "Hapus"}
+                    </button>
+                )}
+            </div>
+        </div>
+    );
+}
 
 function Row({ label, value, strong = false, muted = false }) {
     return (

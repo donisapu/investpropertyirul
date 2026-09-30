@@ -62,6 +62,13 @@ class WalletOverview
             ->unique('user_bank_account_id')
             ->keyBy('user_bank_account_id');
 
+        // Accounts an open Withdrawal still uses cannot be deleted (the server checks again).
+        $inUse = Withdrawal::query()
+            ->where('user_id', $user->id)
+            ->whereIn('status', Withdrawal::OPEN_STATUSES)
+            ->pluck('user_bank_account_id')
+            ->flip();
+
         return $user->bankAccounts()->latest('id')->get()
             ->map(fn (UserBankAccount $account) => [
                 'id' => $account->id,
@@ -71,6 +78,7 @@ class WalletOverview
                 'last4' => $this->last4($account->account_number),
                 'holder' => $account->account_holder_name,
                 'last_failure' => PayoutFailure::message($lastFailures->get($account->id)?->failure_code),
+                'in_use' => $inUse->has($account->id),
             ])->values()->all();
     }
 

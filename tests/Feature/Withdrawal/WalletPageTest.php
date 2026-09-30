@@ -104,3 +104,19 @@ it('shares the success flash after a withdrawal', function () {
             ->has('history', 1)
             ->where('history.0.status.label', 'Menunggu admin'));
 });
+
+it('marks an account an open withdrawal still uses, so the page explains instead of offering delete', function () {
+    [$user, $account] = walletPageUser();
+    $free = UserBankAccount::forceCreate([
+        'user_id' => $user->id, 'bank_code' => 'ID_BNI', 'account_number' => '5550001111', 'account_holder_name' => 'Siti Rahma',
+    ]);
+    Withdrawal::forceCreate([
+        'user_id' => $user->id, 'user_bank_account_id' => $account->id, 'external_id' => 'WD-'.uniqid(),
+        'amount' => 100000, 'fee' => 5000, 'status' => 'processing',
+    ]);
+
+    $this->actingAs($user)->get(route('user.wallet'))
+        ->assertInertia(fn (Assert $page) => $page
+            ->where('bankAccounts', fn ($accounts) => collect($accounts)->firstWhere('id', $account->id)['in_use'] === true
+                && collect($accounts)->firstWhere('id', $free->id)['in_use'] === false));
+});
