@@ -323,7 +323,7 @@
                                     Tolak &amp; kembalikan saldo
                                 </button>
                                 <form method="POST" action="{{ route('admin.user-withdrawals.approve', $w) }}" id="wd-approve-form" data-guard
-                                    data-confirm="Kirim {{ $rupiah($w->amount) }} ke {{ $acc?->bank_short_name }} a.n {{ $acc?->account_holder_name }}? Uang langsung dikirim lewat Xendit.">
+                                    data-confirm-dialog="#wd-approve-dialog">
                                     @csrf
                                     @foreach (array_filter(['tab' => $tab, 'q' => $filters['q'] ?? null, 'from' => $filters['from'] ?? null, 'to' => $filters['to'] ?? null, 'sort' => $sort]) as $k => $v)
                                         <input type="hidden" name="{{ $k }}" value="{{ $v }}">
@@ -340,7 +340,7 @@
                                 @endif
                                 @if ($detail['can_resend'])
                                 <form method="POST" action="{{ route('admin.user-withdrawals.resend', $w) }}" data-guard
-                                    data-confirm="Kirim ulang payout {{ $w->external_id }} ke Xendit?">
+                                    data-confirm-dialog="#wd-resend-dialog">
                                     @csrf
                                     <input type="hidden" name="tab" value="{{ $tab }}">
                                     <button class="btn btn-sm btn-primary">Kirim ulang ke Xendit</button>
@@ -348,6 +348,55 @@
                                 @endif
                             @endif
                         </div>
+
+                        @php $holderLine = trim(($acc?->bank_short_name ?? '-') . ' · ' . ($acc ? trim(chunk_split($acc->account_number, 4, ' ')) : '-')); @endphp
+                        @if ($w->status === 'pending')
+                            <x-admin.confirm-dialog id="wd-approve-dialog"
+                                :title="'Kirim ' . $rupiah($w->amount) . '?'"
+                                :subtitle="'Penarikan dana ' . ($w->user?->name ?? 'user')"
+                                :confirm-label="'Kirim ' . $rupiah($w->amount)">
+                                <div class="cd-dest">
+                                    <span class="cd-bank">{{ $acc ? mb_substr(\Illuminate\Support\Str::after($acc->bank_code, 'ID_'), 0, 7) : '?' }}</span>
+                                    <div class="min-w-0">
+                                        <div class="cd-dest-name text-truncate">{{ $acc?->account_holder_name ?? '-' }}</div>
+                                        <div class="cd-dest-meta">{{ $acc?->bank_short_name ?? '-' }} · <span class="cd-mono">{{ $acc ? trim(chunk_split($acc->account_number, 4, ' ')) : '-' }}</span></div>
+                                    </div>
+                                </div>
+                                <dl class="cd-rows">
+                                    <div class="cd-row is-total"><dt>Masuk ke rekening</dt><dd>{{ $rupiah($w->amount) }}</dd></div>
+                                    <div class="cd-row"><dt>Biaya admin</dt><dd>{{ $rupiah($w->fee) }}<small>sudah dipotong dari wallet user</small></dd></div>
+                                    <div class="cd-row">
+                                        <dt>Nama akun user</dt>
+                                        <dd>{{ $w->user?->name ?? '-' }}
+                                            @if ($detail['name_matches'])
+                                                <span class="cd-pill cd-pill-ok"><i class="bx bx-check"></i> cocok</span>
+                                            @else
+                                                <span class="cd-pill cd-pill-warn"><i class="bx bx-error"></i> berbeda</span>
+                                            @endif
+                                        </dd>
+                                    </div>
+                                </dl>
+                                @if ($detail['name_matches'])
+                                    <p class="cd-note"><i class="bx bx-info-circle" aria-hidden="true"></i><span>Uang langsung dikirim lewat Xendit dan tidak bisa dibatalkan. Kalau bank menolak, {{ $rupiah($w->totalDeduction()) }} kembali otomatis ke wallet user.</span></p>
+                                @else
+                                    <p class="cd-note is-warn"><i class="bx bx-error" aria-hidden="true"></i><span>Nama di rekening tidak sama dengan nama akun. Bank bisa menolak transfer, atau uang masuk ke orang lain. Kalau ragu, tolak dan minta user memakai rekening atas nama sendiri.</span></p>
+                                    <x-slot:ack>Saya sudah memastikan rekening a.n {{ $acc?->account_holder_name ?? '-' }} milik {{ $w->user?->name ?? 'user ini' }}.</x-slot:ack>
+                                @endif
+                            </x-admin.confirm-dialog>
+                        @endif
+
+                        @if ($detail['can_resend'])
+                            <x-admin.confirm-dialog id="wd-resend-dialog"
+                                title="Kirim ulang ke Xendit?"
+                                :subtitle="$rupiah($w->amount) . ' ke ' . ($acc?->account_holder_name ?? '-')"
+                                confirm-label="Kirim ulang">
+                                <dl class="cd-rows">
+                                    <div class="cd-row"><dt>Referensi</dt><dd class="cd-mono">{{ $w->external_id }}</dd></div>
+                                    <div class="cd-row"><dt>Rekening</dt><dd>{{ $holderLine }}</dd></div>
+                                </dl>
+                                <p class="cd-note"><i class="bx bx-shield-quarter" aria-hidden="true"></i><span>Aman diulang: Xendit memakai referensi yang sama, jadi uang tidak akan terkirim dua kali. Kalau belum, cek status ke Xendit dulu.</span></p>
+                            </x-admin.confirm-dialog>
+                        @endif
                     @endif
                 </div>
             @else
@@ -364,13 +413,9 @@
 @push('scripts')
     <script>
         (function () {
-            // Confirm + one submit only (double click / impatient admin).
+            // One submit only (double click / impatient admin). Money actions confirm first in x-admin.confirm-dialog.
             document.querySelectorAll('form[data-guard]').forEach(function (form) {
                 form.addEventListener('submit', function (e) {
-                    if (form.dataset.confirm && !window.confirm(form.dataset.confirm)) {
-                        e.preventDefault();
-                        return;
-                    }
                     if (form.dataset.sent) {
                         e.preventDefault();
                         return;

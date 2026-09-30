@@ -34,7 +34,7 @@
         .co-picked { max-height: 12rem; overflow-y: auto; }
         .co-picked li { display: flex; justify-content: space-between; gap: 1rem; font-size: .75rem; padding: .3rem 0; border-bottom: 1px solid #f0f1f3; }
         .co-dest { background: #f5f6f8; border-radius: .375rem; padding: .75rem; }
-        .co-bank { display: inline-flex; align-items: center; justify-content: center; width: 2.5rem; height: 1.75rem; border-radius: .25rem; background: #435971; color: #71a35f; font-size: .625rem; font-weight: 800; }
+        .co-bank { display: inline-flex; align-items: center; justify-content: center; min-width: 2.5rem; padding: 0 .35rem; height: 1.75rem; border-radius: .25rem; background: #435971; color: #71a35f; font-size: .625rem; font-weight: 800; }
     </style>
 
     <div class="d-flex flex-wrap align-items-end justify-content-between gap-3 mb-4">
@@ -57,7 +57,7 @@
         <div class="alert alert-danger" role="alert">{{ $errors->first() }}</div>
     @endif
 
-    <form method="POST" action="{{ route('admin.company-cashouts.store') }}" id="co-form">
+    <form method="POST" action="{{ route('admin.company-cashouts.store') }}" id="co-form" data-confirm-dialog="#co-dialog">
         @csrf
         <div class="row g-4">
             <div class="col-xl-8">
@@ -163,7 +163,7 @@
                             <div class="co-eyebrow text-uppercase mb-1" style="letter-spacing:.06em;font-size:.625rem">Rekening tujuan</div>
                             @if ($account)
                                 <div class="co-dest d-flex align-items-center gap-2">
-                                    <span class="co-bank">{{ mb_substr($accountBank, 0, 4) }}</span>
+                                    <span class="co-bank">{{ mb_substr(\Illuminate\Support\Str::after($account['bank_code'], 'ID_'), 0, 7) }}</span>
                                     <div class="flex-grow-1">
                                         <div class="co-main">{{ $account['account_holder'] }}</div>
                                         <div class="co-sub">{{ $accountBank }} · {{ substr($account['account_number'], 0, 4) }} •••• {{ substr($account['account_number'], -4) }}</div>
@@ -183,6 +183,25 @@
             </div>
         </div>
     </form>
+
+    <x-admin.confirm-dialog id="co-dialog" title="Cairkan ke rekening perusahaan?" subtitle="Ke rekening perusahaan yang diatur di Settings" confirm-label="Cairkan">
+        @if ($account)
+            <div class="cd-dest">
+                <span class="cd-bank">{{ mb_substr(\Illuminate\Support\Str::after($account['bank_code'], 'ID_'), 0, 7) }}</span>
+                <div class="min-w-0">
+                    <div class="cd-dest-name text-truncate">{{ $account['account_holder'] }}</div>
+                    <div class="cd-dest-meta">{{ $accountBank }} · <span class="cd-mono">{{ trim(chunk_split($account['account_number'], 4, ' ')) }}</span></div>
+                </div>
+            </div>
+        @endif
+        <dl class="cd-rows">
+            <div class="cd-row is-total"><dt>Dicairkan</dt><dd id="co-dialog-total">Rp 0</dd></div>
+            <div class="cd-row"><dt>Transaksi</dt><dd id="co-dialog-count">0</dd></div>
+            <div class="cd-row"><dt>Batas saat ini</dt><dd>{{ $rupiah($max) }}</dd></div>
+            <div class="cd-row"><dt>Sisa batas setelah ini</dt><dd id="co-dialog-left">{{ $rupiah($max) }}</dd></div>
+        </dl>
+        <p class="cd-note"><i class="bx bx-info-circle" aria-hidden="true"></i><span>Saldo Xendit dicek ulang sebelum dikirim; kalau sudah tidak cukup, Cash-out ditolak dan tidak ada uang keluar. Reserve milik user tidak tersentuh.</span></p>
+    </x-admin.confirm-dialog>
 @endsection
 
 @push('scripts')
@@ -258,9 +277,20 @@
                 checks.forEach(function (c) { c.checked = auto.indexOf(Number(c.value)) !== -1; });
                 render();
             });
+            // Fill the confirm dialog with the current selection right before it opens.
+            el('co-form').addEventListener('confirm-dialog:open', function (e) {
+                var picked = checks.filter(function (c) { return c.checked; });
+                var total = picked.reduce(function (sum, c) { return sum + Number(c.dataset.net); }, 0);
+                var modal = e.detail.modal;
+                el('co-dialog-total').textContent = fmt(total);
+                el('co-dialog-count').textContent = picked.length + ' transaksi';
+                el('co-dialog-left').textContent = max === null ? '—' : fmt(Math.max(0, max - total));
+                modal.querySelector('[data-confirm-title]').textContent = 'Cairkan ' + fmt(total) + '?';
+                modal.dataset.idleLabel = 'Cairkan ' + fmt(total);
+                modal.querySelector('[data-confirm-label]').textContent = modal.dataset.idleLabel;
+            });
             el('co-form').addEventListener('submit', function (e) {
                 if (el('co-submit').disabled) { e.preventDefault(); return; }
-                if (!window.confirm('Kirim ' + el('co-total').textContent + ' ke rekening perusahaan? Uang langsung dikirim lewat Xendit.')) { e.preventDefault(); return; }
                 el('co-submit').disabled = true;
                 el('co-submit').textContent = 'Mengirim…';
             });

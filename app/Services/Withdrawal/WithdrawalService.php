@@ -171,7 +171,10 @@ class WithdrawalService
 
         $attempt = $this->sendPayout($withdrawal);
 
-        if ($attempt->outcome !== PayoutAttempt::NOT_SENT) {
+        // Refused by Xendit at once: the user gets the refund email, never "on its way".
+        if ($attempt->outcome === PayoutAttempt::FAILED) {
+            $this->notify($attempt->withdrawal, new WithdrawalFailed($attempt->withdrawal));
+        } elseif ($attempt->outcome !== PayoutAttempt::NOT_SENT) {
             $this->notify($withdrawal, new WithdrawalApproved($withdrawal));
         }
 

@@ -7,6 +7,7 @@ use App\Models\Wallet;
 use App\Models\WalletTransaction;
 use App\Models\Withdrawal;
 use App\Notifications\WithdrawalApproved;
+use App\Notifications\WithdrawalFailed;
 use App\Notifications\WithdrawalRejected;
 use App\Services\Withdrawal\AccountNameMatch;
 use App\Services\Withdrawal\WithdrawalService;
@@ -103,6 +104,10 @@ it('fails and refunds amount + fee on a clear 4xx from Xendit', function () {
         ->and(walletBalance($w))->toBe(1000000)
         ->and((int) $refund->amount)->toBe(105000)
         ->and($refund->reference_id)->toBe($w->id);
+
+    // The user hears about the refund, not "approved and on its way".
+    Notification::assertSentToTimes($w->user, WithdrawalFailed::class, 1);
+    Notification::assertNotSentTo($w->user, WithdrawalApproved::class);
 });
 
 it('stays processing without refund when the result is unknown', function (Closure $response) {
@@ -279,4 +284,24 @@ it('matches names ignoring case, spacing and punctuation only', function () {
     expect(AccountNameMatch::matches('Siti Rahma', ' SITI  rahma. '))->toBeTrue()
         ->and(AccountNameMatch::matches('Rudi Hartono', 'CV Maju Jaya'))->toBeFalse()
         ->and(AccountNameMatch::matches('', ''))->toBeFalse();
+});
+
+it('confirms approve in a dialog that shows where the money goes, never with window.confirm', function () {
+    fakeBankChannels();
+    $same = pendingWithdrawal([], 'Siti Rahma', 'Siti Rahma');
+
+    $this->actingAs($this->admin)->get(route('admin.user-withdrawals', ['id' => $same->id]))
+        ->assertOk()
+        ->assertSee('data-confirm-dialog="#wd-approve-dialog"', false)
+        ->assertSee('id="wd-approve-dialog"', false)
+        ->assertSee('0231 4455 78')
+        ->assertDontSee('class="form-check-input" data-confirm-ack', false)
+        ->assertDontSee('window.confirm', false);
+
+    // Name differs: the admin must tick the check before the send button unlocks.
+    $other = pendingWithdrawal([], 'CV Maju Jaya', 'Rudi Hartono');
+    $this->actingAs($this->admin)->get(route('admin.user-withdrawals', ['id' => $other->id]))
+        ->assertOk()
+        ->assertSee('class="form-check-input" data-confirm-ack', false)
+        ->assertSee('Saya sudah memastikan rekening a.n CV Maju Jaya milik Rudi Hartono.');
 });
