@@ -40,7 +40,8 @@ function TransactionItem({ item }) {
         transType === "DEPOSIT" ||
         transType === "IN" ||
         transType === "ROI" ||
-        transType === "TOPUP";
+        transType === "TOPUP" ||
+        transType === "PROFIT";
 
     const title = item.title || item.description || item.label || transType;
     const category = item.category || transType;
@@ -101,7 +102,8 @@ export default function TransactionHistory({
             type === "DEPOSIT" ||
             type === "IN" ||
             type === "ROI" ||
-            type === "TOPUP";
+            type === "TOPUP" ||
+            type === "PROFIT";
 
         if (filter === "IN") return isIn;
         if (filter === "OUT") return !isIn;
@@ -283,7 +285,7 @@ export default function TransactionHistory({
                 <div className="grid gap-4">
                     {filteredTransactions && filteredTransactions.length > 0 ? (
                         filteredTransactions.map((item) => (
-                            <TransactionItem key={item.id} item={item} />
+                            <TransactionItem key={item.uid ?? item.id} item={item} />
                         ))
                     ) : (
                         <div className="text-center py-16 bg-cream rounded-[2.5rem] border-2 border-dashed border-gold-line">
