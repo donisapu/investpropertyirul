@@ -18,52 +18,61 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
+use Illuminate\Validation\ValidationException;
 
 class PaymentController extends Controller
 {
     public function payInvestment(Request $request, $id, XenditService $xendit)
     {
-        $investment = PropertyInvestment::where('property_id', $id)->firstOrFail();
+        // The row lock makes concurrent buyers of the same investment take turns, so the
+        // lots that pending invoices hold are counted before the next one is reserved (PF-06).
+        $payment = DB::transaction(function () use ($request, $id) {
+            $investment = PropertyInvestment::where('property_id', $id)->lockForUpdate()->firstOrFail();
 
-        if ($investment->status !== 'Open') {
-            return back()->withErrors(['error' => 'Investasi ini sedang tidak dibuka untuk pembelian.']);
-        }
+            if ($investment->status !== 'Open') {
+                throw ValidationException::withMessages(['error' => 'Investasi ini sedang tidak dibuka untuk pembelian.']);
+            }
 
-        $remaining = $investment->total_lot - $investment->sold_lot;
+            if ($investment->total_lot - $investment->sold_lot <= 0) {
+                throw ValidationException::withMessages(['error' => 'Lot investasi ini sudah habis.']);
+            }
 
-        if ($remaining <= 0) {
-            return back()->withErrors(['error' => 'Lot investasi ini sudah habis.']);
-        }
+            $available = $investment->availableLots();
 
-        $minLot = max(1, (int) $investment->min_lot_size);
-        $maxLot = $investment->max_lot_size > 0 ? min($investment->max_lot_size, $remaining) : $remaining;
+            if ($available <= 0) {
+                throw ValidationException::withMessages(['error' => 'Sisa lot sedang dipesan investor lain. Coba lagi nanti.']);
+            }
 
-        $request->validate([
-            'lot' => ['required', 'integer', 'min:' . $minLot, 'max:' . $maxLot],
-        ], [
-            'lot.required' => 'Jumlah lot wajib diisi.',
-            'lot.integer' => 'Jumlah lot harus bilangan bulat.',
-            'lot.min' => 'Minimal pembelian :min lot.',
-            'lot.max' => $maxLot === $remaining ? 'Sisa lot tinggal :max.' : 'Maksimal pembelian :max lot.',
-        ]);
+            $minLot = max(1, (int) $investment->min_lot_size);
+            $maxLot = $investment->max_lot_size > 0 ? min($investment->max_lot_size, $available) : $available;
 
-        $campaign = Campaign::discountFor($request->campaign_id, $investment);
-        $pricePerLot = $campaign
-            ? $campaign->discountedPrice($investment->price_per_lot)
-            : (int) round($investment->price_per_lot);
+            $request->validate([
+                'lot' => ['required', 'integer', 'min:' . $minLot, 'max:' . $maxLot],
+            ], [
+                'lot.required' => 'Jumlah lot wajib diisi.',
+                'lot.integer' => 'Jumlah lot harus bilangan bulat.',
+                'lot.min' => 'Minimal pembelian :min lot.',
+                'lot.max' => $maxLot === $available ? 'Sisa lot tinggal :max.' : 'Maksimal pembelian :max lot.',
+            ]);
 
-        $lot = (int) $request->lot;
+            $campaign = Campaign::discountFor($request->campaign_id, $investment);
+            $pricePerLot = $campaign
+                ? $campaign->discountedPrice($investment->price_per_lot)
+                : (int) round($investment->price_per_lot);
 
-        $payment = Payment::create([
-            'user_id' => Auth::id(),
-            'payable_id' => $investment->id,
-            'payable_type' => PropertyInvestment::class,
-            'campaign_id' => $campaign?->id,
-            'lot' => $lot,
-            'amount' => $lot * $pricePerLot,
-            'external_id' => 'INV-' . Str::uuid(),
-            'status' => 'PENDING',
-        ]);
+            $lot = (int) $request->lot;
+
+            return Payment::create([
+                'user_id' => Auth::id(),
+                'payable_id' => $investment->id,
+                'payable_type' => PropertyInvestment::class,
+                'campaign_id' => $campaign?->id,
+                'lot' => $lot,
+                'amount' => $lot * $pricePerLot,
+                'external_id' => 'INV-' . Str::uuid(),
+                'status' => 'PENDING',
+            ]);
+        });
 
         try {
             $invoice = $xendit->createInvoice(
@@ -93,42 +102,49 @@ class PaymentController extends Controller
 
     public function payCrowdfunding(Request $request, $id, XenditService $xendit)
     {
-        // The purchase page posts PropertyCrowdfunding.id (see PublicCrowdfundingController::purchase).
-        $crowdfunding = PropertyCrowdfunding::findOrFail($id);
+        // Same reservation rule as payInvestment (PF-06).
+        $payment = DB::transaction(function () use ($request, $id) {
+            // The purchase page posts PropertyCrowdfunding.id (see PublicCrowdfundingController::purchase).
+            $crowdfunding = PropertyCrowdfunding::lockForUpdate()->findOrFail($id);
 
-        if ($crowdfunding->status !== 'Open') {
-            return back()->withErrors(['error' => 'Crowdfunding ini sedang tidak dibuka untuk pendanaan.']);
-        }
+            if ($crowdfunding->status !== 'Open') {
+                throw ValidationException::withMessages(['error' => 'Crowdfunding ini sedang tidak dibuka untuk pendanaan.']);
+            }
 
-        $remaining = (int) floor($crowdfunding->funding_goal - $crowdfunding->collected_amount);
+            if ($crowdfunding->funding_goal - $crowdfunding->collected_amount <= 0) {
+                throw ValidationException::withMessages(['error' => 'Target pendanaan crowdfunding ini sudah terpenuhi.']);
+            }
 
-        if ($remaining <= 0) {
-            return back()->withErrors(['error' => 'Target pendanaan crowdfunding ini sudah terpenuhi.']);
-        }
+            $available = $crowdfunding->availableAmount();
 
-        $campaign = Campaign::discountFor($request->campaign_id, $crowdfunding);
-        $minAmount = $campaign
-            ? $campaign->discountedPrice($crowdfunding->min_contribution)
-            : (int) round($crowdfunding->min_contribution);
+            if ($available <= 0) {
+                throw ValidationException::withMessages(['error' => 'Sisa target sedang dipesan investor lain. Coba lagi nanti.']);
+            }
 
-        $request->validate([
-            'total_amount' => ['required', 'integer', 'min:' . min($minAmount, $remaining), 'max:' . $remaining],
-        ], [
-            'total_amount.required' => 'Nominal wajib diisi.',
-            'total_amount.integer' => 'Nominal harus bilangan bulat (rupiah).',
-            'total_amount.min' => 'Minimal partisipasi Rp ' . number_format(min($minAmount, $remaining), 0, ',', '.') . '.',
-            'total_amount.max' => 'Sisa target pendanaan tinggal Rp ' . number_format($remaining, 0, ',', '.') . '.',
-        ]);
+            $campaign = Campaign::discountFor($request->campaign_id, $crowdfunding);
+            $minAmount = min($available, $campaign
+                ? $campaign->discountedPrice($crowdfunding->min_contribution)
+                : (int) round($crowdfunding->min_contribution));
 
-        $payment = Payment::create([
-            'user_id' => Auth::id(),
-            'payable_id' => $crowdfunding->id,
-            'payable_type' => PropertyCrowdfunding::class,
-            'campaign_id' => $campaign?->id,
-            'amount' => (int) $request->total_amount,
-            'external_id' => 'INV-' . Str::random(10) . '-' . time(),
-            'status' => 'PENDING',
-        ]);
+            $request->validate([
+                'total_amount' => ['required', 'integer', 'min:' . $minAmount, 'max:' . $available],
+            ], [
+                'total_amount.required' => 'Nominal wajib diisi.',
+                'total_amount.integer' => 'Nominal harus bilangan bulat (rupiah).',
+                'total_amount.min' => 'Minimal partisipasi Rp ' . number_format($minAmount, 0, ',', '.') . '.',
+                'total_amount.max' => 'Sisa target pendanaan tinggal Rp ' . number_format($available, 0, ',', '.') . '.',
+            ]);
+
+            return Payment::create([
+                'user_id' => Auth::id(),
+                'payable_id' => $crowdfunding->id,
+                'payable_type' => PropertyCrowdfunding::class,
+                'campaign_id' => $campaign?->id,
+                'amount' => (int) $request->total_amount,
+                'external_id' => 'INV-' . Str::random(10) . '-' . time(),
+                'status' => 'PENDING',
+            ]);
+        });
 
         try {
             $invoice = $xendit->createInvoice(
@@ -196,6 +212,12 @@ class PaymentController extends Controller
         }
 
         DB::transaction(function () use ($payment, $data) {
+            // Retried / parallel deliveries of the same invoice take turns here; the later one sees PAID.
+            $payment = Payment::lockForUpdate()->find($payment->id);
+
+            if ($payment->status === 'PAID') {
+                return;
+            }
 
             $payment->update([
                 'status' => $data['status'],
@@ -204,7 +226,8 @@ class PaymentController extends Controller
 
             if ($data['status'] === 'PAID') {
 
-                $payable = $payment->payable;
+                // Locked so two payments for the same product cannot both take its last lots.
+                $payable = $payment->payable_type::lockForUpdate()->find($payment->payable_id);
 
                 if (!$payable) {
                     Log::error('PAYABLE NULL', ['payment_id' => $payment->id]);
@@ -213,6 +236,12 @@ class PaymentController extends Controller
 
                 // INVESTMENT
                 if ($payment->payable_type === \App\Models\PropertyInvestment::class) {
+
+                    if ($payable->sold_lot + $payment->lot > $payable->total_lot) {
+                        $this->flagForRefund($payment, $payable->total_lot - $payable->sold_lot);
+
+                        return;
+                    }
 
                     $payable->increment('sold_lot', $payment->lot);
                     $price_per_lot = $payment->amount / $payment->lot;
@@ -235,10 +264,20 @@ class PaymentController extends Controller
 
                     $portfolio->increment('total_lot', $payment->lot);
                     $portfolio->increment('total_invested', $payment->amount);
+
+                    if ($payable->sold_lot >= $payable->total_lot && $payable->status === 'Open') {
+                        $payable->update(['status' => 'FullyFunded']);
+                    }
                 }
 
                 // 🔵 CROWDFUNDING
                 if ($payment->payable_type === \App\Models\PropertyCrowdfunding::class) {
+
+                    if ($payable->collected_amount + $payment->amount > $payable->funding_goal) {
+                        $this->flagForRefund($payment, $payable->funding_goal - $payable->collected_amount);
+
+                        return;
+                    }
 
                     $payable->increment('collected_amount', $payment->amount);
 
@@ -256,11 +295,33 @@ class PaymentController extends Controller
                     ]);
 
                     $portfolio->increment('total_amount', $payment->amount);
+
+                    if ($payable->collected_amount >= $payable->funding_goal && $payable->status === 'Open') {
+                        $payable->update(['status' => 'Funded']);
+                    }
                 }
             }
         });
 
         return response()->json(['message' => 'OK']);
+    }
+
+    /**
+     * The money arrived but the product is already full (e.g. the admin lowered the target
+     * while an invoice was open). Nothing is booked; an admin refunds it.
+     */
+    private function flagForRefund(Payment $payment, $left): void
+    {
+        $payment->update(['needs_refund' => true]);
+
+        Log::error('Paid invoice exceeds what is left, needs refund', [
+            'payment_id' => $payment->id,
+            'payable_type' => $payment->payable_type,
+            'payable_id' => $payment->payable_id,
+            'lot' => $payment->lot,
+            'amount' => $payment->amount,
+            'left' => $left,
+        ]);
     }
 
     public function sellInvestment(Request $request, $id)

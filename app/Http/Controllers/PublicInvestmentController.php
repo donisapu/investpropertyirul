@@ -140,7 +140,7 @@ class PublicInvestmentController extends Controller
         }
 
         // Same bounds as PaymentController::payInvestment.
-        $remaining = max(0, $investment->total_lot - $investment->sold_lot);
+        $remaining = $investment->availableLots(); // minus lots held by pending invoices
         $maxLot = $investment->max_lot_size > 0 ? min($investment->max_lot_size, $remaining) : $remaining;
 
         $property = [

@@ -208,7 +208,7 @@ class PublicCrowdfundingController extends Controller
             'min_contribution' => $originalMinContribution,
             'discounted_min_contribution' => $discountedMinContribution,
             'discount_percent' => $discountPercent,
-            'remaining' => max(0, (int) floor($crowdfunding->funding_goal - $crowdfunding->collected_amount)),
+            'remaining' => $crowdfunding->availableAmount(), // minus amounts held by pending invoices
             'is_open' => $crowdfunding->status === 'Open',
             'progress' => $progress,
             'status' => ucfirst($crowdfunding->status),

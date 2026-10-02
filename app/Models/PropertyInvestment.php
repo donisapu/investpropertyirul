@@ -32,4 +32,20 @@ class PropertyInvestment extends Model
     {
         return $this->belongsTo(Properties::class, 'property_id');
     }
+
+    public function payments()
+    {
+        return $this->morphMany(Payment::class, 'payable');
+    }
+
+    // Lots held by invoices that can still be paid.
+    public function reservedLots(): int
+    {
+        return (int) $this->payments()->reserving()->sum('lot');
+    }
+
+    public function availableLots(): int
+    {
+        return max(0, $this->total_lot - $this->sold_lot - $this->reservedLots());
+    }
 }
