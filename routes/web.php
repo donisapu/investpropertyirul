@@ -248,6 +248,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin'])->grou
     Route::post('financials/store/{id}', [PropertyFinancialsController::class, 'store'])->name('financials.store');
     Route::post('financials/update/{id}/{back}', [PropertyFinancialsController::class, 'update'])->name('financials.update');
     Route::get('financials/delete/{id}/{back}', [PropertyFinancialsController::class, 'destroy'])->name('financials.destroy');
+    Route::post('financials/distribute/{id}/{back}', [PropertyFinancialsController::class, 'distribute'])->name('financials.distribute');
 
     // Crowdfunding Financials
     Route::get('cw-financials', [CrowdfundingFinancialsController::class, 'index'])->name('cw_financials');
