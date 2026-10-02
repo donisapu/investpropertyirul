@@ -257,6 +257,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin'])->grou
     Route::post('cw-financials/store/{id}', [CrowdfundingFinancialsController::class, 'store'])->name('cw_financials.store');
     Route::post('cw-financials/update/{id}/{back}', [CrowdfundingFinancialsController::class, 'update'])->name('cw_financials.update');
     Route::get('cw-financials/delete/{id}/{back}', [CrowdfundingFinancialsController::class, 'destroy'])->name('cw_financials.destroy');
+    Route::post('cw-financials/distribute/{id}/{back}', [CrowdfundingFinancialsController::class, 'distribute'])->name('cw_financials.distribute');
 
     // Lot Sell Management
     Route::get('sell-request', [SellRequestController::class, 'index'])->name('sell-request');
