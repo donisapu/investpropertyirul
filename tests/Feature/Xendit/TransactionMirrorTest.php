@@ -66,7 +66,7 @@ it('inserts a transaction with fee = xendit fee + VAT', function () {
         ->and((float) $row->fee)->toBe(4440.0)
         ->and($row->cashflow)->toBe('MONEY_IN')
         ->and($row->settlement_status)->toBe('SETTLED')
-        ->and($row->xendit_created_at->toIso8601String())->toBe('2026-09-29T07:02:00+00:00')
+        ->and($row->xendit_created_at->utc()->toIso8601String())->toBe('2026-09-29T07:02:00+00:00')
         ->and($row->payload['channel_code'])->toBe('BCA');
 });
 
