@@ -76,6 +76,8 @@ return [
             'prefix_indexes' => true,
             'search_path' => 'public',
             'sslmode' => 'prefer',
+            // Keep CURRENT_TIMESTAMP defaults in the same zone as now() (app.timezone).
+            'timezone' => 'Asia/Jakarta',
         ],
 
         'sqlsrv' => [
