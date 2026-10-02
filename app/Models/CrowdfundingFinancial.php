@@ -17,6 +17,11 @@ class CrowdfundingFinancial extends Model
         'is_distributed'
     ];
 
+    protected $casts = [
+        'is_distributed' => 'boolean',
+        'distributed_at' => 'datetime',
+    ];
+
     public function crowdfunding()
     {
         return $this->belongsTo(PropertyCrowdfunding::class, 'crowdfunding_id');

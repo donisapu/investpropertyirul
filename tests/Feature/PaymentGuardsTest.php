@@ -105,7 +105,8 @@ it('charges full price when the campaign does not apply', function (array $campa
     expect($this->invoices)->toBe([300000])->and(Payment::sole()->campaign_id)->toBeNull();
 })->with([
     'expired' => [['start_date' => '2026-07-21', 'end_date' => '2026-08-17'], false],
-    'not started' => [['start_date' => now()->addDay()->toDateString(), 'end_date' => now()->addWeek()->toDateString()], false],
+    // Resolved when the test runs: the app timezone (WIB) is not set yet while datasets load.
+    'not started' => [fn () => ['start_date' => now()->addDay()->toDateString(), 'end_date' => now()->addWeek()->toDateString()], false],
     'inactive' => [['status' => 'inactive'], false],
     'other property' => [[], true],
 ]);
