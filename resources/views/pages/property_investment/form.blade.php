@@ -27,6 +27,9 @@
                             </option>
                         @endif
                     </select>
+                    @error('property_id')
+                        <div class="text-danger small mt-1">{{ $message }}</div>
+                    @enderror
                 </div>
                 <div class="mb-3">
                     <label for="" class="form-label">Asset Price</label>

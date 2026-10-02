@@ -16,9 +16,15 @@ export default function Show({ property }) {
     const hasDiscount = (property.discount_percent || 0) > 0;
 
     // Batas minimal kontribusi (menggunakan nilai setelah diskon jika promo aktif)
-    const minAmount = hasDiscount
-        ? Number(property.discounted_min_contribution) || 0
-        : Number(property.min_contribution) || 0;
+    // Same bounds as the server (PaymentController::payCrowdfunding).
+    const remaining = Number(property.remaining ?? Infinity);
+    const minAmount = Math.min(
+        hasDiscount
+            ? Number(property.discounted_min_contribution) || 0
+            : Number(property.min_contribution) || 0,
+        remaining,
+    );
+    const isOpen = property.is_open !== false && remaining > 0;
 
     const [investAmount, setInvestAmount] = useState(0);
 
@@ -151,6 +157,14 @@ export default function Show({ property }) {
                                         <span className="font-bold text-ink">
                                             {formatCurrency(minAmount)}
                                         </span>
+                                        {Number.isFinite(remaining) && (
+                                            <>
+                                                {" "}· Sisa target{" "}
+                                                <span className="font-bold text-ink">
+                                                    {formatCurrency(remaining)}
+                                                </span>
+                                            </>
+                                        )}
                                     </p>
                                 </div>
 
@@ -163,6 +177,7 @@ export default function Show({ property }) {
                                         type="number"
                                         value={investAmount}
                                         min={minAmount}
+                                        max={Number.isFinite(remaining) ? remaining : undefined}
                                         onChange={(e) =>
                                             setInvestAmount(
                                                 Number(e.target.value),
@@ -180,7 +195,12 @@ export default function Show({ property }) {
                                                     key={amt}
                                                     type="button"
                                                     onClick={() =>
-                                                        setInvestAmount(amt)
+                                                        setInvestAmount(
+                                                            Math.min(
+                                                                Math.max(amt, minAmount),
+                                                                remaining,
+                                                            ),
+                                                        )
                                                     }
                                                     className="text-[10px] font-bold bg-cream border border-gold-line px-3 py-1.5 rounded-lg hover:border-gold hover:text-gold-ink transition-colors"
                                                 >
@@ -310,6 +330,15 @@ export default function Show({ property }) {
                                 </label>
                             </div>
 
+                            {!isOpen && !errors.error && (
+                                <p
+                                    role="alert"
+                                    className="mb-3 rounded-xl bg-rose-50 px-4 py-3 text-xs font-semibold text-rose-700"
+                                >
+                                    Crowdfunding ini sedang tidak dibuka atau target pendanaannya sudah terpenuhi.
+                                </p>
+                            )}
+
                             {(errors.error || errors.total_amount) && (
                                 <p
                                     role="alert"
@@ -323,10 +352,10 @@ export default function Show({ property }) {
                             <button
                                 onClick={handlePaymentSubmit}
                                 disabled={
-                                    processing || investAmount < minAmount
+                                    processing || !isOpen || investAmount < minAmount || investAmount > remaining
                                 }
                                 className={`w-full group flex items-center justify-center gap-2.5 text-white font-black py-4.5 rounded-2xl transition-all shadow-lg ${
-                                    processing || investAmount < minAmount
+                                    processing || !isOpen || investAmount < minAmount || investAmount > remaining
                                         ? "bg-cream-sink cursor-not-allowed"
                                         : "bg-ink hover:bg-gold-ink hover:shadow-gold/20 hover:-translate-y-0.5"
                                 }`}

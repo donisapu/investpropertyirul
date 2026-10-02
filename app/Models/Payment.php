@@ -12,6 +12,7 @@ class Payment extends Model
         'user_id',
         'payable_type',
         'payable_id',
+        'campaign_id',
         'amount',
         'external_id',
         'invoice_url',

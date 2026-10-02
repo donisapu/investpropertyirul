@@ -12,7 +12,11 @@ import {
 import PublicLayout from "@/Layouts/PublicLayout";
 
 export default function Show({ property }) {
-    const minLot = parseInt(property.financials?.min_lot || 1);
+    const minLot = Math.max(1, parseInt(property.financials?.min_lot || 1));
+    // Same bounds as the server (PaymentController::payInvestment).
+    const maxLot = parseInt(property.financials?.max_lot ?? Infinity);
+    const isOpen = property.financials?.is_open !== false && maxLot >= minLot;
+    const clamp = (value) => Math.min(Math.max(value, minLot), maxLot);
     const [quantity, setQuantity] = useState(minLot);
 
     // 1. Cek apakah ada diskon dari campaign
@@ -24,7 +28,7 @@ export default function Show({ property }) {
         ? parseFloat(property.financials.discounted_price_per_lot)
         : originalPrice;
 
-    const handleIncrement = () => setQuantity((prev) => prev + 1);
+    const handleIncrement = () => setQuantity((prev) => clamp(prev + 1));
     const handleDecrement = () =>
         setQuantity((prev) => (prev > minLot ? prev - 1 : minLot));
 
@@ -34,11 +38,7 @@ export default function Show({ property }) {
         setQuantity(numValue);
     };
 
-    const handleBlur = () => {
-        if (quantity < minLot) {
-            setQuantity(minLot);
-        }
-    };
+    const handleBlur = () => setQuantity((prev) => clamp(prev));
 
     // 2. Tambahkan campaign_id ke payload form
     const { data, setData, post, processing, errors } = useForm({
@@ -171,6 +171,7 @@ export default function Show({ property }) {
                                         <input
                                             type="number"
                                             min={minLot}
+                                            max={Number.isFinite(maxLot) ? maxLot : undefined}
                                             className="w-16 text-center font-extrabold text-ink focus:outline-none text-sm"
                                             value={quantity}
                                             onChange={handleInputChange}
@@ -191,7 +192,7 @@ export default function Show({ property }) {
                                             <button
                                                 key={val}
                                                 type="button"
-                                                onClick={() => setQuantity(val)}
+                                                onClick={() => setQuantity(clamp(val))}
                                                 className={`px-3 py-1.5 border rounded-lg text-xs font-bold transition-all ${
                                                     quantity === val
                                                         ? "bg-ink border-ink text-cream shadow-sm"
@@ -281,6 +282,15 @@ export default function Show({ property }) {
                                 </label>
                             </div>
 
+                            {!isOpen && !errors.error && (
+                                <p
+                                    role="alert"
+                                    className="mb-3 rounded-xl bg-rose-50 px-4 py-3 text-xs font-semibold text-rose-700"
+                                >
+                                    Investasi ini sedang tidak dibuka untuk pembelian atau lotnya sudah habis.
+                                </p>
+                            )}
+
                             {(errors.error || errors.lot) && (
                                 <p
                                     role="alert"
@@ -293,9 +303,9 @@ export default function Show({ property }) {
                             {/* Submit Button */}
                             <button
                                 onClick={handlePaymentSubmit}
-                                disabled={processing}
+                                disabled={processing || !isOpen}
                                 className={`w-full py-4 rounded-xl font-bold text-white text-sm transition-all flex items-center justify-center gap-2 shadow-md ${
-                                    processing
+                                    processing || !isOpen
                                         ? "bg-cream-sink text-ink-soft cursor-not-allowed"
                                         : "bg-ink hover:bg-ink-soft shadow-ink/10 hover:-translate-y-0.5"
                                 }`}

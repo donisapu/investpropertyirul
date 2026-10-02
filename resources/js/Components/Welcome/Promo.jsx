@@ -52,13 +52,13 @@ export default function Promo({ campaigns }) {
     };
 
     const getCtaUrl = (campaign) => {
-        const targetId = campaign.target_id || campaign.property_id;
         const discount = parseFloat(campaign.discount_percent || 0);
+        // Investment pages are addressed by property id, crowdfunding pages by crowdfunding id.
         if (campaign.type === "investment") {
-            return `/investments/purchase/${targetId}?discount=${discount}&campaign_id=${campaign.id}`;
+            return `/investments/purchase/${campaign.property_id}?discount=${discount}&campaign_id=${campaign.id}`;
         }
         if (campaign.type === "crowdfunding") {
-            return `/crowdfunding/purchase/${targetId}?discount=${discount}&campaign_id=${campaign.id}`;
+            return `/crowdfunding/purchase/${campaign.target_id}?discount=${discount}&campaign_id=${campaign.id}`;
         }
         return "#";
     };

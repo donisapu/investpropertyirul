@@ -52,6 +52,28 @@ class Campaign extends Model
             ->whereDate('end_date', '>=', now());
     }
 
+    /**
+     * The campaign that discounts $product today, or null. A campaign targets one product of its
+     * property (see getTypeAttribute), so it never discounts the property's other product.
+     */
+    public static function discountFor($campaignId, PropertyInvestment|PropertyCrowdfunding $product): ?self
+    {
+        if (! $campaignId) {
+            return null;
+        }
+
+        $campaign = static::active()->whereKey($campaignId)->where('property_id', $product->property_id)->first();
+        $type = $product instanceof PropertyInvestment ? 'investment' : 'crowdfunding';
+
+        return $campaign && $campaign->type === $type && $campaign->target_id === $product->id ? $campaign : null;
+    }
+
+    // Whole rupiah: Xendit invoices are in IDR without decimals.
+    public function discountedPrice($price): int
+    {
+        return (int) round($price * (1 - $this->discount_percent / 100));
+    }
+
     public function getTypeAttribute()
     {
         if ($this->property && $this->property->investment) {

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\user;
 
 use App\Http\Controllers\Controller;
+use App\Models\Campaign;
 use App\Models\CrowdfundingPortfolio;
 use App\Models\CrowdfundingTransaction;
 use App\Models\InvestmentPortfolio;
@@ -24,15 +25,42 @@ class PaymentController extends Controller
     {
         $investment = PropertyInvestment::where('property_id', $id)->firstOrFail();
 
-        $lot = $request->lot;
-        $amount = $lot * $investment->price_per_lot;
+        if ($investment->status !== 'Open') {
+            return back()->withErrors(['error' => 'Investasi ini sedang tidak dibuka untuk pembelian.']);
+        }
+
+        $remaining = $investment->total_lot - $investment->sold_lot;
+
+        if ($remaining <= 0) {
+            return back()->withErrors(['error' => 'Lot investasi ini sudah habis.']);
+        }
+
+        $minLot = max(1, (int) $investment->min_lot_size);
+        $maxLot = $investment->max_lot_size > 0 ? min($investment->max_lot_size, $remaining) : $remaining;
+
+        $request->validate([
+            'lot' => ['required', 'integer', 'min:' . $minLot, 'max:' . $maxLot],
+        ], [
+            'lot.required' => 'Jumlah lot wajib diisi.',
+            'lot.integer' => 'Jumlah lot harus bilangan bulat.',
+            'lot.min' => 'Minimal pembelian :min lot.',
+            'lot.max' => $maxLot === $remaining ? 'Sisa lot tinggal :max.' : 'Maksimal pembelian :max lot.',
+        ]);
+
+        $campaign = Campaign::discountFor($request->campaign_id, $investment);
+        $pricePerLot = $campaign
+            ? $campaign->discountedPrice($investment->price_per_lot)
+            : (int) round($investment->price_per_lot);
+
+        $lot = (int) $request->lot;
 
         $payment = Payment::create([
             'user_id' => Auth::id(),
             'payable_id' => $investment->id,
             'payable_type' => PropertyInvestment::class,
+            'campaign_id' => $campaign?->id,
             'lot' => $lot,
-            'amount' => $amount,
+            'amount' => $lot * $pricePerLot,
             'external_id' => 'INV-' . Str::uuid(),
             'status' => 'PENDING',
         ]);
@@ -65,18 +93,39 @@ class PaymentController extends Controller
 
     public function payCrowdfunding(Request $request, $id, XenditService $xendit)
     {
-        $request->validate([
-            'total_amount' => 'required|numeric|min:100000',
-        ]);
-
         // The purchase page posts PropertyCrowdfunding.id (see PublicCrowdfundingController::purchase).
         $crowdfunding = PropertyCrowdfunding::findOrFail($id);
+
+        if ($crowdfunding->status !== 'Open') {
+            return back()->withErrors(['error' => 'Crowdfunding ini sedang tidak dibuka untuk pendanaan.']);
+        }
+
+        $remaining = (int) floor($crowdfunding->funding_goal - $crowdfunding->collected_amount);
+
+        if ($remaining <= 0) {
+            return back()->withErrors(['error' => 'Target pendanaan crowdfunding ini sudah terpenuhi.']);
+        }
+
+        $campaign = Campaign::discountFor($request->campaign_id, $crowdfunding);
+        $minAmount = $campaign
+            ? $campaign->discountedPrice($crowdfunding->min_contribution)
+            : (int) round($crowdfunding->min_contribution);
+
+        $request->validate([
+            'total_amount' => ['required', 'integer', 'min:' . min($minAmount, $remaining), 'max:' . $remaining],
+        ], [
+            'total_amount.required' => 'Nominal wajib diisi.',
+            'total_amount.integer' => 'Nominal harus bilangan bulat (rupiah).',
+            'total_amount.min' => 'Minimal partisipasi Rp ' . number_format(min($minAmount, $remaining), 0, ',', '.') . '.',
+            'total_amount.max' => 'Sisa target pendanaan tinggal Rp ' . number_format($remaining, 0, ',', '.') . '.',
+        ]);
 
         $payment = Payment::create([
             'user_id' => Auth::id(),
             'payable_id' => $crowdfunding->id,
             'payable_type' => PropertyCrowdfunding::class,
-            'amount' => $request->total_amount,
+            'campaign_id' => $campaign?->id,
+            'amount' => (int) $request->total_amount,
             'external_id' => 'INV-' . Str::random(10) . '-' . time(),
             'status' => 'PENDING',
         ]);
