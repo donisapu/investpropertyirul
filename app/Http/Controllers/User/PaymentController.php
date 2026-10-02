@@ -22,7 +22,7 @@ class PaymentController extends Controller
 {
     public function payInvestment(Request $request, $id, XenditService $xendit)
     {
-        $investment = PropertyInvestment::where('property_id', $id)->first();
+        $investment = PropertyInvestment::where('property_id', $id)->firstOrFail();
 
         $lot = $request->lot;
         $amount = $lot * $investment->price_per_lot;
@@ -47,7 +47,7 @@ class PaymentController extends Controller
             $url = $invoice->getInvoiceUrl();
 
             if (!$url) {
-                Log::error('URL Invoice tidak ditemukan dalam respon Xendit');
+                throw new \Exception('URL Invoice tidak ditemukan dalam respon Xendit');
             }
 
             $payment->update([
@@ -56,7 +56,9 @@ class PaymentController extends Controller
 
             return \Inertia\Inertia::location($url);
         } catch (\Exception $e) {
-            Log::error('Xendit Error: ' . $e->getMessage());
+            $payment->delete();
+
+            Log::error('Xendit Error: ' . $e->getMessage(), ['external_id' => $payment->external_id]);
             return back()->withErrors(['error' => 'Terjadi kesalahan: ' . $e->getMessage()]);
         }
     }
@@ -67,7 +69,8 @@ class PaymentController extends Controller
             'total_amount' => 'required|numeric|min:100000',
         ]);
 
-        $crowdfunding = PropertyCrowdfunding::where('property_id', $id)->firstOrFail();
+        // The purchase page posts PropertyCrowdfunding.id (see PublicCrowdfundingController::purchase).
+        $crowdfunding = PropertyCrowdfunding::findOrFail($id);
 
         $payment = Payment::create([
             'user_id' => Auth::id(),
@@ -85,7 +88,7 @@ class PaymentController extends Controller
                 Auth::user()->email
             );
 
-            $url = $invoice['invoice_url'] ?? null;
+            $url = $invoice->getInvoiceUrl();
 
             if (!$url) {
                 throw new \Exception('URL Invoice tidak ditemukan dalam respon Xendit');
@@ -99,7 +102,7 @@ class PaymentController extends Controller
         } catch (\Exception $e) {
             $payment->delete();
 
-            // Log::error('Xendit Error: ' . $e->getMessage());
+            Log::error('Xendit Error: ' . $e->getMessage(), ['external_id' => $payment->external_id]);
             return back()->withErrors(['error' => 'Gagal membuat invoice: ' . $e->getMessage()]);
         }
     }

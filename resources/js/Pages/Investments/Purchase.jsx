@@ -41,7 +41,7 @@ export default function Show({ property }) {
     };
 
     // 2. Tambahkan campaign_id ke payload form
-    const { data, setData, post, processing } = useForm({
+    const { data, setData, post, processing, errors } = useForm({
         lot: quantity,
         campaign_id: property.campaign?.id || null,
     });
@@ -280,6 +280,15 @@ export default function Show({ property }) {
                                     </span>.
                                 </label>
                             </div>
+
+                            {(errors.error || errors.lot) && (
+                                <p
+                                    role="alert"
+                                    className="mb-3 rounded-xl bg-rose-50 px-4 py-3 text-xs font-semibold text-rose-700"
+                                >
+                                    {errors.error || errors.lot}
+                                </p>
+                            )}
 
                             {/* Submit Button */}
                             <button

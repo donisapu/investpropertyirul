@@ -36,7 +36,7 @@ export default function Show({ property }) {
     };
 
     // Form Inertia untuk kirim data transaksi
-    const { data, setData, post, processing } = useForm({
+    const { data, setData, post, processing, errors } = useForm({
         total_amount: investAmount,
         campaign_id: property.campaign?.id || null,
     });
@@ -50,7 +50,7 @@ export default function Show({ property }) {
         post(
             route(
                 "user.payment.crowdfunding",
-                property.crowdfunding_id || property.id,
+                property.crowdfunding_id,
             ),
         );
     };
@@ -309,6 +309,15 @@ export default function Show({ property }) {
                                     serta memahami potensi risiko investasi ini.
                                 </label>
                             </div>
+
+                            {(errors.error || errors.total_amount) && (
+                                <p
+                                    role="alert"
+                                    className="mb-3 rounded-xl bg-rose-50 px-4 py-3 text-xs font-semibold text-rose-700"
+                                >
+                                    {errors.error || errors.total_amount}
+                                </p>
+                            )}
 
                             {/* Tombol Lanjutkan Pembayaran */}
                             <button
