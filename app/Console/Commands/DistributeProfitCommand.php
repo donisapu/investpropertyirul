@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use App\Models\PropertyFinancial;
 use App\Services\DistributeProfitService;
+use App\Services\ProfitDistributionRejected;
 use Illuminate\Console\Command;
 
 class DistributeProfitCommand extends Command
@@ -39,8 +40,13 @@ class DistributeProfitCommand extends Command
 
         foreach ($financials as $financial) {
             $this->info("Lagi bagi profit buat ID: {$financial->id}...");
-            app(DistributeProfitService::class)->handle($financial);
-            $this->info("Kelarrr!");
+
+            try {
+                $result = app(DistributeProfitService::class)->handle($financial);
+                $this->info("Kelarrr! Rp {$result['total']} ke {$result['investors']} investor.");
+            } catch (ProfitDistributionRejected $e) {
+                $this->warn("Dilewati: {$e->getMessage()}");
+            }
         }
     }
 }

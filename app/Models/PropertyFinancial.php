@@ -19,6 +19,11 @@ class PropertyFinancial extends Model
         'is_distributed'
     ];
 
+    protected $casts = [
+        'is_distributed' => 'boolean',
+        'distributed_at' => 'datetime',
+    ];
+
     public function investment()
     {
         return $this->belongsTo(PropertyInvestment::class, 'property_investment_id');

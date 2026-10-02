@@ -4,9 +4,13 @@ namespace App\Http\Controllers\Admin;
 
 use App\Models\PropertyFinancial;
 use App\Models\PropertyInvestment;
+use App\Models\User;
+use App\Services\DistributeProfitService;
+use App\Services\ProfitDistributionRejected;
 use App\Traits\AdminDataTable;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\Rule;
 
 class PropertyFinancialsController extends AdminController
 {
@@ -16,6 +20,10 @@ class PropertyFinancialsController extends AdminController
     protected string $viewPath = 'property_financial';
 
     use AdminDataTable;
+
+    public function __construct(private DistributeProfitService $distributor)
+    {
+    }
 
     public function data()
     {
@@ -45,6 +53,8 @@ class PropertyFinancialsController extends AdminController
      */
     public function store(Request $request, $id)
     {
+        $request->validate($this->rules($id));
+
         DB::transaction(function () use ($request) {
 
             $income = $request->income ?? 0;
@@ -69,11 +79,20 @@ class PropertyFinancialsController extends AdminController
      */
     public function show($id)
     {
-        $data = PropertyInvestment::with('property')->where('id', $id)->first();
+        $data = PropertyInvestment::with('property')->where('id', $id)->firstOrFail();
+        $financials = PropertyFinancial::where('property_investment_id', $id)->orderBy('year')->orderBy('month')->get();
+
+        // What "Bagikan Profit" would pay, shown in its confirm dialog.
+        $previews = $financials
+            ->filter(fn ($item) => $item->status === 'FINAL' && ! $item->is_distributed)
+            ->mapWithKeys(fn ($item) => [$item->id => $this->distributor->preview($item)]);
+
         return $this->view('show', [
             'title' => $data->property->property_name . " Financials",
-            'data'  => PropertyFinancial::where('property_investment_id', $id)->get(),
-            'id'    => $id
+            'data'  => $financials,
+            'id'    => $id,
+            'previews' => $previews,
+            'investorNames' => User::whereIn('id', $previews->flatMap(fn ($plan) => $plan['shares']->pluck('user_id')))->pluck('name', 'id'),
         ]);
     }
 
@@ -90,7 +109,14 @@ class PropertyFinancialsController extends AdminController
      */
     public function update(Request $request, $id, $back)
     {
-        $data = PropertyFinancial::find($id);
+        $data = PropertyFinancial::findOrFail($id);
+
+        if ($data->is_distributed) {
+            return redirect()->route('admin.financials.show', $back)->with('error', 'Laporan yang profitnya sudah dibagikan tidak bisa diubah.');
+        }
+
+        $request->validate($this->rules($back, $data->id));
+
         $data->month = $request->month;
         $data->year = $request->year;
         $data->income = $request->income;
@@ -106,7 +132,50 @@ class PropertyFinancialsController extends AdminController
      */
     public function destroy($id, $back)
     {
-        PropertyFinancial::where('id', $id)->delete();
+        $data = PropertyFinancial::findOrFail($id);
+
+        if ($data->is_distributed) {
+            return redirect()->route('admin.financials.show', $back)->with('error', 'Laporan yang profitnya sudah dibagikan tidak bisa dihapus.');
+        }
+
+        $data->delete();
         return redirect()->route('admin.financials.show', $back);
+    }
+
+    /**
+     * Pay this month's net profit into the investors' wallets (admin decides when).
+     */
+    public function distribute($id, $back)
+    {
+        $financial = PropertyFinancial::where('property_investment_id', $back)->findOrFail($id);
+
+        try {
+            $result = $this->distributor->handle($financial);
+        } catch (ProfitDistributionRejected $e) {
+            return redirect()->route('admin.financials.show', $back)->with('error', $e->getMessage());
+        }
+
+        return redirect()->route('admin.financials.show', $back)->with('success', sprintf(
+            'Profit Rp %s dibagikan ke %d investor.',
+            number_format($result['total'], 0, ',', '.'),
+            $result['investors'],
+        ));
+    }
+
+    private function rules($investmentId, $ignoreId = null): array
+    {
+        return [
+            'month' => [
+                'required', 'integer', 'between:1,12',
+                Rule::unique('property_financials')
+                    ->where('property_investment_id', $investmentId)
+                    ->where('year', request('year'))
+                    ->ignore($ignoreId),
+            ],
+            'year' => ['required', 'integer', 'between:2000,2100'],
+            'income' => ['nullable', 'numeric', 'min:0'],
+            'expense' => ['nullable', 'numeric', 'min:0'],
+            'status' => ['required', Rule::in(['DRAFT', 'FINAL'])],
+        ];
     }
 }

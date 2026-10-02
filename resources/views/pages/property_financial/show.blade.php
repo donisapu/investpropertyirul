@@ -1,5 +1,20 @@
 @extends('layouts.app')
 @section('content')
+    @foreach (['success', 'error'] as $flash)
+        @if (session($flash))
+            <div class="alert alert-{{ $flash === 'success' ? 'success' : 'danger' }} alert-dismissible" role="alert">
+                {{ session($flash) }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
+    @endforeach
+    @if ($errors->any())
+        <div class="alert alert-danger" role="alert">
+            @foreach ($errors->all() as $error)
+                <div>{{ $error }}</div>
+            @endforeach
+        </div>
+    @endif
     <button type="button" class="btn btn-primary mb-2" data-bs-toggle="modal" data-bs-target="#addFinancials">
         Add Report
     </button>
@@ -81,6 +96,7 @@
                         <th>Expense</th>
                         <th>Net Profit</th>
                         <th>Status</th>
+                        <th>Profit</th>
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -110,6 +126,77 @@
                             <td>{{ number_format($item->net_profit) }}</td>
                             <td>{{ $item->status }}</td>
                             <td>
+                                @if ($item->is_distributed)
+                                    <span class="badge bg-label-success">Sudah dibagikan</span>
+                                    @if ($item->distributed_at)
+                                        <div class="small text-muted">{{ $item->distributed_at->format('d M Y H:i') }}</div>
+                                    @endif
+                                @elseif ($item->status === 'FINAL')
+                                    @php($plan = $previews[$item->id])
+                                    <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal"
+                                        data-bs-target="#distribute{{ $item->id }}" @disabled($plan['total'] <= 0)>
+                                        <i class="bx bx-wallet"></i> Bagikan Profit
+                                    </button>
+                                    @if ($plan['total'] <= 0)
+                                        <div class="small text-muted">
+                                            {{ $plan['net_profit'] <= 0 ? 'Net profit harus lebih dari 0' : 'Belum ada investor' }}
+                                        </div>
+                                    @endif
+                                    <div class="modal fade" id="distribute{{ $item->id }}" tabindex="-1" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title">Bagikan Profit {{ $months[$item->month] ?? '' }} {{ $item->year }}</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <form action="{{ route('admin.financials.distribute', [$item->id, $id]) }}" method="POST">
+                                                    @csrf
+                                                    <div class="modal-body">
+                                                        <p class="mb-2">
+                                                            Rp {{ number_format($plan['total'], 0, ',', '.') }} akan masuk ke wallet
+                                                            {{ $plan['shares']->count() }} investor, sesuai porsi lot yang mereka pegang saat ini.
+                                                        </p>
+                                                        @if ($plan['undistributed'] > 0)
+                                                            <p class="small text-muted mb-2">
+                                                                Rp {{ number_format($plan['undistributed'], 0, ',', '.') }} dari net profit
+                                                                Rp {{ number_format($plan['net_profit'], 0, ',', '.') }} tidak dibagikan
+                                                                (porsi lot yang belum terjual + pembulatan).
+                                                            </p>
+                                                        @endif
+                                                        <table class="table table-sm mb-2">
+                                                            <thead>
+                                                                <tr><th>Investor</th><th class="text-end">Lot</th><th class="text-end">Profit</th></tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                @foreach ($plan['shares'] as $share)
+                                                                    <tr>
+                                                                        <td>{{ $investorNames[$share['user_id']] ?? '#' . $share['user_id'] }}</td>
+                                                                        <td class="text-end">{{ number_format($share['lot'], 0, ',', '.') }}</td>
+                                                                        <td class="text-end">Rp {{ number_format($share['amount'], 0, ',', '.') }}</td>
+                                                                    </tr>
+                                                                @endforeach
+                                                            </tbody>
+                                                        </table>
+                                                        <p class="small text-danger mb-0">
+                                                            Tidak bisa dibatalkan. Setelah dibagikan, laporan ini tidak bisa diubah atau dihapus.
+                                                        </p>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Batal</button>
+                                                        <button type="submit" class="btn btn-success" onclick="this.disabled = true; this.form.submit();">
+                                                            Ya, bagikan
+                                                        </button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                @else
+                                    <span class="text-muted small">Set FINAL dulu</span>
+                                @endif
+                            </td>
+                            <td>
+                                @unless ($item->is_distributed)
                                 <button type="button" class="btn btn-primary mb-2 btn-sm" data-bs-toggle="modal"
                                     data-bs-target="#edit{{ $item->id }}">
                                     <i class="bx bx-edit"></i>
@@ -220,6 +307,7 @@
                                     </div>
                                 </div>
                                 <a href="{{ route('admin.financials.destroy',[$item->id,$id]) }}" class="btn btn-danger mb-2 btn-sm"><i class="bx bx-trash"></i></a>
+                                @endunless
                             </td>
                         </tr>
                     @endforeach
