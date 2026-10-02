@@ -7,6 +7,7 @@ use App\Models\PropertyImage;
 use App\Models\PropertyInvestment;
 use App\Traits\AdminDataTable;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
@@ -58,7 +59,7 @@ class PropertyInvestmentController extends AdminController
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'property_id'       => 'required|exists:properties,id',
+            'property_id'       => ['required', 'exists:properties,id', Rule::unique('property_investments', 'property_id')],
             'asset_price'       => 'required|numeric',
             'property_upgrades' => 'required|numeric',
             'notary_fee'        => 'required|numeric',
@@ -71,6 +72,8 @@ class PropertyInvestmentController extends AdminController
             'max_lot_size'      => 'required|integer',
             'roi_period_months' => 'required|integer',
             'status'            => 'required|string',
+        ], [
+            'property_id.unique' => 'Properti ini sudah punya data investasi.',
         ]);
 
         $total_investment = $request->asset_price + $request->property_upgrades + $request->notary_fee + $request->platform_fee;
@@ -130,7 +133,7 @@ class PropertyInvestmentController extends AdminController
         ]);
 
         $validated = $request->validate([
-            'property_id'       => 'required|exists:properties,id',
+            'property_id'       => ['required', 'exists:properties,id', Rule::unique('property_investments', 'property_id')->ignore($investment->id)],
             'asset_price'       => 'required|numeric',
             'property_upgrades' => 'required|numeric',
             'notary_fee'        => 'required|numeric',
@@ -143,6 +146,8 @@ class PropertyInvestmentController extends AdminController
             'max_lot_size'      => 'required|integer',
             'roi_period_months' => 'required|integer',
             'status'            => 'required|string',
+        ], [
+            'property_id.unique' => 'Properti ini sudah punya data investasi.',
         ]);
 
         Log::info('VALIDATED', $validated);

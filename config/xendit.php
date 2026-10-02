@@ -5,6 +5,10 @@ return [
     'callback_token' => env('XENDIT_CALLBACK_TOKEN'),
     'is_production' => env('XENDIT_IS_PRODUCTION', false),
 
+    // How long an invoice can be paid (seconds). A PENDING payment holds its lots /
+    // amount for this long, so it also limits how long quota stays reserved.
+    'invoice_duration' => (int) env('XENDIT_INVOICE_DURATION', 86400),
+
     /*
     |--------------------------------------------------------------------------
     | HTTP client (App\Services\Xendit\XenditGateway)

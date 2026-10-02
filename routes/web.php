@@ -73,7 +73,7 @@ Route::get('/', function () {
     $landmark = Landmark::all();
     $sliders  = SliderImage::all();
     $project = DeveloperProject::take(4)->get();
-    $campaign = Campaign::where('status', 'active')->get();
+    $campaign = Campaign::active()->get(); // expired campaigns drop off the homepage
     return Inertia::render('Welcome', [
         'settings' => $settings,
         'partners' => $partners,

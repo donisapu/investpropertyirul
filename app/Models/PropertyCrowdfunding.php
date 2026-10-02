@@ -25,4 +25,20 @@ class PropertyCrowdfunding extends Model
     {
         return $this->belongsTo(Properties::class, 'property_id');
     }
+
+    public function payments()
+    {
+        return $this->morphMany(Payment::class, 'payable');
+    }
+
+    // Rupiah held by invoices that can still be paid.
+    public function reservedAmount(): int
+    {
+        return (int) $this->payments()->reserving()->sum('amount');
+    }
+
+    public function availableAmount(): int
+    {
+        return max(0, (int) floor($this->funding_goal - $this->collected_amount) - $this->reservedAmount());
+    }
 }

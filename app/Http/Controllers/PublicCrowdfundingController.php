@@ -17,7 +17,7 @@ class PublicCrowdfundingController extends Controller
     public function index(Request $request)
     {
         $properties = PropertyCrowdfunding::with(['property.images'])
-            ->where('status', '!=', 'draft') // Show only active/open/success
+            ->where('status', '!=', 'Draft') // Show only active/open/success
             ->paginate(9);
 
         /** @var \Illuminate\Pagination\LengthAwarePaginator $properties */
@@ -65,7 +65,7 @@ class PublicCrowdfundingController extends Controller
     public function project()
     {
         $properties = PropertyCrowdfunding::with(['property.images'])
-            ->where('status', '!=', 'draft')
+            ->where('status', '!=', 'Draft')
             ->paginate(9);
 
         /** @var \Illuminate\Pagination\LengthAwarePaginator $properties */
@@ -108,7 +108,7 @@ class PublicCrowdfundingController extends Controller
     {
         $crowdfunding = PropertyCrowdfunding::with(['property.images', 'property.documents'])
             ->where('id', $id)
-            ->where('status', '!=', 'draft')
+            ->where('status', '!=', 'Draft')
             ->firstOrFail();
 
         $progress = 0;
@@ -162,35 +162,30 @@ class PublicCrowdfundingController extends Controller
     {
         $crowdfunding = PropertyCrowdfunding::with(['property.images', 'property.documents'])
             ->where('id', $id)
-            ->where('status', '!=', 'draft')
+            ->where('status', '!=', 'Draft')
             ->firstOrFail();
 
         // 1. Cek validasi campaign aktif jika campaign_id dikirim via query
         $discountPercent = 0;
         $campaignData = null;
 
-        if ($request->has('campaign_id')) {
-            $campaign = Campaign::where('id', $request->query('campaign_id'))
-                ->where('property_id', $crowdfunding->property_id)
-                ->where('status', 'active')
-                ->first();
+        $campaign = Campaign::discountFor($request->query('campaign_id'), $crowdfunding);
 
-            if ($campaign) {
-                $discountPercent = (float) $campaign->discount_percent;
-                $campaignData = [
-                    'id' => $campaign->id,
-                    'title' => $campaign->title,
-                    'discount_percent' => $discountPercent,
-                ];
-            }
+        if ($campaign) {
+            $discountPercent = (float) $campaign->discount_percent;
+            $campaignData = [
+                'id' => $campaign->id,
+                'title' => $campaign->title,
+                'discount_percent' => $discountPercent,
+            ];
         }
 
         // 2. Hitung diskon untuk nilai minimal kontribusi
         $originalMinContribution = (float) $crowdfunding->min_contribution;
         $discountedMinContribution = $originalMinContribution;
 
-        if ($discountPercent > 0) {
-            $discountedMinContribution = $originalMinContribution - ($originalMinContribution * ($discountPercent / 100));
+        if ($campaign) {
+            $discountedMinContribution = $campaign->discountedPrice($originalMinContribution);
         }
 
         // Calculate progress based on collected amount vs funding goal
@@ -213,6 +208,8 @@ class PublicCrowdfundingController extends Controller
             'min_contribution' => $originalMinContribution,
             'discounted_min_contribution' => $discountedMinContribution,
             'discount_percent' => $discountPercent,
+            'remaining' => $crowdfunding->availableAmount(), // minus amounts held by pending invoices
+            'is_open' => $crowdfunding->status === 'Open',
             'progress' => $progress,
             'status' => ucfirst($crowdfunding->status),
             'campaign' => $campaignData, // Passing data campaign ke frontend

@@ -19,7 +19,7 @@ class PublicInvestmentController extends Controller
      */
     public function index(Request $request)
     {
-        $properties = PropertyInvestment::with(['property.images'])->paginate(9);
+        $properties = PropertyInvestment::with(['property.images'])->where('status', '!=', 'Draft')->paginate(9);
 
         /** @var \Illuminate\Pagination\LengthAwarePaginator $properties */
         $properties->through(function ($investment) {
@@ -55,7 +55,7 @@ class PublicInvestmentController extends Controller
      */
     public function show($id)
     {
-        $investment = PropertyInvestment::with(['property.images'])->where('property_id', $id)->firstOrFail();
+        $investment = PropertyInvestment::with(['property.images'])->where('property_id', $id)->where('status', '!=', 'Draft')->firstOrFail();
 
         $property = [
             'id' => $investment->property->id,
@@ -114,35 +114,34 @@ class PublicInvestmentController extends Controller
 
     public function purchase(Request $request, $id)
     {
-        $investment = PropertyInvestment::with(['property.images'])->where('property_id', $id)->firstOrFail();
+        $investment = PropertyInvestment::with(['property.images'])->where('property_id', $id)->where('status', '!=', 'Draft')->firstOrFail();
 
         // 1. Cek campaign aktif berdasarkan request query
         $discountPercent = 0;
         $campaignData = null;
 
-        if ($request->has('campaign_id')) {
-            $campaign = Campaign::where('id', $request->query('campaign_id'))
-                ->where('property_id', $id)
-                ->where('status', 'active')
-                ->first();
+        $campaign = Campaign::discountFor($request->query('campaign_id'), $investment);
 
-            if ($campaign) {
-                $discountPercent = (float) $campaign->discount_percent;
-                $campaignData = [
-                    'id' => $campaign->id,
-                    'title' => $campaign->title,
-                    'discount_percent' => $discountPercent,
-                ];
-            }
+        if ($campaign) {
+            $discountPercent = (float) $campaign->discount_percent;
+            $campaignData = [
+                'id' => $campaign->id,
+                'title' => $campaign->title,
+                'discount_percent' => $discountPercent,
+            ];
         }
 
         // 2. Kalkulasi harga asli & harga diskon
         $originalPricePerLot = (float) $investment->price_per_lot;
         $discountedPricePerLot = $originalPricePerLot;
 
-        if ($discountPercent > 0) {
-            $discountedPricePerLot = $originalPricePerLot - ($originalPricePerLot * ($discountPercent / 100));
+        if ($campaign) {
+            $discountedPricePerLot = $campaign->discountedPrice($originalPricePerLot);
         }
+
+        // Same bounds as PaymentController::payInvestment.
+        $remaining = $investment->availableLots(); // minus lots held by pending invoices
+        $maxLot = $investment->max_lot_size > 0 ? min($investment->max_lot_size, $remaining) : $remaining;
 
         $property = [
             'id' => $investment->property->id,
@@ -164,6 +163,8 @@ class PublicInvestmentController extends Controller
                 'discounted_price_per_lot' => $discountedPricePerLot,
                 'discount_percent' => $discountPercent,
                 'min_lot' => $investment->min_lot_size,
+                'max_lot' => $maxLot,
+                'is_open' => $investment->status === 'Open' && $remaining > 0,
                 'total_tokens' => $investment->total_lot,
                 'tokens_left' => $investment->total_lot - $investment->sold_lot,
                 'progress' => $investment->total_lot > 0 ? round(($investment->sold_lot / $investment->total_lot) * 100) : 0,
@@ -234,7 +235,7 @@ class PublicInvestmentController extends Controller
             ],
         ];
         $settings = WebsiteSetting::getSettings();
-        $campaigns = Campaign::where('status', 'active')->get();
+        $campaigns = Campaign::active()->get();
 
         return Inertia::render('Investments/Sell', compact('property', 'settings', 'campaigns'));
     }

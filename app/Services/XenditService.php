@@ -29,7 +29,7 @@ class XenditService
             'amount' => (float) $amount, // Pastikan float/double
             'payer_email' => $email,
             'description' => 'Investment Payment',
-            'invoice_duration' => 86400,
+            'invoice_duration' => config('xendit.invoice_duration'),
             'currency' => 'IDR',
             'remember_me' => true,
             'success_redirect_url' => url('/user/transaction'), // Sesuaikan prefix user
