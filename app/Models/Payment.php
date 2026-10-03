@@ -25,6 +25,7 @@ class Payment extends Model
 
     protected $casts = [
         'needs_refund' => 'boolean',
+        'refunded_at' => 'datetime',
     ];
 
     // PENDING invoices that Xendit still accepts payment for: they hold their lots / amount.

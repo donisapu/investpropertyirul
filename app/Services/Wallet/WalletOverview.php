@@ -4,6 +4,7 @@ namespace App\Services\Wallet;
 
 use App\Models\CrowdfundingFinancial;
 use App\Models\InvestmentTransaction;
+use App\Models\Payment;
 use App\Models\PropertyFinancial;
 use App\Models\User;
 use App\Models\UserBankAccount;
@@ -121,6 +122,14 @@ class WalletOverview
                     'status' => $this->withdrawStatus($withdrawal),
                     'fix_account' => PayoutFailure::isAccountProblem($withdrawal?->failure_code),
                 ],
+                WalletTransaction::TYPE_PAYMENT_REFUND => [
+                    'kind' => 'payment_refund',
+                    'title' => $name ? "Dikembalikan: {$name}" : 'Dikembalikan: pembayaran',
+                    'subtitle' => 'Kuota sudah habis saat pembayaran masuk',
+                    'amount' => $amount,
+                    'status' => ['label' => 'Masuk', 'tone' => 'success'],
+                    'fix_account' => false,
+                ],
                 'PROFIT' => [
                     'kind' => 'profit',
                     'title' => $name ? "Bagi hasil {$name}" : 'Bagi hasil',
@@ -178,7 +187,7 @@ class WalletOverview
     }
 
     /**
-     * Property / crowdfunding names for PROFIT and INVEST_* rows, in a few queries.
+     * Property / crowdfunding names for PROFIT, INVEST_* and PAYMENT_REFUND rows, in a few queries.
      *
      * @return array<string, array<int, string>>
      */
@@ -196,6 +205,12 @@ class WalletOverview
         if (($ids = $idsOf(CrowdfundingFinancial::class))->isNotEmpty()) {
             foreach (CrowdfundingFinancial::with('crowdfunding.property')->whereIn('id', $ids)->get() as $f) {
                 $names[CrowdfundingFinancial::class][$f->id] = $f->crowdfunding?->property?->property_name;
+            }
+        }
+
+        if (($ids = $idsOf(Payment::class))->isNotEmpty()) {
+            foreach (Payment::with('payable.property')->whereIn('id', $ids)->get() as $p) {
+                $names[Payment::class][$p->id] = $p->payable?->property?->property_name;
             }
         }
 

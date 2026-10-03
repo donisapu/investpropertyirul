@@ -11,6 +11,8 @@ use App\Models\InvestmentTransaction;
 use App\Models\Payment;
 use App\Models\PropertyCrowdfunding;
 use App\Models\PropertyInvestment;
+use App\Models\Wallet;
+use App\Models\WalletTransaction;
 use App\Services\XenditService;
 use App\Services\Xendit\TransactionMirror;
 use Illuminate\Http\Request;
@@ -230,7 +232,9 @@ class PaymentController extends Controller
                 $payable = $payment->payable_type::lockForUpdate()->find($payment->payable_id);
 
                 if (!$payable) {
-                    Log::error('PAYABLE NULL', ['payment_id' => $payment->id]);
+                    // The product was deleted while the invoice was open: nothing to book it on.
+                    $this->refundToWallet($payment, 0);
+
                     return;
                 }
 
@@ -238,7 +242,7 @@ class PaymentController extends Controller
                 if ($payment->payable_type === \App\Models\PropertyInvestment::class) {
 
                     if ($payable->sold_lot + $payment->lot > $payable->total_lot) {
-                        $this->flagForRefund($payment, $payable->total_lot - $payable->sold_lot);
+                        $this->refundToWallet($payment, $payable->total_lot - $payable->sold_lot);
 
                         return;
                     }
@@ -274,7 +278,7 @@ class PaymentController extends Controller
                 if ($payment->payable_type === \App\Models\PropertyCrowdfunding::class) {
 
                     if ($payable->collected_amount + $payment->amount > $payable->funding_goal) {
-                        $this->flagForRefund($payment, $payable->funding_goal - $payable->collected_amount);
+                        $this->refundToWallet($payment, $payable->funding_goal - $payable->collected_amount);
 
                         return;
                     }
@@ -308,13 +312,36 @@ class PaymentController extends Controller
 
     /**
      * The money arrived but the product is already full (e.g. the admin lowered the target
-     * while an invoice was open). Nothing is booked; an admin refunds it.
+     * while an invoice was open). Nothing is booked; the whole amount goes back to the user's
+     * Wallet, where they can reinvest or withdraw it (client, 2026-10-03).
+     *
+     * Runs inside the webhook transaction with the Payment row locked; refunded_at makes it once only.
      */
-    private function flagForRefund(Payment $payment, $left): void
+    private function refundToWallet(Payment $payment, $left): void
     {
-        $payment->update(['needs_refund' => true]);
+        if ($payment->refunded_at !== null) {
+            return;
+        }
 
-        Log::error('Paid invoice exceeds what is left, needs refund', [
+        $wallet = Wallet::query()->where('user_id', $payment->user_id)->lockForUpdate()->first()
+            ?? Wallet::create(['user_id' => $payment->user_id, 'balance' => 0]);
+
+        // Whole rupiah added to a decimal(18,2) balance: bcadd keeps the cents exact.
+        $balanceAfter = bcadd((string) $wallet->balance, (string) (int) $payment->amount, 2);
+        $wallet->forceFill(['balance' => $balanceAfter])->save();
+
+        WalletTransaction::create([
+            'user_id' => $payment->user_id,
+            'type' => WalletTransaction::TYPE_PAYMENT_REFUND,
+            'amount' => (int) $payment->amount,
+            'balance_after' => $balanceAfter,
+            'reference_type' => Payment::class,
+            'reference_id' => $payment->id,
+        ]);
+
+        $payment->forceFill(['needs_refund' => true, 'refunded_at' => now()])->save();
+
+        Log::warning('Paid invoice exceeds what is left, refunded to wallet', [
             'payment_id' => $payment->id,
             'payable_type' => $payment->payable_type,
             'payable_id' => $payment->payable_id,
