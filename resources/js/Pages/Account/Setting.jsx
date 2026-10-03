@@ -24,14 +24,14 @@ export default function AccountSettings() {
 
     const handleProfileSubmit = (e) => {
         e.preventDefault();
-        profileForm.put(route("profile.update"), {
+        profileForm.put(route("user.profile.update"), {
             preserveScroll: true,
         });
     };
 
     const handlePasswordSubmit = (e) => {
         e.preventDefault();
-        passwordForm.put(route("password.update"), {
+        passwordForm.put(route("user.password.update"), {
             preserveScroll: true,
             onSuccess: () => passwordForm.reset(),
         });
@@ -191,6 +191,11 @@ export default function AccountSettings() {
                                     >
                                         <Save size={16} /> Simpan Perubahan
                                     </button>
+                                    {profileForm.recentlySuccessful && (
+                                        <span role="status" className="ml-3 text-xs font-bold text-emerald-700">
+                                            Profil tersimpan.
+                                        </span>
+                                    )}
                                 </div>
                             </form>
                         </div>
@@ -294,6 +299,11 @@ export default function AccountSettings() {
                                     >
                                         <Lock size={16} /> Update Password
                                     </button>
+                                    {passwordForm.recentlySuccessful && (
+                                        <span role="status" className="ml-3 text-xs font-bold text-emerald-700">
+                                            Kata sandi diubah.
+                                        </span>
+                                    )}
                                 </div>
                             </form>
                         </div>

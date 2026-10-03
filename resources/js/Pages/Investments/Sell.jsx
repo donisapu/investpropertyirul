@@ -25,6 +25,8 @@ export default function Show({ property }) {
     const minLot = 1;
     const maxLot = Number(property?.portfolio?.lot_held ?? 0);
     const [quantity, setQuantity] = useState(minLot);
+    const [sellError, setSellError] = useState(null);
+    const [submitting, setSubmitting] = useState(false);
     const tokenPrice = parseFloat(property.financials.price_per_lot);
     const tokenHeld = Number(property?.portfolio?.lot_held ?? 0);
     console.log(property.portfolio.lot_held);
@@ -353,7 +355,14 @@ export default function Show({ property }) {
                             </div>
 
                             {/* Tombol Utama Kirim Request Jual */}
+                            {sellError && (
+                                <p role="alert" className="mb-3 text-xs font-semibold text-red-600">
+                                    {sellError}
+                                </p>
+                            )}
                             <button
+                                type="button"
+                                disabled={submitting}
                                 onClick={() =>
                                     router.post(
                                         route(
@@ -362,14 +371,20 @@ export default function Show({ property }) {
                                         ),
                                         { lot: quantity },
                                         {
-                                            onSuccess: () => {
-                                                window.location.href =
-                                                    route("user.portfolio");
+                                            onStart: () => {
+                                                setSellError(null);
+                                                setSubmitting(true);
                                             },
+                                            onError: (errors) =>
+                                                setSellError(
+                                                    errors.lot ||
+                                                        "Permintaan jual gagal dikirim. Coba lagi.",
+                                                ),
+                                            onFinish: () => setSubmitting(false),
                                         },
                                     )
                                 }
-                                className="w-full py-4 rounded-xl font-bold text-cream text-sm bg-ink hover:bg-ink-soft transition-all flex items-center justify-center gap-2 shadow-md shadow-ink/10 hover:-translate-y-0.5"
+                                className="w-full py-4 rounded-xl font-bold text-cream text-sm bg-ink hover:bg-ink-soft transition-all flex items-center justify-center gap-2 shadow-md shadow-ink/10 hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:translate-y-0"
                             >
                                 <CheckCircle2 className="w-4 h-4 text-gold" />
                                 Konfirmasi & Cairkan Dana
