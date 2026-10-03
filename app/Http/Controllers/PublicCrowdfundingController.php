@@ -180,13 +180,8 @@ class PublicCrowdfundingController extends Controller
             ];
         }
 
-        // 2. Hitung diskon untuk nilai minimal kontribusi
+        // 2. The minimum is a contribution value; a discount only lowers what is paid for it (PF-04).
         $originalMinContribution = (float) $crowdfunding->min_contribution;
-        $discountedMinContribution = $originalMinContribution;
-
-        if ($campaign) {
-            $discountedMinContribution = $campaign->discountedPrice($originalMinContribution);
-        }
 
         // Calculate progress based on collected amount vs funding goal
         $progress = 0;
@@ -206,7 +201,6 @@ class PublicCrowdfundingController extends Controller
             'goal' => $crowdfunding->funding_goal,
             'collected' => $crowdfunding->collected_amount,
             'min_contribution' => $originalMinContribution,
-            'discounted_min_contribution' => $discountedMinContribution,
             'discount_percent' => $discountPercent,
             'remaining' => $crowdfunding->availableAmount(), // minus amounts held by pending invoices
             'is_open' => $crowdfunding->status === 'Open',

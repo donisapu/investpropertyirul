@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class PropertyCrowdfunding extends Model
 {
@@ -31,10 +32,10 @@ class PropertyCrowdfunding extends Model
         return $this->morphMany(Payment::class, 'payable');
     }
 
-    // Rupiah held by invoices that can still be paid.
+    // Rupiah of the target held by invoices that can still be paid, at their credited value.
     public function reservedAmount(): int
     {
-        return (int) $this->payments()->reserving()->sum('amount');
+        return (int) $this->payments()->reserving()->sum(DB::raw('coalesce(credited_amount, amount)'));
     }
 
     public function availableAmount(): int
