@@ -14,7 +14,6 @@ import {
     Home,
     TrendingUp,
     FileText,
-    Mail,
     ShieldCheck,
     Download,
 } from "lucide-react";
@@ -694,9 +693,6 @@ export default function Show({ auction }) {
                                 >
                                     <Phone size={18} /> Contact Agent
                                 </a>
-                                <button className="w-full bg-white border-2 border-slate-100 hover:border-[#24608B] hover:text-[#24608B] text-slate-700 font-bold py-4 rounded-2xl transition-all flex items-center justify-center gap-2">
-                                    <Mail size={18} /> Request Info
-                                </button>
                             </div>
 
                             {/* 4. Trust Badge (Opsional, buat bikin makin Pro) */}

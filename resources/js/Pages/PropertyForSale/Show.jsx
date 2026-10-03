@@ -10,7 +10,6 @@ import {
     ChevronLeft,
     ExternalLink,
     Phone,
-    Mail,
     FileText,
     Download,
     X,
@@ -586,9 +585,6 @@ export default function Show({ property }) {
                                 >
                                     <Phone size={18} /> Contact Agent
                                 </a>
-                                <button className="w-full bg-cream border-2 border-gold-line hover:border-gold hover:text-gold-ink text-ink font-bold py-4 rounded-2xl transition-all flex items-center justify-center gap-2">
-                                    <Mail size={18} /> Request Info
-                                </button>
                             </div>
 
                             {/* 3. Property Highlights (Sleek List) */}

@@ -79,7 +79,7 @@ export default function Show({ property }) {
         }).format(value);
     };
 
-    const { auth } = usePage().props;
+    const { auth, settings } = usePage().props;
 
     const handleInvestClick = (e) => {
         if (!auth.user) {
@@ -711,7 +711,9 @@ export default function Show({ property }) {
                                     Anda.
                                 </p>
                                 <a
-                                    href="#"
+                                    href={`https://wa.me/${settings?.whatsapp || "62818580891"}`}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
                                     className="text-xs font-bold text-[#24608B] hover:underline flex items-center gap-1"
                                 >
                                     Kontak Support <ArrowRight size={12} />
