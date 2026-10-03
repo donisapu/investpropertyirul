@@ -24,14 +24,14 @@ export default function AccountSettings() {
 
     const handleProfileSubmit = (e) => {
         e.preventDefault();
-        profileForm.put(route("profile.update"), {
+        profileForm.put(route("user.profile.update"), {
             preserveScroll: true,
         });
     };
 
     const handlePasswordSubmit = (e) => {
         e.preventDefault();
-        passwordForm.put(route("password.update"), {
+        passwordForm.put(route("user.password.update"), {
             preserveScroll: true,
             onSuccess: () => passwordForm.reset(),
         });
