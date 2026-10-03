@@ -191,6 +191,11 @@ export default function AccountSettings() {
                                     >
                                         <Save size={16} /> Simpan Perubahan
                                     </button>
+                                    {profileForm.recentlySuccessful && (
+                                        <span role="status" className="ml-3 text-xs font-bold text-emerald-700">
+                                            Profil tersimpan.
+                                        </span>
+                                    )}
                                 </div>
                             </form>
                         </div>
@@ -294,6 +299,11 @@ export default function AccountSettings() {
                                     >
                                         <Lock size={16} /> Update Password
                                     </button>
+                                    {passwordForm.recentlySuccessful && (
+                                        <span role="status" className="ml-3 text-xs font-bold text-emerald-700">
+                                            Kata sandi diubah.
+                                        </span>
+                                    )}
                                 </div>
                             </form>
                         </div>

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Head, Link, usePage } from "@inertiajs/react";
 import {
     Wallet,
@@ -7,12 +7,72 @@ import {
     Building2,
     MapPin,
     History,
+    Share2,
+    Check,
     ArrowUpRight,
     ArrowRight,
     Layers,
     Percent,
 } from "lucide-react";
 import PublicLayout from "@/Layouts/PublicLayout";
+
+/*
+ * Bagikan Portofolio membagikan link pendaftaran, bukan isi portofolio:
+ * permintaan klien, supaya investor bisa mengajak orang lain mendaftar.
+ * HP memakai menu share bawaan; desktop menyalin link ke clipboard.
+ */
+function ShareSignupButton() {
+    const { settings } = usePage().props;
+    const [copied, setCopied] = useState(false);
+    const resetTimer = useRef(null);
+
+    useEffect(() => () => clearTimeout(resetTimer.current), []);
+
+    const share = async () => {
+        const url = route("register");
+        const siteName = settings?.site_name || "Gain Properties";
+        const text = `Yuk mulai investasi properti bersama ${siteName}. Daftar di sini:`;
+
+        if (navigator.share) {
+            try {
+                await navigator.share({ title: siteName, text, url });
+                return;
+            } catch (error) {
+                // Batal dari menu share bukan error; selain itu jatuh ke salin link.
+                if (error?.name === "AbortError") return;
+            }
+        }
+
+        try {
+            await navigator.clipboard.writeText(url);
+        } catch {
+            window.prompt("Salin link pendaftaran ini:", url);
+            return;
+        }
+        setCopied(true);
+        clearTimeout(resetTimer.current);
+        resetTimer.current = setTimeout(() => setCopied(false), 2500);
+    };
+
+    return (
+        <button
+            type="button"
+            onClick={share}
+            aria-live="polite"
+            className="flex items-center justify-center gap-2 w-full sm:w-auto bg-cream hover:bg-cream-deep border border-gold-line text-ink px-6 py-2.5 rounded-xl font-black text-xs transition-all focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold-ink"
+        >
+            {copied ? (
+                <>
+                    <Check size={14} className="text-emerald-600" /> Link pendaftaran disalin
+                </>
+            ) : (
+                <>
+                    <Share2 size={14} /> Bagikan Portofolio
+                </>
+            )}
+        </button>
+    );
+}
 
 function formatCurrency(value) {
     return new Intl.NumberFormat("id-ID", {
@@ -394,6 +454,7 @@ export default function Portfolio({
                         </div>
 
                         <div className="flex flex-col sm:flex-row items-center justify-end gap-4 mt-8 pt-6 border-t border-dashed border-gold-line">
+                            <ShareSignupButton />
                             <Link
                                 href={route("user.transaction")}
                                 className="flex items-center justify-center gap-1.5 text-xs font-bold text-gold-ink hover:text-ink transition-colors"
