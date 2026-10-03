@@ -111,14 +111,14 @@ export default function Header() {
                 {/* ================= NAVIGASI DESKTOP ================= */}
                 <nav
                     aria-label="Navigasi utama"
-                    className="hidden items-center gap-[22px] lg:flex"
+                    className="hidden items-center gap-4 lg:flex xl:gap-7"
                 >
                     {NAV_LINKS.map((item) => (
                         <Link
                             key={item.label}
                             href={hrefOf(item)}
                             aria-current={isActive(item) ? "page" : undefined}
-                            className={`text-[14px] font-semibold leading-5 transition-colors hover:text-gold-ink ${
+                            className={`whitespace-nowrap text-[15px] font-semibold leading-6 transition-colors xl:text-[16px] hover:text-gold-ink ${
                                 isActive(item) ? "text-gold-ink" : "text-ink"
                             }`}
                         >
@@ -136,7 +136,7 @@ export default function Header() {
                                 onClick={() => setAccountOpen(!accountOpen)}
                                 aria-expanded={accountOpen}
                                 aria-haspopup="menu"
-                                className="flex items-center gap-2 rounded-[40px] bg-ink px-[23px] py-4 text-[14px] font-semibold leading-5 text-cream transition-colors hover:bg-ink-soft"
+                                className="flex items-center gap-2 rounded-[40px] bg-ink px-[23px] py-4 text-[15px] font-semibold leading-6 text-cream xl:text-[16px] transition-colors hover:bg-ink-soft"
                             >
                                 My Account
                                 <ChevronDown
@@ -157,7 +157,7 @@ export default function Header() {
                                             key={item.label}
                                             role="menuitem"
                                             href={hrefOf(item)}
-                                            className="block px-4 py-2 text-sm text-ink-soft transition-colors hover:bg-cream-deep hover:text-ink"
+                                            className="block px-4 py-2.5 text-[15px] text-ink-soft transition-colors hover:bg-cream-deep hover:text-ink"
                                         >
                                             {item.label}
                                         </a>
@@ -168,7 +168,7 @@ export default function Header() {
                                         href={safeRoute("logout")}
                                         method="post"
                                         as="button"
-                                        className="block w-full px-4 py-2 text-left text-sm text-red-600 transition-colors hover:bg-red-50"
+                                        className="block w-full px-4 py-2.5 text-left text-[15px] text-red-600 transition-colors hover:bg-red-50"
                                     >
                                         Logout
                                     </Link>
@@ -178,7 +178,7 @@ export default function Header() {
                     ) : (
                         <a
                             href={safeRoute("login")}
-                            className="rounded-[40px] bg-ink px-[23px] py-4 text-[14px] font-semibold leading-5 text-cream transition-colors hover:bg-ink-soft"
+                            className="rounded-[40px] bg-ink px-[23px] py-4 text-[15px] font-semibold leading-6 text-cream xl:text-[16px] transition-colors hover:bg-ink-soft"
                         >
                             My Account
                         </a>
@@ -217,7 +217,7 @@ export default function Header() {
                                 href={hrefOf(item)}
                                 onClick={() => setOpen(false)}
                                 aria-current={isActive(item) ? "page" : undefined}
-                                className={`border-b border-gold-line py-3 text-sm font-semibold transition-colors hover:text-gold-ink ${
+                                className={`border-b border-gold-line py-3.5 text-[16px] font-semibold transition-colors hover:text-gold-ink ${
                                     isActive(item) ? "text-gold-ink" : "text-ink"
                                 }`}
                             >
@@ -235,7 +235,7 @@ export default function Header() {
                                 <a
                                     key={item.label}
                                     href={hrefOf(item)}
-                                    className="py-2 text-sm text-ink-soft transition-colors hover:text-ink"
+                                    className="py-2 text-[15px] text-ink-soft transition-colors hover:text-ink"
                                 >
                                     {item.label}
                                 </a>
@@ -244,7 +244,7 @@ export default function Header() {
                                 href={safeRoute("logout")}
                                 method="post"
                                 as="button"
-                                className="mt-1 py-2 text-left text-sm text-red-600"
+                                className="mt-1 py-2 text-left text-[15px] text-red-600"
                             >
                                 Logout
                             </Link>
@@ -253,7 +253,7 @@ export default function Header() {
                         <Link
                             href={safeRoute("login")}
                             onClick={() => setOpen(false)}
-                            className="mt-5 inline-flex rounded-[40px] bg-ink px-[23px] py-3.5 text-[14px] font-semibold leading-5 text-cream"
+                            className="mt-5 inline-flex rounded-[40px] bg-ink px-[23px] py-3.5 text-[16px] font-semibold leading-6 text-cream"
                         >
                             My Account
                         </Link>

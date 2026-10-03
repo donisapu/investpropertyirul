@@ -89,10 +89,10 @@ export default function Howto({ auth, landings }) {
             <div ref={revealBand.ref} className={`w-full bg-ink px-6 py-12 text-cream sm:px-10 lg:px-[72px] ${revealBand.className}`}>
                 <div className="mx-auto flex max-w-[1440px] flex-col gap-6 lg:flex-row lg:items-center lg:gap-16">
                     <div className="flex flex-1 flex-col gap-2.5">
-                        <h2 className="text-[clamp(1.5rem,3.2vw,2rem)] font-semibold leading-[1.25]">
+                        <h2 className="text-[clamp(1.75rem,3.6vw,2.25rem)] font-semibold leading-[1.25]">
                             Mulai Perjalanan Investasi Properti Anda
                         </h2>
-                        <p className="max-w-[65ch] text-[16px] leading-[25px] text-cream/70">
+                        <p className="max-w-[65ch] text-[18px] leading-7 text-cream/70">
                             Kami membuat investasi properti menjadi mudah
                             diakses, transparan, dan menguntungkan.
                         </p>
@@ -101,7 +101,7 @@ export default function Howto({ auth, landings }) {
                     {!auth?.user && (
                         <Link
                             href={safeRoute("register", "/register")}
-                            className="group inline-flex w-fit shrink-0 items-center gap-[22px] rounded-[40px] bg-gold px-[23px] py-4 text-[14px] font-semibold leading-5 text-ink transition-colors hover:bg-gold/90"
+                            className="group inline-flex w-fit shrink-0 items-center gap-[22px] rounded-[40px] bg-gold px-[23px] py-4 text-[16px] font-semibold leading-6 text-ink transition-colors hover:bg-gold/90"
                         >
                             Buat Akun Gratis
                             <ArrowRight
@@ -117,10 +117,10 @@ export default function Howto({ auth, landings }) {
             <div ref={revealSteps.ref} className={`w-full bg-cream px-6 py-16 sm:px-10 lg:px-[72px] lg:py-20 ${revealSteps.className}`}>
                 <div className="mx-auto flex max-w-[1440px] flex-col gap-9">
                     <div className="flex flex-col gap-3 lg:flex-row lg:items-end lg:gap-12">
-                        <h2 className="flex-1 text-[clamp(1.75rem,4vw,2.5rem)] font-semibold leading-[1.2] text-ink">
+                        <h2 className="flex-1 text-[clamp(2rem,4.5vw,3rem)] font-semibold leading-[1.2] text-ink">
                             Cara Kerja
                         </h2>
-                        <p className="flex-1 text-[16px] leading-[25px] text-ink-soft">
+                        <p className="flex-1 text-[18px] leading-7 text-ink-soft">
                             Langkah mudah untuk mulai berinvestasi.
                         </p>
                     </div>
@@ -136,14 +136,14 @@ export default function Howto({ auth, landings }) {
                                 key={step.title}
                                 className="flex flex-col items-start gap-[18px] border-t border-gold-line pt-[22px]"
                             >
-                                <span className="text-[14px] font-semibold leading-5 tabular-nums text-gold-ink">
+                                <span className="text-[16px] font-semibold leading-6 tabular-nums text-gold-ink">
                                     {String(index + 1).padStart(2, "0")}
                                 </span>
                                 <div className="flex flex-col gap-2">
-                                    <h3 className="text-[20px] font-semibold leading-7 text-ink">
+                                    <h3 className="text-[24px] font-semibold leading-8 text-ink">
                                         {step.title}
                                     </h3>
-                                    <p className="text-[16px] leading-[25px] text-ink-soft">
+                                    <p className="text-[18px] leading-7 text-ink-soft">
                                         {step.description}
                                     </p>
                                 </div>
@@ -157,10 +157,10 @@ export default function Howto({ auth, landings }) {
             <div ref={revealMethods.ref} className={`w-full bg-cream-deep px-6 py-16 sm:px-10 lg:px-[72px] lg:pb-20 lg:pt-16 ${revealMethods.className}`}>
                 <div className="mx-auto flex w-full max-w-[1440px] flex-col gap-9">
                     <div className="flex flex-col gap-2">
-                        <h2 className="text-[clamp(1.75rem,4vw,2.5rem)] font-semibold leading-[1.2] text-ink">
+                        <h2 className="text-[clamp(2rem,4.5vw,3rem)] font-semibold leading-[1.2] text-ink">
                             Cara Berinvestasi
                         </h2>
-                        <p className="max-w-[60ch] text-[16px] leading-[25px] text-ink-soft">
+                        <p className="max-w-[60ch] text-[18px] leading-7 text-ink-soft">
                             Pilih model investasi yang paling sesuai dengan
                             profil risiko dan dana Anda.
                         </p>
@@ -178,22 +178,22 @@ export default function Howto({ auth, landings }) {
                                 key={method.title}
                                 className="flex h-full flex-col gap-5 rounded-xl bg-cream p-7"
                             >
-                                <h3 className="text-[24px] font-semibold leading-9 text-ink">
+                                <h3 className="text-[28px] font-semibold leading-9 text-ink">
                                     {method.title}
                                 </h3>
 
-                                <p className="text-[16px] leading-[25px] text-ink-soft lg:min-h-[125px]">
+                                <p className="text-[18px] leading-7 text-ink-soft lg:min-h-[140px]">
                                     {method.description}
                                 </p>
 
-                                <ul className="flex flex-col gap-2.5">
+                                <ul className="flex flex-col gap-3">
                                     {method.features.map((feature) => (
                                         <li
                                             key={feature}
-                                            className="flex items-center gap-2.5 text-[15px] leading-6 text-ink"
+                                            className="flex items-center gap-3 text-[17px] leading-7 text-ink"
                                         >
                                             <Check
-                                                className="h-4 w-4 shrink-0 text-gold-ink"
+                                                className="h-5 w-5 shrink-0 text-gold-ink"
                                                 aria-hidden="true"
                                             />
                                             {feature}
@@ -204,7 +204,7 @@ export default function Howto({ auth, landings }) {
                                 <div className="mt-auto border-t border-gold-line pt-5">
                                     <Link
                                         href={method.link}
-                                        className="group inline-flex min-h-[44px] items-center gap-2 text-[15px] font-bold leading-5 text-ink transition-colors hover:text-gold-ink focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold-ink"
+                                        className="group inline-flex min-h-[44px] items-center gap-2 text-[17px] font-bold leading-6 text-ink transition-colors hover:text-gold-ink focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold-ink"
                                     >
                                         Lihat {method.title}
                                         <ArrowRight
