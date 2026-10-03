@@ -1,12 +1,11 @@
 import React from "react";
-import { Head, Link } from "@inertiajs/react";
+import { Head, Link, usePage } from "@inertiajs/react";
 import {
     Wallet,
     TrendingUp,
     Coins,
     Building2,
     MapPin,
-    Share2,
     History,
     ArrowUpRight,
     ArrowRight,
@@ -135,16 +134,10 @@ function PropertyCard({ prop }) {
                 {/* Action Buttons */}
                 <div className="flex flex-col gap-2 w-full lg:w-auto min-w-[140px]">
                     <Link
-                        href={`/investments/${prop.id}/swap`}
+                        href={route("investments.sell", prop.ip?.property_id || prop.property_id)}
                         className="flex items-center justify-center gap-1.5 bg-ink hover:bg-ink-soft text-cream px-4 py-2.5 rounded-xl font-black text-xs transition-all shadow-md"
                     >
-                        Swap Lot
-                    </Link>
-                    <Link
-                        href={`/investments/${prop.ip?.property_id || prop.property_id}/sell`}
-                        className="flex items-center justify-center gap-1.5 bg-cream hover:bg-cream-deep text-ink border border-gold-line px-4 py-2.5 rounded-xl font-black text-xs transition-all"
-                    >
-                        Sell Asset
+                        Jual Lot
                     </Link>
                 </div>
             </div>
@@ -283,11 +276,22 @@ export default function Portfolio({
         summary.total_portfolio_value ??
         totalInvestmentValue + totalCrowdfundingValue;
 
+    const { flash } = usePage().props;
+
     return (
         <PublicLayout>
             <Head title="Portofolio Aset Saya" />
 
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+                {flash?.success && (
+                    <div
+                        role="status"
+                        className="mb-6 rounded-2xl border border-emerald-200 bg-emerald-50 px-5 py-4 text-sm font-semibold text-emerald-800"
+                    >
+                        {flash.success}
+                    </div>
+                )}
+
                 {/* Banner Header */}
                 <div className="relative mb-12 rounded-[2.5rem] overflow-hidden bg-ink border border-white/10 p-8 md:p-12">
                     <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-gold/20 rounded-full blur-[100px] pointer-events-none"></div>
@@ -390,19 +394,8 @@ export default function Portfolio({
                         </div>
 
                         <div className="flex flex-col sm:flex-row items-center justify-end gap-4 mt-8 pt-6 border-t border-dashed border-gold-line">
-                            <button
-                                type="button"
-                                onClick={() =>
-                                    navigator.clipboard?.writeText(
-                                        window.location.href,
-                                    )
-                                }
-                                className="flex items-center justify-center gap-2 w-full sm:w-auto bg-cream hover:bg-cream-deep border border-gold-line text-ink px-6 py-2.5 rounded-xl font-black text-xs transition-all"
-                            >
-                                <Share2 size={14} /> Bagikan Portofolio
-                            </button>
                             <Link
-                                href="/transaction"
+                                href={route("user.transaction")}
                                 className="flex items-center justify-center gap-1.5 text-xs font-bold text-gold-ink hover:text-ink transition-colors"
                             >
                                 <History size={14} /> Riwayat Transaksi

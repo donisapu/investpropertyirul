@@ -7,7 +7,6 @@ import {
   Building2,
   ArrowRight,
   History,
-  PlusCircle,
   Search,
 } from "lucide-react";
 import PublicLayout from "@/Layouts/PublicLayout";
@@ -241,7 +240,7 @@ export default function Dashboard({
         </div>
 
         {/* Quick Actions */}
-        <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-4">
+        <div className="grid gap-4 sm:grid-cols-2">
           <Link
             href="/property-for-sale"
             className="flex items-center justify-center gap-2 bg-ink hover:bg-ink-soft text-cream py-4 rounded-2xl font-black text-sm transition-all shadow-lg hover:shadow-gold/20"
@@ -256,19 +255,7 @@ export default function Dashboard({
             <Building2 size={16} /> Join Crowdfunding
           </Link>
 
-          <Link
-            href="/my-bids"
-            className="flex items-center justify-center gap-2 bg-cream hover:bg-cream-deep border border-gold-line text-ink py-4 rounded-2xl font-black text-sm transition-all"
-          >
-            <Coins size={16} /> View My Bids
-          </Link>
 
-          <Link
-            href="/wallet"
-            className="flex items-center justify-center gap-2 bg-gold hover:bg-gold/90 text-ink py-4 rounded-2xl font-black text-sm transition-all shadow-md"
-          >
-            <PlusCircle size={16} /> Deposit Funds
-          </Link>
         </div>
       </div>
     </PublicLayout>

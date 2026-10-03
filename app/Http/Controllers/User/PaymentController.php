@@ -361,14 +361,14 @@ class PaymentController extends Controller
             'lot' => 'required|integer|min:1'
         ]);
 
-        return DB::transaction(function () use ($request, $id) {
-            $investment = PropertyInvestment::where('property_id', $id)->first();
+        $lot = (int) $request->lot;
+
+        $amount = DB::transaction(function () use ($lot, $id) {
+            $investment = PropertyInvestment::where('property_id', $id)->firstOrFail();
             $portfolio = InvestmentPortfolio::where([
                 'user_id' => Auth::id(),
                 'investment_id' => $investment->id
             ])->lockForUpdate()->firstOrFail();
-
-            $lot = $request->lot;
 
             $pendingSellLot = InvestmentTransaction::where([
                 'user_id' => Auth::id(),
@@ -378,7 +378,9 @@ class PaymentController extends Controller
             ])->sum('lot');
 
             if (($portfolio->total_lot - $pendingSellLot) < $lot) {
-                throw new \Exception('Lot tidak cukup atau sedang dalam proses penjualan');
+                throw ValidationException::withMessages([
+                    'lot' => 'Lot tidak cukup atau sedang dalam proses penjualan.',
+                ]);
             }
 
             $amount = $lot * $investment->price_per_lot;
@@ -394,6 +396,12 @@ class PaymentController extends Controller
                 'transacted_at' => now(),
             ]);
 
+            return $amount;
         });
+
+        return redirect()->route('user.portfolio')->with(
+            'success',
+            "Permintaan jual {$lot} lot (Rp ".number_format($amount, 0, ',', '.').') terkirim. Dana masuk ke wallet setelah disetujui admin.'
+        );
     }
 }
