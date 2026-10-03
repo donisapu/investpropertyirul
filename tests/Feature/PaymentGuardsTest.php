@@ -141,13 +141,45 @@ it('keeps a campaign on its own product when the property has both', function ()
     expect($this->invoices)->toBe([]);
 });
 
-it('lowers the crowdfunding minimum by its campaign', function () {
+// PF-04: a discounted contribution is paid at the discounted price but counts in full (client, 2026-10-03).
+it('charges the discounted price for a crowdfunding contribution and credits its full value', function () {
+    config(['xendit.callback_token' => 'expected-token']);
     $crowdfunding = guardCrowdfunding();
     $campaignId = guardCampaign($crowdfunding->property_id);
 
-    fund($crowdfunding, ['total_amount' => 900000, 'campaign_id' => $campaignId])->assertRedirect('https://checkout-staging.xendit.co/web/inv_1');
+    fund($crowdfunding, ['total_amount' => 1000000, 'campaign_id' => $campaignId])->assertRedirect('https://checkout-staging.xendit.co/web/inv_1');
 
-    expect($this->invoices)->toBe([900000])->and(Payment::sole()->campaign_id)->toBe($campaignId);
+    $payment = Payment::sole();
+    expect($this->invoices)->toBe([900000])
+        ->and($payment)->campaign_id->toBe($campaignId)
+        ->and((int) $payment->amount)->toBe(900000)
+        ->and((int) $payment->credited_amount)->toBe(1000000);
+
+    $this->postJson('/xendit/webhook', ['id' => 'inv_x', 'external_id' => $payment->external_id, 'status' => 'PAID'], ['x-callback-token' => 'expected-token'])
+        ->assertOk();
+
+    expect((int) DB::table('property_crowdfundings')->where('id', $crowdfunding->id)->value('collected_amount'))->toBe(91000000)
+        ->and((int) DB::table('crowdfunding_portfolios')->where('user_id', $this->investor->id)->value('total_amount'))->toBe(1000000)
+        ->and((int) DB::table('crowdfunding_transactions')->where('user_id', $this->investor->id)->value('amount'))->toBe(900000);
+});
+
+it('keeps the crowdfunding minimum at its full value under a campaign', function () {
+    $crowdfunding = guardCrowdfunding();
+    $campaignId = guardCampaign($crowdfunding->property_id);
+
+    fund($crowdfunding, ['total_amount' => 900000, 'campaign_id' => $campaignId])
+        ->assertSessionHasErrors(['total_amount' => 'Minimal partisipasi Rp 1.000.000.']);
+    expect($this->invoices)->toBe([]);
+});
+
+it('reserves the credited value of an open discounted contribution', function () {
+    $crowdfunding = guardCrowdfunding(['collected_amount' => 99000000]);
+    $campaignId = guardCampaign($crowdfunding->property_id);
+    fund($crowdfunding, ['total_amount' => 1000000, 'campaign_id' => $campaignId])->assertRedirect();
+
+    fund($crowdfunding, ['total_amount' => 1000000])
+        ->assertSessionHasErrors(['error' => 'Sisa target sedang dipesan investor lain. Coba lagi nanti.']);
+    expect($this->invoices)->toBe([900000]);
 });
 
 it('drops expired campaigns from the shared props', function () {

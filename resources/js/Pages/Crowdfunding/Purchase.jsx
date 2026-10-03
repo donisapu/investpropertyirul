@@ -15,15 +15,11 @@ import PublicLayout from "@/Layouts/PublicLayout";
 export default function Show({ property }) {
     const hasDiscount = (property.discount_percent || 0) > 0;
 
-    // Batas minimal kontribusi (menggunakan nilai setelah diskon jika promo aktif)
-    // Same bounds as the server (PaymentController::payCrowdfunding).
+    // investAmount is the participation value: it counts in full towards the target and the
+    // payout, while a promo only lowers the payment (PF-04). Same bounds as the server
+    // (PaymentController::payCrowdfunding).
     const remaining = Number(property.remaining ?? Infinity);
-    const minAmount = Math.min(
-        hasDiscount
-            ? Number(property.discounted_min_contribution) || 0
-            : Number(property.min_contribution) || 0,
-        remaining,
-    );
+    const minAmount = Math.min(Number(property.min_contribution) || 0, remaining);
     const isOpen = property.is_open !== false && remaining > 0;
 
     const [investAmount, setInvestAmount] = useState(0);
@@ -61,11 +57,11 @@ export default function Show({ property }) {
         );
     };
 
-    // Hitung nominal sebelum diskon dan total hemat
-    const originalAmount = hasDiscount
-        ? Math.round(investAmount / (1 - property.discount_percent / 100))
+    // What the invoice charges: same rounding as Campaign::discountedPrice.
+    const payAmount = hasDiscount
+        ? Math.round(investAmount * (1 - property.discount_percent / 100))
         : investAmount;
-    const totalSavings = originalAmount - investAmount;
+    const totalSavings = investAmount - payAmount;
 
     const [lightboxOpen, setLightboxOpen] = useState(false);
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -265,7 +261,7 @@ export default function Show({ property }) {
                                         <span
                                             className={`font-extrabold text-sm ${hasDiscount ? "line-through text-ink-soft" : "text-ink"}`}
                                         >
-                                            {formatCurrency(originalAmount)}
+                                            {formatCurrency(investAmount)}
                                         </span>
                                     </div>
 
@@ -306,7 +302,7 @@ export default function Show({ property }) {
                                         </span>
                                     )}
                                     <span className="text-4xl font-black text-gold-ink tracking-tighter">
-                                        {formatCurrency(investAmount)}
+                                        {formatCurrency(payAmount)}
                                     </span>
                                 </div>
                             </div>

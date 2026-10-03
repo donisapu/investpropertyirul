@@ -123,10 +123,10 @@ class PaymentController extends Controller
                 throw ValidationException::withMessages(['error' => 'Sisa target sedang dipesan investor lain. Coba lagi nanti.']);
             }
 
+            // total_amount is the contribution's value: it counts in full towards the target and the
+            // payout, while a campaign discount only lowers the invoice (PF-04, client 2026-10-03).
             $campaign = Campaign::discountFor($request->campaign_id, $crowdfunding);
-            $minAmount = min($available, $campaign
-                ? $campaign->discountedPrice($crowdfunding->min_contribution)
-                : (int) round($crowdfunding->min_contribution));
+            $minAmount = min($available, (int) round($crowdfunding->min_contribution));
 
             $request->validate([
                 'total_amount' => ['required', 'integer', 'min:' . $minAmount, 'max:' . $available],
@@ -142,7 +142,8 @@ class PaymentController extends Controller
                 'payable_id' => $crowdfunding->id,
                 'payable_type' => PropertyCrowdfunding::class,
                 'campaign_id' => $campaign?->id,
-                'amount' => (int) $request->total_amount,
+                'amount' => $campaign ? $campaign->discountedPrice($request->total_amount) : (int) $request->total_amount,
+                'credited_amount' => (int) $request->total_amount,
                 'external_id' => 'INV-' . Str::random(10) . '-' . time(),
                 'status' => 'PENDING',
             ]);
@@ -277,13 +278,15 @@ class PaymentController extends Controller
                 // 🔵 CROWDFUNDING
                 if ($payment->payable_type === \App\Models\PropertyCrowdfunding::class) {
 
-                    if ($payable->collected_amount + $payment->amount > $payable->funding_goal) {
+                    $credited = $payment->creditedAmount();
+
+                    if ($payable->collected_amount + $credited > $payable->funding_goal) {
                         $this->refundToWallet($payment, $payable->funding_goal - $payable->collected_amount);
 
                         return;
                     }
 
-                    $payable->increment('collected_amount', $payment->amount);
+                    $payable->increment('collected_amount', $credited);
 
                     CrowdfundingTransaction::create([
                         'user_id' => $payment->user_id,
@@ -298,7 +301,8 @@ class PaymentController extends Controller
                         'crowdfunding_id' => $payable->id,
                     ]);
 
-                    $portfolio->increment('total_amount', $payment->amount);
+                    // The cash paid is in the transaction; the portfolio holds the credited value.
+                    $portfolio->increment('total_amount', $credited);
 
                     if ($payable->collected_amount >= $payable->funding_goal && $payable->status === 'Open') {
                         $payable->update(['status' => 'Funded']);
