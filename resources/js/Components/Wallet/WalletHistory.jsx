@@ -12,6 +12,7 @@ const FILTERS = [
 const ICONS = {
     withdraw: ArrowUpRight,
     refund: RotateCcw,
+    payment_refund: RotateCcw,
     profit: TrendingUp,
     sell: ArrowDownLeft,
 };

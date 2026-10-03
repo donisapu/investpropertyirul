@@ -7,6 +7,8 @@ use App\Models\PropertyCrowdfunding;
 use App\Models\PropertyInvestment;
 use App\Models\Role;
 use App\Models\User;
+use App\Models\Wallet;
+use App\Models\WalletTransaction;
 use App\Services\XenditService;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -167,24 +169,39 @@ it('books the last amount and closes the crowdfunding', function () {
         ->and((int) $crowdfunding->fresh()->collected_amount)->toBe(100000000);
 });
 
-it('does not book a paid invoice that no longer fits, and flags it for refund', function () {
+// PF-07: what did not fit goes back to the payer's wallet (client, 2026-10-03).
+function refundBalance(Payment $payment): string
+{
+    return number_format((float) Wallet::where('user_id', $payment->user_id)->value('balance'), 2, '.', '');
+}
+
+it('does not book a paid invoice that no longer fits, and refunds it to the wallet', function () {
     $investment = oversellInvestment();
     $payment = openInvoice($investment, ['lot' => 10, 'amount' => 100000]);
+    Wallet::where('user_id', $payment->user_id)->update(['balance' => '2500.50']);
     $investment->update(['total_lot' => 95]); // admin lowered the lots while the invoice was open
     Log::spy();
 
     paidWebhook($payment)->assertOk();
 
-    expect($payment->fresh())->status->toBe('PAID')->needs_refund->toBeTrue()
+    expect($payment->fresh())->status->toBe('PAID')->needs_refund->toBeTrue()->refunded_at->not->toBeNull()
         ->and($investment->fresh()->sold_lot)->toBe(90)
-        ->and(InvestmentTransaction::count())->toBe(0);
-    Log::shouldHaveReceived('error')->withArgs(fn ($message, $context) => str_contains($message, 'needs refund') && $context['left'] === 5)->once();
+        ->and(InvestmentTransaction::count())->toBe(0)
+        ->and(refundBalance($payment))->toBe('102500.50');
+    $refund = WalletTransaction::sole();
+    expect($refund)->type->toBe('PAYMENT_REFUND')->user_id->toBe($payment->user_id)
+        ->reference_type->toBe(Payment::class)->reference_id->toBe($payment->id)
+        ->and((int) $refund->amount)->toBe(100000)
+        ->and(number_format((float) $refund->balance_after, 2, '.', ''))->toBe('102500.50');
+    Log::shouldHaveReceived('warning')->withArgs(fn ($message, $context) => str_contains($message, 'refunded to wallet') && $context['left'] === 5)->once();
 
     paidWebhook($payment)->assertOk(); // a retry changes nothing
-    expect($investment->fresh()->sold_lot)->toBe(90);
+    expect($investment->fresh()->sold_lot)->toBe(90)
+        ->and(WalletTransaction::count())->toBe(1)
+        ->and(refundBalance($payment))->toBe('102500.50');
 });
 
-it('does not book crowdfunding money beyond the goal', function () {
+it('refunds crowdfunding money beyond the goal to the wallet', function () {
     $crowdfunding = oversellCrowdfunding();
     $payment = openInvoice($crowdfunding, ['amount' => 10000001]);
 
@@ -192,7 +209,45 @@ it('does not book crowdfunding money beyond the goal', function () {
 
     expect($payment->fresh()->needs_refund)->toBeTrue()
         ->and((int) $crowdfunding->fresh()->collected_amount)->toBe(90000000)
-        ->and(CrowdfundingTransaction::count())->toBe(0);
+        ->and(CrowdfundingTransaction::count())->toBe(0)
+        ->and(refundBalance($payment))->toBe('10000001.00')
+        ->and(WalletTransaction::where('type', 'PAYMENT_REFUND')->count())->toBe(1);
+});
+
+it('refunds a paid invoice whose product was deleted meanwhile', function () {
+    $investment = oversellInvestment();
+    $payment = openInvoice($investment, ['lot' => 5, 'amount' => 50000]);
+    $investment->delete();
+
+    paidWebhook($payment)->assertOk();
+
+    expect($payment->fresh())->status->toBe('PAID')->refunded_at->not->toBeNull()
+        ->and(refundBalance($payment))->toBe('50000.00');
+});
+
+it('does not refund an invoice that fits', function () {
+    $payment = openInvoice(oversellInvestment(), ['lot' => 5, 'amount' => 50000]);
+
+    paidWebhook($payment)->assertOk();
+
+    expect($payment->fresh())->needs_refund->toBeFalse()->refunded_at->toBeNull()
+        ->and(WalletTransaction::count())->toBe(0);
+});
+
+it('shows the refund in the wallet history', function () {
+    $investment = oversellInvestment();
+    $payment = openInvoice($investment, ['lot' => 20, 'amount' => 200000]);
+
+    paidWebhook($payment);
+    fakeBankChannels();
+
+    $this->actingAs(User::find($payment->user_id))->get(route('user.wallet'))
+        ->assertOk()
+        ->assertInertia(fn (Assert $page) => $page
+            ->where('history.0.kind', 'payment_refund')
+            ->where('history.0.title', 'Dikembalikan: Villa A')
+            ->where('history.0.subtitle', 'Kuota sudah habis saat pembayaran masuk')
+            ->where('history.0.amount', 200000));
 });
 
 // Real races (Postgres row locks)
@@ -277,7 +332,8 @@ it('books only one of two paid invoices that race for the last lots', function (
 
         expect($codes)->toBe([0, 0])
             ->and($investment->fresh()->sold_lot)->toBe(100)
-            ->and(Payment::whereIn('id', array_map(fn ($p) => $p->id, $payments))->where('needs_refund', true)->count())->toBe(1)
+            ->and(Payment::whereIn('id', array_map(fn ($p) => $p->id, $payments))->whereNotNull('refunded_at')->count())->toBe(1)
+            ->and(WalletTransaction::whereIn('reference_id', array_map(fn ($p) => $p->id, $payments))->where('type', 'PAYMENT_REFUND')->count())->toBe(1)
             ->and(InvestmentTransaction::where('investment_id', $investment->id)->count())->toBe(1);
     } finally {
         cleanupRace($userIds, [$investment->property_id]);
