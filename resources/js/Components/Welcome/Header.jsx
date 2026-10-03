@@ -111,14 +111,14 @@ export default function Header() {
                 {/* ================= NAVIGASI DESKTOP ================= */}
                 <nav
                     aria-label="Navigasi utama"
-                    className="hidden items-center gap-4 lg:flex xl:gap-7"
+                    className="hidden items-center lg:flex xl:gap-1"
                 >
                     {NAV_LINKS.map((item) => (
                         <Link
                             key={item.label}
                             href={hrefOf(item)}
                             aria-current={isActive(item) ? "page" : undefined}
-                            className={`whitespace-nowrap text-[15px] font-semibold leading-6 transition-colors xl:text-[16px] hover:text-gold-ink ${
+                            className={`whitespace-nowrap rounded-full px-2 py-2.5 text-[15px] font-semibold leading-6 transition-colors hover:bg-cream-deep hover:text-gold-ink focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold-ink xl:text-[16px] ${
                                 isActive(item) ? "text-gold-ink" : "text-ink"
                             }`}
                         >
