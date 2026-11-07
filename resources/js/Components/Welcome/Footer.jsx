@@ -1,4 +1,5 @@
-import { Link } from "@inertiajs/react";
+import { Link, usePage } from "@inertiajs/react";
+import { visibleItems } from "@/lib/features";
 
 /*
  * Footer — mengikuti mockup Figma.
@@ -22,10 +23,11 @@ function safeRoute(name, fallback) {
 }
 
 const EXPLORE = [
-    { label: "Investment", href: "/investments" },
-    { label: "Crowdfunding", href: "/crowdfunding" },
+    { label: "Investment", href: "/investments", feature: "investment" },
+    { label: "Crowdfunding", href: "/crowdfunding", feature: "crowdfunding" },
     { label: "Property for Sale", href: "/property-for-sale" },
-    { label: "How to Invest", href: "/how-to-invest" },
+    { label: "Auctions", href: "/auctions" },
+    { label: "How to Invest", href: "/how-to-invest", feature: ["investment", "crowdfunding"] },
 ];
 
 const CERTIFICATIONS = [
@@ -56,6 +58,8 @@ const EYEBROW =
     "text-[11px] uppercase leading-[17px] tracking-[1.5px] text-gold";
 
 export default function Footer({ settings }) {
+    const { features } = usePage().props;
+    const explore = visibleItems(EXPLORE, features);
     const logoSrc = settings?.logo
         ? settings.logo.startsWith("http") || settings.logo.startsWith("/")
             ? settings.logo
@@ -132,7 +136,7 @@ export default function Footer({ settings }) {
                         className="flex flex-1 flex-col items-start gap-1 sm:gap-[18px]"
                     >
                         <p className={EYEBROW}>Explore</p>
-                        {EXPLORE.map((item) => (
+                        {explore.map((item) => (
                             <Link key={item.label} href={item.href} className={LINK}>
                                 {item.label}
                             </Link>

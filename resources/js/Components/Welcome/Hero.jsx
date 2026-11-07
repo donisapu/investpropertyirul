@@ -53,7 +53,7 @@ export default function Hero({ landings, settings, sliders }) {
                     <div className="flex w-full flex-1 flex-col items-start gap-5">
                         <p className="hero-step hero-step-1 text-[11px] font-bold uppercase leading-[17px] tracking-[1.5px] text-gold-ink">
                             {landings?.subheader ||
-                                "Platform Developer & Investasi Properti"}
+                                "Platform Jual Beli & Lelang Properti"}
                         </p>
 
                         <h1 className="hero-step hero-step-2 w-full font-semibold tracking-[-0.02em] text-ink">
@@ -102,7 +102,7 @@ export default function Hero({ landings, settings, sliders }) {
                             )}
 
                             <Link
-                                href="/investments"
+                                href="/property-for-sale"
                                 className="group -my-3 inline-flex min-h-[44px] items-center gap-2 py-3 text-[13px] font-semibold leading-5 text-ink transition-colors hover:text-gold-ink focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold-ink"
                             >
                                 Jelajahi Properti

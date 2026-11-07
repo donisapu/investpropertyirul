@@ -22,13 +22,17 @@ class XenditService
         );
     }
 
-    public function createInvoice($externalId, $amount, $email)
+    /**
+     * $description is what the payer (and Xendit's reviewers) see on the invoice, so name the
+     * actual product, e.g. "Booking Fee - <property>" or "Deposit Lelang - <property>".
+     */
+    public function createInvoice($externalId, $amount, $email, string $description)
     {
         $create_invoice_request = new CreateInvoiceRequest([
             'external_id' => $externalId,
             'amount' => (float) $amount, // Pastikan float/double
             'payer_email' => $email,
-            'description' => 'Investment Payment',
+            'description' => $description,
             'invoice_duration' => config('xendit.invoice_duration'),
             'currency' => 'IDR',
             'remember_me' => true,

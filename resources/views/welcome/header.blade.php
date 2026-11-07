@@ -18,16 +18,22 @@
                 :class="(scrolled || open) ? 'text-slate-900' : 'text-white'">
                 <a href="{{ url('/') }}" class="hover:text-emerald-600 transition-colors">HOME</a>
                 <span class="text-slate-300">|</span>
+                @if (\App\Support\Features::enabled('investment'))
                 <a href="{{ route('investments.index') }}"
                     class="hover:text-emerald-600 transition-colors">INVESTMENT</a>
                 <span class="text-slate-300">|</span>
+                @endif
+                @if (\App\Support\Features::enabled('crowdfunding'))
                 <a href="{{ route('crowdfunding.index') }}"
                     class="hover:text-emerald-600 transition-colors">CROWDFUNDING</a>
                 <span class="text-slate-300">|</span>
+                @endif
                 <a href="#properti" class="hover:text-emerald-600 transition-colors">PROPERTY FOR SALE</a>
                 <span class="text-slate-300">|</span>
+                @if (\App\Support\Features::investing())
                 <a href="#fitur" class="hover:text-emerald-600 transition-colors">HOW TO INVEST</a>
                 <span class="text-slate-300">|</span>
+                @endif
                 <a href="#properti" class="hover:text-emerald-600 transition-colors">DEVELOPER</a>
                 <span class="text-slate-300">|</span>
 
@@ -48,10 +54,12 @@
                                 Dashboard
                             </a>
 
+                            @if (\App\Support\Features::investing())
                             <a href="{{ route('user.portfolio') }}"
                                 class="block px-4 py-2 text-sm text-slate-700 hover:bg-emerald-50 hover:text-emerald-600">
                                 My Portfolio
                             </a>
+                            @endif
                             <a href="{{ route('user.bid') }}"
                                 class="block px-4 py-2 text-sm text-slate-700 hover:bg-emerald-50 hover:text-emerald-600">
                                 My Bids
@@ -60,7 +68,7 @@
                                 class="block px-4 py-2 text-sm text-slate-700 hover:bg-emerald-50 hover:text-emerald-600">
                                 Transactions
                             </a>
-                            <a href="{{ route('user.portfolio') }}"
+                            <a href="{{ route('user.profile.edit') }}"
                                 class="block px-4 py-2 text-sm text-slate-700 hover:bg-emerald-50 hover:text-emerald-600">
                                 Account Setting
                             </a>
@@ -106,16 +114,22 @@
         <div class="space-y-1 px-4 py-6">
             <a href="{{ url('/') }}"
                 class="block rounded-md py-2 px-3 text-base font-medium text-slate-900 hover:bg-slate-50 hover:text-emerald-600">HOME</a>
+            @if (\App\Support\Features::enabled('investment'))
             <a href="{{ route('investments.index') }}"
                 class="block rounded-md py-2 px-3 text-base font-medium text-slate-900 hover:bg-slate-50 hover:text-emerald-600">INVESTMENT</a>
+            @endif
+            @if (\App\Support\Features::enabled('crowdfunding'))
             <a href="{{ route('crowdfunding.index') }}"
                 class="block rounded-md py-2 px-3 text-base font-medium text-slate-900 hover:bg-slate-50 hover:text-emerald-600">CROWDFUNDING</a>
+            @endif
             <a href="#properti"
                 class="block rounded-md py-2 px-3 text-base font-medium text-slate-900 hover:bg-slate-50 hover:text-emerald-600">PROPERTY
                 FOR SALE</a>
+            @if (\App\Support\Features::investing())
             <a href="#fitur"
                 class="block rounded-md py-2 px-3 text-base font-medium text-slate-900 hover:bg-slate-50 hover:text-emerald-600">HOW
                 TO INVEST</a>
+            @endif
             <a href="#properti"
                 class="block rounded-md py-2 px-3 text-base font-medium text-slate-900 hover:bg-slate-50 hover:text-emerald-600">DEVELOPER</a>
 
@@ -133,10 +147,12 @@
                                 Dashboard
                             </a>
 
+                            @if (\App\Support\Features::investing())
                             <a href="{{ route('user.portfolio') }}"
                                 class="block py-2 px-3 text-sm text-slate-700 hover:bg-emerald-50 hover:text-emerald-600">
                                 My Portfolio
                             </a>
+                            @endif
                             <a href="{{ route('user.bid') }}"
                                 class="block py-2 px-3 text-sm text-slate-700 hover:bg-emerald-50 hover:text-emerald-600">
                                 My Bids
@@ -145,7 +161,7 @@
                                 class="block py-2 px-3 text-sm text-slate-700 hover:bg-emerald-50 hover:text-emerald-600">
                                 Transactions
                             </a>
-                            <a href="{{ route('user.portfolio') }}"
+                            <a href="{{ route('user.profile.edit') }}"
                                 class="block py-2 px-3 text-sm text-slate-700 hover:bg-emerald-50 hover:text-emerald-600">
                                 Account Setting
                             </a>

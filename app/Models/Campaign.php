@@ -2,7 +2,9 @@
 
 namespace App\Models;
 
+use App\Support\Features;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -50,6 +52,23 @@ class Campaign extends Model
             ->where('status', 'active')
             ->whereDate('start_date', '<=', now())
             ->whereDate('end_date', '>=', now());
+    }
+
+    /**
+     * Active campaigns whose product is switched on. Every campaign discounts an investment or a
+     * crowdfunding product, so with both hidden (gainproperties.id) this is empty and no promo
+     * links into a 404.
+     */
+    public static function visible(): Collection
+    {
+        return static::active()->with('property.investment', 'property.crowdfunding')->get()
+            ->filter(fn (self $campaign) => $campaign->isVisible())
+            ->values();
+    }
+
+    public function isVisible(): bool
+    {
+        return $this->type !== null && Features::enabled($this->type);
     }
 
     /**

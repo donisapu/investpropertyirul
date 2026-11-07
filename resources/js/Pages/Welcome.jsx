@@ -1,4 +1,4 @@
-import { Head } from "@inertiajs/react";
+import { Head, usePage } from "@inertiajs/react";
 import PublicLayout from "@/Layouts/PublicLayout";
 
 import Hero from "@/Components/Welcome/Hero";
@@ -7,6 +7,7 @@ import OurVilla from "@/Components/Welcome/OurVilla";
 import DeveloperProjects from "@/Components/Welcome/DeveloperProjects";
 import Calculator from "@/Components/Welcome/Calculator";
 import OurLocation from "@/Components/Welcome/OurLocation";
+import { isInvesting } from "@/lib/features";
 
 /*
  * Home kini memakai PublicLayout seperti seluruh halaman publik lain.
@@ -25,15 +26,19 @@ export default function Welcome({
     landmarks,
     sliders,
 }) {
+    // Howto (cara berinvestasi) dan Calculator (estimasi yield) hanya relevan
+    // selama Investment/Crowdfunding aktif; di gainproperties.id keduanya off.
+    const investing = isInvesting(usePage().props.features);
+
     return (
         <PublicLayout>
-            <Head title="Investasi Mudah & Aman" />
+            <Head title={investing ? "Investasi Mudah & Aman" : "Jual Beli & Lelang Properti"} />
 
             <Hero landings={landings} settings={settings} sliders={sliders} />
-            <Howto auth={auth} landings={landings} />
+            {investing && <Howto auth={auth} landings={landings} />}
             <OurVilla villa={villa} sliders={sliders} landings={landings} />
             <DeveloperProjects project={projects} landings={landings} />
-            <Calculator landings={landings} projects={projects} />
+            {investing && <Calculator landings={landings} projects={projects} />}
             <OurLocation landings={landings} landmarks={landmarks} />
         </PublicLayout>
     );

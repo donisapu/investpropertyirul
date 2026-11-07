@@ -52,7 +52,7 @@ export default function Auctions({ auctions }) {
                                 mekanisme penjualan properti secara transparan, akuntabel, dan dilindungi hukum.
                             </p>
                             <p className="text-slate-700 leading-relaxed text-justify">
-                                Anda mencari peluang investasi properti dengan potensi keuntungan maksimal?
+                                Anda mencari properti dengan harga terbaik?
                                 Kami menyajikan portofolio properti pilihan yang dijual melalui lelang terbuka dan
                                 Dokumen yang Legal.
                             </p>

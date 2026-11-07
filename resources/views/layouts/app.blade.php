@@ -101,12 +101,12 @@
                         ['label' => 'Xendit Transactions', 'icon' => 'bx-transfer', 'route' => 'admin.xendit-transactions', 'active' => ['admin.xendit-transactions*']],
                         ['label' => 'Company Cash-out', 'icon' => 'bx-landmark', 'route' => 'admin.company-cashouts.create', 'active' => ['admin.company-cashouts*']],
                         ['header' => 'Products'],
-                        ['label' => 'Investment', 'icon' => 'bx-chart-trend', 'children' => [
+                        ['label' => 'Investment', 'icon' => 'bx-chart-trend', 'feature' => 'investment', 'children' => [
                             ['label' => 'Property Investment', 'route' => 'admin.investment-properties', 'active' => ['admin.investment-properties*']],
                             ['label' => 'Financials', 'route' => 'admin.financials', 'active' => ['admin.financials*']],
                             ['label' => 'Sell Requests', 'route' => 'admin.sell-request', 'active' => ['admin.sell-request*']],
                         ]],
-                        ['label' => 'Crowdfunding', 'icon' => 'bx-community', 'children' => [
+                        ['label' => 'Crowdfunding', 'icon' => 'bx-community', 'feature' => 'crowdfunding', 'children' => [
                             ['label' => 'Property Crowdfunding', 'route' => 'admin.crowdfunding-properties', 'active' => ['admin.crowdfunding-properties*']],
                             ['label' => 'Financials', 'route' => 'admin.cw_financials', 'active' => ['admin.cw_financials*']],
                         ]],
@@ -124,6 +124,8 @@
                         ]],
                         ['label' => 'Campaign', 'icon' => 'bx-home-circle', 'route' => 'admin.campaigns', 'active' => ['admin.campaigns*']],
                     ];
+                    // Hidden products (config/features.php) leave the menu; their routes answer 404.
+                    $adminMenu = array_values(array_filter($adminMenu, fn ($item) => ! isset($item['feature']) || \App\Support\Features::enabled($item['feature'])));
                     $menuActive = fn (array $item) => isset($item['children'])
                         ? collect($item['children'])->contains(fn ($child) => request()->routeIs(...$child['active']))
                         : request()->routeIs(...$item['active']);

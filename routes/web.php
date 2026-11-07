@@ -73,7 +73,7 @@ Route::get('/', function () {
     $landmark = Landmark::all();
     $sliders  = SliderImage::all();
     $project = DeveloperProject::take(4)->get();
-    $campaign = Campaign::active()->get(); // expired campaigns drop off the homepage
+    $campaign = Campaign::visible(); // expired campaigns and hidden products drop off the homepage
     return Inertia::render('Welcome', [
         'settings' => $settings,
         'partners' => $partners,
@@ -95,18 +95,22 @@ Route::get('/campaigns/{campaign}', [PublicCampaignController::class, 'show'])->
 
 Route::get('/properties/{property}', [PublicPropertyController::class, 'show'])->name('property.show')->where('property', '[0-9]+');
 Route::get('/projects/{slug}', [PublicProjectController::class, 'show'])->name('project.show');
-Route::get('/investments', [PublicInvestmentController::class, 'index'])->name('investments.index');
-Route::get('/investments/{id}', [PublicInvestmentController::class, 'show'])->name('investments.show')->where('id', '[0-9]+');
-Route::get('/investments/purchase/{id}', [PublicInvestmentController::class, 'purchase'])->name('investments.purchase')->where('id', '[0-9]+');
-Route::get('/investments/sell/{id}', [PublicInvestmentController::class, 'sell'])->name('investments.sell')->where('id', '[0-9]+');
+Route::middleware('feature:investment')->group(function () {
+    Route::get('/investments', [PublicInvestmentController::class, 'index'])->name('investments.index');
+    Route::get('/investments/{id}', [PublicInvestmentController::class, 'show'])->name('investments.show')->where('id', '[0-9]+');
+    Route::get('/investments/purchase/{id}', [PublicInvestmentController::class, 'purchase'])->name('investments.purchase')->where('id', '[0-9]+');
+    Route::get('/investments/sell/{id}', [PublicInvestmentController::class, 'sell'])->name('investments.sell')->where('id', '[0-9]+');
+});
 
 Route::get('/property-for-sale', [PublicPropertyConsignmentController::class, 'index'])->name('property-for-sale.index');
 Route::get('/property-for-sale/{id}', [PublicPropertyConsignmentController::class, 'show'])->name('property-for-sale.show')->where('id', '[0-9]+');
 
-Route::get('/crowdfunding', [PublicCrowdfundingController::class, 'index'])->name('crowdfunding.index');
-Route::get('/crowdfunding/project', [PublicCrowdfundingController::class, 'project'])->name('crowdfunding.project');
-Route::get('/crowdfunding/{id}', [PublicCrowdfundingController::class, 'show'])->name('crowdfunding.show');
-Route::get('/crowdfunding/purchase/{id}', [PublicCrowdfundingController::class, 'purchase'])->name('crowdfunding.purchase');
+Route::middleware('feature:crowdfunding')->group(function () {
+    Route::get('/crowdfunding', [PublicCrowdfundingController::class, 'index'])->name('crowdfunding.index');
+    Route::get('/crowdfunding/project', [PublicCrowdfundingController::class, 'project'])->name('crowdfunding.project');
+    Route::get('/crowdfunding/{id}', [PublicCrowdfundingController::class, 'show'])->name('crowdfunding.show');
+    Route::get('/crowdfunding/purchase/{id}', [PublicCrowdfundingController::class, 'purchase'])->name('crowdfunding.purchase');
+});
 
 Route::get('/auctions', [AuctionController::class, 'index'])->name('auctions.index');
 Route::get('/auctions/{id}', [AuctionController::class, 'show'])->name('auctions.show');
@@ -115,7 +119,7 @@ Route::post('/auctions/{id}/bid', [AuctionController::class, 'placeBid'])->name(
 Route::get('/how-to-invest', function () {
     $settings = WebsiteSetting::getSettings();
     return Inertia::render('HowToInvest', ['settings' => $settings]);
-})->name('how-to-invest');
+})->name('how-to-invest')->middleware('feature:investment,crowdfunding');
 
 Route::get('/terms', function () {
     $settings = WebsiteSetting::getSettings();
@@ -164,14 +168,16 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin'])->grou
     Route::delete('properties-document/{id}', [PropertiesController::class, 'deleteDocument']);
 
     // Investment
-    Route::get('investment-properties', [PropertyInvestmentController::class, 'index'])->name('investment-properties');
-    Route::get('investment-properties/data', [PropertyInvestmentController::class, 'data'])->name('investment-properties.data');
-    Route::get('investment-properties/create', [PropertyInvestmentController::class, 'create'])->name('investment-properties.create');
-    Route::get('investment-properties/show/{id}', [PropertyInvestmentController::class, 'show'])->name('investment-properties.show');
-    Route::get('investment-properties/edit/{id}', [PropertyInvestmentController::class, 'edit'])->name('investment-properties.edit');
-    Route::post('investment-properties/store', [PropertyInvestmentController::class, 'store'])->name('investment-properties.store');
-    Route::put('investment-properties/update/{id}', [PropertyInvestmentController::class, 'update'])->name('investment-properties.update');
-    Route::delete('investment-properties/destroy/{id}', [PropertyInvestmentController::class, 'destroy'])->name('investment-properties.destroy');
+    Route::middleware('feature:investment')->group(function () {
+        Route::get('investment-properties', [PropertyInvestmentController::class, 'index'])->name('investment-properties');
+        Route::get('investment-properties/data', [PropertyInvestmentController::class, 'data'])->name('investment-properties.data');
+        Route::get('investment-properties/create', [PropertyInvestmentController::class, 'create'])->name('investment-properties.create');
+        Route::get('investment-properties/show/{id}', [PropertyInvestmentController::class, 'show'])->name('investment-properties.show');
+        Route::get('investment-properties/edit/{id}', [PropertyInvestmentController::class, 'edit'])->name('investment-properties.edit');
+        Route::post('investment-properties/store', [PropertyInvestmentController::class, 'store'])->name('investment-properties.store');
+        Route::put('investment-properties/update/{id}', [PropertyInvestmentController::class, 'update'])->name('investment-properties.update');
+        Route::delete('investment-properties/destroy/{id}', [PropertyInvestmentController::class, 'destroy'])->name('investment-properties.destroy');
+    });
 
     // Consigntment
     Route::get('consignment-properties', [PropertyConsignmentController::class, 'index'])->name('consignment-properties');
@@ -184,14 +190,16 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin'])->grou
     Route::delete('consignment-properties/destroy/{id}', [PropertyConsignmentController::class, 'destroy'])->name('consignment-properties.destroy');
 
     // Crowdfunding
-    Route::get('crowdfunding-properties', [PropertyCrowdfundingController::class, 'index'])->name('crowdfunding-properties');
-    Route::get('crowdfunding-properties/data', [PropertyCrowdfundingController::class, 'data'])->name('crowdfunding-properties.data');
-    Route::get('crowdfunding-properties/create', [PropertyCrowdfundingController::class, 'create'])->name('crowdfunding-properties.create');
-    Route::get('crowdfunding-properties/show/{id}', [PropertyCrowdfundingController::class, 'show'])->name('crowdfunding-properties.show');
-    Route::get('crowdfunding-properties/edit/{id}', [PropertyCrowdfundingController::class, 'edit'])->name('crowdfunding-properties.edit');
-    Route::post('crowdfunding-properties/store', [PropertyCrowdfundingController::class, 'store'])->name('crowdfunding-properties.store');
-    Route::put('crowdfunding-properties/update/{id}', [PropertyCrowdfundingController::class, 'update'])->name('crowdfunding-properties.update');
-    Route::delete('crowdfunding-properties/destroy/{id}', [PropertyCrowdfundingController::class, 'destroy'])->name('crowdfunding-properties.destroy');
+    Route::middleware('feature:crowdfunding')->group(function () {
+        Route::get('crowdfunding-properties', [PropertyCrowdfundingController::class, 'index'])->name('crowdfunding-properties');
+        Route::get('crowdfunding-properties/data', [PropertyCrowdfundingController::class, 'data'])->name('crowdfunding-properties.data');
+        Route::get('crowdfunding-properties/create', [PropertyCrowdfundingController::class, 'create'])->name('crowdfunding-properties.create');
+        Route::get('crowdfunding-properties/show/{id}', [PropertyCrowdfundingController::class, 'show'])->name('crowdfunding-properties.show');
+        Route::get('crowdfunding-properties/edit/{id}', [PropertyCrowdfundingController::class, 'edit'])->name('crowdfunding-properties.edit');
+        Route::post('crowdfunding-properties/store', [PropertyCrowdfundingController::class, 'store'])->name('crowdfunding-properties.store');
+        Route::put('crowdfunding-properties/update/{id}', [PropertyCrowdfundingController::class, 'update'])->name('crowdfunding-properties.update');
+        Route::delete('crowdfunding-properties/destroy/{id}', [PropertyCrowdfundingController::class, 'destroy'])->name('crowdfunding-properties.destroy');
+    });
 
     // Auction
     Route::get('auction-properties', [PropertyAuctionController::class, 'index'])->name('auction-properties');
@@ -242,28 +250,34 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin'])->grou
     Route::put('{id}/deactivate', [CampaignController::class, 'deactivate'])->name('campaigns.deactivate');
 
     //Investment Financials
-    Route::get('financials', [PropertyFinancialsController::class, 'index'])->name('financials');
-    Route::get('financials/data', [PropertyFinancialsController::class, 'data'])->name('financials.data');
-    Route::get('financials/show/{id}', [PropertyFinancialsController::class, 'show'])->name('financials.show');
-    Route::post('financials/store/{id}', [PropertyFinancialsController::class, 'store'])->name('financials.store');
-    Route::post('financials/update/{id}/{back}', [PropertyFinancialsController::class, 'update'])->name('financials.update');
-    Route::get('financials/delete/{id}/{back}', [PropertyFinancialsController::class, 'destroy'])->name('financials.destroy');
-    Route::post('financials/distribute/{id}/{back}', [PropertyFinancialsController::class, 'distribute'])->name('financials.distribute');
+    Route::middleware('feature:investment')->group(function () {
+        Route::get('financials', [PropertyFinancialsController::class, 'index'])->name('financials');
+        Route::get('financials/data', [PropertyFinancialsController::class, 'data'])->name('financials.data');
+        Route::get('financials/show/{id}', [PropertyFinancialsController::class, 'show'])->name('financials.show');
+        Route::post('financials/store/{id}', [PropertyFinancialsController::class, 'store'])->name('financials.store');
+        Route::post('financials/update/{id}/{back}', [PropertyFinancialsController::class, 'update'])->name('financials.update');
+        Route::get('financials/delete/{id}/{back}', [PropertyFinancialsController::class, 'destroy'])->name('financials.destroy');
+        Route::post('financials/distribute/{id}/{back}', [PropertyFinancialsController::class, 'distribute'])->name('financials.distribute');
+    });
 
     // Crowdfunding Financials
-    Route::get('cw-financials', [CrowdfundingFinancialsController::class, 'index'])->name('cw_financials');
-    Route::get('cw-financials/data', [CrowdfundingFinancialsController::class, 'data'])->name('cw_financials.data');
-    Route::get('cw-financials/show/{id}', [CrowdfundingFinancialsController::class, 'show'])->name('cw_financials.show');
-    Route::post('cw-financials/store/{id}', [CrowdfundingFinancialsController::class, 'store'])->name('cw_financials.store');
-    Route::post('cw-financials/update/{id}/{back}', [CrowdfundingFinancialsController::class, 'update'])->name('cw_financials.update');
-    Route::get('cw-financials/delete/{id}/{back}', [CrowdfundingFinancialsController::class, 'destroy'])->name('cw_financials.destroy');
-    Route::post('cw-financials/distribute/{id}/{back}', [CrowdfundingFinancialsController::class, 'distribute'])->name('cw_financials.distribute');
+    Route::middleware('feature:crowdfunding')->group(function () {
+        Route::get('cw-financials', [CrowdfundingFinancialsController::class, 'index'])->name('cw_financials');
+        Route::get('cw-financials/data', [CrowdfundingFinancialsController::class, 'data'])->name('cw_financials.data');
+        Route::get('cw-financials/show/{id}', [CrowdfundingFinancialsController::class, 'show'])->name('cw_financials.show');
+        Route::post('cw-financials/store/{id}', [CrowdfundingFinancialsController::class, 'store'])->name('cw_financials.store');
+        Route::post('cw-financials/update/{id}/{back}', [CrowdfundingFinancialsController::class, 'update'])->name('cw_financials.update');
+        Route::get('cw-financials/delete/{id}/{back}', [CrowdfundingFinancialsController::class, 'destroy'])->name('cw_financials.destroy');
+        Route::post('cw-financials/distribute/{id}/{back}', [CrowdfundingFinancialsController::class, 'distribute'])->name('cw_financials.distribute');
+    });
 
     // Lot Sell Management
-    Route::get('sell-request', [SellRequestController::class, 'index'])->name('sell-request');
-    Route::get('sell-request/data', [SellRequestController::class, 'data'])->name('sell-request.data');
-    Route::get('sell-request/accept/{id}', [SellRequestController::class, 'accept'])->name('sell-request.accept');
-    Route::get('sell-request/decline/{id}', [SellRequestController::class, 'decline'])->name('sell-request.decline');
+    Route::middleware('feature:investment')->group(function () {
+        Route::get('sell-request', [SellRequestController::class, 'index'])->name('sell-request');
+        Route::get('sell-request/data', [SellRequestController::class, 'data'])->name('sell-request.data');
+        Route::get('sell-request/accept/{id}', [SellRequestController::class, 'accept'])->name('sell-request.accept');
+        Route::get('sell-request/decline/{id}', [SellRequestController::class, 'decline'])->name('sell-request.decline');
+    });
 
     // Website Settings
     Route::get('/website-settings', [WebsiteSettingController::class, 'edit'])->name('website-settings.edit');
@@ -304,16 +318,16 @@ Route::prefix('user')->name('user.')->middleware(['auth', 'role:user', 'verified
 
     // Dashboard
     Route::get('/dashboard', [UserDashboardController::class, 'index'])->name('dashboard');
-    Route::get('/portfolio', [PortfolioController::class, 'index'])->name('portfolio');
+    Route::get('/portfolio', [PortfolioController::class, 'index'])->name('portfolio')->middleware('feature:investment,crowdfunding');
     Route::get('/bid', [BidController::class, 'index'])->name('bid');
     Route::get('/transaction', [TransactionController::class, 'index'])->name('transaction');
 
     // Payment
-    Route::post('payment/investment/{id}', [PaymentController::class, 'payInvestment'])->name('payment.investment');
-    Route::post('payment/crowdfunding/{id}', [PaymentController::class, 'payCrowdfunding'])->name('payment.crowdfunding');
+    Route::post('payment/investment/{id}', [PaymentController::class, 'payInvestment'])->name('payment.investment')->middleware('feature:investment');
+    Route::post('payment/crowdfunding/{id}', [PaymentController::class, 'payCrowdfunding'])->name('payment.crowdfunding')->middleware('feature:crowdfunding');
 
     // Sell
-    Route::post('sell/investment/id/{id}', [PaymentController::class, 'sellInvestment'])->name('sell.investment');
+    Route::post('sell/investment/id/{id}', [PaymentController::class, 'sellInvestment'])->name('sell.investment')->middleware('feature:investment');
 
     // Withdrawals
     Route::get('/wallet', [WithdrawalController::class, 'index'])->name('wallet');

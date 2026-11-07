@@ -10,6 +10,8 @@ class PublicCampaignController extends Controller
 {
     public function show(Campaign $campaign)
     {
+        abort_unless($campaign->isVisible(), 404);
+
         $campaign->load('property');
 
         return Inertia::render('Campaign/Show', [

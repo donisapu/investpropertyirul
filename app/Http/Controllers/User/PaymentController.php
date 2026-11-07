@@ -80,7 +80,8 @@ class PaymentController extends Controller
             $invoice = $xendit->createInvoice(
                 $payment->external_id,
                 $payment->amount,
-                Auth::user()->email
+                Auth::user()->email,
+                'Investment Payment'
             );
 
             $url = $invoice->getInvoiceUrl();
@@ -153,7 +154,8 @@ class PaymentController extends Controller
             $invoice = $xendit->createInvoice(
                 $payment->external_id,
                 (int) $payment->amount,
-                Auth::user()->email
+                Auth::user()->email,
+                'Crowdfunding Payment'
             );
 
             $url = $invoice->getInvoiceUrl();

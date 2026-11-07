@@ -39,5 +39,9 @@
         <env name="XENDIT_SECRET_KEY" value="xnd_development_testing_key" force="true"/>
         <env name="XENDIT_CALLBACK_TOKEN" value="testing-callback-token" force="true"/>
         <env name="XENDIT_BASE_URL" value="https://api.xendit.co" force="true"/>
+        <!-- The existing suite covers Investment and Crowdfunding, so tests run with them on;
+             tests/Feature/FeatureFlagsTest.php switches them off. Production default is off. -->
+        <env name="FEATURE_INVESTMENT" value="true" force="true"/>
+        <env name="FEATURE_CROWDFUNDING" value="true" force="true"/>
     </php>
 </phpunit>

@@ -2,6 +2,7 @@ import { Link, usePage } from "@inertiajs/react";
 import { useState, useEffect, useRef } from "react";
 import { route } from "ziggy-js";
 import { ChevronDown, Menu, X } from "lucide-react";
+import { visibleItems } from "@/lib/features";
 
 /*
  * Header — mengikuti mockup Figma (export Pencil).
@@ -17,15 +18,16 @@ import { ChevronDown, Menu, X } from "lucide-react";
 
 const NAV_LINKS = [
     { label: "Home", href: "/" },
-    { label: "Investment", routeName: "investments.index" },
-    { label: "Crowdfunding", routeName: "crowdfunding.index" },
+    { label: "Investment", routeName: "investments.index", feature: "investment" },
+    { label: "Crowdfunding", routeName: "crowdfunding.index", feature: "crowdfunding" },
     { label: "Property for Sale", routeName: "property-for-sale.index" },
-    { label: "How to Invest", href: "/how-to-invest" },
+    { label: "Auctions", routeName: "auctions.index" },
+    { label: "How to Invest", href: "/how-to-invest", feature: ["investment", "crowdfunding"] },
 ];
 
 const ACCOUNT_LINKS = [
     { label: "Dashboard", routeName: "user.dashboard" },
-    { label: "My Portfolio", routeName: "user.portfolio" },
+    { label: "My Portfolio", routeName: "user.portfolio", feature: ["investment", "crowdfunding"] },
     { label: "Transactions", routeName: "user.transaction" },
     { label: "Account Setting", routeName: "user.profile.edit" },
 ];
@@ -45,7 +47,10 @@ function hrefOf(item) {
 }
 
 export default function Header() {
-    const { auth, settings, url } = usePage().props;
+    const { auth, settings, url, features } = usePage().props;
+    // Produk yang disembunyikan (config/features.php) tidak muncul di menu.
+    const navLinks = visibleItems(NAV_LINKS, features);
+    const accountLinks = visibleItems(ACCOUNT_LINKS, features);
     const currentPath = usePage().url ?? url ?? "/";
 
     const [open, setOpen] = useState(false);
@@ -113,7 +118,7 @@ export default function Header() {
                     aria-label="Navigasi utama"
                     className="hidden items-center lg:flex xl:gap-1"
                 >
-                    {NAV_LINKS.map((item) => (
+                    {navLinks.map((item) => (
                         <Link
                             key={item.label}
                             href={hrefOf(item)}
@@ -152,7 +157,7 @@ export default function Header() {
                                     role="menu"
                                     className="absolute right-0 z-50 mt-3 w-52 overflow-hidden rounded-2xl border border-gold-line bg-white py-2 shadow-xl"
                                 >
-                                    {ACCOUNT_LINKS.map((item) => (
+                                    {accountLinks.map((item) => (
                                         <a
                                             key={item.label}
                                             role="menuitem"
@@ -211,7 +216,7 @@ export default function Header() {
                     className="border-t border-gold-line bg-cream px-6 pb-6 pt-2 sm:px-10 lg:hidden"
                 >
                     <nav aria-label="Navigasi utama (mobile)" className="flex flex-col">
-                        {NAV_LINKS.map((item) => (
+                        {navLinks.map((item) => (
                             <Link
                                 key={item.label}
                                 href={hrefOf(item)}
@@ -231,7 +236,7 @@ export default function Header() {
                             <p className="pb-1 text-[11px] font-bold uppercase tracking-[1.5px] text-gold-ink">
                                 Akun Saya
                             </p>
-                            {ACCOUNT_LINKS.map((item) => (
+                            {accountLinks.map((item) => (
                                 <a
                                     key={item.label}
                                     href={hrefOf(item)}

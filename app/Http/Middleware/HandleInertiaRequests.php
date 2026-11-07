@@ -41,7 +41,8 @@ class HandleInertiaRequests extends Middleware
                 'user' => $request->user(),
             ],
             'partners' => \App\Models\Partner::all(),
-            'campaigns' => \App\Models\Campaign::active()->get(),
+            'campaigns' => fn () => \App\Models\Campaign::visible(),
+            'features' => \App\Support\Features::toArray(),
             'settings' => \App\Models\WebsiteSetting::getSettings(),
             'flash' => fn () => [
                 'success' => $request->session()->get('success'),

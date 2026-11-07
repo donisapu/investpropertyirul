@@ -1,5 +1,5 @@
 import React from "react";
-import { Head, Link } from "@inertiajs/react";
+import { Head, Link, usePage } from "@inertiajs/react";
 import {
   Wallet,
   TrendingUp,
@@ -8,8 +8,10 @@ import {
   ArrowRight,
   History,
   Search,
+  Gavel,
 } from "lucide-react";
 import PublicLayout from "@/Layouts/PublicLayout";
+import { isEnabled, isInvesting } from "@/lib/features";
 
 function formatCurrency(value) {
   return new Intl.NumberFormat("id-ID", {
@@ -28,9 +30,15 @@ export default function Dashboard({
   activeInvestments = [],
   recentTransactions = [],
 }) {
+  // Kartu aset/investasi/return dan daftar investasi aktif hanya tampil selama
+  // Investment/Crowdfunding aktif (config/features.php). Saldo dompet dan
+  // riwayat transaksi tetap tampil.
+  const { features } = usePage().props;
+  const investing = isInvesting(features);
+
   return (
     <PublicLayout>
-      <Head title="Dashboard Portfolio" />
+      <Head title={investing ? "Dashboard Portfolio" : "Dashboard"} />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Banner Header */}
@@ -41,24 +49,27 @@ export default function Dashboard({
               <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-white/10 backdrop-blur-md rounded-full mb-4 border border-white/10">
                 <span className="w-2 h-2 rounded-full bg-gold animate-pulse"></span>
                 <span className="text-[10px] font-black text-white uppercase tracking-widest">
-                  Ringkasan Portofolio
+                  {investing ? "Ringkasan Portofolio" : "Ringkasan Akun"}
                 </span>
               </div>
               <h1 className="text-3xl md:text-4xl font-black text-white tracking-tight">
                 Dashboard{" "}
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-gold to-gold-ink">
-                  Investasi
+                  {investing ? "Investasi" : "Akun"}
                 </span>
               </h1>
               <p className="text-cream/75 text-sm mt-2">
-                Pantau perkembangan aset, return, dan riwayat transaksi kamu di satu tempat.
+                {investing
+                  ? "Pantau perkembangan aset, return, dan riwayat transaksi kamu di satu tempat."
+                  : "Pantau saldo dan riwayat transaksi kamu di satu tempat."}
               </p>
             </div>
           </div>
         </div>
 
         {/* Portfolio Summary Grid */}
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4 mb-12">
+        <div className={`grid gap-6 mb-12 ${investing ? "sm:grid-cols-2 lg:grid-cols-4" : "sm:grid-cols-2"}`}>
+          {investing && (<>
           {/* Asset Value */}
           <div className="bg-cream rounded-[2rem] p-6 border border-gold-line shadow-[0_4px_20px_rgba(0,0,0,0.03)] flex flex-col justify-between">
             <div className="flex items-center justify-between mb-4">
@@ -104,6 +115,8 @@ export default function Dashboard({
             </h2>
           </div>
 
+          </>)}
+
           {/* Available Balance (Wallet) */}
           <div className="bg-cream rounded-[2rem] p-6 border border-gold-line shadow-[0_4px_20px_rgba(0,0,0,0.03)] flex flex-col justify-between">
             <div className="flex items-center justify-between mb-4">
@@ -121,6 +134,7 @@ export default function Dashboard({
         </div>
 
         {/* Active Investments */}
+        {investing && (
         <div className="mb-12">
           <div className="flex items-center justify-between mb-6">
             <div>
@@ -177,6 +191,7 @@ export default function Dashboard({
             )}
           </div>
         </div>
+        )}
 
         {/* Recent Transactions */}
         <div className="mb-12">
@@ -248,12 +263,21 @@ export default function Dashboard({
             <Search size={16} /> Explore Properties
           </Link>
 
-          <Link
-            href="/crowdfunding"
-            className="flex items-center justify-center gap-2 bg-cream hover:bg-cream-deep border border-gold-line text-ink py-4 rounded-2xl font-black text-sm transition-all"
-          >
-            <Building2 size={16} /> Join Crowdfunding
-          </Link>
+          {isEnabled(features, "crowdfunding") ? (
+            <Link
+              href="/crowdfunding"
+              className="flex items-center justify-center gap-2 bg-cream hover:bg-cream-deep border border-gold-line text-ink py-4 rounded-2xl font-black text-sm transition-all"
+            >
+              <Building2 size={16} /> Join Crowdfunding
+            </Link>
+          ) : (
+            <Link
+              href="/auctions"
+              className="flex items-center justify-center gap-2 bg-cream hover:bg-cream-deep border border-gold-line text-ink py-4 rounded-2xl font-black text-sm transition-all"
+            >
+              <Gavel size={16} /> Ikuti Lelang
+            </Link>
+          )}
 
 
         </div>
