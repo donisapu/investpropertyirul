@@ -180,7 +180,7 @@ export default function Bids({ items = [], held = { amount: 0, auctions: 0 } }) 
                     ))}
                     <div className="rounded-3xl border border-gold-line bg-paper p-5">
                         <p className="text-[11px] font-bold uppercase tracking-wider text-ink-soft">Deposit tertahan</p>
-                        <p className="mt-2 text-xl font-extrabold text-ink tabular-nums">{formatRupiah(held.amount)}</p>
+                        <p className="mt-2 whitespace-nowrap text-base font-extrabold text-ink tabular-nums sm:text-xl">{formatRupiah(held.amount)}</p>
                         <p className="mt-0.5 text-[11px] text-ink-soft">di lelang yang belum selesai</p>
                     </div>
                 </div>
