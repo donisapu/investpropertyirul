@@ -2,6 +2,7 @@
 
 namespace App\Services\Wallet;
 
+use App\Models\AuctionDeposit;
 use App\Models\CrowdfundingFinancial;
 use App\Models\InvestmentTransaction;
 use App\Models\Payment;
@@ -139,6 +140,14 @@ class WalletOverview
                     'status' => ['label' => 'Masuk', 'tone' => 'success'],
                     'fix_account' => false,
                 ],
+                WalletTransaction::TYPE_DEPOSIT_REFUND => [
+                    'kind' => 'deposit_refund',
+                    'title' => $name ? "Pengembalian deposit lelang: {$name}" : 'Pengembalian deposit lelang',
+                    'subtitle' => null,
+                    'amount' => $amount,
+                    'status' => ['label' => 'Masuk', 'tone' => 'success'],
+                    'fix_account' => false,
+                ],
                 'PROFIT' => [
                     'kind' => 'profit',
                     'title' => $name ? "Bagi hasil {$name}" : 'Bagi hasil',
@@ -226,6 +235,12 @@ class WalletOverview
         if (($ids = $idsOf(SaleBooking::class))->isNotEmpty()) {
             foreach (SaleBooking::with('property')->whereIn('id', $ids)->get() as $b) {
                 $names[SaleBooking::class][$b->id] = $b->property?->property_name;
+            }
+        }
+
+        if (($ids = $idsOf(AuctionDeposit::class))->isNotEmpty()) {
+            foreach (AuctionDeposit::with('property')->whereIn('id', $ids)->get() as $d) {
+                $names[AuctionDeposit::class][$d->id] = $d->property?->property_name;
             }
         }
 

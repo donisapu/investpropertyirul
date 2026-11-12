@@ -16,6 +16,7 @@ class Kernel extends ConsoleKernel
         // Xendit Transactions mirror (XW-08); webhooks keep it fresher in between.
         $schedule->command('xendit:sync-transactions')->everyTenMinutes()->withoutOverlapping(15);
         $schedule->command('sales:expire-bookings')->everyFiveMinutes()->withoutOverlapping();
+        $schedule->command('auctions:tick')->everyMinute()->withoutOverlapping(5);
     }
 
     /**

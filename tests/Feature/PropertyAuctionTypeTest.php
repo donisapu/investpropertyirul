@@ -31,6 +31,7 @@ function auctionForm(int $propertyId, array $overrides = []): array
     return array_merge([
         'property_id' => $propertyId, 'open_bid' => 500000000, 'bid_increment' => 5000000, 'market_value' => 800000000,
         'date_start' => now()->toDateString(), 'date_finish' => now()->addWeek()->toDateString(), 'status' => 'active', 'type' => 'cessie',
+        'deposit_percent' => 5, 'payment_days' => 7,
     ], $overrides);
 }
 

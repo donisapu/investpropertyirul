@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\user;
 
 use App\Http\Controllers\Controller;
+use App\Models\AuctionDeposit;
+use App\Models\AuctionSettlement;
 use App\Models\Campaign;
 use App\Models\CrowdfundingPortfolio;
 use App\Models\CrowdfundingTransaction;
@@ -12,8 +14,9 @@ use App\Models\Payment;
 use App\Models\PropertyCrowdfunding;
 use App\Models\PropertyInvestment;
 use App\Models\SaleBooking;
-use App\Services\Sale\SaleBookingService;
 use App\Models\WalletTransaction;
+use App\Services\Auction\AuctionService;
+use App\Services\Sale\SaleBookingService;
 use App\Services\Wallet\WalletCredit;
 use App\Services\XenditService;
 use App\Services\Xendit\TransactionMirror;
@@ -236,6 +239,11 @@ class PaymentController extends Controller
                 app(SaleBookingService::class)->markExpired($payment->payable);
             }
 
+            // Lelang deposit: an expired invoice can be paid again with a new one (C6).
+            if ($data['status'] === 'EXPIRED' && $payment->payable_type === AuctionDeposit::class && $payment->payable) {
+                app(AuctionService::class)->markDepositExpired($payment->payable);
+            }
+
             if ($data['status'] === 'PAID') {
 
                 // Locked so two payments for the same product cannot both take its last lots.
@@ -250,6 +258,18 @@ class PaymentController extends Controller
 
                 if ($payment->payable_type === SaleBooking::class) {
                     app(SaleBookingService::class)->markPaid($payable);
+
+                    return;
+                }
+
+                if ($payment->payable_type === AuctionDeposit::class) {
+                    app(AuctionService::class)->markDepositPaid($payable);
+
+                    return;
+                }
+
+                if ($payment->payable_type === AuctionSettlement::class) {
+                    app(AuctionService::class)->markSettlementPaid($payable, $payment);
 
                     return;
                 }

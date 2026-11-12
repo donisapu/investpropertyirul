@@ -119,7 +119,14 @@ Route::middleware('feature:crowdfunding')->group(function () {
 
 Route::get('/auctions', [AuctionController::class, 'index'])->name('auctions.index');
 Route::get('/auctions/{id}', [AuctionController::class, 'show'])->name('auctions.show');
-Route::post('/auctions/{id}/bid', [AuctionController::class, 'placeBid'])->name('auctions.bid')->middleware('auth');
+Route::middleware(['auth', 'role:user', 'verified'])->whereNumber('id')->group(function () {
+    Route::post('/auctions/{id}/deposit', [AuctionController::class, 'deposit'])->name('auctions.deposit');
+    Route::post('/auctions/{id}/bid', [AuctionController::class, 'placeBid'])->name('auctions.bid');
+    Route::post('/auctions/{id}/settlement', [AuctionController::class, 'settle'])->name('auctions.settle');
+});
+// "Masuk untuk ikut lelang": the auth middleware sends guests to login, then back to the auction.
+Route::get('/auctions/{id}/join', fn (int $id) => redirect()->route('auctions.show', $id))
+    ->name('auctions.join')->whereNumber('id')->middleware('auth');
 
 Route::get('/how-to-invest', function () {
     $settings = WebsiteSetting::getSettings();
@@ -221,6 +228,9 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin'])->grou
     Route::post('auction-properties/store', [PropertyAuctionController::class, 'store'])->name('auction-properties.store');
     Route::put('auction-properties/update/{id}', [PropertyAuctionController::class, 'update'])->name('auction-properties.update');
     Route::delete('auction-properties/destroy/{id}', [PropertyAuctionController::class, 'destroy'])->name('auction-properties.destroy');
+    Route::post('auction-properties/{auction}/cancel', [PropertyAuctionController::class, 'cancel'])->name('auction-properties.cancel');
+    Route::post('auction-properties/{auction}/mark-paid', [PropertyAuctionController::class, 'markPaid'])->name('auction-properties.mark-paid');
+    Route::post('auction-properties/{auction}/extend-due', [PropertyAuctionController::class, 'extendDue'])->name('auction-properties.extend-due');
     Route::get('auction-properties/{id}/bids', [PropertyAuctionController::class, 'getBids'])->name('admin.auction-properties.bids');
 
     // Developer Master

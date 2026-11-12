@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { Head, Link, useForm, usePage } from "@inertiajs/react";
+import { Head, Link, usePage } from "@inertiajs/react";
+import AuctionPanel, { BidHistory } from "@/Components/Auction/AuctionPanel";
 import {
     Bed,
     Bath,
@@ -8,7 +9,6 @@ import {
     ChevronRight,
     ChevronLeft,
     Banknote,
-    Phone,
     X,
     Building2,
     Home,
@@ -19,52 +19,25 @@ import {
 } from "lucide-react";
 import PublicLayout from "@/Layouts/PublicLayout";
 
-export default function Show({ auction }) {
+const STATUS_LABELS = {
+    upcoming: "Akan dibuka",
+    active: "Berlangsung",
+    closed: "Ditutup",
+    awaiting_payment: "Selesai",
+    completed: "Selesai",
+    no_winner: "Selesai",
+    defaulted: "Selesai",
+    cancelled: "Dibatalkan",
+    suspended: "Ditangguhkan",
+};
+
+export default function Show({ auction, participation }) {
     const [lightboxOpen, setLightboxOpen] = useState(false);
     const { settings } = usePage().props;
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
     const [activeTab, setActiveTab] = useState("overview");
 
     const property = auction.property;
-
-    // Ambil data auth, flash message, dan error dari properti page
-    const { auth, flash, errors } = usePage().props;
-
-    // Hitung Current Highest Bid dan Minimal Bid Selanjutnya
-    const highestBid =
-        auction.bids && auction.bids.length > 0
-            ? Math.max(...auction.bids.map((b) => Number(b.bid_amount)))
-            : null;
-
-    const currentPrice = highestBid || Number(auction.open_bid);
-    const minRequiredBid = highestBid
-        ? currentPrice + Number(auction.bid_increment)
-        : Number(auction.open_bid);
-
-    // Setup Inertia Form
-    const {
-        data,
-        setData,
-        post,
-        processing,
-        errors: formErrors,
-    } = useForm({
-        bid_amount: minRequiredBid,
-    });
-
-    const handleBidSubmit = (e) => {
-        e.preventDefault();
-        // Pastikan route namenya sesuai dengan yang ada di web.php kamu
-        post(route("auctions.bid", auction.id), {
-            preserveScroll: true,
-            onSuccess: () => {
-                setData(
-                    "bid_amount",
-                    minRequiredBid + Number(auction.bid_increment),
-                );
-            },
-        });
-    };
 
     const openLightbox = (index) => {
         setCurrentImageIndex(index);
@@ -252,12 +225,12 @@ export default function Show({ auction }) {
                                         className={`px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide ${
                                             auction.status === "active"
                                                 ? "bg-emerald-100 text-emerald-700"
-                                                : auction.status === "closed"
-                                                  ? "bg-slate-100 text-slate-700"
-                                                  : "bg-amber-100 text-amber-700"
+                                                : ["upcoming", "suspended", "awaiting_payment"].includes(auction.status)
+                                                  ? "bg-amber-100 text-amber-700"
+                                                  : "bg-slate-100 text-slate-700"
                                         }`}
                                     >
-                                        {auction.status}
+                                        {STATUS_LABELS[auction.status] ?? auction.status}
                                     </span>
                                     <span
                                         className={`px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide ${
@@ -521,115 +494,24 @@ export default function Show({ auction }) {
                                 )}
                             </div>
                         </div>
+                        <BidHistory
+                            bids={participation.bids}
+                            upcoming={participation.status === "upcoming"}
+                            opensAt={participation.opens_at}
+                        />
                     </div>
 
                     {/* Right Column - Auction Info */}
                     <div className="space-y-6">
-                        {/* <div className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden sticky top-24">
-                            <div className="p-6 bg-slate-900 text-white">
-                                <h3 className="font-bold text-lg mb-1 capitalize">
-                                    {auction.type_label ?? auction.type} Details
-                                </h3>
-                                <p className="text-slate-300 text-sm">
-                                    Participate in this property {auction.type_label ?? auction.type}
-                                </p>
-                            </div>
+                        <AuctionPanel
+                            p={participation}
+                            auctionId={auction.id}
+                            typeLabel={auction.type_label ?? "Lelang"}
+                            whatsappUrl={`https://wa.me/${settings?.whatsapp || "62818580891"}`}
+                        />
 
-                            <div className="p-6 space-y-6">
-                                <div>
-                                    <p className="text-sm text-slate-500 mb-1">
-                                        {highestBid
-                                            ? "Current Highest Bid"
-                                            : "Open Bid"}
-                                    </p>
-                                    <p className="text-3xl font-bold text-emerald-600">
-                                        {formatCurrency(currentPrice)}
-                                    </p>
-                                    {highestBid && (
-                                        <p className="text-xs text-slate-500 mt-1">
-                                            {auction.bids?.length} bid(s) placed
-                                        </p>
-                                    )}
-                                </div>
 
-                                <div className="pt-6">
-                                    {flash?.success && (
-                                        <div className="mb-4 text-sm font-medium text-emerald-700 bg-emerald-100 p-3 rounded-lg flex items-center gap-2">
-                                            <CheckCircle className="w-4 h-4" />{" "}
-                                            {flash.success}
-                                        </div>
-                                    )}
-                                    {(errors?.bid || flash?.error) && (
-                                        <div className="mb-4 text-sm font-medium text-red-700 bg-red-100 p-3 rounded-lg flex items-center gap-2">
-                                            <X className="w-4 h-4" />{" "}
-                                            {errors?.bid || flash?.error}
-                                        </div>
-                                    )}
-
-                                    {auth?.user ? (
-                                        <form
-                                            onSubmit={handleBidSubmit}
-                                            className="space-y-4"
-                                        >
-                                            <div>
-                                                <label className="block text-sm font-medium text-slate-700 mb-1">
-                                                    Your Bid Amount
-                                                </label>
-                                                <input
-                                                    type="number"
-                                                    value={data.bid_amount}
-                                                    onChange={(e) =>
-                                                        setData(
-                                                            "bid_amount",
-                                                            e.target.value,
-                                                        )
-                                                    }
-                                                    min={minRequiredBid}
-                                                    step={auction.bid_increment}
-                                                    className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-emerald-500 focus:border-emerald-500 font-semibold"
-                                                />
-                                                {formErrors.bid_amount && (
-                                                    <p className="text-red-500 text-xs mt-1">
-                                                        {formErrors.bid_amount}
-                                                    </p>
-                                                )}
-                                                <p className="text-xs text-slate-500 mt-1">
-                                                    Minimum next bid:{" "}
-                                                    {formatCurrency(
-                                                        minRequiredBid,
-                                                    )}
-                                                </p>
-                                            </div>
-
-                                            <button
-                                                type="submit"
-                                                disabled={processing}
-                                                className="w-full bg-emerald-600 text-white font-bold py-3 px-4 rounded-xl hover:bg-emerald-700 transition-colors shadow-lg shadow-emerald-200 disabled:opacity-50"
-                                            >
-                                                {processing
-                                                    ? "Processing..."
-                                                    : "Place Bid Now"}
-                                            </button>
-                                        </form>
-                                    ) : (
-                                        <div className="text-center space-y-3">
-                                            <p className="text-sm text-slate-500">
-                                                You must be logged in to
-                                                participate in this auction.
-                                            </p>
-                                            <a
-                                                href={route("login")}
-                                                className="block w-full bg-slate-900 text-white font-bold py-3 px-4 rounded-xl hover:bg-slate-800 transition-colors"
-                                            >
-                                                Login to Bid
-                                            </a>
-                                        </div>
-                                    )}
-                                </div>
-                            </div>
-                        </div> */}
-
-                        <div className="bg-white rounded-[2rem] p-8 shadow-[0_20px_50px_rgba(0,0,0,0.05)] border border-slate-100 sticky top-24">
+                        <div className="bg-white rounded-[2rem] p-8 shadow-[0_20px_50px_rgba(0,0,0,0.05)] border border-slate-100">
                             {/* 1. Header Harga */}
                             <div className="mb-8">
                                 {/* Judul Section */}
@@ -682,17 +564,6 @@ export default function Show({ auction }) {
                                         {perbedaanPersen.toFixed(1)}%)
                                     </p>
                                 </div>
-                            </div>
-
-                            {/* 2. Action Buttons */}
-                            <div className="space-y-3 mb-8">
-                                <a
-                                    href={`https://wa.me/${settings?.whatsapp || "62818580891"}`}
-                                    target="_blank"
-                                    className="w-full bg-slate-900 hover:bg-[#24608B] text-white font-black py-4 rounded-2xl transition-all flex items-center justify-center gap-2 shadow-lg hover:shadow-blue-900/20"
-                                >
-                                    <Phone size={18} /> Contact Agent
-                                </a>
                             </div>
 
                             {/* 4. Trust Badge (Opsional, buat bikin makin Pro) */}
