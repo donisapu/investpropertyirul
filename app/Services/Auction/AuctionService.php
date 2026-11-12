@@ -14,6 +14,7 @@ use App\Services\XenditService;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 /**
@@ -401,6 +402,52 @@ class AuctionService
             ] : null,
             'bids' => $this->publicBids($bids, $top, $user),
         ];
+    }
+
+    /**
+     * My Bids: every auction the member joined (a deposit paid or still pending, or a bid),
+     * newest first, each with its page state. An ended auction whose deposit was never paid
+     * ("finished") was not joined and is left out.
+     *
+     * @return list<array<string, mixed>>
+     */
+    public function participationsOf(User $user): array
+    {
+        $ids = AuctionDeposit::where('user_id', $user->id)
+            ->where(fn ($q) => $q->where('status', AuctionDeposit::PENDING)->orWhereNotNull('paid_at'))
+            ->pluck('property_auction_id')
+            ->merge(AuctionBid::where('user_id', $user->id)->pluck('property_auction_id'))
+            ->unique();
+
+        return PropertyAuction::with(['property.images'])->whereIn('id', $ids)
+            ->orderByDesc('date_finish')->get()
+            ->map(function (PropertyAuction $auction) use ($user) {
+                $state = $this->stateFor($auction, $user);
+                unset($state['bids'], $state['terms']);
+                $image = $auction->property?->images->first()?->image_url;
+
+                return $state + [
+                    'id' => $auction->id,
+                    'type_label' => $auction->type_label,
+                    'name' => $auction->property?->property_name,
+                    'location' => $auction->property?->property_location,
+                    'image' => $image ? Storage::url($image) : null,
+                ];
+            })
+            ->reject(fn (array $item) => $item['state'] === 'finished')
+            ->values()->all();
+    }
+
+    /**
+     * Deposits held in auctions still running (Wallet "Deposit tertahan", D3). A winner's
+     * deposit after closing is no longer "held": it goes to the price or is forfeited.
+     */
+    public function heldDepositsOf(User $user): array
+    {
+        $held = AuctionDeposit::where('user_id', $user->id)->where('status', AuctionDeposit::PAID)
+            ->whereHas('auction', fn ($q) => $q->whereNotIn('status', PropertyAuction::ENDED_STATUSES));
+
+        return ['amount' => (int) (clone $held)->sum('amount'), 'auctions' => (clone $held)->distinct()->count('property_auction_id')];
     }
 
     /** C22: names are hidden ("Peserta #n", numbered by first bid); the visitor sees "Kamu". */

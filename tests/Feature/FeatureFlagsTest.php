@@ -128,7 +128,9 @@ it('leaves hidden products out of the old blade header', function () {
     \Illuminate\Support\Facades\Cache::forget('website_settings');
     DB::table('website_settings')->insert(['site_name' => 'GAIN Properties', 'created_at' => now(), 'updated_at' => now()]);
 
-    $html = $this->actingAs($this->member)->get(route('user.bid'))->assertOk()->getContent();
+    // No route renders the blade member layout any more; render it as a signed-in member.
+    $this->actingAs($this->member);
+    $html = view('user.layout')->render();
 
     expect($html)->not->toContain('INVESTMENT')
         ->and($html)->not->toContain('CROWDFUNDING')

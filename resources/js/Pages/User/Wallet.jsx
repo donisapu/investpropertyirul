@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { Head, usePage } from "@inertiajs/react";
-import { ArrowUpRight, CheckCircle2, X } from "lucide-react";
+import { Head, Link, usePage } from "@inertiajs/react";
+import { ArrowUpRight, CheckCircle2, Lock, X } from "lucide-react";
 import PublicLayout from "@/Layouts/PublicLayout";
 import WithdrawForm from "@/Components/Wallet/WithdrawForm";
 import AddBankAccountForm from "@/Components/Wallet/AddBankAccountForm";
@@ -29,6 +29,7 @@ export default function Wallet({
     history = [],
     banks = [],
     withdrawalSettings,
+    held = { amount: 0, auctions: 0 },
 }) {
     const { flash = {}, errors = {} } = usePage().props;
     const isDesktop = useIsDesktop();
@@ -95,7 +96,7 @@ export default function Wallet({
                 <header className="hero-step hero-step-1 mb-6 lg:mb-8">
                     <h1 className="text-2xl font-extrabold text-ink sm:text-[30px]">Wallet</h1>
                     <p className="mt-2 max-w-xl text-sm font-medium text-ink-soft">
-                        Saldo dari bagi hasil dan penjualan lot. Tarik ke rekening bank kamu kapan saja.
+                        Saldo dari pengembalian booking fee, deposit lelang, dan bagi hasil. Tarik ke rekening bank kamu kapan saja.
                     </p>
                 </header>
 
@@ -121,6 +122,7 @@ export default function Wallet({
                 <div className="grid items-start gap-6 lg:grid-cols-[minmax(0,1fr)_460px] lg:gap-10">
                     <div className="flex min-w-0 flex-col gap-6">
                         <BalanceBlock balance={balance} summary={summary} />
+                        {held.amount > 0 && <HeldDeposits held={held} />}
                         <div className="hero-step hero-step-3">
                             <WalletHistory rows={history} onFixAccount={() => openWithdraw("add")} />
                         </div>
@@ -209,6 +211,27 @@ export default function Wallet({
                 </button>
             </div>
         </PublicLayout>
+    );
+}
+
+/** Deposits held by auctions still running: not withdrawable until the auction ends. */
+function HeldDeposits({ held }) {
+    return (
+        <section aria-label="Deposit tertahan" className="flex flex-wrap items-center gap-4 rounded-[20px] border border-gold-line bg-paper p-5 sm:rounded-3xl">
+            <span className="flex h-11 w-11 flex-none items-center justify-center rounded-2xl bg-cream-sink text-gold-ink">
+                <Lock size={20} aria-hidden="true" />
+            </span>
+            <div className="min-w-0 flex-1">
+                <p className="text-xs font-bold text-ink-soft">Deposit tertahan</p>
+                <p className="text-xl font-extrabold text-ink tabular-nums">{formatRupiah(held.amount)}</p>
+                <p className="mt-0.5 text-xs font-medium text-ink-soft">
+                    Deposit di {held.auctions} lelang yang masih berjalan. Masuk ke saldo otomatis jika kamu tidak menang.
+                </p>
+            </div>
+            <Link href={route("user.bid")} className="rounded-full border border-gold-line px-4 py-2 text-[13px] font-bold text-ink hover:border-ink">
+                Lihat My Bids
+            </Link>
+        </section>
     );
 }
 

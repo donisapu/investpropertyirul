@@ -549,3 +549,105 @@ test('the deposit cannot be the whole limit', function () {
     $this->actingAs(lelAdmin())->put(route('admin.auction-properties.update', $auction->id), lelForm($auction, ['deposit_percent' => 100]))
         ->assertSessionHasErrors('deposit_percent');
 });
+
+// ---- My Bids & Wallet "Deposit tertahan" ----
+
+function lelMyBids($test, User $user): array
+{
+    $props = [];
+    $test->actingAs($user)->get(route('user.bid'))
+        ->assertInertia(function ($page) use (&$props) {
+            $page->component('User/Bids');
+            $props = $page->toArray()['props'];
+        });
+
+    return $props;
+}
+
+test('My Bids lists the auctions a member joined with their position', function () {
+    [$me, $rival] = [lelBidder(), lelBidder()];
+    $leading = lelAuction();
+    $outbid = lelAuction();
+    $notJoined = lelAuction();
+    foreach ([$leading, $outbid] as $a) {
+        lelDeposit($this, $a, $me);
+    }
+    lelDeposit($this, $outbid, $rival);
+    lelBid($this, $leading, $me, 1800000000);
+    lelBid($this, $outbid, $me, 1800000000);
+    lelBid($this, $outbid, $rival, 1810000000);
+
+    $props = lelMyBids($this, $me);
+    $byId = collect($props['items'])->keyBy('id');
+
+    expect($byId->keys()->sort()->values()->all())->toBe(collect([$leading->id, $outbid->id])->sort()->values()->all())
+        ->and($byId[$leading->id])->toMatchArray(['state' => 'bidding', 'top_is_mine' => true, 'my_last_bid' => 1800000000, 'name' => 'Gedung Sunter'])
+        ->and($byId[$outbid->id])->toMatchArray(['state' => 'bidding', 'top_is_mine' => false, 'top_bid' => 1810000000])
+        ->and($byId[$outbid->id])->not->toHaveKey('bids')
+        ->and($props['held'])->toBe(['amount' => 180000000, 'auctions' => 2]);
+});
+
+test('My Bids shows a pending deposit but not an expired unpaid one', function () {
+    $me = lelBidder();
+    $pending = lelAuction();
+    $expired = lelAuction();
+    $this->actingAs($me)->post(route('auctions.deposit', $pending->id));
+    lelDeposit($this, $expired, $me, 'EXPIRED');
+
+    $props = lelMyBids($this, $me);
+
+    expect(collect($props['items'])->pluck('id')->all())->toBe([$pending->id])
+        ->and($props['items'][0]['state'])->toBe('deposit_pending')
+        ->and($props['held'])->toBe(['amount' => 0, 'auctions' => 0]);
+});
+
+test('a lost auction leaves My Bids held amount and refunds the deposit', function () {
+    [$me, $winner] = [lelBidder(), lelBidder()];
+    $auction = lelAuction();
+    lelDeposit($this, $auction, $me);
+    lelDeposit($this, $auction, $winner);
+    lelBid($this, $auction, $me, 1800000000);
+    lelBid($this, $auction, $winner, 1810000000);
+    $this->travel(25)->hours();
+    $this->artisan('auctions:tick');
+
+    $props = lelMyBids($this, $me);
+
+    expect($props['items'][0]['state'])->toBe('lost')
+        ->and($props['held'])->toBe(['amount' => 0, 'auctions' => 0])
+        ->and(lelBalance($me))->toBe(90000000);
+});
+
+test('the Wallet shows deposits held by running auctions', function () {
+    fakeBankChannels();
+    $me = lelBidder();
+    lelDeposit($this, lelAuction(), $me);
+
+    $this->actingAs($me)->get(route('user.wallet'))
+        ->assertInertia(fn ($page) => $page->component('User/Wallet')
+            ->where('held.amount', 90000000)->where('held.auctions', 1));
+});
+
+test('My Bids is for signed-in members only', function () {
+    $this->get(route('user.bid'))->assertRedirect(route('login'));
+});
+
+test('a won auction no longer counts as a held deposit', function () {
+    $me = lelBidder();
+    lelWon($this, $me);
+
+    $props = lelMyBids($this, $me);
+
+    expect($props['items'][0]['state'])->toBe('won')
+        ->and($props['held'])->toBe(['amount' => 0, 'auctions' => 0]);
+});
+
+test('an ended auction with only an unpaid deposit invoice is left out of My Bids', function () {
+    $me = lelBidder();
+    $auction = lelAuction();
+    $this->actingAs($me)->post(route('auctions.deposit', $auction->id));
+    $this->travel(25)->hours();
+    $this->artisan('auctions:tick');
+
+    expect(lelMyBids($this, $me)['items'])->toBe([]);
+});

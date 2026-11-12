@@ -4,6 +4,7 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use App\Models\WithdrawalSetting;
+use App\Services\Auction\AuctionService;
 use App\Services\Wallet\WalletOverview;
 use App\Services\Withdrawal\WithdrawalRequestRejected;
 use App\Services\Withdrawal\WithdrawalService;
@@ -16,10 +17,11 @@ use Inertia\Inertia;
 class WithdrawalController extends Controller
 {
     // Halaman Utama Wallet
-    public function index(Request $request, BankChannelCatalog $banks, WalletOverview $overview)
+    public function index(Request $request, BankChannelCatalog $banks, WalletOverview $overview, AuctionService $auctions)
     {
         return Inertia::render('User/Wallet', [
             ...$overview->for($request->user()),
+            'held' => $auctions->heldDepositsOf($request->user()),
             'withdrawalSettings' => WithdrawalSetting::current()->toFrontend(),
             'banks' => array_map(fn (array $bank) => [
                 'code' => $bank['code'],

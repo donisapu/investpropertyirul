@@ -28,6 +28,7 @@ const NAV_LINKS = [
 const ACCOUNT_LINKS = [
     { label: "Dashboard", routeName: "user.dashboard" },
     { label: "My Portfolio", routeName: "user.portfolio", feature: ["investment", "crowdfunding"] },
+    { label: "My Bids", routeName: "user.bid" },
     { label: "Transactions", routeName: "user.transaction" },
     { label: "Account Setting", routeName: "user.profile.edit" },
 ];
