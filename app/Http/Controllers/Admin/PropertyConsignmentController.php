@@ -5,9 +5,11 @@ namespace App\Http\Controllers\Admin;
 use App\Models\PropertyConsignment;
 use App\Models\PropertyDocument;
 use App\Models\PropertyImage;
+use App\Models\SaleBooking;
 use App\Traits\AdminDataTable;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\ValidationException;
 
 class PropertyConsignmentController extends AdminController
 {
@@ -49,6 +51,8 @@ class PropertyConsignmentController extends AdminController
      */
     public function store(Request $request)
     {
+        $this->validateBooking($request);
+
         DB::transaction(function () use ($request) {
             $consignment = PropertyConsignment::create($request->only([
                 'property_id',
@@ -57,7 +61,9 @@ class PropertyConsignmentController extends AdminController
                 'listing_type',
                 'lease_term',
                 'status',
-                'market_value'
+                'market_value',
+                'booking_fee_percent',
+                'booking_terms',
             ]));
         });
 
@@ -97,8 +103,31 @@ class PropertyConsignmentController extends AdminController
      */
     public function update(Request $request, $id)
     {
+        $this->validateBooking($request);
+
         DB::transaction(function () use ($request, $id) {
-            $property = PropertyConsignment::findOrFail($id);
+            $property = PropertyConsignment::lockForUpdate()->findOrFail($id);
+
+            // A booking fixes its amount when made, but the page must keep showing what the
+            // buyer agreed to: house, price, % and status stay put until the booking is settled
+            // (USE-CASES B2).
+            $changed = (int) $request->input('property_id') !== (int) $property->property_id
+                || $request->input('status') !== $property->status
+                || (float) $request->input('property_value') !== (float) $property->property_value
+                || (float) $request->input('booking_fee_percent') !== (float) $property->booking_fee_percent;
+
+            if ($changed && $property->bookings()->holding()->exists()) {
+                throw ValidationException::withMessages([
+                    'booking_fee_percent' => 'Properti ini sedang dibooking: properti, status, harga dan booking fee tidak bisa diubah sampai booking selesai atau dibatalkan.',
+                ]);
+            }
+
+            // Sold through a booking: reopening it would let a second buyer pay a fee.
+            if ($request->input('status') !== 'sold' && $property->bookings()->where('status', SaleBooking::COMPLETED)->exists()) {
+                throw ValidationException::withMessages([
+                    'status' => 'Properti ini sudah terjual lewat booking, statusnya tetap Sold.',
+                ]);
+            }
 
             $property->update($request->only([
                 'property_id',
@@ -107,7 +136,9 @@ class PropertyConsignmentController extends AdminController
                 'listing_type',
                 'lease_term',
                 'status',
-                'market_value'
+                'market_value',
+                'booking_fee_percent',
+                'booking_terms',
             ]));
         });
 
@@ -119,9 +150,32 @@ class PropertyConsignmentController extends AdminController
      */
     public function destroy($id)
     {
-        $property = PropertyConsignment::findOrFail($id);
-        $property->delete();
+        $deleted = DB::transaction(function () use ($id) {
+            $property = PropertyConsignment::lockForUpdate()->findOrFail($id);
+
+            // Bookings carry money history (and an expired one can still be paid late):
+            // such a listing can only be set inactive (USE-CASES B14).
+            if ($property->bookings()->exists()) {
+                return false;
+            }
+
+            return $property->delete();
+        });
+
+        if (! $deleted) {
+            return back()->withErrors(['booking' => 'Listing ini punya booking, jadi tidak bisa dihapus. Ubah statusnya ke Inactive.']);
+        }
 
         return redirect()->route('admin.consignment-properties');
+    }
+
+    private function validateBooking(Request $request): void
+    {
+        $request->validate([
+            'booking_fee_percent' => ['nullable', 'numeric', 'gt:0', 'max:100'],
+            'booking_terms' => ['nullable', 'string', 'max:2000'],
+        ], [
+            'booking_fee_percent.*' => 'Booking fee diisi persen lebih dari 0 dan paling besar 100, atau dikosongkan untuk mematikan booking online.',
+        ]);
     }
 }

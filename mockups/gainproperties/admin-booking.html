@@ -1,0 +1,228 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Mockup Admin · Bookings</title>
+  <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/admin.css" />
+  <script src="assets/admin.js"></script>
+</head>
+<body data-page="booking">
+<div class="admin-layout">
+  <div id="admin-shell"></div>
+  <div class="admin-page">
+    <div id="mockbar" data-states='[["booked","Dibooking"],["pending","Menunggu bayar"],["conflict","Perlu tindakan"],["cancel","Batalkan booking"],["sold","Selesai"],["expired","Kedaluwarsa"],["form","Form properti"]]'></div>
+    <nav class="admin-navbar"><span class="small fw-semibold" style="color:#435971">Admin GAIN</span><span class="admin-avatar">AG</span></nav>
+
+    <div class="admin-content">
+      <!-- ===================== ANTREAN + DETAIL ===================== -->
+      <div data-show="booked pending conflict cancel sold expired">
+        <div class="d-flex flex-wrap justify-content-between align-items-end gap-3 mb-4">
+          <div>
+            <div class="q-eyebrow">Products / Property For Sale</div>
+            <h4 class="fw-bold mb-0">Bookings</h4>
+            <div class="small">Booking fee yang dibayar pembeli lewat Xendit. Satu properti hanya bisa dibooking satu pembeli.</div>
+          </div>
+          <div class="d-flex gap-4">
+            <div><div class="q-stat-label">Booking fee ditahan</div><div class="q-stat-value" data-rp="133000000"></div></div>
+            <div><div class="q-stat-label">Menunggu bayar</div><div class="q-stat-value">2</div></div>
+            <div><div class="q-stat-label">Perlu tindakan</div><div class="q-stat-value" style="color:#8a5a12">1</div></div>
+          </div>
+        </div>
+
+        <div class="row g-4">
+          <!-- Antrean -->
+          <div class="col-lg-5">
+            <div class="card border-0 shadow-sm">
+              <div class="q-tabs">
+                <span class="q-tab" data-on="pending">Menunggu bayar<span class="q-count">2</span></span>
+                <span class="q-tab" data-on="booked cancel">Dibooking<span class="q-count">3</span></span>
+                <span class="q-tab warn" data-on="conflict">Perlu tindakan<span class="q-count">1</span></span>
+                <span class="q-tab" data-on="sold">Selesai<span class="q-count">12</span></span>
+                <span class="q-tab" data-on="expired">Kedaluwarsa / Batal<span class="q-count">4</span></span>
+              </div>
+              <div class="p-2 px-3"><input class="form-control form-control-sm" placeholder="Cari properti, pembeli, atau ID invoice…" /></div>
+
+              <!-- list: Dibooking -->
+              <div data-show="booked cancel">
+                <div class="q-item active"><img class="q-thumb" src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=200&q=60" alt="" /><div class="flex-grow-1 min-w-0"><div class="q-name">Rumah Modern Bintaro Sektor 9</div><div class="q-sub">Andi Pratama · BK-2611-0042</div></div><div><div class="q-amount" data-rp="49000000"></div><div class="q-age">dibayar 2 hari lalu</div></div></div>
+                <div class="q-item"><img class="q-thumb" src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=200&q=60" alt="" /><div class="flex-grow-1 min-w-0"><div class="q-name">Townhouse BSD The Zora</div><div class="q-sub">Rina Kusuma · BK-2611-0039</div></div><div><div class="q-amount" data-rp="36000000"></div><div class="q-age late">dibayar 16 hari lalu</div></div></div>
+                <div class="q-item"><img class="q-thumb" src="https://images.unsplash.com/photo-1568605114967-8130f3a36994?auto=format&fit=crop&w=200&q=60" alt="" /><div class="flex-grow-1 min-w-0"><div class="q-name">Rumah Cluster Citra Raya</div><div class="q-sub">Budi Santoso · BK-2610-0031</div></div><div><div class="q-amount" data-rp="48000000"></div><div class="q-age">dibayar 5 hari lalu</div></div></div>
+              </div>
+              <!-- list: Menunggu bayar -->
+              <div data-show="pending">
+                <div class="q-item active"><img class="q-thumb" src="https://images.unsplash.com/photo-1605276374104-dee2a0ed3cd6?auto=format&fit=crop&w=200&q=60" alt="" /><div class="flex-grow-1 min-w-0"><div class="q-name">Rumah Hook Grand Wisata</div><div class="q-sub">Sari Wulandari · BK-2611-0045</div></div><div><div class="q-amount" data-rp="31000000"></div><div class="q-age late">sisa 3 j 12 m</div></div></div>
+                <div class="q-item"><img class="q-thumb" src="https://images.unsplash.com/photo-1580587771525-78b9dba3b914?auto=format&fit=crop&w=200&q=60" alt="" /><div class="flex-grow-1 min-w-0"><div class="q-name">Villa Tropis Sentul</div><div class="q-sub">Dimas Arya · BK-2611-0046</div></div><div><div class="q-amount" data-rp="57000000"></div><div class="q-age">sisa 21 j</div></div></div>
+              </div>
+              <!-- list: Perlu tindakan -->
+              <div data-show="conflict">
+                <div class="q-item active"><img class="q-thumb" src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=200&q=60" alt="" /><div class="flex-grow-1 min-w-0"><div class="q-name">Rumah Modern Bintaro Sektor 9</div><div class="q-sub">Yoga Permana · BK-2611-0043</div></div><div><div class="q-amount" data-rp="49000000"></div><div class="q-age late">bayar ganda</div></div></div>
+              </div>
+              <!-- list: Selesai -->
+              <div data-show="sold">
+                <div class="q-item active"><img class="q-thumb" src="https://images.unsplash.com/photo-1564013799919-ab600027ffc6?auto=format&fit=crop&w=200&q=60" alt="" /><div class="flex-grow-1 min-w-0"><div class="q-name">Rumah 2 Lantai Kota Wisata</div><div class="q-sub">Lestari H. · BK-2610-0020</div></div><div><div class="q-amount" data-rp="42000000"></div><div class="q-age">terjual 28 Okt</div></div></div>
+              </div>
+              <!-- list: Kedaluwarsa / batal -->
+              <div data-show="expired">
+                <div class="q-item active"><img class="q-thumb" src="https://images.unsplash.com/photo-1570129477492-45c003edd2be?auto=format&fit=crop&w=200&q=60" alt="" /><div class="flex-grow-1 min-w-0"><div class="q-name">Rumah Hook Harapan Indah</div><div class="q-sub">Fajar N. · BK-2611-0040</div></div><div><div class="q-amount" data-rp="17000000"></div><div class="q-age">kedaluwarsa</div></div></div>
+                <div class="q-item"><img class="q-thumb" src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=200&q=60" alt="" /><div class="flex-grow-1 min-w-0"><div class="q-name">Townhouse BSD The Zora</div><div class="q-sub">Hendra W. · BK-2610-0028</div></div><div><div class="q-amount" data-rp="36000000"></div><div class="q-age">dibatalkan admin</div></div></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Detail -->
+          <div class="col-lg-7">
+            <div class="card border-0 shadow-sm">
+              <div class="card-body p-4">
+                <div class="d-flex justify-content-between align-items-start gap-3">
+                  <div>
+                    <div class="caption" data-show="booked cancel pending conflict">BK-2611-0042</div>
+                    <h5 class="fw-bold mb-1 mt-1" data-show="booked cancel pending conflict"><span data-show="booked cancel conflict">Rumah Modern Bintaro Sektor 9</span><span data-show="pending">Rumah Hook Grand Wisata</span></h5>
+                    <h5 class="fw-bold mb-1 mt-1" data-show="sold">Rumah 2 Lantai Kota Wisata</h5>
+                    <h5 class="fw-bold mb-1 mt-1" data-show="expired">Rumah Hook Harapan Indah</h5>
+                    <div class="small">Harga jual <b class="h-ink" data-rp="2450000000"></b> · booking fee 2%</div>
+                  </div>
+                  <span class="pill pill-ok" data-show="booked cancel"><i class="bx bx-lock-alt"></i> Dibooking</span>
+                  <span class="pill pill-info" data-show="pending"><i class="bx bx-time"></i> Menunggu bayar</span>
+                  <span class="pill pill-warn" data-show="conflict"><i class="bx bx-error"></i> Bayar ganda</span>
+                  <span class="pill pill-muted" data-show="sold"><i class="bx bx-check-double"></i> Terjual</span>
+                  <span class="pill pill-muted" data-show="expired"><i class="bx bx-x"></i> Kedaluwarsa</span>
+                </div>
+
+                <!-- Dibooking -->
+                <div data-show="booked cancel" class="mt-4">
+                  <div class="caption mb-1">Booking fee diterima</div>
+                  <div class="big" data-rp="49000000"></div>
+                  <div class="small mt-1">via Xendit · BCA Virtual Account · 6 Nov 2026, 10:42</div>
+                  <hr />
+                  <div class="row g-4">
+                    <div class="col-md-6"><div class="caption mb-2">Pembeli</div><div class="kv"><span>Nama</span><span>Andi Pratama</span><span>Email</span><span>andi.p@mail.com</span><span>Telepon</span><span>0812-xxxx-2210</span><span>KYC</span><span><span class="pill pill-ok">Terverifikasi</span></span></div></div>
+                    <div class="col-md-6"><div class="caption mb-2">Pembayaran</div><div class="kv"><span>Invoice Xendit</span><span class="mono">inv_67a1…9f2</span><span>External ID</span><span class="mono">BK-2611-0042</span><span>Dibuat</span><span>6 Nov, 10:31</span><span>Dibayar</span><span>6 Nov, 10:42</span></div></div>
+                  </div>
+                  <div class="note mt-4">Properti otomatis <b>terkunci</b> sejak booking fee dibayar: tombol "Booking" di halaman publik berubah jadi "Sudah dibooking". Proses jual-beli (PPJB, pelunasan, AJB) berjalan <b>di luar website</b>; admin menandai hasilnya di sini. <b>Pertanyaan klien:</b> berapa lama booking boleh "menggantung" sebelum diingatkan? (asumsi: pengingat ke admin setelah 14 hari, tanpa aksi otomatis)</div>
+                </div>
+
+                <!-- Menunggu bayar -->
+                <div data-show="pending" class="mt-4">
+                  <div class="caption mb-1">Invoice dibuat, belum dibayar</div>
+                  <div class="big" data-rp="31000000"></div>
+                  <div class="small mt-1">Kedaluwarsa <b class="h-ink">8 Nov 2026, 17:00</b> (24 jam setelah dibuat)</div>
+                  <hr />
+                  <div class="kv"><span>Pembeli</span><span>Sari Wulandari</span><span>Invoice Xendit</span><span class="mono">inv_7b22…a01</span><span>Status properti</span><span><span class="pill pill-warn">Dikunci sementara</span></span></div>
+                  <div class="note mt-4">Selama invoice belum dibayar, properti <b>dikunci sementara</b> (on_hold) untuk pembeli ini; pembeli lain melihat "sedang dalam proses pembayaran". Lewat 24 jam → <b>Kedaluwarsa</b> dan properti otomatis tersedia lagi (webhook Xendit <span class="mono">EXPIRED</span> + job terjadwal sebagai cadangan).</div>
+                </div>
+
+                <!-- Bayar ganda -->
+                <div data-show="conflict" class="mt-4">
+                  <div class="warn-box"><b>Dua pembeli membayar untuk properti yang sama.</b> Invoice Yoga Permana kedaluwarsa 6 Nov 10:00, properti dilepas, lalu Andi Pratama booking dan lunas 10:42. Pembayaran Yoga baru dikonfirmasi Xendit 10:44 (bayar tepat di batas waktu).</div>
+                  <table class="table tbl mt-3 mb-0">
+                    <thead><tr><th>Pembeli</th><th>Dibayar</th><th class="text-end">Nominal</th><th>Status</th></tr></thead>
+                    <tbody>
+                      <tr><td>Andi Pratama</td><td>6 Nov, 10:42</td><td class="text-end" data-rp="49000000"></td><td><span class="pill pill-ok">Pemegang booking</span></td></tr>
+                      <tr><td>Yoga Permana</td><td>6 Nov, 10:44</td><td class="text-end" data-rp="49000000"></td><td><span class="pill pill-warn">Harus dikembalikan</span></td></tr>
+                    </tbody>
+                  </table>
+                  <div class="note mt-3">Sistem <b>tidak mengembalikan dana otomatis</b>. Rekomendasi: kembalikan ke <b>saldo Wallet</b> Yoga (bisa ditarik lewat alur penarikan yang sudah ada). Kasus ini jarang tapi wajib ada karena Xendit tidak bisa membatalkan invoice yang sedang dibayar.</div>
+                </div>
+
+                <!-- Selesai -->
+                <div data-show="sold" class="mt-4">
+                  <div class="ok-box"><b>Ditandai terjual</b> oleh Admin GAIN, 28 Okt 2026. Properti hilang dari daftar "Dijual" dan tampil sebagai "Terjual" di riwayat.</div>
+                  <div class="kv mt-3"><span>Pembeli</span><span>Lestari H.</span><span>Booking fee</span><span data-rp="42000000"></span><span>Perlakuan booking fee</span><span>Dipotong dari harga (offline)</span></div>
+                </div>
+
+                <!-- Kedaluwarsa -->
+                <div data-show="expired" class="mt-4">
+                  <div class="kv"><span>Pembeli</span><span>Fajar N.</span><span>Invoice dibuat</span><span>4 Nov, 09:10</span><span>Kedaluwarsa</span><span>5 Nov, 09:10</span><span>Dana masuk</span><span>Tidak ada</span></div>
+                  <div class="note mt-3">Tidak perlu tindakan. Ditampilkan hanya sebagai riwayat. Booking yang <b>dibatalkan admin</b> juga muncul di tab ini beserta alasan dan perlakuan dananya.</div>
+                </div>
+
+                <!-- Riwayat -->
+                <div class="mt-4" data-show="booked cancel conflict sold">
+                  <div class="caption mb-2">Riwayat</div>
+                  <ul class="timeline">
+                    <li data-show="sold">Admin menandai <b>terjual</b><div class="t">28 Okt 2026, 14:05 · Admin GAIN</div></li>
+                    <li data-show="conflict">Pembayaran kedua masuk (Yoga Permana) — ditandai <b>Perlu tindakan</b><div class="t">6 Nov 2026, 10:44 · sistem</div></li>
+                    <li>Booking fee lunas, properti dikunci<div class="t">6 Nov 2026, 10:42 · webhook Xendit PAID</div></li>
+                    <li class="gray">Invoice dibuat<div class="t">6 Nov 2026, 10:31 · pembeli</div></li>
+                  </ul>
+                </div>
+              </div>
+
+              <!-- Aksi -->
+              <div class="actions-bar p-3 d-flex flex-wrap gap-2 justify-content-end" data-show="booked cancel">
+                <button class="btn btn-outline-secondary btn-sm"><i class="bx bx-lock-open-alt"></i> Lepas kunci tanpa batal</button>
+                <button class="btn btn-outline-danger btn-sm" data-goto="cancel"><i class="bx bx-x-circle"></i> Batalkan booking</button>
+                <button class="btn btn-ink btn-sm" data-goto="sold"><i class="bx bx-check-double"></i> Tandai terjual</button>
+              </div>
+              <div class="actions-bar p-3 d-flex flex-wrap gap-2 justify-content-end" data-show="pending">
+                <button class="btn btn-outline-secondary btn-sm"><i class="bx bx-refresh"></i> Cek status di Xendit</button>
+                <button class="btn btn-outline-danger btn-sm"><i class="bx bx-x"></i> Batalkan invoice</button>
+              </div>
+              <div class="actions-bar p-3 d-flex flex-wrap gap-2 justify-content-end" data-show="conflict">
+                <button class="btn btn-outline-secondary btn-sm"><i class="bx bx-transfer"></i> Tukar pemegang booking</button>
+                <button class="btn btn-ink btn-sm"><i class="bx bx-wallet"></i> Kembalikan Rp 49.000.000 ke saldo Yoga</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Modal batalkan -->
+      <div class="modal-veil" data-show="cancel">
+        <div class="card border-0 shadow" style="max-width:520px;width:100%">
+          <div class="card-body p-4">
+            <h5 class="fw-bold">Batalkan booking BK-2611-0042?</h5>
+            <p class="small">Properti <b class="h-ink">Rumah Modern Bintaro Sektor 9</b> akan kembali <b>Tersedia</b> dan bisa dibooking pembeli lain.</p>
+            <div class="caption mb-2">Booking fee Rp 49.000.000</div>
+            <div class="form-check border rounded p-3 ps-5 mb-2"><input class="form-check-input" type="radio" name="fee" checked /><label class="form-check-label small"><b class="h-ink">Kembalikan ke saldo Wallet pembeli</b><br />Mis. penjual membatalkan, dokumen bermasalah. Pembeli bisa menarik ke rekening.</label></div>
+            <div class="form-check border rounded p-3 ps-5 mb-3"><input class="form-check-input" type="radio" name="fee" /><label class="form-check-label small"><b class="h-ink">Hangus (tidak dikembalikan)</b><br />Mis. pembeli mundur sesuai S&amp;K booking.</label></div>
+            <label class="form-label small fw-semibold">Alasan (wajib, tampil ke pembeli)</label>
+            <textarea class="form-control form-control-sm" rows="2">Pembeli mengundurkan diri setelah survei lokasi.</textarea>
+            <div class="note mt-3"><b>Menunggu klien:</b> aturan kapan booking fee hangus vs dikembalikan. Pilihan ini tetap manual oleh admin; S&amp;K menentukan pilihan yang benar.</div>
+          </div>
+          <div class="actions-bar p-3 d-flex gap-2 justify-content-end">
+            <button class="btn btn-outline-secondary btn-sm" data-goto="booked">Kembali</button>
+            <button class="btn btn-danger btn-sm" data-goto="expired">Batalkan booking</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===================== FORM PROPERTI ===================== -->
+      <div data-show="form">
+        <div class="q-eyebrow">Products / Property For Sale / Edit</div>
+        <h4 class="fw-bold mb-4">Rumah Modern Bintaro Sektor 9</h4>
+        <div class="row g-4">
+          <div class="col-lg-8">
+            <div class="card border-0 shadow-sm"><div class="card-body p-4">
+              <h6 class="fw-bold mb-3">Harga &amp; booking</h6>
+              <div class="row g-3">
+                <div class="col-md-6"><label class="form-label small fw-semibold">Harga jual (Rp)</label><input class="form-control" value="2.450.000.000" /></div>
+                <div class="col-md-6"><label class="form-label small fw-semibold">Status listing</label>
+                  <select class="form-select"><option>Aktif (tampil, bisa dibooking)</option><option>Draft</option><option>Ditahan (tampil, booking ditutup)</option><option>Nonaktif</option></select></div>
+                <div class="col-md-6">
+                  <label class="form-label small fw-semibold">Booking fee</label>
+                  <div class="input-group"><select class="form-select" style="max-width:9rem"><option>Persentase</option><option>Nominal tetap</option></select><input class="form-control" value="2" /><span class="input-group-text">%</span></div>
+                  <div class="form-hint mt-1">Diatur per properti. Kosongkan untuk menonaktifkan booking online.</div>
+                </div>
+                <div class="col-md-6"><label class="form-label small fw-semibold">Batas waktu bayar invoice</label><div class="input-group"><input class="form-control" value="24" /><span class="input-group-text">jam</span></div></div>
+                <div class="col-12"><div class="preview-box"><i class="bx bx-calculator"></i> Pembeli akan membayar <b data-rp="49000000"></b> (2% × Rp 2.450.000.000), dibulatkan ke ribuan.</div></div>
+                <div class="col-12"><label class="form-label small fw-semibold">Catatan S&amp;K booking (tampil di modal konfirmasi)</label><textarea class="form-control" rows="2">Booking fee dipotong dari harga jual saat pelunasan. Hangus bila pembeli membatalkan sepihak.</textarea></div>
+              </div>
+            </div>
+            <div class="actions-bar p-3 d-flex justify-content-end gap-2"><button class="btn btn-outline-secondary btn-sm">Batal</button><button class="btn btn-ink btn-sm">Simpan</button></div></div>
+          </div>
+          <div class="col-lg-4">
+            <div class="warn-box mb-3"><b>Properti ini sedang dibooking</b> (BK-2611-0042). Harga dan booking fee <b>tidak bisa diubah</b> sampai booking selesai atau dibatalkan. Nominal booking yang sudah dibayar tidak ikut berubah.</div>
+            <div class="note"><b>Menunggu klien:</b> persentase default (mis. 2%), apakah booking fee boleh nominal tetap, dan batas waktu bayar invoice. Semua bisa diatur per properti seperti permintaan klien: "admin yang atur".</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

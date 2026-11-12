@@ -1,0 +1,79 @@
+/* Mockup admin — warna & tipografi Sneat seperti panel admin yang ada. */
+[hidden] { display: none !important; }
+body { background: #f5f5f9; color: #697a8d; font-family: "Public Sans", system-ui, sans-serif; font-size: .9375rem; }
+h4, h5, h6, .h-ink { color: #435971; }
+
+.admin-layout { display: flex; min-height: 100vh; }
+.admin-menu { width: 260px; flex: none; background: #fff; box-shadow: 0 .125rem .375rem 0 rgba(161,172,184,.12); position: sticky; top: 0; height: 100vh; overflow-y: auto; }
+.admin-menu .brand { display: flex; align-items: center; gap: .6rem; padding: 1.4rem 1.5rem 1rem; font-weight: 800; color: #435971; font-size: 1.05rem; }
+.admin-menu .brand-logo { width: 34px; height: 34px; border-radius: 9px; background: #242620; color: #C7A45C; display: inline-flex; align-items: center; justify-content: center; font-size: .8rem; }
+.admin-menu ul { list-style: none; padding: 0 .9rem 1rem; margin: 0; }
+.admin-menu .menu-header { font-size: .72rem; text-transform: uppercase; letter-spacing: .05em; color: #a1acb8; padding: 1.1rem .75rem .45rem; }
+.admin-menu .menu-link { display: flex; align-items: center; gap: .65rem; padding: .55rem .85rem; border-radius: .375rem; color: #697a8d; text-decoration: none; font-size: .9375rem; }
+.admin-menu .menu-link i { font-size: 1.15rem; }
+.admin-menu .menu-link:hover { background: #f5f5f9; }
+.admin-menu .menu-link.active { background: rgba(105,108,255,.16); color: #696cff; font-weight: 600; }
+.new-pill { margin-left: auto; font-size: .62rem; font-weight: 800; color: #8a5a12; background: #f5ead3; border-radius: 1rem; padding: .05rem .45rem; text-transform: uppercase; }
+
+.admin-page { flex: 1; min-width: 0; }
+.admin-navbar { margin: .75rem 1.5rem 0; background: #fff; border-radius: .375rem; padding: .7rem 1.25rem; display: flex; justify-content: flex-end; align-items: center; gap: .75rem; box-shadow: 0 0 .375rem .25rem rgba(161,172,184,.15); }
+.admin-avatar { width: 38px; height: 38px; border-radius: 50%; background: #435971; color: #71a35f; display: inline-flex; align-items: center; justify-content: center; font-weight: 800; font-size: .8rem; }
+.admin-content { padding: 1.5rem; }
+
+#mockbar { display: flex; flex-wrap: wrap; align-items: center; gap: .4rem; background: #E2E9F0; border-bottom: 1px solid rgba(53,87,122,.25); padding: .55rem 1.5rem; position: sticky; top: 0; z-index: 20; }
+.mockbar-label { font-size: .68rem; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: #35577A; margin-right: .3rem; display: inline-flex; align-items: center; gap: .3rem; }
+.state-btn { border: 1px solid rgba(53,87,122,.3); background: transparent; color: #35577A; border-radius: 1rem; padding: .15rem .7rem; font-size: .75rem; font-weight: 600; }
+.state-btn.on { background: #35577A; color: #fff; }
+
+.note { border: 1.5px dashed #35577A; background: #EEF2F7; color: #35577A; border-radius: .5rem; padding: .6rem .85rem; font-size: .78rem; line-height: 1.5; }
+.note::before { content: "CATATAN MOCKUP"; display: block; font-size: .62rem; font-weight: 800; letter-spacing: .08em; margin-bottom: .1rem; }
+.note b { font-weight: 800; }
+
+/* Pola antrean + detail (sama dengan halaman Withdrawals) */
+.q-eyebrow { font-size: .75rem; font-weight: 600; color: #a1acb8; }
+.q-stat-label { font-size: .6875rem; font-weight: 600; color: #697a8d; }
+.q-stat-value { font-size: .9rem; font-weight: 800; color: #435971; }
+.q-tabs { display: flex; flex-wrap: wrap; gap: 0 .1rem; border-bottom: 1px solid #e4e7eb; padding: 0 .75rem; overflow-x: auto; }
+.q-tab { font-size: .8125rem; font-weight: 600; color: #697a8d; padding: .7rem .55rem; border-bottom: 2px solid transparent; white-space: nowrap; }
+.q-tab.on { color: #435971; font-weight: 800; border-bottom-color: #435971; }
+.q-count { font-size: .625rem; font-weight: 800; border-radius: 1rem; padding: .05rem .4rem; background: #ebeef0; color: #697a8d; margin-left: .25rem; }
+.q-tab.on .q-count { background: #435971; color: #f5f5f9; }
+.q-tab.warn .q-count { background: #f5ead3; color: #8a5a12; }
+.q-item { display: flex; align-items: center; gap: .75rem; padding: .75rem 1.25rem; border-top: 1px solid #e4e7eb; }
+.q-item.active { background: #f5f6f8; box-shadow: inset 3px 0 0 #71a35f; }
+.q-thumb { width: 2.6rem; height: 2.6rem; border-radius: .4rem; object-fit: cover; flex: none; }
+.q-name { font-size: .8125rem; font-weight: 700; color: #435971; }
+.q-sub { font-size: .6875rem; font-weight: 500; color: #697a8d; }
+.q-amount { font-size: .8125rem; font-weight: 800; color: #435971; text-align: right; }
+.q-age { font-size: .6875rem; font-weight: 600; color: #a1acb8; text-align: right; }
+.q-age.late { color: #8a5a12; }
+
+.pill { display: inline-flex; align-items: center; gap: .3rem; font-size: .6875rem; font-weight: 700; border-radius: 1rem; padding: .15rem .6rem; }
+.pill-ok { background: #e3ede5; color: #2f6b4f; }
+.pill-warn { background: #f5ead3; color: #8a5a12; }
+.pill-info { background: #e2e9f0; color: #35577a; }
+.pill-danger { background: #f4e1dc; color: #9b3b2e; }
+.pill-muted { background: #ebeef0; color: #697a8d; }
+
+.caption { font-size: .625rem; font-weight: 700; letter-spacing: .06em; color: #a1acb8; text-transform: uppercase; }
+.big { font-size: 1.75rem; font-weight: 800; color: #435971; line-height: 1.15; }
+.kv { display: grid; grid-template-columns: 1fr auto; gap: .35rem 1rem; font-size: .8125rem; }
+.kv > :nth-child(odd) { color: #697a8d; }
+.kv > :nth-child(even) { color: #435971; font-weight: 700; text-align: right; font-variant-numeric: tabular-nums; }
+.actions-bar { background: #f5f6f8; border-top: 1px solid #e4e7eb; }
+.danger-box { background: #f4e1dc; border-radius: .375rem; padding: 1rem; }
+.warn-box { background: #f5ead3; color: #8a5a12; border-radius: .375rem; padding: .75rem 1rem; font-size: .8125rem; }
+.ok-box { background: #e3ede5; color: #2f6b4f; border-radius: .375rem; padding: .75rem 1rem; font-size: .8125rem; }
+.mono { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: .75rem; }
+.tbl th { font-size: .6875rem; text-transform: uppercase; letter-spacing: .05em; color: #a1acb8; font-weight: 700; }
+.tbl td { font-size: .8125rem; color: #435971; vertical-align: middle; }
+.timeline { list-style: none; padding: 0; margin: 0; }
+.timeline li { position: relative; padding: 0 0 .85rem 1.2rem; font-size: .78rem; }
+.timeline li::before { content: ""; position: absolute; left: 0; top: .35rem; width: .55rem; height: .55rem; border-radius: 50%; background: #71a35f; }
+.timeline li.gray::before { background: #d9dee3; }
+.timeline li .t { color: #a1acb8; font-size: .7rem; }
+.btn-ink { background: #435971; color: #fff; border: 0; }
+.btn-ink:hover { background: #33465a; color: #fff; }
+.form-hint { font-size: .75rem; color: #697a8d; }
+.preview-box { background: #f5f6f8; border: 1px dashed #c6c8bc; border-radius: .375rem; padding: .65rem .85rem; font-size: .8125rem; color: #435971; }
+.modal-veil { position: fixed; inset: 0; background: rgba(67,89,113,.45); z-index: 50; display: flex; align-items: center; justify-content: center; padding: 1rem; }

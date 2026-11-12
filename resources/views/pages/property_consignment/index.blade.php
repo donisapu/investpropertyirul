@@ -1,5 +1,8 @@
 @extends('layouts.app')
 @section('content')
+    @if ($errors->has('booking'))
+        <div class="alert alert-danger" role="alert">{{ $errors->first('booking') }}</div>
+    @endif
     <a href="{{ route('admin.consignment-properties.create') }}" class="btn btn-primary mb-2">Add Properties</a>
     <div class="card">
         <div class="card-header">

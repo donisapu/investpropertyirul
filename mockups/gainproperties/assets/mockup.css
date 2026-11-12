@@ -1,0 +1,59 @@
+/* Mockup GAIN Properties — gaya bersama di luar utility Tailwind. */
+[hidden] { display: none !important; }
+
+body { background: #FAF9F6; color: #242620; }
+
+#mockbar {
+    position: sticky; top: 68px; z-index: 30;
+    background: #E2E9F0; border-bottom: 1px solid rgba(53, 87, 122, .25);
+}
+
+/* Catatan desain untuk klien: bukan bagian dari UI. */
+.note {
+    border: 1.5px dashed #35577A; background: #EEF2F7; color: #35577A;
+    border-radius: 14px; padding: 10px 14px; font-size: 12px; line-height: 1.55;
+}
+.note b { font-weight: 800; }
+.note::before {
+    content: "CATATAN MOCKUP"; display: block; font-size: 10px; font-weight: 800;
+    letter-spacing: 1.2px; margin-bottom: 2px;
+}
+
+.card { background: #FDFDFB; border: 1px solid #DDDCD3; border-radius: 24px; box-shadow: 0 4px 20px rgba(0,0,0,.03); }
+.tnum { font-variant-numeric: tabular-nums; }
+
+.btn-primary {
+    display: flex; width: 100%; align-items: center; justify-content: center; gap: 8px;
+    background: #242620; color: #FAF9F6; font-weight: 800; font-size: 14px;
+    padding: 15px 18px; border-radius: 16px; transition: background .2s;
+}
+.btn-primary:hover { background: #3a3d33; }
+.btn-gold {
+    display: flex; width: 100%; align-items: center; justify-content: center; gap: 8px;
+    background: #C7A45C; color: #242620; font-weight: 800; font-size: 14px;
+    padding: 15px 18px; border-radius: 16px;
+}
+.btn-ghost {
+    display: flex; width: 100%; align-items: center; justify-content: center; gap: 8px;
+    background: transparent; color: #242620; font-weight: 700; font-size: 14px;
+    padding: 14px 18px; border-radius: 16px; border: 1px solid #C6C8BC;
+}
+
+.badge { display: inline-flex; align-items: center; gap: 6px; border-radius: 999px; padding: 4px 10px; font-size: 11px; font-weight: 800; }
+.badge-info { background: #E2E9F0; color: #35577A; }
+.badge-success { background: #E3EDE5; color: #2F6B4F; }
+.badge-danger { background: #F4E1DC; color: #9B3B2E; }
+.badge-warn { background: #F5EBD9; color: #8A5A12; }
+.badge-neutral { background: #F0EFE9; color: #686A61; }
+
+.row { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; font-size: 14px; }
+.row > span:first-child { color: #686A61; font-weight: 600; }
+.row > span:last-child { font-weight: 800; font-variant-numeric: tabular-nums; }
+
+.step { display: flex; gap: 12px; }
+.step-dot { flex: none; width: 26px; height: 26px; border-radius: 999px; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 800; }
+.step-done .step-dot { background: #2F6B4F; color: #fff; }
+.step-now .step-dot { background: #C7A45C; color: #242620; }
+.step-todo .step-dot { background: #F0EFE9; color: #8C8E84; border: 1px solid #DDDCD3; }
+
+.modal-backdrop { position: fixed; inset: 0; background: rgba(36,38,32,.55); z-index: 50; display: flex; align-items: center; justify-content: center; padding: 16px; }

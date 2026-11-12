@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Mockup GAIN Properties · Alur Penjualan &amp; Lelang</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400..800&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="assets/mockup.js"></script>
+  <script src="https://unpkg.com/lucide@0.460.0/dist/umd/lucide.min.js"></script>
+  <link rel="stylesheet" href="assets/mockup.css" />
+</head>
+<body class="font-sans antialiased" data-page="home">
+  <div id="site-header"></div>
+
+  <main class="mx-auto max-w-5xl px-4 py-12 sm:px-6">
+    <p class="text-[11px] font-bold uppercase tracking-[1.3px] text-gold-ink">Mockup · 7 Nov 2026</p>
+    <h1 class="mt-2 text-[clamp(2rem,4vw,2.75rem)] font-bold leading-tight tracking-[-0.02em]">Alur baru Penjualan &amp; Lelang</h1>
+    <p class="mt-3 max-w-2xl text-[15px] leading-relaxed text-ink-soft">Gambaran tampilan untuk disetujui sebelum dibangun. Tiap halaman punya bar biru <b>"Mockup · pilih keadaan"</b> untuk melihat tahap yang berbeda. Kotak bergaris putus-putus adalah catatan, bukan bagian tampilan.</p>
+
+    <div class="mt-10 grid gap-4 sm:grid-cols-2">
+      <a href="penjualan.html" class="card group p-6 hover:border-ink">
+        <span class="flex h-11 w-11 items-center justify-center rounded-xl bg-cream-deep text-gold-ink"><i data-lucide="key-round" class="h-5 w-5"></i></span>
+        <h2 class="mt-4 text-lg font-extrabold">1. Property for Sale · Booking fee</h2>
+        <p class="mt-1 text-[13px] text-ink-soft">Belum login → tersedia → konfirmasi → menunggu bayar → berhasil / dibooking orang lain / kedaluwarsa.</p>
+      </a>
+      <a href="lelang.html" class="card group p-6 hover:border-ink">
+        <span class="flex h-11 w-11 items-center justify-center rounded-xl bg-cream-deep text-gold-ink"><i data-lucide="gavel" class="h-5 w-5"></i></span>
+        <h2 class="mt-4 text-lg font-extrabold">2. Lelang / Cessie · Deposit &amp; bid</h2>
+        <p class="mt-1 text-[13px] text-ink-soft">Belum login / belum dibuka → deposit → bid (unggul / tersalip) → menang / kalah → lunas / gagal bayar / dibatalkan.</p>
+      </a>
+      <a href="my-bids.html" class="card group p-6 hover:border-ink">
+        <span class="flex h-11 w-11 items-center justify-center rounded-xl bg-cream-deep text-gold-ink"><i data-lucide="list-checks" class="h-5 w-5"></i></span>
+        <h2 class="mt-4 text-lg font-extrabold">3. My Bids</h2>
+        <p class="mt-1 text-[13px] text-ink-soft">Semua lelang yang diikuti, status deposit, posisi bid, tagihan pelunasan.</p>
+      </a>
+      <a href="wallet.html" class="card group p-6 hover:border-ink">
+        <span class="flex h-11 w-11 items-center justify-center rounded-xl bg-cream-deep text-gold-ink"><i data-lucide="wallet" class="h-5 w-5"></i></span>
+        <h2 class="mt-4 text-lg font-extrabold">4. Wallet</h2>
+        <p class="mt-1 text-[13px] text-ink-soft">Deposit yang dikembalikan masuk saldo, lalu ditarik ke rekening.</p>
+      </a>
+    </div>
+
+    <p class="mt-10 text-[11px] font-bold uppercase tracking-[1.3px] text-gold-ink">Panel admin</p>
+    <div class="mt-3 grid gap-4 sm:grid-cols-2">
+      <a href="admin-booking.html" class="card group p-6 hover:border-ink">
+        <span class="flex h-11 w-11 items-center justify-center rounded-xl bg-cream-deep text-gold-ink"><i data-lucide="calendar-check" class="h-5 w-5"></i></span>
+        <h2 class="mt-4 text-lg font-extrabold">5. Admin · Bookings</h2>
+        <p class="mt-1 text-[13px] text-ink-soft">Antrean per status, tandai terjual, batalkan (refund ke saldo / hangus), bayar ganda, form booking fee %.</p>
+      </a>
+      <a href="admin-lelang.html" class="card group p-6 hover:border-ink">
+        <span class="flex h-11 w-11 items-center justify-center rounded-xl bg-cream-deep text-gold-ink"><i data-lucide="gavel" class="h-5 w-5"></i></span>
+        <h2 class="mt-4 text-lg font-extrabold">6. Admin · Auctions</h2>
+        <p class="mt-1 text-[13px] text-ink-soft">Daftar lelang, peserta &amp; deposit, riwayat bid, pelunasan, gagal bayar, tanpa pemenang, form deposit %.</p>
+      </a>
+    </div>
+    <p class="mt-4 text-[13px] text-ink-soft">Daftar lengkap kondisi &amp; aturan: <a class="font-bold underline" href="USE-CASES.md">USE-CASES.md</a> (✅ disepakati · 🟡 asumsi · ❓ menunggu klien).</p>
+
+    <div class="card mt-10 p-7">
+      <h2 class="text-lg font-extrabold">Sudah disepakati</h2>
+      <ul class="mt-3 space-y-2 text-[14px] text-ink-soft">
+        <li class="flex gap-2"><i data-lucide="check" class="mt-0.5 h-4 w-4 flex-none text-status-success"></i> Penjualan memakai booking fee; persentasenya diatur admin per properti.</li>
+        <li class="flex gap-2"><i data-lucide="check" class="mt-0.5 h-4 w-4 flex-none text-status-success"></i> Lelang wajib deposit, minimal 5%, persentase diatur admin per properti.</li>
+        <li class="flex gap-2"><i data-lucide="check" class="mt-0.5 h-4 w-4 flex-none text-status-success"></i> Deposit peserta yang kalah masuk saldo, ditarik sendiri.</li>
+        <li class="flex gap-2"><i data-lucide="check" class="mt-0.5 h-4 w-4 flex-none text-status-success"></i> Pemenang melunasi lewat web. Cessie sama dengan lelang.</li>
+      </ul>
+      <h2 class="mt-7 text-lg font-extrabold">Masih perlu keputusan</h2>
+      <ol class="mt-3 list-decimal space-y-2 pl-5 text-[14px] text-ink-soft">
+        <li>Booking fee: jika pembeli batal, dikembalikan atau hangus? Memotong harga?</li>
+        <li>Sisa pembayaran penjualan lewat web atau di luar web?</li>
+        <li>Deposit pemenang memotong pelunasan?</li>
+        <li>Batas waktu pelunasan berapa hari? Jika tidak melunasi, deposit hangus?</li>
+        <li>Deposit per lelang atau sekali untuk semua lelang?</li>
+      </ol>
+    </div>
+  </main>
+
+  <div id="site-footer"></div>
+</body>
+</html>

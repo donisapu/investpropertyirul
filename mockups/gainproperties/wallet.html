@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Mockup · Wallet</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400..800&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="assets/mockup.js"></script>
+  <script src="https://unpkg.com/lucide@0.460.0/dist/umd/lucide.min.js"></script>
+  <link rel="stylesheet" href="assets/mockup.css" />
+</head>
+<body class="font-sans antialiased" data-page="wallet">
+  <div id="site-header"></div>
+  <div id="mockbar" data-states='[["overview","Saldo & riwayat"],["withdraw","Tarik saldo"],["sent","Penarikan diproses"]]'></div>
+
+  <main class="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+    <p class="text-[11px] font-bold uppercase tracking-[1.3px] text-gold-ink">Akun saya</p>
+    <h1 class="mt-1 text-[clamp(1.75rem,3.5vw,2.25rem)] font-bold tracking-[-0.02em]">Wallet</h1>
+
+    <div class="mt-8 grid gap-6 lg:grid-cols-[1fr_400px]">
+      <section class="space-y-6">
+        <!-- Kartu saldo -->
+        <div class="grid gap-4 sm:grid-cols-2">
+          <div class="relative overflow-hidden rounded-[24px] bg-ink p-6 text-cream">
+            <div class="pointer-events-none absolute -right-16 -top-16 h-48 w-48 rounded-full bg-gold/25 blur-3xl"></div>
+            <p class="text-[11px] font-bold uppercase tracking-[1.3px] text-cream/60">Saldo bisa ditarik</p>
+            <p class="mt-2 text-[32px] font-extrabold tracking-[-0.02em] text-gold tnum" data-show="overview withdraw" data-rp="40000000"></p>
+            <p class="mt-2 text-[32px] font-extrabold tracking-[-0.02em] text-gold tnum" data-show="sent" data-rp="0"></p>
+            <button class="mt-4 inline-flex items-center gap-2 rounded-full bg-gold px-4 py-2 text-[13px] font-extrabold text-ink" data-goto="withdraw"><i data-lucide="arrow-up-right" class="h-4 w-4"></i> Tarik saldo</button>
+          </div>
+          <div class="card p-6">
+            <p class="text-[11px] font-bold uppercase tracking-[1.3px] text-ink-soft">Deposit tertahan</p>
+            <p class="mt-2 text-[26px] font-extrabold tracking-[-0.02em] tnum" data-rp="240000000"></p>
+            <p class="mt-2 text-[12px] leading-relaxed text-ink-soft">Deposit di 2 lelang yang masih berjalan. Masuk ke saldo otomatis jika kamu tidak menang.</p>
+            <a href="my-bids.html" class="mt-3 inline-flex items-center gap-1 text-[12px] font-bold text-gold-ink">Lihat My Bids <i data-lucide="arrow-right" class="h-3.5 w-3.5"></i></a>
+          </div>
+        </div>
+
+        <!-- Riwayat -->
+        <div class="card p-6">
+          <div class="flex items-center justify-between">
+            <h2 class="text-lg font-extrabold">Riwayat saldo</h2>
+            <div class="flex gap-1 rounded-full bg-cream-deep p-1 text-[12px] font-bold">
+              <span class="rounded-full bg-paper px-3 py-1 shadow-sm">Semua</span><span class="px-3 py-1 text-ink-soft">Masuk</span><span class="px-3 py-1 text-ink-soft">Keluar</span>
+            </div>
+          </div>
+          <ul class="mt-4 divide-y divide-gold-line">
+            <li class="flex items-center gap-4 py-4" data-show="sent">
+              <span class="flex h-10 w-10 flex-none items-center justify-center rounded-full bg-status-info-bg text-status-info"><i data-lucide="arrow-up-right" class="h-5 w-5"></i></span>
+              <div class="min-w-0 flex-1"><p class="text-[14px] font-bold">Penarikan ke BCA •••• 4821</p><p class="text-[12px] text-ink-soft">7 Nov 2026, 16:20 · <span class="badge badge-info !py-0.5">Diproses</span></p></div>
+              <span class="text-[14px] font-extrabold tnum">− <span data-rp="40000000"></span></span>
+            </li>
+            <li class="flex items-center gap-4 py-4">
+              <span class="flex h-10 w-10 flex-none items-center justify-center rounded-full bg-status-success-bg text-status-success"><i data-lucide="undo-2" class="h-5 w-5"></i></span>
+              <div class="min-w-0 flex-1"><p class="text-[14px] font-bold">Pengembalian deposit lelang</p><p class="truncate text-[12px] text-ink-soft">Rumah Hook Harapan Indah · lelang ditutup 3 Nov 2026</p></div>
+              <span class="text-[14px] font-extrabold text-status-success tnum">+ <span data-rp="40000000"></span></span>
+            </li>
+            <li class="flex items-center gap-4 py-4">
+              <span class="flex h-10 w-10 flex-none items-center justify-center rounded-full bg-cream-deep text-ink-soft"><i data-lucide="arrow-up-right" class="h-5 w-5"></i></span>
+              <div class="min-w-0 flex-1"><p class="text-[14px] font-bold">Penarikan ke BCA •••• 4821</p><p class="text-[12px] text-ink-soft">28 Okt 2026 · <span class="badge badge-success !py-0.5">Berhasil</span></p></div>
+              <span class="text-[14px] font-extrabold tnum">− <span data-rp="15000000"></span></span>
+            </li>
+            <li class="flex items-center gap-4 py-4">
+              <span class="flex h-10 w-10 flex-none items-center justify-center rounded-full bg-status-success-bg text-status-success"><i data-lucide="undo-2" class="h-5 w-5"></i></span>
+              <div class="min-w-0 flex-1"><p class="text-[14px] font-bold">Pengembalian deposit cessie</p><p class="truncate text-[12px] text-ink-soft">Ruko Gandaria · lelang ditutup 24 Okt 2026</p></div>
+              <span class="text-[14px] font-extrabold text-status-success tnum">+ <span data-rp="15000000"></span></span>
+            </li>
+          </ul>
+        </div>
+        <div class="note">Wallet &amp; tarik saldo <b>memakai fitur yang sudah ada</b> (penarikan via Xendit ke rekening terdaftar). Yang baru hanya jenis transaksi <b>"Pengembalian deposit lelang/cessie"</b> dan kartu <b>"Deposit tertahan"</b>.</div>
+      </section>
+
+      <!-- Panel kanan: tarik saldo -->
+      <aside>
+        <div class="card sticky top-[130px] p-7" data-show="overview withdraw">
+          <h2 class="text-lg font-extrabold">Tarik saldo</h2>
+          <p class="mt-1 text-[13px] text-ink-soft">Dana dikirim ke rekening atas nama kamu.</p>
+          <label class="mt-5 block text-[12px] font-bold text-ink-soft">Rekening tujuan</label>
+          <div class="mt-1.5 flex items-center gap-3 rounded-2xl border border-gold-edge bg-paper p-3.5">
+            <span class="flex h-9 w-12 items-center justify-center rounded-lg bg-[#0060AF] text-[11px] font-extrabold text-white">BCA</span>
+            <div class="flex-1"><p class="text-[14px] font-bold">•••• 4821</p><p class="text-[12px] text-ink-soft">a.n. Budi Santoso</p></div>
+            <i data-lucide="chevron-down" class="h-4 w-4 text-ink-soft"></i>
+          </div>
+          <label class="mt-4 block text-[12px] font-bold text-ink-soft">Jumlah</label>
+          <div class="mt-1.5 flex items-center rounded-2xl border border-gold-edge bg-paper">
+            <span class="pl-4 font-bold text-ink-soft">Rp</span>
+            <input class="w-full bg-transparent px-2 py-3.5 text-[17px] font-extrabold outline-none tnum" value="40.000.000" />
+            <button class="mr-2 rounded-xl bg-cream-deep px-3 py-1.5 text-[12px] font-bold">Semua</button>
+          </div>
+          <button class="btn-primary mt-6" data-goto="sent"><i data-lucide="arrow-up-right" class="h-4 w-4"></i> Tarik <span data-rp="40000000"></span></button>
+          <p class="mt-3 text-center text-[12px] text-ink-soft">Biasanya masuk dalam 1×24 jam kerja</p>
+        </div>
+
+        <div class="card sticky top-[130px] p-7 text-center" data-show="sent">
+          <span class="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-status-info-bg text-status-info"><i data-lucide="send" class="h-6 w-6"></i></span>
+          <h2 class="mt-4 text-lg font-extrabold">Penarikan sedang diproses</h2>
+          <p class="mt-1 text-[13px] text-ink-soft"><b class="text-ink" data-rp="40000000"></b> ke BCA •••• 4821 a.n. Budi Santoso.</p>
+          <div class="mt-5 space-y-2 rounded-2xl bg-cream-deep p-4 text-left">
+            <div class="row"><span>No. referensi</span><span>WD-2611-0187</span></div>
+            <div class="row"><span>Status</span><span class="text-status-info">Diproses</span></div>
+          </div>
+          <button class="btn-ghost mt-5" data-goto="overview">Kembali ke Wallet</button>
+        </div>
+      </aside>
+    </div>
+  </main>
+
+  <div id="site-footer"></div>
+</body>
+</html>

@@ -15,6 +15,7 @@ class Kernel extends ConsoleKernel
         // profit:distribute is not scheduled: admins decide when profit goes out (client, 2026-10-02).
         // Xendit Transactions mirror (XW-08); webhooks keep it fresher in between.
         $schedule->command('xendit:sync-transactions')->everyTenMinutes()->withoutOverlapping(15);
+        $schedule->command('sales:expire-bookings')->everyFiveMinutes()->withoutOverlapping();
     }
 
     /**

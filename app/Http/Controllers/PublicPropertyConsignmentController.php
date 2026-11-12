@@ -7,6 +7,7 @@ use App\Models\WebsiteSetting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use App\Models\PropertyAuction;
+use App\Services\Sale\SaleBookingService;
 use Inertia\Inertia;
 
 class PublicPropertyConsignmentController extends Controller
@@ -43,6 +44,7 @@ class PublicPropertyConsignmentController extends Controller
 
         if (empty($category) || $category === 'sale') {
             $consignmentQuery = PropertyConsignment::with(['property.images'])
+                ->withExists(['bookings as is_booked' => fn ($q) => $q->holding()])
                 ->where('status', 'active')
                 ->whereHas('property', $propertyFilter);
 
@@ -62,6 +64,8 @@ class PublicPropertyConsignmentController extends Controller
                     'ownership'        => $item->ownership,
                     'type'             => $item->property?->property_type,
                     'status'           => $item->status,
+                    'booked'           => (bool) $item->is_booked,
+                    'booking_fee_percent' => $item->booking_fee_percent,
                     'specs'            => [
                         'bedroom'  => $item->property?->bedroom ?? 0,
                         'bathroom' => $item->property?->bathroom ?? 0,
@@ -170,6 +174,8 @@ class PublicPropertyConsignmentController extends Controller
 
         $settings = WebsiteSetting::getSettings();
 
-        return Inertia::render('PropertyForSale/Show', compact('property', 'settings'));
+        $booking = app(SaleBookingService::class)->stateFor($consignment, auth()->user());
+
+        return Inertia::render('PropertyForSale/Show', compact('property', 'settings', 'booking'));
     }
 }

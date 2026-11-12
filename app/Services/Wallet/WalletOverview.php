@@ -6,6 +6,7 @@ use App\Models\CrowdfundingFinancial;
 use App\Models\InvestmentTransaction;
 use App\Models\Payment;
 use App\Models\PropertyFinancial;
+use App\Models\SaleBooking;
 use App\Models\User;
 use App\Models\UserBankAccount;
 use App\Models\Wallet;
@@ -130,6 +131,14 @@ class WalletOverview
                     'status' => ['label' => 'Masuk', 'tone' => 'success'],
                     'fix_account' => false,
                 ],
+                WalletTransaction::TYPE_BOOKING_REFUND => [
+                    'kind' => 'booking_refund',
+                    'title' => $name ? "Pengembalian booking fee: {$name}" : 'Pengembalian booking fee',
+                    'subtitle' => null,
+                    'amount' => $amount,
+                    'status' => ['label' => 'Masuk', 'tone' => 'success'],
+                    'fix_account' => false,
+                ],
                 'PROFIT' => [
                     'kind' => 'profit',
                     'title' => $name ? "Bagi hasil {$name}" : 'Bagi hasil',
@@ -211,6 +220,12 @@ class WalletOverview
         if (($ids = $idsOf(Payment::class))->isNotEmpty()) {
             foreach (Payment::with('payable.property')->whereIn('id', $ids)->get() as $p) {
                 $names[Payment::class][$p->id] = $p->payable?->property?->property_name;
+            }
+        }
+
+        if (($ids = $idsOf(SaleBooking::class))->isNotEmpty()) {
+            foreach (SaleBooking::with('property')->whereIn('id', $ids)->get() as $b) {
+                $names[SaleBooking::class][$b->id] = $b->property?->property_name;
             }
         }
 

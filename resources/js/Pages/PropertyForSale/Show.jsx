@@ -9,7 +9,6 @@ import {
     ChevronRight,
     ChevronLeft,
     ExternalLink,
-    Phone,
     FileText,
     Download,
     X,
@@ -18,8 +17,9 @@ import {
     ShieldCheck,
 } from "lucide-react";
 import PublicLayout from "@/Layouts/PublicLayout";
+import BookingPanel from "@/Components/Sale/BookingPanel";
 
-export default function Show({ property }) {
+export default function Show({ property, booking }) {
     const { settings } = usePage().props;
     const [activeTab, setActiveTab] = useState("details");
     const [lightboxOpen, setLightboxOpen] = useState(false);
@@ -576,16 +576,12 @@ export default function Show({ property }) {
                                 </div>
                             </div>
 
-                            {/* 2. Action Buttons */}
-                            <div className="space-y-3 mb-8">
-                                <a
-                                    href={`https://wa.me/${settings?.whatsapp || "62818580891"}`}
-                                    target="_blank"
-                                    className="w-full bg-ink hover:bg-gold-ink text-cream font-black py-4 rounded-2xl transition-all flex items-center justify-center gap-2 shadow-lg hover:shadow-gold/20"
-                                >
-                                    <Phone size={18} /> Contact Agent
-                                </a>
-                            </div>
+                            {/* 2. Booking / contact */}
+                            <BookingPanel
+                                booking={booking}
+                                consignmentId={property.consignment_id}
+                                whatsappUrl={`https://wa.me/${settings?.whatsapp || "62818580891"}`}
+                            />
 
                             {/* 3. Property Highlights (Sleek List) */}
                             <div className="pt-8 border-t border-gold-line border-dashed">

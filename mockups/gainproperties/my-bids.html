@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Mockup · My Bids</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400..800&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="assets/mockup.js"></script>
+  <script src="https://unpkg.com/lucide@0.460.0/dist/umd/lucide.min.js"></script>
+  <link rel="stylesheet" href="assets/mockup.css" />
+</head>
+<body class="font-sans antialiased" data-page="my-bids">
+  <div id="site-header"></div>
+  <div id="mockbar" data-states='[["all","Semua"],["live","Berlangsung"],["action","Perlu tindakan"],["done","Selesai"]]'></div>
+
+  <main class="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+    <div class="flex flex-wrap items-end justify-between gap-4">
+      <div>
+        <p class="text-[11px] font-bold uppercase tracking-[1.3px] text-gold-ink">Akun saya</p>
+        <h1 class="mt-1 text-[clamp(1.75rem,3.5vw,2.25rem)] font-bold tracking-[-0.02em]">My Bids</h1>
+        <p class="mt-1 text-[14px] text-ink-soft">Semua lelang &amp; cessie yang kamu ikuti, status deposit, dan posisi penawaranmu.</p>
+      </div>
+      <a href="#" class="inline-flex items-center gap-2 rounded-full bg-ink px-5 py-3 text-[13px] font-bold text-cream"><i data-lucide="search" class="h-4 w-4"></i> Cari lelang</a>
+    </div>
+
+    <!-- Ringkasan -->
+    <div class="mt-8 grid grid-cols-2 gap-4 lg:grid-cols-4">
+      <div class="card p-5"><p class="text-[11px] font-bold uppercase tracking-wider text-ink-soft">Lelang diikuti</p><p class="mt-2 text-2xl font-extrabold">5</p></div>
+      <div class="card p-5"><p class="text-[11px] font-bold uppercase tracking-wider text-ink-soft">Sedang unggul</p><p class="mt-2 text-2xl font-extrabold text-status-success">1</p></div>
+      <div class="card p-5"><p class="text-[11px] font-bold uppercase tracking-wider text-ink-soft">Tersalip</p><p class="mt-2 text-2xl font-extrabold text-status-danger">1</p></div>
+      <div class="card p-5"><p class="text-[11px] font-bold uppercase tracking-wider text-ink-soft">Deposit tertahan</p><p class="mt-2 text-xl font-extrabold tnum" data-rp="240000000"></p><p class="mt-0.5 text-[11px] text-ink-soft">di lelang yang masih berjalan</p></div>
+    </div>
+
+    <div class="mt-8 space-y-4">
+      <!-- 1. Unggul -->
+      <article class="card flex flex-col gap-5 p-5 md:flex-row md:items-center" data-show="all live">
+        <img class="h-28 w-full flex-none rounded-2xl object-cover md:w-40" src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=400&q=70" alt="" />
+        <div class="min-w-0 flex-1">
+          <div class="flex flex-wrap items-center gap-2"><span class="badge badge-neutral">Lelang</span><span class="badge badge-success"><i data-lucide="trophy" class="h-3 w-3"></i> Unggul</span></div>
+          <h3 class="mt-2 truncate text-[17px] font-extrabold">Gedung Kantor Boulevard Sunter</h3>
+          <p class="text-[13px] text-ink-soft">Sunter Agung, Jakarta Utara · ditutup dalam <b class="text-ink">2h 1j</b></p>
+        </div>
+        <div class="grid flex-none grid-cols-2 gap-x-6 gap-y-1 text-[13px] md:w-[300px]">
+          <span class="text-ink-soft">Penawaranmu</span><span class="text-right font-extrabold tnum" data-rp="1950000000"></span>
+          <span class="text-ink-soft">Tertinggi</span><span class="text-right font-extrabold tnum" data-rp="1950000000"></span>
+          <span class="text-ink-soft">Deposit</span><span class="text-right font-bold text-status-success">Diterima</span>
+        </div>
+        <a href="lelang.html?state=leading" class="btn-ghost flex-none whitespace-nowrap md:!w-44">Lihat lelang</a>
+      </article>
+
+      <!-- 2. Tersalip -->
+      <article class="card flex flex-col gap-5 border-status-danger/30 p-5 md:flex-row md:items-center" data-show="all live action">
+        <img class="h-28 w-full flex-none rounded-2xl object-cover md:w-40" src="https://images.unsplash.com/photo-1582268611958-ebfd161ef9cf?auto=format&fit=crop&w=400&q=70" alt="" />
+        <div class="min-w-0 flex-1">
+          <div class="flex flex-wrap items-center gap-2"><span class="badge badge-neutral">Cessie</span><span class="badge badge-danger"><i data-lucide="trending-up" class="h-3 w-3"></i> Tersalip</span></div>
+          <h3 class="mt-2 truncate text-[17px] font-extrabold">Villa 2 Lantai Canggu</h3>
+          <p class="text-[13px] text-ink-soft">Badung, Bali · ditutup dalam <b class="text-ink">5j 12m</b></p>
+        </div>
+        <div class="grid flex-none grid-cols-2 gap-x-6 gap-y-1 text-[13px] md:w-[300px]">
+          <span class="text-ink-soft">Penawaranmu</span><span class="text-right font-extrabold tnum" data-rp="3200000000"></span>
+          <span class="text-ink-soft">Tertinggi</span><span class="text-right font-extrabold text-status-danger tnum" data-rp="3300000000"></span>
+          <span class="text-ink-soft">Deposit</span><span class="text-right font-bold text-status-success">Diterima</span>
+        </div>
+        <a href="lelang.html?state=outbid" class="btn-primary flex-none whitespace-nowrap md:!w-44"><i data-lucide="gavel" class="h-4 w-4"></i> Tawar lagi</a>
+      </article>
+
+      <!-- 3. Menunggu deposit -->
+      <article class="card flex flex-col gap-5 p-5 md:flex-row md:items-center" data-show="all live action">
+        <img class="h-28 w-full flex-none rounded-2xl object-cover md:w-40" src="https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=400&q=70" alt="" />
+        <div class="min-w-0 flex-1">
+          <div class="flex flex-wrap items-center gap-2"><span class="badge badge-neutral">Lelang</span><span class="badge badge-warn"><i data-lucide="clock" class="h-3 w-3"></i> Menunggu deposit</span></div>
+          <h3 class="mt-2 truncate text-[17px] font-extrabold">Tanah Kavling Cikarang 500 m²</h3>
+          <p class="text-[13px] text-ink-soft">Bekasi, Jawa Barat · bayar sebelum <b class="text-ink">11 Nov, 13:00</b></p>
+        </div>
+        <div class="grid flex-none grid-cols-2 gap-x-6 gap-y-1 text-[13px] md:w-[300px]">
+          <span class="text-ink-soft">Nilai limit</span><span class="text-right font-extrabold tnum" data-rp="500000000"></span>
+          <span class="text-ink-soft">Deposit (5%)</span><span class="text-right font-extrabold tnum" data-rp="25000000"></span>
+          <span class="text-ink-soft">Penawaranmu</span><span class="text-right font-bold text-ink-faint">Belum bisa</span>
+        </div>
+        <a href="lelang.html?state=deposit-pending" class="btn-primary flex-none whitespace-nowrap md:!w-44"><i data-lucide="lock" class="h-4 w-4"></i> Bayar deposit</a>
+      </article>
+
+      <!-- 4. Menang -->
+      <article class="card flex flex-col gap-5 border-gold p-5 md:flex-row md:items-center" data-show="all action done">
+        <img class="h-28 w-full flex-none rounded-2xl object-cover md:w-40" src="https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=400&q=70" alt="" />
+        <div class="min-w-0 flex-1">
+          <div class="flex flex-wrap items-center gap-2"><span class="badge badge-neutral">Lelang</span><span class="badge badge-success"><i data-lucide="party-popper" class="h-3 w-3"></i> Menang</span><span class="badge badge-warn">Belum lunas</span></div>
+          <h3 class="mt-2 truncate text-[17px] font-extrabold">Apartemen 2BR Pluit Sea View</h3>
+          <p class="text-[13px] text-ink-soft">Penjaringan, Jakarta Utara · lunasi sebelum <b class="text-status-danger">19 Nov, 15:00</b></p>
+        </div>
+        <div class="grid flex-none grid-cols-2 gap-x-6 gap-y-1 text-[13px] md:w-[300px]">
+          <span class="text-ink-soft">Harga menang</span><span class="text-right font-extrabold tnum" data-rp="1100000000"></span>
+          <span class="text-ink-soft">Deposit</span><span class="text-right font-bold text-status-success tnum">− <span data-rp="55000000"></span></span>
+          <span class="text-ink-soft">Sisa pelunasan</span><span class="text-right font-extrabold tnum" data-rp="1045000000"></span>
+        </div>
+        <a href="lelang.html?state=won" class="btn-gold flex-none whitespace-nowrap md:!w-44"><i data-lucide="wallet-cards" class="h-4 w-4"></i> Bayar pelunasan</a>
+      </article>
+
+      <!-- 5. Kalah -->
+      <article class="card flex flex-col gap-5 p-5 opacity-90 md:flex-row md:items-center" data-show="all done">
+        <img class="h-28 w-full flex-none rounded-2xl object-cover grayscale md:w-40" src="https://images.unsplash.com/photo-1570129477492-45c003edd2be?auto=format&fit=crop&w=400&q=70" alt="" />
+        <div class="min-w-0 flex-1">
+          <div class="flex flex-wrap items-center gap-2"><span class="badge badge-neutral">Lelang</span><span class="badge badge-neutral"><i data-lucide="flag" class="h-3 w-3"></i> Tidak menang</span></div>
+          <h3 class="mt-2 truncate text-[17px] font-extrabold">Rumah Hook Harapan Indah</h3>
+          <p class="text-[13px] text-ink-soft">Bekasi · ditutup 3 Nov 2026</p>
+        </div>
+        <div class="grid flex-none grid-cols-2 gap-x-6 gap-y-1 text-[13px] md:w-[300px]">
+          <span class="text-ink-soft">Penawaranmu</span><span class="text-right font-bold tnum" data-rp="820000000"></span>
+          <span class="text-ink-soft">Harga akhir</span><span class="text-right font-bold tnum" data-rp="860000000"></span>
+          <span class="text-ink-soft">Deposit</span><span class="text-right font-bold text-status-success">Kembali ke saldo</span>
+        </div>
+        <a href="wallet.html" class="btn-ghost flex-none whitespace-nowrap md:!w-44"><i data-lucide="wallet" class="h-4 w-4"></i> Lihat saldo</a>
+      </article>
+    </div>
+
+    <div class="note mt-8">Tombol di mockbar biru di atas berperan sebagai <b>tab filter</b> (Semua / Berlangsung / Perlu tindakan / Selesai). "Deposit tertahan" = deposit di lelang yang belum selesai; setelah selesai, deposit peserta yang kalah pindah ke Wallet.</div>
+  </main>
+
+  <div id="site-footer"></div>
+</body>
+</html>

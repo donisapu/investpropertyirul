@@ -431,6 +431,12 @@ export default function PropertyForSale({ properties, settings }) {
                                                   : "Jual Langsung"}
                                         </div>
 
+                                        {prop.booked && (
+                                            <div className="absolute top-4 right-4 rounded-full bg-amber-100 px-3 py-1 text-[11px] font-extrabold text-amber-800 shadow-sm">
+                                                Sudah dibooking
+                                            </div>
+                                        )}
+
                                         {/* Harga (Dipindah ke dalam gambar biar ala Airbnb) */}
                                         <div className="absolute bottom-4 left-4 right-4 flex justify-between items-end">
                                             <div>
@@ -442,6 +448,11 @@ export default function PropertyForSale({ properties, settings }) {
                                                 <span className="text-white font-black text-2xl drop-shadow-md">
                                                     {formatCurrency(prop.price)}
                                                 </span>
+                                                {!isAuction && prop.booking_fee_percent > 0 && (
+                                                    <span className="block text-[11px] font-bold text-cream/80">
+                                                        Booking fee {Number(prop.booking_fee_percent).toLocaleString("id-ID")}%
+                                                    </span>
+                                                )}
                                             </div>
                                         </div>
                                     </div>

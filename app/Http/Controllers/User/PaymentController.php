@@ -11,8 +11,10 @@ use App\Models\InvestmentTransaction;
 use App\Models\Payment;
 use App\Models\PropertyCrowdfunding;
 use App\Models\PropertyInvestment;
-use App\Models\Wallet;
+use App\Models\SaleBooking;
+use App\Services\Sale\SaleBookingService;
 use App\Models\WalletTransaction;
+use App\Services\Wallet\WalletCredit;
 use App\Services\XenditService;
 use App\Services\Xendit\TransactionMirror;
 use Illuminate\Http\Request;
@@ -229,6 +231,11 @@ class PaymentController extends Controller
                 'paid_at' => $data['status'] === 'PAID' ? now() : null,
             ]);
 
+            // Penjualan booking fee: the invoice expiring frees the property (B6).
+            if ($data['status'] === 'EXPIRED' && $payment->payable_type === SaleBooking::class && $payment->payable) {
+                app(SaleBookingService::class)->markExpired($payment->payable);
+            }
+
             if ($data['status'] === 'PAID') {
 
                 // Locked so two payments for the same product cannot both take its last lots.
@@ -237,6 +244,12 @@ class PaymentController extends Controller
                 if (!$payable) {
                     // The product was deleted while the invoice was open: nothing to book it on.
                     $this->refundToWallet($payment, 0);
+
+                    return;
+                }
+
+                if ($payment->payable_type === SaleBooking::class) {
+                    app(SaleBookingService::class)->markPaid($payable);
 
                     return;
                 }
@@ -329,21 +342,7 @@ class PaymentController extends Controller
             return;
         }
 
-        $wallet = Wallet::query()->where('user_id', $payment->user_id)->lockForUpdate()->first()
-            ?? Wallet::create(['user_id' => $payment->user_id, 'balance' => 0]);
-
-        // Whole rupiah added to a decimal(18,2) balance: bcadd keeps the cents exact.
-        $balanceAfter = bcadd((string) $wallet->balance, (string) (int) $payment->amount, 2);
-        $wallet->forceFill(['balance' => $balanceAfter])->save();
-
-        WalletTransaction::create([
-            'user_id' => $payment->user_id,
-            'type' => WalletTransaction::TYPE_PAYMENT_REFUND,
-            'amount' => (int) $payment->amount,
-            'balance_after' => $balanceAfter,
-            'reference_type' => Payment::class,
-            'reference_id' => $payment->id,
-        ]);
+        app(WalletCredit::class)->credit($payment->user_id, (int) $payment->amount, WalletTransaction::TYPE_PAYMENT_REFUND, $payment);
 
         $payment->forceFill(['needs_refund' => true, 'refunded_at' => now()])->save();
 

@@ -5,6 +5,12 @@
         @if ($btn === 'edit')
             @method('PUT')
         @endif
+        @php
+            $held = $btn === 'edit' && $data->bookings()->holding()->exists();
+        @endphp
+        @if ($errors->any())
+            <div class="alert alert-danger" role="alert">{{ $errors->first() }}</div>
+        @endif
         <div class="card">
             <div class="card-header h5">{{ $title }}</div>
             <div class="card-body">
@@ -21,7 +27,7 @@
                 <div class="mb-3">
                     <label for="" class="form-label">Property Value</label>
                     <input type="number" class="form-control" name="property_value" placeholder="Property Value"
-                        id="" @if ($btn == 'edit') value="{{ $data->property_value }}" @endif
+                        id="property_value" @readonly($held ?? false) @if ($btn == 'edit') value="{{ $data->property_value }}" @endif
                         @required(true)>
                 </div>
                 <div class="mb-3">
@@ -61,6 +67,26 @@
                         <option value="inactive" @if ($btn == 'edit' && $data->status == 'inactive') selected @endif>Inactive</option>
                     </select>
                 </div>
+                <hr>
+                <h6 class="mb-1">Booking online</h6>
+                <p class="text-muted small mb-3">Pembeli membayar booking fee lewat Xendit untuk mengunci properti. Kosongkan untuk mematikan booking online (hanya tombol WhatsApp).</p>
+                @if ($held)
+                    <div class="alert alert-warning small" role="status">Properti ini sedang dibooking. Harga dan booking fee tidak bisa diubah sampai booking selesai atau dibatalkan di menu Bookings.</div>
+                @endif
+                <div class="mb-3">
+                    <label for="booking_fee_percent" class="form-label">Booking fee (% dari harga)</label>
+                    <div class="input-group" style="max-width:14rem">
+                        <input type="number" step="0.01" min="0.01" max="100" class="form-control" name="booking_fee_percent" id="booking_fee_percent"
+                            value="{{ old('booking_fee_percent', $btn == 'edit' ? $data->booking_fee_percent : '') }}" @readonly($held)>
+                        <span class="input-group-text">%</span>
+                    </div>
+                    <div class="form-text" id="booking_fee_preview" aria-live="polite"></div>
+                </div>
+                <div class="mb-3">
+                    <label for="booking_terms" class="form-label">Syarat booking (tampil di konfirmasi booking)</label>
+                    <textarea class="form-control" name="booking_terms" id="booking_terms" rows="3" maxlength="2000"
+                        placeholder="Mis. booking fee dipotong dari harga saat pelunasan; hangus bila pembeli membatalkan sepihak.">{{ old('booking_terms', $btn == 'edit' ? $data->booking_terms : '') }}</textarea>
+                </div>
             </div>
         </div>
         <div class="mt-3">
@@ -70,6 +96,21 @@
 @endsection
 @push('scripts')
     <script>
+        (function () {
+            const price = document.getElementById('property_value');
+            const pct = document.getElementById('booking_fee_percent');
+            const out = document.getElementById('booking_fee_preview');
+            const render = () => {
+                const p = parseFloat(price.value), f = parseFloat(pct.value);
+                out.textContent = p > 0 && f > 0
+                    ? 'Pembeli membayar Rp ' + Math.round(p * f / 100).toLocaleString('id-ID') + ' (' + f + '% × Rp ' + p.toLocaleString('id-ID') + ').'
+                    : 'Booking online mati untuk properti ini.';
+            };
+            price.addEventListener('input', render);
+            pct.addEventListener('input', render);
+            render();
+        })();
+
         $(document).ready(function() {
             $('#property_id').select2({
                 placeholder: 'Search property...',

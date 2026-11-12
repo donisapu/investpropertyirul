@@ -1,0 +1,213 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Mockup Admin · Auctions</title>
+  <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/admin.css" />
+  <script src="assets/admin.js"></script>
+</head>
+<body data-page="auction">
+<div class="admin-layout">
+  <div id="admin-shell"></div>
+  <div class="admin-page">
+    <div id="mockbar" data-states='[["list","Daftar lelang"],["active","Berlangsung"],["awaiting","Menunggu pelunasan"],["default","Gagal bayar"],["completed","Lunas"],["nowinner","Tanpa pemenang"],["form","Form lelang"]]'></div>
+    <nav class="admin-navbar"><span class="small fw-semibold" style="color:#435971">Admin GAIN</span><span class="admin-avatar">AG</span></nav>
+
+    <div class="admin-content">
+      <!-- ===================== DAFTAR ===================== -->
+      <div data-show="list">
+        <div class="d-flex flex-wrap justify-content-between align-items-end gap-3 mb-4">
+          <div><div class="q-eyebrow">Products</div><h4 class="fw-bold mb-0">Auctions &amp; Cessie</h4><div class="small">Lelang dan cessie memakai alur yang sama: deposit → penawaran → pemenang melunasi.</div></div>
+          <button class="btn btn-ink" data-goto="form"><i class="bx bx-plus"></i> Lelang baru</button>
+        </div>
+        <div class="row g-3 mb-4">
+          <div class="col-6 col-lg-3"><div class="card border-0 shadow-sm p-3"><div class="q-stat-label">Berlangsung</div><div class="q-stat-value">3</div></div></div>
+          <div class="col-6 col-lg-3"><div class="card border-0 shadow-sm p-3"><div class="q-stat-label">Menunggu pelunasan</div><div class="q-stat-value" style="color:#8a5a12">1</div></div></div>
+          <div class="col-6 col-lg-3"><div class="card border-0 shadow-sm p-3"><div class="q-stat-label">Deposit ditahan</div><div class="q-stat-value" data-rp="510000000"></div></div></div>
+          <div class="col-6 col-lg-3"><div class="card border-0 shadow-sm p-3"><div class="q-stat-label">Deposit hangus (bulan ini)</div><div class="q-stat-value" data-rp="0"></div></div></div>
+        </div>
+        <div class="card border-0 shadow-sm">
+          <div class="q-tabs"><span class="q-tab on">Semua<span class="q-count">9</span></span><span class="q-tab">Akan datang<span class="q-count">2</span></span><span class="q-tab">Berlangsung<span class="q-count">3</span></span><span class="q-tab warn">Perlu tindakan<span class="q-count">1</span></span><span class="q-tab">Selesai<span class="q-count">3</span></span></div>
+          <div class="table-responsive"><table class="table tbl mb-0">
+            <thead><tr><th class="ps-4">Properti</th><th>Jenis</th><th class="text-end">Limit</th><th class="text-end">Deposit</th><th class="text-end">Tertinggi</th><th>Peserta</th><th>Jadwal</th><th>Status</th></tr></thead>
+            <tbody>
+              <tr><td class="ps-4 fw-bold"><a href="#" data-goto="active" class="text-reset">Gedung Kantor Boulevard Sunter</a></td><td>Lelang</td><td class="text-end" data-rp="1800000000"></td><td class="text-end">5% · 90 jt</td><td class="text-end" data-rp="1950000000"></td><td>4</td><td>tutup 10 Nov 15:00</td><td><span class="pill pill-ok">Berlangsung</span></td></tr>
+              <tr><td class="ps-4 fw-bold">Villa 2 Lantai Canggu</td><td>Cessie</td><td class="text-end" data-rp="3000000000"></td><td class="text-end">5% · 150 jt</td><td class="text-end" data-rp="3300000000"></td><td>3</td><td>tutup 8 Nov 20:00</td><td><span class="pill pill-ok">Berlangsung</span></td></tr>
+              <tr><td class="ps-4 fw-bold">Tanah Kavling Cikarang 500 m²</td><td>Lelang</td><td class="text-end" data-rp="500000000"></td><td class="text-end">5% · 25 jt</td><td class="text-end">—</td><td>1</td><td>buka 11 Nov 13:00</td><td><span class="pill pill-info">Akan datang</span></td></tr>
+              <tr><td class="ps-4 fw-bold"><a href="#" data-goto="awaiting" class="text-reset">Apartemen 2BR Pluit Sea View</a></td><td>Lelang</td><td class="text-end" data-rp="1000000000"></td><td class="text-end">5% · 55 jt</td><td class="text-end" data-rp="1100000000"></td><td>5</td><td>lunasi s/d 19 Nov</td><td><span class="pill pill-warn">Menunggu pelunasan</span></td></tr>
+              <tr><td class="ps-4 fw-bold"><a href="#" data-goto="nowinner" class="text-reset">Ruko 3 Lantai Kelapa Gading</a></td><td>Lelang</td><td class="text-end" data-rp="2600000000"></td><td class="text-end">10% · 260 jt</td><td class="text-end">—</td><td>0</td><td>tutup 2 Nov</td><td><span class="pill pill-muted">Tanpa pemenang</span></td></tr>
+              <tr><td class="ps-4 fw-bold">Rumah Hook Harapan Indah</td><td>Lelang</td><td class="text-end" data-rp="750000000"></td><td class="text-end">5% · 38 jt</td><td class="text-end" data-rp="860000000"></td><td>6</td><td>lunas 6 Nov</td><td><span class="pill pill-muted">Selesai</span></td></tr>
+              <tr><td class="ps-4 fw-bold">Rumah Subsidi Cileungsi</td><td>Lelang</td><td class="text-end" data-rp="300000000"></td><td class="text-end">5% · 15 jt</td><td class="text-end">—</td><td>0</td><td>—</td><td><span class="pill pill-muted">Draft</span></td></tr>
+            </tbody>
+          </table></div>
+        </div>
+        <div class="note mt-3">Status lengkap: <b>Draft → Akan datang → Berlangsung → Ditutup → Menunggu pelunasan → Selesai</b>, plus cabang <b>Tanpa pemenang</b>, <b>Gagal bayar</b>, <b>Dibatalkan</b>, <b>Ditangguhkan</b>. Perpindahan Akan datang → Berlangsung → Ditutup dijalankan scheduler tiap menit, jadi kolom tanggal harus <b>DATETIME</b> (sekarang masih DATE).</div>
+      </div>
+
+      <!-- ===================== DETAIL ===================== -->
+      <div data-show="active awaiting default completed nowinner">
+        <div class="d-flex flex-wrap justify-content-between align-items-end gap-3 mb-4">
+          <div>
+            <div class="q-eyebrow"><a href="#" data-goto="list" class="text-reset"><i class="bx bx-chevron-left"></i> Auctions</a></div>
+            <h4 class="fw-bold mb-0"><span data-show="active">Gedung Kantor Boulevard Sunter</span><span data-show="awaiting default completed">Apartemen 2BR Pluit Sea View</span><span data-show="nowinner">Ruko 3 Lantai Kelapa Gading</span></h4>
+            <div class="small"><span data-show="active">Lelang · limit Rp 1.800.000.000 · deposit 5% (Rp 90.000.000) · kelipatan Rp 10.000.000</span><span data-show="awaiting default completed">Lelang · limit Rp 1.000.000.000 · deposit 5% (Rp 55.000.000) · kelipatan Rp 10.000.000</span><span data-show="nowinner">Lelang · limit Rp 2.600.000.000 · deposit 10% (Rp 260.000.000)</span></div>
+          </div>
+          <div>
+            <span class="pill pill-ok" data-show="active"><i class="bx bx-broadcast"></i> Berlangsung · tutup 2h 1j</span>
+            <span class="pill pill-warn" data-show="awaiting"><i class="bx bx-time"></i> Menunggu pelunasan · sisa 10h 23j</span>
+            <span class="pill pill-danger" data-show="default"><i class="bx bx-error"></i> Gagal bayar</span>
+            <span class="pill pill-ok" data-show="completed"><i class="bx bx-check-double"></i> Lunas · Selesai</span>
+            <span class="pill pill-muted" data-show="nowinner"><i class="bx bx-minus-circle"></i> Tanpa pemenang</span>
+          </div>
+        </div>
+
+        <div class="row g-4">
+          <div class="col-lg-7">
+            <!-- Ringkasan per status -->
+            <div class="card border-0 shadow-sm mb-4"><div class="card-body p-4">
+              <div data-show="active">
+                <div class="caption mb-1">Penawaran tertinggi</div><div class="big" data-rp="1950000000"></div>
+                <div class="small mt-1">oleh <b class="h-ink">Andi Pratama</b> · 7 Nov, 14:12 · 7 penawaran dari 4 peserta</div>
+                <div class="note mt-3">Penawaran di menit-menit terakhir <b>memperpanjang</b> waktu tutup 5 menit (anti-sniping) — <b>asumsi, perlu konfirmasi klien</b>. Admin tidak bisa mengubah harga atau menghapus penawaran; hanya bisa membatalkan lelang.</div>
+              </div>
+              <div data-show="awaiting">
+                <div class="caption mb-1">Pemenang · Sari Wulandari</div><div class="big" data-rp="1100000000"></div>
+                <div class="kv mt-3"><span>Deposit dipakai</span><span>− Rp 55.000.000</span><span>Sisa pelunasan</span><span data-rp="1045000000"></span><span>Batas bayar</span><span>19 Nov 2026, 15:00 (7 hari)</span><span>Invoice pelunasan</span><span class="mono">inv_8c10…d7e · belum dibayar</span></div>
+                <div class="note mt-3">Pelunasan bisa dibayar lewat Xendit (VA, nominal besar) atau <b>transfer manual</b> ke rekening PT lalu admin menandai lunas. <b>Menunggu klien:</b> batas waktu pelunasan (asumsi 7 hari).</div>
+              </div>
+              <div data-show="default">
+                <div class="danger-box"><b class="text-danger">Sari Wulandari tidak melunasi sampai 19 Nov 2026, 15:00.</b><div class="small mt-1">Deposit Rp 55.000.000 <b>hangus</b> dan masuk ke kas perusahaan (Company Cash-out). Lelang tidak otomatis berpindah ke pemenang lain.</div></div>
+                <div class="caption mt-4 mb-2">Pilih langkah berikutnya</div>
+                <div class="form-check border rounded p-3 ps-5 mb-2"><input class="form-check-input" type="radio" name="next" checked /><label class="form-check-label small"><b class="h-ink">Tawarkan ke penawar ke-2</b> — Dimas Arya, Rp 1.090.000.000. Ia diberi waktu 3 hari untuk menerima, lalu 7 hari melunasi. Depositnya masih ditahan.</label></div>
+                <div class="form-check border rounded p-3 ps-5 mb-2"><input class="form-check-input" type="radio" name="next" /><label class="form-check-label small"><b class="h-ink">Lelang ulang</b> — buat lelang baru dari data ini; deposit peserta lain dikembalikan ke saldo.</label></div>
+                <div class="form-check border rounded p-3 ps-5"><input class="form-check-input" type="radio" name="next" /><label class="form-check-label small"><b class="h-ink">Tutup tanpa pemenang</b> — semua deposit lain dikembalikan ke saldo.</label></div>
+                <div class="note mt-3"><b>Menunggu klien:</b> apakah boleh menawarkan ke penawar ke-2, dan apakah deposit peserta lain ditahan sampai pelunasan selesai (asumsi: ya, ditahan, supaya penawar ke-2 masih bisa dipakai).</div>
+              </div>
+              <div data-show="completed">
+                <div class="ok-box"><b>Lunas 16 Nov 2026</b> via Xendit BCA VA. Deposit pemenang dipotong dari harga; deposit 5 peserta lain sudah kembali ke saldo masing-masing.</div>
+                <div class="kv mt-3"><span>Harga menang</span><span data-rp="1100000000"></span><span>Deposit dipakai</span><span>− Rp 55.000.000</span><span>Pelunasan diterima</span><span data-rp="1045000000"></span><span>Serah terima</span><span>di luar website (AJB/balik nama)</span></div>
+              </div>
+              <div data-show="nowinner">
+                <div class="kv"><span>Ditutup</span><span>2 Nov 2026, 15:00</span><span>Peserta dengan deposit</span><span>0</span><span>Penawaran</span><span>0</span></div>
+                <div class="note mt-3">Kasus lain dengan hasil sama: ada peserta yang bayar deposit tapi <b>tidak ada yang menawar</b> → semua deposit otomatis kembali ke saldo. Admin bisa <b>lelang ulang</b> (mis. limit diturunkan) atau mengembalikan properti ke Draft.</div>
+              </div>
+            </div>
+            <div class="actions-bar p-3 d-flex flex-wrap gap-2 justify-content-end">
+              <button class="btn btn-outline-secondary btn-sm" data-show="active"><i class="bx bx-pause"></i> Tangguhkan</button>
+              <button class="btn btn-outline-danger btn-sm" data-show="active"><i class="bx bx-x-circle"></i> Batalkan lelang &amp; kembalikan semua deposit</button>
+              <button class="btn btn-outline-secondary btn-sm" data-show="awaiting"><i class="bx bx-calendar-plus"></i> Perpanjang batas bayar</button>
+              <button class="btn btn-outline-danger btn-sm" data-show="awaiting" data-goto="default"><i class="bx bx-error"></i> Nyatakan gagal bayar</button>
+              <button class="btn btn-ink btn-sm" data-show="awaiting" data-goto="completed"><i class="bx bx-check"></i> Tandai lunas (transfer manual)</button>
+              <button class="btn btn-ink btn-sm" data-show="default"><i class="bx bx-right-arrow-alt"></i> Jalankan</button>
+              <button class="btn btn-outline-secondary btn-sm" data-show="nowinner"><i class="bx bx-archive"></i> Kembalikan ke Draft</button>
+              <button class="btn btn-ink btn-sm" data-show="nowinner" data-goto="form"><i class="bx bx-revision"></i> Lelang ulang</button>
+              <button class="btn btn-outline-secondary btn-sm" data-show="completed"><i class="bx bx-download"></i> Unduh berita acara</button>
+            </div></div>
+
+            <!-- Riwayat penawaran -->
+            <div class="card border-0 shadow-sm" data-show="active awaiting default completed"><div class="card-body p-4">
+              <h6 class="fw-bold mb-3">Riwayat penawaran</h6>
+              <table class="table tbl mb-0">
+                <thead><tr><th>Waktu</th><th>Peserta</th><th class="text-end">Penawaran</th></tr></thead>
+                <tbody data-show="active">
+                  <tr><td>7 Nov, 14:12</td><td>Andi Pratama <span class="pill pill-ok ms-1">tertinggi</span></td><td class="text-end" data-rp="1950000000"></td></tr>
+                  <tr><td>7 Nov, 13:58</td><td>Rina Kusuma</td><td class="text-end" data-rp="1940000000"></td></tr>
+                  <tr><td>7 Nov, 11:20</td><td>Andi Pratama</td><td class="text-end" data-rp="1900000000"></td></tr>
+                  <tr><td>6 Nov, 19:03</td><td>Budi Santoso</td><td class="text-end" data-rp="1850000000"></td></tr>
+                  <tr><td>6 Nov, 10:15</td><td>Rina Kusuma</td><td class="text-end" data-rp="1800000000"></td></tr>
+                </tbody>
+                <tbody data-show="awaiting default completed">
+                  <tr><td>12 Nov, 14:58</td><td>Sari Wulandari <span class="pill pill-ok ms-1">pemenang</span></td><td class="text-end" data-rp="1100000000"></td></tr>
+                  <tr><td>12 Nov, 14:41</td><td>Dimas Arya <span class="pill pill-info ms-1">ke-2</span></td><td class="text-end" data-rp="1090000000"></td></tr>
+                  <tr><td>12 Nov, 09:12</td><td>Sari Wulandari</td><td class="text-end" data-rp="1050000000"></td></tr>
+                  <tr><td>11 Nov, 16:30</td><td>Fajar N.</td><td class="text-end" data-rp="1000000000"></td></tr>
+                </tbody>
+              </table>
+            </div></div>
+          </div>
+
+          <!-- Peserta & deposit -->
+          <div class="col-lg-5">
+            <div class="card border-0 shadow-sm"><div class="card-body p-4">
+              <h6 class="fw-bold mb-3">Peserta &amp; deposit</h6>
+              <table class="table tbl mb-0">
+                <thead><tr><th>Peserta</th><th>Deposit</th></tr></thead>
+                <tbody data-show="active">
+                  <tr><td>Andi Pratama<div class="q-sub">dibayar 5 Nov</div></td><td><span class="pill pill-info">Ditahan</span></td></tr>
+                  <tr><td>Rina Kusuma<div class="q-sub">dibayar 5 Nov</div></td><td><span class="pill pill-info">Ditahan</span></td></tr>
+                  <tr><td>Budi Santoso<div class="q-sub">dibayar 6 Nov</div></td><td><span class="pill pill-info">Ditahan</span></td></tr>
+                  <tr><td>Lestari H.<div class="q-sub">belum menawar</div></td><td><span class="pill pill-info">Ditahan</span></td></tr>
+                  <tr><td>Hendra W.<div class="q-sub">invoice 7 Nov</div></td><td><span class="pill pill-muted">Menunggu bayar</span></td></tr>
+                </tbody>
+                <tbody data-show="awaiting">
+                  <tr><td>Sari Wulandari</td><td><span class="pill pill-ok">Dipakai (pemenang)</span></td></tr>
+                  <tr><td>Dimas Arya</td><td><span class="pill pill-info">Ditahan (cadangan)</span></td></tr>
+                  <tr><td>Fajar N.</td><td><span class="pill pill-muted">Kembali ke saldo</span></td></tr>
+                  <tr><td>2 peserta lain</td><td><span class="pill pill-muted">Kembali ke saldo</span></td></tr>
+                </tbody>
+                <tbody data-show="default">
+                  <tr><td>Sari Wulandari</td><td><span class="pill pill-danger">Hangus</span></td></tr>
+                  <tr><td>Dimas Arya</td><td><span class="pill pill-info">Ditahan (cadangan)</span></td></tr>
+                  <tr><td>3 peserta lain</td><td><span class="pill pill-muted">Kembali ke saldo</span></td></tr>
+                </tbody>
+                <tbody data-show="completed">
+                  <tr><td>Sari Wulandari</td><td><span class="pill pill-ok">Dipotong dari harga</span></td></tr>
+                  <tr><td>4 peserta lain</td><td><span class="pill pill-muted">Kembali ke saldo</span></td></tr>
+                </tbody>
+                <tbody data-show="nowinner">
+                  <tr><td colspan="2" class="text-center py-4" style="color:#a1acb8">Tidak ada peserta</td></tr>
+                </tbody>
+              </table>
+              <div class="note mt-3" data-show="active">Deposit <b>"Menunggu bayar"</b> = invoice sudah dibuat tapi belum lunas; peserta belum bisa menawar. Deposit yang dibayar setelah lelang ditutup otomatis dikembalikan ke saldo.</div>
+              <div class="note mt-3" data-show="awaiting default completed">Deposit yang "kembali ke saldo" masuk ke <b>Wallet</b> peserta dan ditarik lewat alur penarikan yang sudah ada (admin approve → payout Xendit).</div>
+            </div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===================== FORM LELANG ===================== -->
+      <div data-show="form">
+        <div class="q-eyebrow"><a href="#" data-goto="list" class="text-reset"><i class="bx bx-chevron-left"></i> Auctions</a></div>
+        <h4 class="fw-bold mb-4">Lelang baru</h4>
+        <div class="row g-4">
+          <div class="col-lg-8">
+            <div class="card border-0 shadow-sm"><div class="card-body p-4">
+              <h6 class="fw-bold mb-3">Objek</h6>
+              <div class="row g-3 mb-4">
+                <div class="col-md-8"><label class="form-label small fw-semibold">Properti</label><select class="form-select"><option>Gedung Kantor Boulevard Sunter</option></select></div>
+                <div class="col-md-4"><label class="form-label small fw-semibold">Jenis</label><select class="form-select"><option>Lelang</option><option>Cessie</option></select></div>
+              </div>
+              <h6 class="fw-bold mb-3">Harga &amp; deposit</h6>
+              <div class="row g-3 mb-4">
+                <div class="col-md-6"><label class="form-label small fw-semibold">Nilai limit (Rp)</label><input class="form-control" value="1.800.000.000" /></div>
+                <div class="col-md-6"><label class="form-label small fw-semibold">Kelipatan penawaran (Rp)</label><input class="form-control" value="10.000.000" /></div>
+                <div class="col-md-6"><label class="form-label small fw-semibold">Deposit</label><div class="input-group"><input class="form-control" value="5" /><span class="input-group-text">% dari limit</span></div><div class="form-hint mt-1">Minimal 5% (permintaan klien). Terkunci setelah ada peserta membayar deposit.</div></div>
+                <div class="col-md-6"><label class="form-label small fw-semibold">Batas pelunasan pemenang</label><div class="input-group"><input class="form-control" value="7" /><span class="input-group-text">hari</span></div></div>
+                <div class="col-12"><div class="preview-box"><i class="bx bx-calculator"></i> Deposit peserta: <b data-rp="90000000"></b> (5% × Rp 1.800.000.000). Penawaran pertama minimal <b data-rp="1800000000"></b>.</div></div>
+              </div>
+              <h6 class="fw-bold mb-3">Jadwal</h6>
+              <div class="row g-3">
+                <div class="col-md-6"><label class="form-label small fw-semibold">Dibuka</label><input type="datetime-local" class="form-control" value="2026-11-11T13:00" /></div>
+                <div class="col-md-6"><label class="form-label small fw-semibold">Ditutup</label><input type="datetime-local" class="form-control" value="2026-11-18T15:00" /></div>
+                <div class="col-12"><div class="form-check"><input class="form-check-input" type="checkbox" checked /><label class="form-check-label small">Perpanjang 5 menit bila ada penawaran di 5 menit terakhir (anti-sniping)</label></div></div>
+                <div class="col-12"><label class="form-label small fw-semibold">S&amp;K lelang (wajib disetujui peserta sebelum bayar deposit)</label><textarea class="form-control" rows="3">Deposit dikembalikan ke saldo bila tidak menang. Deposit hangus bila pemenang tidak melunasi dalam 7 hari.</textarea></div>
+              </div>
+            </div>
+            <div class="actions-bar p-3 d-flex justify-content-end gap-2"><button class="btn btn-outline-secondary btn-sm">Simpan sebagai draft</button><button class="btn btn-ink btn-sm">Jadwalkan</button></div></div>
+          </div>
+          <div class="col-lg-4">
+            <div class="warn-box mb-3">Validasi: deposit ≥ 5%, waktu tutup &gt; waktu buka, waktu buka tidak di masa lalu, kelipatan &gt; 0.</div>
+            <div class="note mb-3">Setelah lelang <b>Berlangsung</b>, hanya jadwal tutup (diperpanjang) dan deskripsi yang bisa diubah. Limit, deposit, dan kelipatan terkunci supaya adil bagi peserta yang sudah membayar.</div>
+            <div class="note"><b>Cessie</b> memakai form dan alur yang sama (keputusan klien: "Cessie sama dengan lelang"). Perbedaannya hanya label dan dokumen yang dilampirkan.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

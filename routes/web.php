@@ -104,6 +104,11 @@ Route::middleware('feature:investment')->group(function () {
 
 Route::get('/property-for-sale', [PublicPropertyConsignmentController::class, 'index'])->name('property-for-sale.index');
 Route::get('/property-for-sale/{id}', [PublicPropertyConsignmentController::class, 'show'])->name('property-for-sale.show')->where('id', '[0-9]+');
+Route::post('/property-for-sale/{id}/book', [\App\Http\Controllers\SaleBookingController::class, 'store'])
+    ->name('property-for-sale.book')->whereNumber('id')->middleware(['auth', 'role:user', 'verified']);
+// "Masuk untuk Booking": the auth middleware sends guests to login, then back to the property.
+Route::get('/property-for-sale/{id}/book', fn (int $id) => redirect()->route('property-for-sale.show', $id))
+    ->name('property-for-sale.book.login')->whereNumber('id')->middleware('auth');
 
 Route::middleware('feature:crowdfunding')->group(function () {
     Route::get('/crowdfunding', [PublicCrowdfundingController::class, 'index'])->name('crowdfunding.index');
@@ -200,6 +205,12 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin'])->grou
         Route::put('crowdfunding-properties/update/{id}', [PropertyCrowdfundingController::class, 'update'])->name('crowdfunding-properties.update');
         Route::delete('crowdfunding-properties/destroy/{id}', [PropertyCrowdfundingController::class, 'destroy'])->name('crowdfunding-properties.destroy');
     });
+
+    // Penjualan: booking fees
+    Route::get('bookings', [\App\Http\Controllers\Admin\SaleBookingAdminController::class, 'index'])->name('bookings.index');
+    Route::post('bookings/{booking}/complete', [\App\Http\Controllers\Admin\SaleBookingAdminController::class, 'complete'])->name('bookings.complete');
+    Route::post('bookings/{booking}/cancel', [\App\Http\Controllers\Admin\SaleBookingAdminController::class, 'cancel'])->name('bookings.cancel');
+    Route::post('bookings/{booking}/refund', [\App\Http\Controllers\Admin\SaleBookingAdminController::class, 'refund'])->name('bookings.refund');
 
     // Auction
     Route::get('auction-properties', [PropertyAuctionController::class, 'index'])->name('auction-properties');

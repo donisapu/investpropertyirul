@@ -111,6 +111,7 @@
                             ['label' => 'Financials', 'route' => 'admin.cw_financials', 'active' => ['admin.cw_financials*']],
                         ]],
                         ['label' => 'Property For Sale', 'icon' => 'bx-key', 'route' => 'admin.consignment-properties', 'active' => ['admin.consignment-properties*']],
+                        ['label' => 'Bookings', 'icon' => 'bx-calendar-check', 'route' => 'admin.bookings.index', 'active' => ['admin.bookings*']],
                         ['label' => 'Auctions', 'icon' => 'bx-gavel', 'route' => 'admin.auction-properties', 'active' => ['admin.auction-properties*', 'admin.admin.auction-properties*']],
                         ['header' => 'Settings'],
                         ['label' => 'Website Setting', 'icon' => 'bx-home-circle', 'children' => [

@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Mockup · Property for Sale – Booking Fee</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400..800&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="assets/mockup.js"></script>
+  <script src="https://unpkg.com/lucide@0.460.0/dist/umd/lucide.min.js"></script>
+  <link rel="stylesheet" href="assets/mockup.css" />
+</head>
+<body class="font-sans antialiased" data-page="sale">
+  <div id="site-header"></div>
+  <div id="mockbar" data-states='[["guest","Belum login"],["available","Tersedia"],["confirm","Konfirmasi booking"],["pending","Menunggu pembayaran"],["booked","Booking berhasil"],["taken","Sudah dibooking orang lain"],["expired","Kedaluwarsa"]]'></div>
+
+  <main class="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+    <a href="#" class="mb-5 inline-flex items-center gap-1.5 text-[13px] font-semibold text-ink-soft hover:text-ink">
+      <i data-lucide="arrow-left" class="h-4 w-4"></i> Kembali ke Property for Sale
+    </a>
+
+    <div class="grid gap-8 lg:grid-cols-[1fr_400px]">
+      <!-- ============ KIRI: detail properti ============ -->
+      <section>
+        <div class="mb-4 flex flex-wrap items-center gap-2">
+          <span class="badge badge-neutral"><i data-lucide="key-round" class="h-3.5 w-3.5"></i> Dijual</span>
+          <span class="badge badge-neutral">SHM</span>
+          <span class="badge badge-success" data-show="guest available confirm pending expired"><i data-lucide="circle-check" class="h-3.5 w-3.5"></i> Tersedia</span>
+          <span class="badge badge-warn" data-show="booked taken"><i data-lucide="lock" class="h-3.5 w-3.5"></i> Sudah dibooking</span>
+        </div>
+        <h1 class="text-[clamp(1.75rem,3.5vw,2.5rem)] font-bold leading-tight tracking-[-0.02em]">Rumah Modern Kelapa Gading Timur</h1>
+        <p class="mt-2 flex items-center gap-1.5 text-[14px] text-ink-soft"><i data-lucide="map-pin" class="h-4 w-4"></i> Kelapa Gading, Jakarta Utara</p>
+
+        <div class="mt-6 grid h-[340px] grid-cols-3 grid-rows-2 gap-3 overflow-hidden rounded-[28px] sm:h-[420px]">
+          <img class="col-span-2 row-span-2 h-full w-full object-cover" src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=1200&q=70" alt="" />
+          <img class="h-full w-full object-cover" src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=600&q=70" alt="" />
+          <img class="h-full w-full object-cover" src="https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?auto=format&fit=crop&w=600&q=70" alt="" />
+        </div>
+
+        <div class="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-4">
+          <div class="card p-4"><p class="text-[11px] font-bold uppercase tracking-wider text-ink-soft">Kamar tidur</p><p class="mt-1 text-lg font-extrabold">4</p></div>
+          <div class="card p-4"><p class="text-[11px] font-bold uppercase tracking-wider text-ink-soft">Kamar mandi</p><p class="mt-1 text-lg font-extrabold">3</p></div>
+          <div class="card p-4"><p class="text-[11px] font-bold uppercase tracking-wider text-ink-soft">Luas bangunan</p><p class="mt-1 text-lg font-extrabold">180 m²</p></div>
+          <div class="card p-4"><p class="text-[11px] font-bold uppercase tracking-wider text-ink-soft">Luas tanah</p><p class="mt-1 text-lg font-extrabold">150 m²</p></div>
+        </div>
+
+        <div class="card mt-6 p-6">
+          <h2 class="text-lg font-extrabold">Deskripsi</h2>
+          <p class="mt-2 text-[14px] leading-relaxed text-ink-soft">Rumah dua lantai siap huni di cluster dengan keamanan 24 jam, 5 menit ke Mall Kelapa Gading. Carport 2 mobil, taman belakang, dan listrik 5.500 VA.</p>
+        </div>
+
+        <div class="card mt-6 p-6">
+          <h2 class="text-lg font-extrabold">Cara booking</h2>
+          <ol class="mt-4 space-y-4">
+            <li class="step step-done"><span class="step-dot">1</span><div><p class="text-[14px] font-bold">Bayar booking fee</p><p class="text-[13px] text-ink-soft">Lewat Virtual Account, QRIS, atau e-wallet. Properti langsung dikunci untukmu.</p></div></li>
+            <li class="step step-now"><span class="step-dot">2</span><div><p class="text-[14px] font-bold">Tim kami menghubungimu</p><p class="text-[13px] text-ink-soft">Untuk survei lokasi, cek dokumen, dan jadwal penandatanganan.</p></div></li>
+            <li class="step step-todo"><span class="step-dot">3</span><div><p class="text-[14px] font-bold">Pelunasan &amp; serah terima</p><p class="text-[13px] text-ink-soft">Sisa pembayaran sesuai kesepakatan, lalu proses AJB di notaris.</p></div></li>
+          </ol>
+          <div class="note mt-5"><b>Belum diputuskan:</b> sisa pembayaran setelah booking fee dibayar lewat web atau di luar web? Booking fee memotong harga? Jawaban klien menentukan isi langkah 3.</div>
+        </div>
+      </section>
+
+      <!-- ============ KANAN: kartu harga & booking ============ -->
+      <aside>
+        <div class="card sticky top-[130px] p-7">
+          <p class="text-[11px] font-bold uppercase tracking-[1.3px] text-ink-soft">Harga</p>
+          <p class="mt-1 text-[30px] font-extrabold tracking-[-0.02em] tnum" data-rp="2450000000"></p>
+          <p class="mt-1 text-[12px] text-ink-soft">Harga pasar <span class="font-bold tnum" data-rp="2700000000"></span> · <span class="font-bold text-status-success">9% di bawah pasar</span></p>
+
+          <div class="my-6 h-px bg-gold-line"></div>
+
+
+          <!-- Belum login -->
+          <div data-show="guest">
+            <div class="rounded-2xl bg-cream-deep p-4">
+              <div class="row"><span>Booking fee (2%)</span><span class="tnum" data-rp="49000000"></span></div>
+            </div>
+            <a href="#" class="btn-primary mt-5" data-goto="available"><i data-lucide="log-in" class="h-4 w-4"></i> Masuk untuk Booking</a>
+            <a href="#" class="btn-ghost mt-3"><i data-lucide="message-circle" class="h-4 w-4"></i> Tanya via WhatsApp</a>
+            <div class="note mt-5">Setelah login/daftar, pengguna <b>kembali ke halaman ini</b> dan bisa langsung booking (A1).</div>
+          </div>
+
+          <!-- Kedaluwarsa -->
+          <div data-show="expired">
+            <div class="rounded-2xl border border-status-danger/30 bg-status-danger-bg p-4">
+              <p class="flex items-center gap-2 text-[13px] font-extrabold text-status-danger"><i data-lucide="timer-off" class="h-4 w-4"></i> Waktu pembayaran habis</p>
+              <p class="mt-1 text-[12px] leading-relaxed text-status-danger">Booking BK-2611-0042 dibatalkan otomatis karena tidak dibayar sampai 8 Nov 2026, 14:30 WIB. Tidak ada dana yang terpotong.</p>
+            </div>
+            <button class="btn-primary mt-5" data-goto="confirm"><i data-lucide="calendar-check" class="h-4 w-4"></i> Booking Lagi</button>
+            <div class="note mt-5">Properti kembali <b>Tersedia</b> untuk semua orang. Jika sudah dibooking orang lain, yang tampil adalah state "Sudah dibooking orang lain" (B6).</div>
+          </div>
+
+          <!-- Tersedia -->
+          <div data-show="available confirm">
+            <div class="rounded-2xl bg-cream-deep p-4">
+              <div class="row"><span>Booking fee (2%)</span><span class="tnum" data-rp="49000000"></span></div>
+              <p class="mt-2 text-[12px] leading-relaxed text-ink-soft">Bayar booking fee untuk mengunci properti ini. Selama booking berlaku, properti tidak bisa dibooking orang lain.</p>
+            </div>
+            <button class="btn-primary mt-5" data-goto="confirm"><i data-lucide="calendar-check" class="h-4 w-4"></i> Booking Sekarang</button>
+            <a href="#" class="btn-ghost mt-3"><i data-lucide="message-circle" class="h-4 w-4"></i> Tanya via WhatsApp</a>
+            <div class="note mt-5"><b>Persentase diatur admin per properti</b> (contoh 2%). Nominal = harga × %. Angka final masih dibahas klien.</div>
+          </div>
+
+          <!-- Menunggu pembayaran -->
+          <div data-show="pending">
+            <div class="rounded-2xl border border-status-warn/30 bg-status-warn-bg p-4">
+              <p class="flex items-center gap-2 text-[13px] font-extrabold text-status-warn"><i data-lucide="clock" class="h-4 w-4"></i> Menunggu pembayaran</p>
+              <p class="mt-1 text-[12px] leading-relaxed text-status-warn">Selesaikan pembayaran <b class="tnum" data-rp="49000000"></b> sebelum <b>8 Nov 2026, 14:30 WIB</b>. Jika lewat, booking dibatalkan otomatis.</p>
+            </div>
+            <a href="#" class="btn-primary mt-5"><i data-lucide="external-link" class="h-4 w-4"></i> Lanjutkan Pembayaran</a>
+            <p class="mt-3 text-center text-[12px] text-ink-soft">Halaman pembayaran aman oleh Xendit</p>
+            <div class="note mt-5">Selama menunggu pembayaran, properti <b>dikunci sementara</b> untuk pembeli ini supaya tidak terjadi dua booking sekaligus.</div>
+          </div>
+
+          <!-- Booking berhasil (milik user ini) -->
+          <div data-show="booked">
+            <div class="rounded-2xl border border-status-success/30 bg-status-success-bg p-4">
+              <p class="flex items-center gap-2 text-[13px] font-extrabold text-status-success"><i data-lucide="badge-check" class="h-4 w-4"></i> Booking berhasil</p>
+              <p class="mt-1 text-[12px] leading-relaxed text-status-success">Booking fee <b class="tnum" data-rp="49000000"></b> diterima 7 Nov 2026. Tim kami akan menghubungimu dalam 1×24 jam.</p>
+            </div>
+            <div class="mt-4 space-y-2 rounded-2xl bg-cream-deep p-4">
+              <div class="row"><span>No. booking</span><span>BK-2611-0042</span></div>
+              <div class="row"><span>Sisa harga</span><span class="tnum" data-rp="2401000000"></span></div>
+            </div>
+            <a href="#" class="btn-ghost mt-5"><i data-lucide="receipt" class="h-4 w-4"></i> Lihat bukti pembayaran</a>
+            <div class="note mt-5"><b>Belum diputuskan:</b> "Sisa harga" mengasumsikan booking fee memotong harga. Jika pembeli batal, booking fee dikembalikan atau hangus?</div>
+          </div>
+
+          <!-- Dibooking orang lain -->
+          <div data-show="taken">
+            <div class="rounded-2xl bg-cream-deep p-4">
+              <p class="flex items-center gap-2 text-[13px] font-extrabold"><i data-lucide="lock" class="h-4 w-4"></i> Properti sedang dibooking</p>
+              <p class="mt-1 text-[12px] leading-relaxed text-ink-soft">Properti ini sedang dalam proses pembelian oleh pembeli lain. Hubungi kami jika ingin masuk daftar tunggu.</p>
+            </div>
+            <button class="btn-primary mt-5 cursor-not-allowed opacity-40" disabled><i data-lucide="calendar-check" class="h-4 w-4"></i> Booking Sekarang</button>
+            <a href="#" class="btn-ghost mt-3"><i data-lucide="message-circle" class="h-4 w-4"></i> Tanya via WhatsApp</a>
+          </div>
+
+          <p class="mt-6 flex items-center justify-center gap-2 text-[11px] font-bold text-ink-faint"><i data-lucide="shield-check" class="h-3.5 w-3.5"></i> Pembayaran diproses Xendit</p>
+        </div>
+      </aside>
+    </div>
+  </main>
+
+  <!-- ============ MODAL konfirmasi booking ============ -->
+  <div class="modal-backdrop" data-show="confirm">
+    <div class="card w-full max-w-[460px] p-7">
+      <div class="flex items-start justify-between">
+        <div>
+          <p class="text-[11px] font-bold uppercase tracking-[1.3px] text-gold-ink">Konfirmasi booking</p>
+          <h3 class="mt-1 text-xl font-extrabold">Rumah Modern Kelapa Gading Timur</h3>
+        </div>
+        <button data-goto="available" class="rounded-full p-1 text-ink-soft hover:bg-cream-deep"><i data-lucide="x" class="h-5 w-5"></i></button>
+      </div>
+      <div class="mt-5 space-y-2.5 rounded-2xl bg-cream-deep p-4">
+        <div class="row"><span>Harga properti</span><span data-rp="2450000000"></span></div>
+        <div class="row"><span>Booking fee</span><span>2%</span></div>
+        <div class="h-px bg-gold-line"></div>
+        <div class="row text-[16px]"><span class="!text-ink !font-extrabold">Dibayar sekarang</span><span data-rp="49000000"></span></div>
+      </div>
+      <ul class="mt-5 space-y-2 text-[13px] text-ink-soft">
+        <li class="flex gap-2"><i data-lucide="check" class="mt-0.5 h-4 w-4 flex-none text-status-success"></i> Properti dikunci untukmu setelah pembayaran diterima.</li>
+        <li class="flex gap-2"><i data-lucide="check" class="mt-0.5 h-4 w-4 flex-none text-status-success"></i> Batas waktu pembayaran 24 jam.</li>
+        <li class="flex gap-2"><i data-lucide="info" class="mt-0.5 h-4 w-4 flex-none text-status-info"></i> Ketentuan pembatalan: <span class="font-bold text-status-info">[menunggu keputusan klien]</span></li>
+      </ul>
+      <label class="mt-5 flex items-start gap-2.5 text-[13px]">
+        <input type="checkbox" checked class="mt-0.5 h-4 w-4 accent-[#242620]" />
+        <span>Saya setuju dengan <a href="#" class="font-bold underline">Syarat &amp; Ketentuan Booking</a>.</span>
+      </label>
+      <button class="btn-primary mt-6" data-goto="pending"><i data-lucide="lock" class="h-4 w-4"></i> Bayar <span class="-ml-1" data-rp="49000000"></span></button>
+    </div>
+  </div>
+
+  <div id="site-footer"></div>
+</body>
+</html>
