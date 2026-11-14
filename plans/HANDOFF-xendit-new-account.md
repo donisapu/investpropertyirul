@@ -93,6 +93,28 @@ Status: tasks 2–5 done on staging (test mode). Task 1 (KYB) is a draft and has
 - Payment simulation only works on `checkout-staging.xendit.co`. That domain is not allowed in Claude in Chrome, so the user clicked "Simulate payment". The dashboard Invoices page has no simulate button.
 - Not tested: payout (Money-out Write) and the refund of a deposit to the Wallet.
 
+### Client testing setup on staging (2026-11-14, after E2E)
+- Client test accounts, both verified with role `user`. Their roles were copied from qa-bidder-a through the `user_roles` table; the User model has no `assignRole`.
+  - #11 `client-tester-1@example.com`
+  - #12 `client-tester-2@example.com`
+  - Both share one password, stored in `/root/.gain_stg_client_pw` (mode 600). Never put it in chat or in docs. To copy it to the clipboard:
+    `ssh -i ~/.ssh/id_ed25519_work root@178.16.131.129 'tr -d "\n" < /root/.gain_stg_client_pw' | pbcopy`
+  - Internal QA accounts `qa-bidder-a/b` are unchanged, and their password is still in `/root/.gain_stg_qa_pw`.
+- Why we provide the accounts instead of letting the client register: the staging `.env` has `MAIL_MAILER=log`, so verification emails never arrive. Booking and deposit require a verified account.
+- Booking fee enabled on staging listings, via tinker:
+  - #1 Kamil Villas, 1% = Rp 7,500,000. Free for the client to book.
+  - #3 Rumah Minimalis Bro, 1% = Rp 2,500,000. Already booked by qa-bidder-a, so other users get "sedang dibooking pembeli lain".
+  - Listings #2 and #4 still have no booking fee.
+- Short test auction **#16**, created via tinker:
+  - Property #18 Villa Modern Loft Canggu, type `auction`.
+  - Opening bid Rp 500,000,000, increment Rp 10,000,000, deposit 5% (Rp 25,000,000), 7 payment days, anti-sniping off.
+  - `date_start` 2026-11-14 15:56 WIB, `date_finish` **2026-11-14 17:57 WIB**. `auctions:tick` runs every minute from `/etc/cron.d/gainproperties-staging`.
+  - Purpose: test closing, the winner's settlement invoice, and the loser's deposit going back to the Wallet. None of these has been verified yet.
+  - To reopen it or create a new one for the client, change `date_finish` or create a new auction on a property that has no open auction.
+- A WhatsApp draft for the client was written in chat and has not been saved anywhere.
+  - Content: progress, test link, test accounts (password in a separate message), test steps, missing documents (akta, SK Menkumham, akta changes), and two decisions (auction licence, `/crowdfunding` on prod).
+  - The user sends it.
+
 ### Open before submitting KYB / going live
 1. Upload the Akta Pendirian and SK Menkumham, and answer the "changes to the akta" question.
 2. **Auctions vs KYB:**
