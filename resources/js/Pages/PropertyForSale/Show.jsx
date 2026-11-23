@@ -580,7 +580,7 @@ export default function Show({ property, booking }) {
                             <BookingPanel
                                 booking={booking}
                                 consignmentId={property.consignment_id}
-                                whatsappUrl={`https://wa.me/${settings?.whatsapp || "62818580891"}`}
+                                whatsappUrl={settings?.wa_public_button === false ? null : `https://wa.me/${settings?.whatsapp || "62818580891"}`}
                             />
 
                             {/* 3. Property Highlights (Sleek List) */}

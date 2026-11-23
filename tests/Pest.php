@@ -58,3 +58,15 @@ function fakeBankChannels(?array $channels = null): void
 
     \Illuminate\Support\Facades\Http::fake(['api.xendit.co/payouts_channels*' => \Illuminate\Support\Facades\Http::response($channels)]);
 }
+
+/**
+ * The single Website Settings row (WhatsApp follow-up fields included), with the cache reset.
+ */
+function siteSettings(array $overrides = []): \App\Models\WebsiteSetting
+{
+    $setting = \App\Models\WebsiteSetting::query()->first() ?? new \App\Models\WebsiteSetting(['site_name' => 'Gain Properties']);
+    $setting->forceFill(array_merge(['whatsapp' => '6281100001111'], $overrides))->save();
+    \Illuminate\Support\Facades\Cache::forget('website_settings');
+
+    return $setting;
+}

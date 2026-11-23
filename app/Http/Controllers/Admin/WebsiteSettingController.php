@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Models\WebsiteSetting;
 use App\Models\Partner;
+use App\Services\WhatsApp\FollowUpLink;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
@@ -56,7 +57,17 @@ class WebsiteSettingController extends AdminController
 
             'name' => 'nullable|array',
             'name.*' => 'nullable|string|max:255',
+
+            // WhatsApp follow-up for buyers who paid a booking or a deposit.
+            'wa_public_button' => 'nullable|boolean',
+            'wa_followup_number' => ['nullable', 'string', 'max:20', 'regex:/^\+?[0-9 \-]{8,20}$/'],
+            'wa_auction_access' => 'required|in:'.FollowUpLink::ACCESS_DEPOSIT.','.FollowUpLink::ACCESS_WINNER,
+            'wa_booking_message' => 'nullable|string|max:1000',
+            'wa_auction_message' => 'nullable|string|max:1000',
+        ], [
+            'wa_followup_number.*' => 'Nomor WhatsApp follow-up diisi angka (8–15 digit), mis. 0812xxxx atau 62812xxxx.',
         ]);
+        $data['wa_public_button'] = $request->boolean('wa_public_button');
 
         DB::transaction(function () use ($request, $setting, &$data) {
 

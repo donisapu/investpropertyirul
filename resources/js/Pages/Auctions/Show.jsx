@@ -507,7 +507,7 @@ export default function Show({ auction, participation }) {
                             p={participation}
                             auctionId={auction.id}
                             typeLabel={auction.type_label ?? "Lelang"}
-                            whatsappUrl={`https://wa.me/${settings?.whatsapp || "62818580891"}`}
+                            whatsappUrl={settings?.wa_public_button === false ? null : `https://wa.me/${settings?.whatsapp || "62818580891"}`}
                         />
 
 

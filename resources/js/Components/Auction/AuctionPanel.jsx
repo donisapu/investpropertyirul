@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { router, usePage } from "@inertiajs/react";
+import FollowUpWhatsApp from "@/Components/FollowUpWhatsApp";
 import {
     Ban,
     BadgeCheck,
@@ -374,9 +375,15 @@ export default function AuctionPanel({ p, auctionId, typeLabel, whatsappUrl }) {
                     </>
                 )}
 
-                <a href={whatsappUrl} target="_blank" rel="noreferrer" className={ghost}>
-                    <MessageCircle size={18} aria-hidden="true" /> Hubungi tim kami
-                </a>
+                {p.followup ? (
+                    <FollowUpWhatsApp followup={p.followup} className={ghost} />
+                ) : (
+                    whatsappUrl && (
+                        <a href={whatsappUrl} target="_blank" rel="noreferrer" className={ghost}>
+                            <MessageCircle size={18} aria-hidden="true" /> Hubungi tim kami
+                        </a>
+                    )
+                )}
             </div>
 
             {modal === "deposit" && (

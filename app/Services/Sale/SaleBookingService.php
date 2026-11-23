@@ -8,6 +8,7 @@ use App\Models\SaleBooking;
 use App\Models\User;
 use App\Models\WalletTransaction;
 use App\Services\Wallet\WalletCredit;
+use App\Services\WhatsApp\FollowUpLink;
 use App\Services\XenditService;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -20,7 +21,7 @@ use Illuminate\Support\Str;
  */
 class SaleBookingService
 {
-    public function __construct(private XenditService $xendit)
+    public function __construct(private XenditService $xendit, private FollowUpLink $followUp)
     {
     }
 
@@ -185,6 +186,14 @@ class SaleBookingService
                 'paid_at' => $mine->paid_at?->toIso8601String(),
                 'fee_outcome' => $mine->fee_outcome,
                 'cancel_reason' => $mine->cancel_reason,
+                // WhatsApp only once the fee is paid: the number/group is not for visitors.
+                'followup' => in_array($state, ['mine_paid', 'mine_completed'], true)
+                    ? $this->followUp->build($listing->followup_group_url, $listing->followup_whatsapp, 'booking', [
+                        'nama' => $user->name,
+                        'kode' => $mine->payment?->external_id,
+                        'properti' => $listing->property?->property_name,
+                    ])
+                    : null,
             ] : null,
         ];
     }

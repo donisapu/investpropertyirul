@@ -134,6 +134,51 @@
                             value="{{ old('email', $setting->email) }}">
                         <small class="text-danger error" id="error-email"></small>
                     </div>
+                    {{-- WHATSAPP FOLLOW-UP --}}
+                    <div class="col-12">
+                        <hr>
+                        <h5 class="mb-1">WhatsApp untuk pembeli</h5>
+                        <p class="text-muted small mb-3">Setelah booking fee atau deposit lelang dibayar, pembeli mendapat tombol WhatsApp dengan pesan otomatis (nama, kode, properti). Nomor atau link grup per listing bisa diisi di form Consignment / Auction.</p>
+                        @if ($errors->hasAny(['wa_followup_number', 'wa_auction_access', 'wa_booking_message', 'wa_auction_message']))
+                            <div class="alert alert-danger small">{{ $errors->first('wa_followup_number') ?: $errors->first('wa_auction_access') ?: $errors->first('wa_booking_message') ?: $errors->first('wa_auction_message') }}</div>
+                        @endif
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-check form-switch">
+                            <input type="hidden" name="wa_public_button" value="0">
+                            <input class="form-check-input" type="checkbox" role="switch" name="wa_public_button" id="wa_public_button" value="1"
+                                @checked(old('wa_public_button', $setting->wa_public_button ?? true))>
+                            <label class="form-check-label" for="wa_public_button">Tampilkan tombol "Tanya via WhatsApp" untuk semua pengunjung</label>
+                        </div>
+                        <small class="text-muted">Matikan bila WhatsApp hanya untuk pembeli yang sudah bayar.</small>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-medium" for="wa_followup_number">Nomor WhatsApp follow-up</label>
+                        <input type="text" id="wa_followup_number" name="wa_followup_number" class="form-control" maxlength="20" inputmode="tel"
+                            placeholder="Kosong = pakai nomor WhatsApp di atas" value="{{ old('wa_followup_number', $setting->wa_followup_number) }}">
+                        <small class="text-muted">Nomor ini tidak tampil ke publik, hanya ke pembeli yang sudah bayar.</small>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-medium" for="wa_auction_access">Akses WhatsApp lelang</label>
+                        <select id="wa_auction_access" name="wa_auction_access" class="form-select">
+                            <option value="deposit" @selected(old('wa_auction_access', $setting->wa_auction_access ?? 'deposit') === 'deposit')>Semua peserta yang sudah bayar deposit</option>
+                            <option value="winner" @selected(old('wa_auction_access', $setting->wa_auction_access) === 'winner')>Hanya pemenang lelang</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6"></div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-medium" for="wa_booking_message">Pesan otomatis setelah booking</label>
+                        <textarea id="wa_booking_message" name="wa_booking_message" rows="3" maxlength="1000" class="form-control"
+                            placeholder="{{ \App\Services\WhatsApp\FollowUpLink::BOOKING_MESSAGE }}">{{ old('wa_booking_message', $setting->wa_booking_message) }}</textarea>
+                        <small class="text-muted">Kosong = teks contoh. Bisa pakai {nama}, {kode}, {properti}.</small>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-medium" for="wa_auction_message">Pesan otomatis untuk peserta lelang</label>
+                        <textarea id="wa_auction_message" name="wa_auction_message" rows="3" maxlength="1000" class="form-control"
+                            placeholder="{{ \App\Services\WhatsApp\FollowUpLink::AUCTION_MESSAGE }}">{{ old('wa_auction_message', $setting->wa_auction_message) }}</textarea>
+                        <small class="text-muted">Kosong = teks contoh. Bisa pakai {nama}, {kode}, {properti}.</small>
+                    </div>
+
                     <div class="col-md-6">
                         <div class="card mt-3">
                             <div class="card-header h5">Partners</div>

@@ -447,3 +447,58 @@ test('the booking admin search treats % and _ literally', function () {
     $this->actingAs(saleAdmin())->get(route('admin.bookings.index', ['q' => 'bintaro']))->assertSee('Rumah Bintaro');
     $this->actingAs(saleAdmin())->get(route('admin.bookings.index', ['q' => 'bin_aro']))->assertDontSee('Rumah Bintaro');
 });
+
+// ---- WhatsApp after the booking fee is paid ----
+
+test('a buyer who paid the booking fee gets a WhatsApp chat with the booking details filled in', function () {
+    siteSettings(['wa_followup_number' => '0812-2222-3333']);
+    $listing = saleListing();
+    $buyer = saleBuyer();
+    $this->actingAs($buyer)->post(route('property-for-sale.book', $listing->id));
+    $code = $this->invoices[0]['externalId'];
+
+    expect(bookingStateFor($this, $buyer, $listing)['booking']['followup'])->toBeNull();
+
+    bookingWebhook($this, $code, 'PAID');
+
+    $followup = bookingStateFor($this, $buyer, $listing)['booking']['followup'];
+    expect($followup['kind'])->toBe('chat')
+        ->and($followup['url'])->toStartWith('https://wa.me/6281222223333?text=')
+        ->and(rawurldecode($followup['url']))->toContain('saya Pembeli', $code, 'Rumah Bintaro')
+        ->and(bookingStateFor($this, saleBuyer(), $listing)['booking'])->toBeNull();
+});
+
+test('a listing\'s own WhatsApp group replaces the chat for its buyers', function () {
+    siteSettings();
+    $listing = saleListing(['followup_group_url' => 'https://chat.whatsapp.com/AbCdEf123']);
+    $buyer = saleBuyer();
+    settledBooking($this, $listing, $buyer);
+
+    expect(bookingStateFor($this, $buyer, $listing)['booking']['followup'])
+        ->toBe(['url' => 'https://chat.whatsapp.com/AbCdEf123', 'kind' => 'group']);
+});
+
+test('the booking message text is set by the admin', function () {
+    siteSettings(['wa_booking_message' => 'Booking {kode} oleh {nama}']);
+    $listing = saleListing(['followup_whatsapp' => '081299998888']);
+    $buyer = saleBuyer();
+    $booking = settledBooking($this, $listing, $buyer);
+
+    expect(bookingStateFor($this, $buyer, $listing)['booking']['followup']['url'])
+        ->toBe('https://wa.me/6281299998888?text='.rawurlencode('Booking '.$booking->payment->external_id.' oleh Pembeli'));
+});
+
+test('an admin sets a WhatsApp number or group per listing', function () {
+    $listing = saleListing();
+    $admin = saleAdmin();
+
+    $this->actingAs($admin)->put(route('admin.consignment-properties.update', $listing->id), listingForm($listing, [
+        'followup_whatsapp' => '0812 9999 8888', 'followup_group_url' => 'https://chat.whatsapp.com/XyZ',
+    ]))->assertSessionHasNoErrors();
+    expect($listing->fresh()->only('followup_whatsapp', 'followup_group_url'))
+        ->toBe(['followup_whatsapp' => '0812 9999 8888', 'followup_group_url' => 'https://chat.whatsapp.com/XyZ']);
+
+    $this->actingAs($admin)->put(route('admin.consignment-properties.update', $listing->id), listingForm($listing, [
+        'followup_whatsapp' => 'abc', 'followup_group_url' => 'https://example.com/group',
+    ]))->assertSessionHasErrors(['followup_whatsapp', 'followup_group_url']);
+});

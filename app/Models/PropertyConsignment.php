@@ -19,6 +19,8 @@ class PropertyConsignment extends Model
         'market_value',
         'booking_fee_percent',
         'booking_terms',
+        'followup_whatsapp',
+        'followup_group_url',
     ];
 
     protected $casts = [

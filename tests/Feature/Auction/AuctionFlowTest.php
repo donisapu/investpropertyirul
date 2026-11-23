@@ -651,3 +651,53 @@ test('an ended auction with only an unpaid deposit invoice is left out of My Bid
 
     expect(lelMyBids($this, $me)['items'])->toBe([]);
 });
+
+// ---- WhatsApp for participants ----
+
+test('a participant gets WhatsApp once the deposit is paid, also on My Bids', function () {
+    siteSettings(['wa_followup_number' => '081233334444']);
+    $auction = lelAuction();
+    $me = lelBidder();
+
+    expect(lelState($this, $me, $auction)['followup'])->toBeNull();
+
+    lelDeposit($this, $auction, $me, 'PENDING');
+    expect(lelState($this, $me, $auction)['followup'])->toBeNull();
+
+    lelWebhook($this, end($this->invoices)['externalId'], 'PAID');
+    $followup = lelState($this, $me, $auction)['followup'];
+    expect($followup['url'])->toStartWith('https://wa.me/6281233334444?text=')
+        ->and(rawurldecode($followup['url']))->toContain('Gedung Sunter', end($this->invoices)['externalId'])
+        ->and(lelMyBids($this, $me)['items'][0]['followup'])->toBe($followup)
+        ->and(lelState($this, lelBidder(), $auction)['followup'])->toBeNull()
+        ->and(lelState($this, null, $auction)['followup'])->toBeNull();
+});
+
+test('with winner-only access just the winner gets the auction WhatsApp group', function () {
+    siteSettings(['wa_auction_access' => 'winner']);
+    [$winner, $loser] = [lelBidder(), lelBidder()];
+    $auction = lelAuction(['followup_group_url' => 'https://chat.whatsapp.com/Lelang1']);
+    lelDeposit($this, $auction, $winner);
+    lelDeposit($this, $auction, $loser);
+    lelBid($this, $auction, $loser, 1800000000);
+    lelBid($this, $auction, $winner, 1950000000);
+
+    expect(lelState($this, $winner, $auction)['followup'])->toBeNull();
+
+    $this->travel(25)->hours();
+    $this->artisan('auctions:tick');
+
+    expect(lelState($this, $winner, $auction)['followup'])->toBe(['url' => 'https://chat.whatsapp.com/Lelang1', 'kind' => 'group'])
+        ->and(lelState($this, $loser, $auction)['followup'])->toBeNull();
+});
+
+test('an admin sets a WhatsApp number or group per auction', function () {
+    $auction = lelAuction();
+
+    $this->actingAs(lelAdmin())->put(route('admin.auction-properties.update', $auction->id), lelForm($auction, [
+        'followup_whatsapp' => '081277776666', 'followup_group_url' => 'https://chat.whatsapp.com/Grup',
+    ]))->assertSessionHasNoErrors();
+
+    expect($auction->fresh()->only('followup_whatsapp', 'followup_group_url'))
+        ->toBe(['followup_whatsapp' => '081277776666', 'followup_group_url' => 'https://chat.whatsapp.com/Grup']);
+});

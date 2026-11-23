@@ -10,6 +10,7 @@ use App\Models\PropertyAuction;
 use App\Models\User;
 use App\Models\WalletTransaction;
 use App\Services\Wallet\WalletCredit;
+use App\Services\WhatsApp\FollowUpLink;
 use App\Services\XenditService;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
@@ -23,7 +24,7 @@ use Illuminate\Support\Str;
  */
 class AuctionService
 {
-    public function __construct(private XenditService $xendit, private WalletCredit $wallet)
+    public function __construct(private XenditService $xendit, private WalletCredit $wallet, private FollowUpLink $followUp)
     {
     }
 
@@ -401,7 +402,29 @@ class AuctionService
                 'status' => $settlement->status,
             ] : null,
             'bids' => $this->publicBids($bids, $top, $user),
+            'followup' => $this->followUpFor($auction, $user, $state, $shown),
         ];
+    }
+
+    /**
+     * WhatsApp for participants, computed here so the number/group never reaches anyone else:
+     * every paid deposit of a running auction, or only the winner (admin setting).
+     */
+    private function followUpFor(PropertyAuction $auction, ?User $user, string $state, ?AuctionDeposit $shown): ?array
+    {
+        $allowed = FollowUpLink::auctionAccess() === FollowUpLink::ACCESS_WINNER
+            ? ['won', 'paid']
+            : ['ready', 'bidding', 'suspended', 'won', 'paid'];
+
+        if (! $user || ! $shown?->paid_at || ! in_array($state, $allowed, true)) {
+            return null;
+        }
+
+        return $this->followUp->build($auction->followup_group_url, $auction->followup_whatsapp, 'auction', [
+            'nama' => $user->name,
+            'kode' => $shown->payment?->external_id,
+            'properti' => $auction->property?->property_name,
+        ]);
     }
 
     /**

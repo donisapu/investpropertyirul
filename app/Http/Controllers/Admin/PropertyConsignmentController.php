@@ -64,6 +64,8 @@ class PropertyConsignmentController extends AdminController
                 'market_value',
                 'booking_fee_percent',
                 'booking_terms',
+                'followup_whatsapp',
+                'followup_group_url',
             ]));
         });
 
@@ -139,6 +141,8 @@ class PropertyConsignmentController extends AdminController
                 'market_value',
                 'booking_fee_percent',
                 'booking_terms',
+                'followup_whatsapp',
+                'followup_group_url',
             ]));
         });
 
@@ -174,7 +178,11 @@ class PropertyConsignmentController extends AdminController
         $request->validate([
             'booking_fee_percent' => ['nullable', 'numeric', 'gt:0', 'max:100'],
             'booking_terms' => ['nullable', 'string', 'max:2000'],
+            'followup_whatsapp' => ['nullable', 'string', 'max:20', 'regex:/^\+?[0-9 \-]{8,20}$/'],
+            'followup_group_url' => ['nullable', 'url', 'max:255', 'starts_with:https://chat.whatsapp.com/'],
         ], [
+            'followup_whatsapp.*' => 'Nomor WhatsApp diisi angka (8–15 digit), mis. 0812xxxx atau 62812xxxx.',
+            'followup_group_url.*' => 'Link grup harus link undangan WhatsApp: https://chat.whatsapp.com/…',
             'booking_fee_percent.*' => 'Booking fee diisi persen lebih dari 0 dan paling besar 100, atau dikosongkan untuk mematikan booking online.',
         ]);
     }

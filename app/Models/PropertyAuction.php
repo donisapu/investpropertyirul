@@ -49,6 +49,8 @@ class PropertyAuction extends Model
         'payment_days',
         'terms',
         'anti_sniping',
+        'followup_whatsapp',
+        'followup_group_url',
         // Set by AuctionService only (the admin form passes validated fields).
         'winner_bid_id',
         'closed_at',

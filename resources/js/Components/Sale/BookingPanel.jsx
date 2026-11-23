@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Link, router, usePage } from "@inertiajs/react";
+import FollowUpWhatsApp from "@/Components/FollowUpWhatsApp";
 import {
     BadgeCheck,
     CalendarCheck,
@@ -170,9 +171,15 @@ export default function BookingPanel({ booking, consignmentId, whatsappUrl }) {
 
             {booking.state === "sold" && <Notice tone="neutral" icon={Lock} title="Properti sudah terjual" />}
 
-            <a href={whatsappUrl} target="_blank" rel="noreferrer" className={canBook || booking.state === "mine_pending" ? ghost : primary}>
-                <MessageCircle size={18} aria-hidden="true" /> {booking.state === "unavailable" ? "Contact Agent" : "Tanya via WhatsApp"}
-            </a>
+            {mine?.followup ? (
+                <FollowUpWhatsApp followup={mine.followup} className={primary} />
+            ) : (
+                whatsappUrl && (
+                    <a href={whatsappUrl} target="_blank" rel="noreferrer" className={canBook || booking.state === "mine_pending" ? ghost : primary}>
+                        <MessageCircle size={18} aria-hidden="true" /> {booking.state === "unavailable" ? "Contact Agent" : "Tanya via WhatsApp"}
+                    </a>
+                )
+            )}
 
             {confirming && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center bg-ink/50 p-4" role="dialog" aria-modal="true" aria-labelledby="booking-confirm-title">

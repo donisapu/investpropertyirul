@@ -27,7 +27,17 @@ class WebsiteSetting extends Model
         'youtube_url',
         'youtube_video_url',
         'email',
+        'wa_public_button',
+        'wa_followup_number',
+        'wa_auction_access',
+        'wa_booking_message',
+        'wa_auction_message',
     ];
+
+    // Shared with every page (Inertia): the follow-up number is only for buyers who paid.
+    protected $hidden = ['wa_followup_number'];
+
+    protected $casts = ['wa_public_button' => 'boolean'];
 
     /* ------------------------------------
      |  Accessors

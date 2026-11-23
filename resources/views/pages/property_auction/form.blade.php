@@ -82,6 +82,7 @@
                         <textarea class="form-control" name="terms" id="terms" rows="4" maxlength="5000">{{ old('terms', $d?->terms) }}</textarea>
                     </div>
                 </div>
+                @include('pages.partials.followup_whatsapp', ['model' => $d, 'intro' => 'Tombol WhatsApp untuk peserta yang sudah bayar deposit (atau hanya pemenang, sesuai Website Settings).'])
                 <div class="row g-3">
                     <div class="col-6">
                         <label for="type" class="form-label">Type</label>

@@ -87,6 +87,7 @@
                     <textarea class="form-control" name="booking_terms" id="booking_terms" rows="3" maxlength="2000"
                         placeholder="Mis. booking fee dipotong dari harga saat pelunasan; hangus bila pembeli membatalkan sepihak.">{{ old('booking_terms', $btn == 'edit' ? $data->booking_terms : '') }}</textarea>
                 </div>
+                @include('pages.partials.followup_whatsapp', ['model' => $btn == 'edit' ? $data : null, 'intro' => 'Tombol WhatsApp yang muncul untuk pembeli setelah booking fee dibayar.'])
             </div>
         </div>
         <div class="mt-3">

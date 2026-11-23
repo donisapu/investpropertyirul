@@ -190,7 +190,11 @@ class PropertyAuctionController extends AdminController
             'date_finish' => ['required', 'date', 'after:date_start'],
             'terms' => ['nullable', 'string', 'max:5000'],
             'anti_sniping' => ['nullable', 'boolean'],
+            'followup_whatsapp' => ['nullable', 'string', 'max:20', 'regex:/^\+?[0-9 \-]{8,20}$/'],
+            'followup_group_url' => ['nullable', 'url', 'max:255', 'starts_with:https://chat.whatsapp.com/'],
         ], [
+            'followup_whatsapp.*' => 'Nomor WhatsApp diisi angka (8–15 digit), mis. 0812xxxx atau 62812xxxx.',
+            'followup_group_url.*' => 'Link grup harus link undangan WhatsApp: https://chat.whatsapp.com/…',
             'deposit_percent.required' => 'Isi deposit (minimal '.PropertyAuction::MIN_DEPOSIT_PERCENT.'%).',
             'deposit_percent.min' => 'Deposit minimal '.PropertyAuction::MIN_DEPOSIT_PERCENT.'% dari nilai limit.',
             'date_finish.after' => 'Waktu tutup harus setelah waktu buka.',

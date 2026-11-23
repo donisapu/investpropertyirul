@@ -2,6 +2,7 @@ import React, { useMemo, useState } from "react";
 import { Head, Link } from "@inertiajs/react";
 import { Ban, Clock, Flag, Gavel, Lock, PauseCircle, Search, ShieldCheck, TrendingUp, Trophy, Wallet, BadgeCheck, CircleAlert } from "lucide-react";
 import PublicLayout from "@/Layouts/PublicLayout";
+import FollowUpWhatsApp from "@/Components/FollowUpWhatsApp";
 import { formatRupiah } from "@/lib/money";
 
 const dateTime = (iso) =>
@@ -235,14 +236,21 @@ export default function Bids({ items = [], held = { amount: 0, auctions: 0 } }) 
                                         </React.Fragment>
                                     ))}
                                 </dl>
-                                <CtaTag
-                                    href={ctaHref || route("auctions.show", item.id)}
-                                    className={`flex flex-none items-center justify-center gap-2 whitespace-nowrap rounded-2xl px-5 py-3 text-[13px] font-bold md:w-44 ${
-                                        kind === "primary" ? "bg-ink text-cream hover:bg-gold-ink" : "border border-gold-line text-ink hover:border-ink"
-                                    }`}
-                                >
-                                    {CtaIcon && <CtaIcon size={16} aria-hidden="true" />} {ctaLabel}
-                                </CtaTag>
+                                <div className="flex flex-none flex-col gap-2 md:w-44">
+                                    <CtaTag
+                                        href={ctaHref || route("auctions.show", item.id)}
+                                        className={`flex items-center justify-center gap-2 whitespace-nowrap rounded-2xl px-5 py-3 text-[13px] font-bold ${
+                                            kind === "primary" ? "bg-ink text-cream hover:bg-gold-ink" : "border border-gold-line text-ink hover:border-ink"
+                                        }`}
+                                    >
+                                        {CtaIcon && <CtaIcon size={16} aria-hidden="true" />} {ctaLabel}
+                                    </CtaTag>
+                                    <FollowUpWhatsApp
+                                        followup={item.followup}
+                                        label={item.followup?.kind === "group" ? "Grup WhatsApp" : "WhatsApp tim"}
+                                        className="flex items-center justify-center gap-2 whitespace-nowrap rounded-2xl border border-gold-line px-5 py-2.5 text-[13px] font-bold text-ink hover:border-ink"
+                                    />
+                                </div>
                             </article>
                         );
                     })}
