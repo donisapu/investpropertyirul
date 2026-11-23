@@ -53,3 +53,15 @@ test('an admin manages the WhatsApp follow-up settings', function () {
         'site_name' => 'Gain Properties', 'wa_followup_number' => 'abc', 'wa_auction_access' => 'everyone',
     ])->assertSessionHasErrors(['wa_followup_number', 'wa_auction_access']);
 });
+
+test('the admin forms show the WhatsApp follow-up fields', function () {
+    siteSettings();
+    $admin = waAdmin();
+
+    $this->actingAs($admin)->get(route('admin.website-settings.edit'))->assertOk()
+        ->assertSee(['name="wa_public_button"', 'name="wa_followup_number"', 'name="wa_auction_access"', 'name="wa_booking_message"'], false);
+    $this->actingAs($admin)->get(route('admin.consignment-properties.create'))->assertOk()
+        ->assertSee(['name="followup_whatsapp"', 'name="followup_group_url"'], false);
+    $this->actingAs($admin)->get(route('admin.auction-properties.create'))->assertOk()
+        ->assertSee(['name="followup_whatsapp"', 'name="followup_group_url"'], false);
+});
