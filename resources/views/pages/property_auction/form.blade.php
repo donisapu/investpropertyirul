@@ -14,6 +14,8 @@
                     $locked = $d && $d->deposits()->whereNotNull('paid_at')->exists();
                     $running = $d && $d->status === 'active' && $d->date_start?->isPast();
                     $local = fn ($t) => $t?->format('Y-m-d\\TH:i');
+                    // Online auctions off: joined over WhatsApp, so no deposit/settlement settings.
+                    $online = \App\Support\Features::enabled('auction_online');
                 @endphp
                 @if ($errors->any())
                     <div class="alert alert-danger small" role="alert">
@@ -44,6 +46,7 @@
                         <label for="market_value" class="form-label">Market Value (Rp)</label>
                         <input type="number" class="form-control" name="market_value" id="market_value" value="{{ old('market_value', $d ? (int) $d->market_value : '') }}" @required(true)>
                     </div>
+                    @if ($online)
                     <div class="col-md-6">
                         <label for="deposit_percent" class="form-label">Deposit</label>
                         <div class="input-group">
@@ -59,6 +62,13 @@
                             <span class="input-group-text">hari</span>
                         </div>
                     </div>
+                    @else
+                        <input type="hidden" name="deposit_percent" value="{{ old('deposit_percent', $d?->deposit_percent ?? \App\Models\PropertyAuction::MIN_DEPOSIT_PERCENT) }}">
+                        <input type="hidden" name="payment_days" value="{{ old('payment_days', $d?->payment_days ?? 7) }}">
+                        <div class="col-12">
+                            <div class="alert alert-info small mb-0">Lelang online sedang nonaktif: peserta diarahkan ke WhatsApp, jadi deposit dan pelunasan tidak diatur di sini.</div>
+                        </div>
+                    @endif
                 </div>
                 <div class="row g-3 mb-3">
                     <div class="col-md-6">
@@ -70,7 +80,7 @@
                         <input type="datetime-local" class="form-control" name="date_finish" id="date_finish" value="{{ old('date_finish', $local($d?->date_finish)) }}" @required(true)>
                         @if ($running)<div class="form-text">Lelang sedang berjalan: waktu tutup hanya bisa diperpanjang.</div>@endif
                     </div>
-                    <div class="col-12">
+                    <div class="col-12 @unless ($online) d-none @endunless">
                         <div class="form-check">
                             <input type="hidden" name="anti_sniping" value="0">
                             <input class="form-check-input" type="checkbox" name="anti_sniping" id="anti_sniping" value="1" @checked(old('anti_sniping', $d?->anti_sniping))>
@@ -78,11 +88,13 @@
                         </div>
                     </div>
                     <div class="col-12">
-                        <label for="terms" class="form-label">S&amp;K lelang (ditampilkan sebelum peserta membayar deposit)</label>
+                        <label for="terms" class="form-label">S&amp;K lelang{{ $online ? ' (ditampilkan sebelum peserta membayar deposit)' : '' }}</label>
                         <textarea class="form-control" name="terms" id="terms" rows="4" maxlength="5000">{{ old('terms', $d?->terms) }}</textarea>
                     </div>
                 </div>
+                @if ($online)
                 @include('pages.partials.followup_whatsapp', ['model' => $d, 'intro' => 'Tombol WhatsApp untuk peserta yang sudah bayar deposit (atau hanya pemenang, sesuai Website Settings).'])
+                @endif
                 <div class="row g-3">
                     <div class="col-6">
                         <label for="type" class="form-label">Type</label>
@@ -138,6 +150,7 @@
             const limit = document.getElementById('open_bid');
             const pct = document.getElementById('deposit_percent');
             const out = document.getElementById('deposit-preview');
+            if (!pct || !out) return;
             const rupiah = (v) => 'Rp ' + Math.round(v).toLocaleString('id-ID');
             const preview = () => {
                 const l = parseFloat(limit.value), p = parseFloat(pct.value);

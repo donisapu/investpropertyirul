@@ -150,7 +150,7 @@
                                 @checked(old('wa_public_button', $setting->wa_public_button ?? true))>
                             <label class="form-check-label" for="wa_public_button">Tampilkan tombol "Tanya via WhatsApp" untuk semua pengunjung</label>
                         </div>
-                        <small class="text-muted">Matikan bila WhatsApp hanya untuk pembeli yang sudah bayar.</small>
+                        <small class="text-muted">Matikan bila WhatsApp hanya untuk pembeli yang sudah bayar. Selama lelang online nonaktif, halaman lelang tetap menampilkan tombol WhatsApp untuk mendaftar.</small>
                     </div>
                     <div class="col-md-6">
                         <label class="form-label fw-medium" for="wa_followup_number">Nomor WhatsApp follow-up</label>

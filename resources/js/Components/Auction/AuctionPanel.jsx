@@ -120,13 +120,21 @@ function Modal({ title, onClose, children }) {
  * The participation card on an auction page (USE-CASES.md §C, mockups/gainproperties/lelang.html).
  * `p` comes from AuctionService::stateFor.
  */
-export default function AuctionPanel({ p, auctionId, typeLabel, whatsappUrl }) {
+export default function AuctionPanel(props) {
+    // Online auctions off (FEATURE_AUCTION_ONLINE): an open auction is joined over WhatsApp.
+    // A deposit already held keeps its notice but can no longer bid; results and settlement stay.
+    const open = ["deposit", "deposit_closed", "deposit_pending", "ready", "bidding"];
+    const p = props.p.offline && open.includes(props.p.state) ? { ...props.p, state: "offline" } : props.p;
+    return <Panel {...props} p={p} />;
+}
+
+function Panel({ p, auctionId, typeLabel, whatsappUrl }) {
     const { errors, flash } = usePage().props;
     const [modal, setModal] = useState(null); // "deposit" | "bid"
     const [sending, setSending] = useState(false);
     const [amount, setAmount] = useState(p.minimum_bid);
     const upcoming = ["upcoming"].includes(p.status) || (p.status === "active" && new Date(p.opens_at) > new Date());
-    const running = ["deposit", "deposit_pending", "bidding", "ready", "deposit_closed"].includes(p.state) && !upcoming;
+    const running = ["deposit", "deposit_pending", "bidding", "ready", "deposit_closed", "offline"].includes(p.state) && !upcoming;
     const countdown = useCountdown(upcoming ? p.opens_at : running ? p.closes_at : null);
     const outbid = p.state === "bidding" && p.my_last_bid && !p.top_is_mine;
 
@@ -354,6 +362,18 @@ export default function AuctionPanel({ p, auctionId, typeLabel, whatsappUrl }) {
                     </>
                 )}
 
+                {p.state === "offline" && (
+                    <>
+                        <p className="flex items-center gap-2 text-[15px] font-extrabold text-ink">
+                            <MessageCircle size={18} className="text-gold-ink" aria-hidden="true" /> Ikut {typeLabel.toLowerCase()} bersama tim kami
+                        </p>
+                        <p className="text-[13px] leading-relaxed text-ink-soft">
+                            Pendaftaran dan penawaran dibantu langsung oleh tim kami lewat WhatsApp, dari persyaratan sampai proses lelang selesai.
+                        </p>
+                        <FollowUpWhatsApp followup={p.inquiry} className={primary} label="Tanya & Ikut via WhatsApp" />
+                    </>
+                )}
+
                 {p.state === "finished" && <Notice tone="neutral" icon={Flag} title={`${typeLabel} sudah selesai`} />}
 
                 {p.state === "suspended" && (
@@ -378,7 +398,7 @@ export default function AuctionPanel({ p, auctionId, typeLabel, whatsappUrl }) {
                 {p.followup ? (
                     <FollowUpWhatsApp followup={p.followup} className={ghost} />
                 ) : (
-                    whatsappUrl && (
+                    whatsappUrl && p.state !== "offline" && (
                         <a href={whatsappUrl} target="_blank" rel="noreferrer" className={ghost}>
                             <MessageCircle size={18} aria-hidden="true" /> Hubungi tim kami
                         </a>

@@ -16,6 +16,8 @@ class FollowUpLink
 
     public const AUCTION_MESSAGE = 'Halo, saya {nama}, peserta lelang {properti} (deposit {kode}). Mohon info langkah selanjutnya.';
 
+    public const AUCTION_INQUIRY = 'Halo, saya tertarik ikut {jenis} {properti}. Mohon info cara dan syaratnya. {link}';
+
     public const ACCESS_DEPOSIT = 'deposit';
 
     public const ACCESS_WINNER = 'winner';
@@ -48,6 +50,25 @@ class FollowUpLink
             '{kode}' => (string) ($vars['kode'] ?? ''),
             '{properti}' => (string) ($vars['properti'] ?? ''),
         ]);
+
+        return ['url' => 'https://wa.me/'.$number.'?text='.rawurlencode($text), 'kind' => 'chat'];
+    }
+
+    /**
+     * Auctions handled over WhatsApp (online auctions off): anyone may ask about joining, on the
+     * public number, with the auction named so the team knows which one. It is the only way to
+     * join, so it shows even when the public "Tanya via WhatsApp" button is switched off.
+     *
+     * @return array{url: string, kind: 'chat'}|null  null when no public number is set
+     */
+    public function auctionInquiry(string $type, string $property, string $link): ?array
+    {
+        $number = self::normalize(WebsiteSetting::getSettings()?->whatsapp);
+        if (! $number) {
+            return null;
+        }
+
+        $text = strtr(self::AUCTION_INQUIRY, ['{jenis}' => mb_strtolower($type), '{properti}' => $property, '{link}' => $link]);
 
         return ['url' => 'https://wa.me/'.$number.'?text='.rawurlencode($text), 'kind' => 'chat'];
     }

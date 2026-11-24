@@ -120,13 +120,17 @@ Route::middleware('feature:crowdfunding')->group(function () {
 Route::get('/auctions', [AuctionController::class, 'index'])->name('auctions.index');
 Route::get('/auctions/{id}', [AuctionController::class, 'show'])->name('auctions.show');
 Route::middleware(['auth', 'role:user', 'verified'])->whereNumber('id')->group(function () {
-    Route::post('/auctions/{id}/deposit', [AuctionController::class, 'deposit'])->name('auctions.deposit');
-    Route::post('/auctions/{id}/bid', [AuctionController::class, 'placeBid'])->name('auctions.bid');
+    // New deposits and bids only while online auctions are on; otherwise they go over WhatsApp.
+    Route::middleware('feature:auction_online')->group(function () {
+        Route::post('/auctions/{id}/deposit', [AuctionController::class, 'deposit'])->name('auctions.deposit');
+        Route::post('/auctions/{id}/bid', [AuctionController::class, 'placeBid'])->name('auctions.bid');
+    });
+    // A winner from before the switch must still be able to settle (or the deposit is forfeited).
     Route::post('/auctions/{id}/settlement', [AuctionController::class, 'settle'])->name('auctions.settle');
 });
 // "Masuk untuk ikut lelang": the auth middleware sends guests to login, then back to the auction.
 Route::get('/auctions/{id}/join', fn (int $id) => redirect()->route('auctions.show', $id))
-    ->name('auctions.join')->whereNumber('id')->middleware('auth');
+    ->name('auctions.join')->whereNumber('id')->middleware(['feature:auction_online', 'auth']);
 
 Route::get('/how-to-invest', function () {
     $settings = WebsiteSetting::getSettings();

@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\PropertyAuction;
 use App\Services\Auction\AuctionRejected;
 use App\Services\Auction\AuctionService;
+use App\Services\WhatsApp\FollowUpLink;
+use App\Support\Features;
 use App\Models\WebsiteSetting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -37,7 +39,7 @@ class AuctionController extends Controller
         ]);
     }
 
-    public function show($id, AuctionService $auctions)
+    public function show($id, AuctionService $auctions, FollowUpLink $whatsapp)
     {
         // Not bids.user: bidders stay anonymous on the public page (C22, see participation.bids).
         $auction = PropertyAuction::with(['property', 'property.images', 'property.documents'])
@@ -62,7 +64,12 @@ class AuctionController extends Controller
         return Inertia::render('Auctions/Show', [
             'auction' => $auction,
             'settings' => $settings,
-            'participation' => $auctions->stateFor($auction, Auth::user()),
+            // Online auctions off: joining goes over WhatsApp (AuctionPanel turns the open states
+            // into an inquiry); a deposit or win from before the switch still shows and settles.
+            'participation' => $auctions->stateFor($auction, Auth::user()) + (Features::enabled(Features::AUCTION_ONLINE) ? [] : [
+                'offline' => true,
+                'inquiry' => $whatsapp->auctionInquiry($auction->type_label, (string) $auction->property?->property_name, route('auctions.show', $auction->id)),
+            ]),
         ]);
     }
 

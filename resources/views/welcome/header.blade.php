@@ -60,10 +60,12 @@
                                 My Portfolio
                             </a>
                             @endif
+                            @if (\App\Support\Features::enabled('auction_online'))
                             <a href="{{ route('user.bid') }}"
                                 class="block px-4 py-2 text-sm text-slate-700 hover:bg-emerald-50 hover:text-emerald-600">
                                 My Bids
                             </a>
+                            @endif
                             <a href="{{ route('user.transaction') }}"
                                 class="block px-4 py-2 text-sm text-slate-700 hover:bg-emerald-50 hover:text-emerald-600">
                                 Transactions
@@ -153,10 +155,12 @@
                                 My Portfolio
                             </a>
                             @endif
+                            @if (\App\Support\Features::enabled('auction_online'))
                             <a href="{{ route('user.bid') }}"
                                 class="block py-2 px-3 text-sm text-slate-700 hover:bg-emerald-50 hover:text-emerald-600">
                                 My Bids
                             </a>
+                            @endif
                             <a href="{{ route('user.transaction') }}"
                                 class="block py-2 px-3 text-sm text-slate-700 hover:bg-emerald-50 hover:text-emerald-600">
                                 Transactions

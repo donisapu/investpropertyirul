@@ -43,5 +43,6 @@
              tests/Feature/FeatureFlagsTest.php switches them off. Production default is off. -->
         <env name="FEATURE_INVESTMENT" value="true" force="true"/>
         <env name="FEATURE_CROWDFUNDING" value="true" force="true"/>
+        <env name="FEATURE_AUCTION_ONLINE" value="true" force="true"/>
     </php>
 </phpunit>

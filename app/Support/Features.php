@@ -16,7 +16,10 @@ final class Features
 
     public const CROWDFUNDING = 'crowdfunding';
 
-    public const ALL = [self::INVESTMENT, self::CROWDFUNDING];
+    /** Deposit, bidding and settlement on the website. Off: auctions are handled over WhatsApp. */
+    public const AUCTION_ONLINE = 'auction_online';
+
+    public const ALL = [self::INVESTMENT, self::CROWDFUNDING, self::AUCTION_ONLINE];
 
     public static function enabled(string $feature): bool
     {

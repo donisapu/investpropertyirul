@@ -97,7 +97,7 @@ it('shares the flags with the frontend and drops campaigns of hidden products', 
     $campaign = flagsCampaignFor(DB::table('property_investments')->where('id', $investment)->value('property_id'));
 
     $this->get('/')->assertInertia(fn (Assert $page) => $page
-        ->where('features', ['investment' => false, 'crowdfunding' => false])
+        ->where('features', ['investment' => false, 'crowdfunding' => false, 'auction_online' => true])
         ->where('campaigns', [])
     );
 

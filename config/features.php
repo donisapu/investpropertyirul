@@ -18,4 +18,8 @@
 return [
     'investment' => (bool) env('FEATURE_INVESTMENT', false),
     'crowdfunding' => (bool) env('FEATURE_CROWDFUNDING', false),
+
+    // Online auctions (deposit, bidding, settlement through Xendit). Off until the client has
+    // the licence (open auctions go through KPKNL): auction pages send buyers to WhatsApp.
+    'auction_online' => (bool) env('FEATURE_AUCTION_ONLINE', false),
 ];

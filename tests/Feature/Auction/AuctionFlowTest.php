@@ -701,3 +701,56 @@ test('an admin sets a WhatsApp number or group per auction', function () {
     expect($auction->fresh()->only('followup_whatsapp', 'followup_group_url'))
         ->toBe(['followup_whatsapp' => '081277776666', 'followup_group_url' => 'https://chat.whatsapp.com/Grup']);
 });
+
+// ---- Online auctions off: joined over WhatsApp (FEATURE_AUCTION_ONLINE) ----
+
+test('with online auctions off the page offers WhatsApp instead of a deposit', function () {
+    config(['features.auction_online' => false]);
+    siteSettings(['whatsapp' => '0811-0000-2222']);
+    $auction = lelAuction();
+    $me = lelBidder();
+
+    $p = lelState($this, $me, $auction);
+
+    expect($p['offline'])->toBeTrue()
+        ->and($p['inquiry']['url'])->toStartWith('https://wa.me/6281100002222?text=')
+        ->and(rawurldecode($p['inquiry']['url']))->toContain('Gedung Sunter', route('auctions.show', $auction->id));
+});
+
+test('with online auctions off nobody can pay a new deposit or bid', function () {
+    config(['features.auction_online' => false]);
+    $auction = lelAuction();
+    $me = lelBidder();
+
+    $this->actingAs($me)->post(route('auctions.deposit', $auction->id))->assertNotFound();
+    lelBid($this, $auction, $me, 1800000000)->assertNotFound();
+
+    expect($this->invoices)->toBeEmpty()
+        ->and(AuctionDeposit::count())->toBe(0);
+});
+
+test('with online auctions off the admin saves an auction without deposit settings', function () {
+    config(['features.auction_online' => false]);
+    $admin = lelAdmin();
+
+    $this->actingAs($admin)->get(route('admin.auction-properties.create'))->assertOk()
+        ->assertDontSee('name="followup_whatsapp"', false)
+        ->assertSee('Lelang online sedang nonaktif');
+
+    $auction = lelAuction();
+    $form = lelForm($auction, ['open_bid' => 1900000000]);
+    $this->actingAs($admin)->put(route('admin.auction-properties.update', $auction->id), $form)->assertSessionHasNoErrors();
+
+    expect((int) $auction->fresh()->open_bid)->toBe(1900000000);
+});
+
+test('a winner from before online auctions were switched off can still settle', function () {
+    $winner = lelBidder();
+    $auction = lelWon($this, $winner);
+    config(['features.auction_online' => false]);
+
+    expect(lelState($this, $winner, $auction)['state'])->toBe('won');
+
+    $this->actingAs($winner)->post(route('auctions.settle', $auction->id))->assertSessionHasNoErrors();
+    expect(end($this->invoices)['externalId'])->toStartWith('PL-');
+});
